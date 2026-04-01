@@ -25,5 +25,8 @@
     --bg-9: hsl(var(--h), var(--s), var(--l-9));
     --bg-10: hsl(var(--h), var(--s), var(--l-10));
 
+    --blue-1: hsl(237, 100%, 61%);
+    --blue-2: hsl(237, 75%, 61%);
+
     --scheme: dark;
 }
