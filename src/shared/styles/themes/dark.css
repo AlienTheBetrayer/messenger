@@ -29,4 +29,7 @@
     --blue-2: hsl(237, 75%, 61%);
 
     --scheme: dark;
+    --backdrop: rgba(0, 0, 0, 0.3);
+
+    --invert-1: 0.8;
 }

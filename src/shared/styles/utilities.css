@@ -1,4 +1,5 @@
 @layer utilities {
+    /* ripple */
     .ripple {
         position: relative;
         overflow: hidden;
@@ -14,5 +15,37 @@
         pointer-events: none;
         transform: translate(-50%, -50%);
         z-index: -1;
+    }
+
+    /* container */
+    .container {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        gap: 0.5rem;
+        padding: 1rem;
+        background: var(--bg-1);
+        border: 1px solid var(--bg-3);
+        border-radius: 2rem;
+    }
+
+    /* skeleton */
+    @keyframes skeletonAnimation {
+        0% {
+            background-position: 200% 0;
+        }
+        100% {
+            background-position: -200% 0;
+        }
+    }
+
+    .skeleton {
+        position: relative;
+        background: linear-gradient(90deg, var(--bg-1) 25%, var(--bg-3) 37%, var(--bg-1) 63%);
+
+        background-size: 200% 100%;
+        border-radius: 1.5rem;
+        overflow: hidden;
+        animation: 4s skeletonAnimation ease-in-out infinite alternate;
     }
 }

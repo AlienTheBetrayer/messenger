@@ -1,3 +1,6 @@
 :root[data-theme="light"] {
     --scheme: light;
+    --backdrop: rgba(0, 0, 0, 0.15);
+
+    --invert-1: 0.8;
 }
