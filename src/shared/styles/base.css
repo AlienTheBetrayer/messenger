@@ -27,23 +27,25 @@
         color: white;
     }
 
-    /* element-specific */
+    /* interactable  */
     input,
     button,
     ul,
     div[role="list"] {
         color-scheme: var(--scheme);
+        scrollbar-width: thin;
+    }
+
+    /* text */
+    h1 {
+        font-size: var(--font-1);
+        color: var(--bg-10);
     }
 
     hr {
         border: 1px solid var(--bg-3);
         width: 100%;
         border-radius: 1000rem;
-    }
-
-    h1 {
-        font-size: var(--font-1);
-        color: var(--bg-10);
     }
 
     h2 {
@@ -66,5 +68,44 @@
     label {
         font-size: var(--font-6);
         color: var(--bg-9);
+    }
+
+    /* dialog */
+    dialog {
+        margin: 0;
+        padding: 0.25rem;
+        border: 0;
+        outline: 0;
+        background: transparent;
+        overflow: visible;
+    }
+
+    dialog {
+        transition:
+            opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+            display 0.3s cubic-bezier(0.4, 0, 0.2, 1) allow-discrete,
+            overlay 0.3s cubic-bezier(0.4, 0, 0.2, 1) allow-discrete;
+    }
+
+    dialog::backdrop {
+        background: var(--backdrop);
+        opacity: 0;
+        transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    dialog[open]::backdrop {
+        opacity: 1;
+    }
+
+    @starting-style {
+        dialog[open]::backdrop {
+            opacity: 0;
+        }
+    }
+
+    /* img */
+    img {
+        filter: invert(var(--invert-1)) grayscale(1);
+        transition: 0.1s;
     }
 }

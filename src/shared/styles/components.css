@@ -23,43 +23,4 @@
     .button:focus-visible {
         outline: 2px solid var(--blue-2);
     }
-
-    /* dialog */
-    dialog {
-        margin: 0;
-        padding: 0.25rem;
-        border: 0;
-        outline: 0;
-        background: transparent;
-        overflow: visible;
-    }
-
-    dialog {
-        transition:
-            opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-            display 0.3s cubic-bezier(0.4, 0, 0.2, 1) allow-discrete,
-            overlay 0.3s cubic-bezier(0.4, 0, 0.2, 1) allow-discrete;
-    }
-
-    dialog::backdrop {
-        background: var(--backdrop);
-        opacity: 0;
-        transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    dialog[open]::backdrop {
-        opacity: 1;
-    }
-
-    @starting-style {
-        dialog[open]::backdrop {
-            opacity: 0;
-        }
-    }
-
-    /* img */
-    img {
-        filter: invert(var(--invert-1)) grayscale(1);
-        transition: 0.1s;
-    }
 }

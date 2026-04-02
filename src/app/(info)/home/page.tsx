@@ -3,7 +3,7 @@ import { Button } from "@/src/shared/ui/button/Button";
 import { Modal } from "@/src/shared/ui/popovers/modal/Modal";
 import { Tooltip } from "@/src/shared/ui/popovers/tooltip/Tooltip";
 
-export default function Home() {
+export default function HomePage() {
     return (
         <>
             <Modal
