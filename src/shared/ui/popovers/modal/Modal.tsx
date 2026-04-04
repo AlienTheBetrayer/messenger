@@ -2,7 +2,7 @@
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "motion/react";
 import React from "react";
-import { CloseButton } from "@/src/shared/ui/popovers/closebutton/CloseButton";
+import { CloseButton } from "@/src/shared/ui/popovers/modal/CloseButton";
 import { DialogDirection } from "@/src/shared/ui/popovers/dialogDirection";
 import { useModal } from "@/src/shared/ui/popovers/modal/useModal";
 

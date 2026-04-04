@@ -1,4 +1,5 @@
 "use client";
+import "./Button.css";
 import { rippleEnable } from "@/src/shared/lib/ripple";
 import { ComponentPropsWithoutRef } from "react";
 
