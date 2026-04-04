@@ -2,9 +2,10 @@
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "motion/react";
 import React from "react";
-import { CloseButton } from "@/src/shared/ui/popovers/modal/CloseButton";
+import { CloseButton } from "@/src/shared/ui/popovers/additional/CloseButton";
 import { DialogDirection } from "@/src/shared/ui/popovers/dialogDirection";
 import { useModal } from "@/src/shared/ui/popovers/modal/useModal";
+import { DragButton } from "@/src/shared/ui/popovers/additional/DragButton";
 
 type Props = {
     element?: (hide: () => void) => React.ReactNode;
@@ -99,6 +100,10 @@ export const Modal = React.memo(function ModalFunction({
                                     }}
                                     ref={modalElementRef}
                                 >
+                                    <DragButton
+                                        ref={modalRef}
+                                        className="z-1"
+                                    />
                                     <CloseButton hide={hide} />
                                     {element?.(hide)}
                                 </motion.div>

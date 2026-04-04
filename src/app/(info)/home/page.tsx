@@ -9,7 +9,7 @@ export default function HomePage() {
         <>
             <Modal
                 element={(hide) => (
-                    <div className="container">
+                    <div className="container p-8!">
                         <Button>Redirect</Button>
                     </div>
                 )}
