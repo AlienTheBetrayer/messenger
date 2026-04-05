@@ -16,6 +16,7 @@ export const Input = ({
     isEnabled = true,
     required,
     minLength,
+    placeholder="Enter...",
     maxLength,
     container,
     children,
@@ -43,6 +44,7 @@ export const Input = ({
                     ${isEnabled && (required || minLength || maxLength) ? "invalid:underline decoration-wavy decoration-red-1 placeholder-shown:no-underline! valid:border-blue-1!" : ""} 
                     ${className ?? ""}`}
                 value={inputValue}
+                placeholder={placeholder}
                 onChange={(e) => {
                     if (!value) {
                         setData(e.target.value);
