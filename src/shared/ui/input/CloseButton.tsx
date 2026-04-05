@@ -13,6 +13,7 @@ export const InputCloseButton = ({ inputValue, onClear, onChange }: Props) => {
         <AnimatePresence>
             <motion.div
                 className="absolute right-2 top-1/2 -translate-1/2"
+                initial={false}
                 animate={!inputValue ? { opacity: 0, scale: 0, x: 5 } : { opacity: 1, scale: 1, x: 0 }}
                 transition={{ duration: 0.3, ease: "easeInOut" }}
             >
