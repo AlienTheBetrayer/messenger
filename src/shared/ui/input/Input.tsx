@@ -1,5 +1,4 @@
 import "./Input.css";
-import { AnimatePresence } from "motion/react";
 import { type ComponentPropsWithoutRef, ComponentPropsWithRef, useRef, useState } from "react";
 import { InputCloseButton } from "@/src/shared/ui/input/CloseButton";
 
@@ -16,7 +15,7 @@ export const Input = ({
     isEnabled = true,
     required,
     minLength,
-    placeholder="Enter...",
+    placeholder = "Enter...",
     maxLength,
     container,
     children,
@@ -56,16 +55,13 @@ export const Input = ({
 
             {children}
 
-            <AnimatePresence>
-                {inputValue !== "" && (
-                    <InputCloseButton
-                        onClear={() => {
-                            setData("");
-                        }}
-                        onChange={onChange}
-                    />
-                )}
-            </AnimatePresence>
+            <InputCloseButton
+                inputValue={inputValue}
+                onClear={() => {
+                    setData("");
+                }}
+                onChange={onChange}
+            />
         </div>
     );
 };
