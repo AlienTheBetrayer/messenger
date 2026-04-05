@@ -1,0 +1,21 @@
+.select-list {
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-width: none;
+    border-radius: 1rem;
+    max-height: 16rem;
+    width: 100%;
+}
+
+.select-item {
+    display: grid;
+    grid-template-columns: 1.25rem 1fr;
+    gap: 0.5rem;
+    align-items: center;
+    width: 100%;
+    border-radius: 0;
+    outline: 0;
+    border: 0;
+}

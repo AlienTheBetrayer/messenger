@@ -1,7 +1,7 @@
 "use client";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "motion/react";
-import React from "react";
+import React, { CSSProperties } from "react";
 import { CloseButton } from "@/src/shared/ui/popovers/additional/CloseButton";
 import { DialogDirection } from "@/src/shared/ui/popovers/dialogDirection";
 import { useModal } from "@/src/shared/ui/popovers/modal/useModal";
@@ -12,9 +12,10 @@ type Props = {
     direction?: DialogDirection;
     contextMenu?: boolean;
     className?: string;
-    tooltipClassName?: string;
+    tooltipStyle?: CSSProperties;
     isEnabled?: boolean;
     isActive?: boolean;
+    additionalButtons?: boolean;
     children: React.ReactNode;
 };
 
@@ -22,7 +23,8 @@ export const Modal = React.memo(function ModalFunction({
     element,
     direction = "bottom",
     className = "",
-    tooltipClassName = "",
+    tooltipStyle = {},
+    additionalButtons = true,
     contextMenu = false,
     isEnabled = true,
     isActive = true,
@@ -84,7 +86,8 @@ export const Modal = React.memo(function ModalFunction({
                                 className="fixed z-1000"
                             >
                                 <motion.div
-                                    className={`rounded-4xl modal-element relative ${tooltipClassName ?? ""}`}
+                                    className="rounded-4xl modal-element relative"
+                                    style={tooltipStyle}
                                     initial={{
                                         opacity: 0,
                                         scale: 0.9,
@@ -94,17 +97,18 @@ export const Modal = React.memo(function ModalFunction({
                                         opacity: 0,
                                         scale: 0.9,
                                     }}
-                                    transition={{
-                                        ease: [0.4, 0, 0.2, 1],
-                                        duration: 0.3,
-                                    }}
+                                    transition={{ duration: 0.3, ease: "circInOut" }}
                                     ref={modalElementRef}
                                 >
-                                    <DragButton
-                                        ref={modalRef}
-                                        className="z-1"
-                                    />
-                                    <CloseButton hide={hide} />
+                                    {additionalButtons && (
+                                        <>
+                                            <DragButton
+                                                ref={modalRef}
+                                                className="z-1"
+                                            />
+                                            <CloseButton hide={hide} />
+                                        </>
+                                    )}
                                     {element?.(hide)}
                                 </motion.div>
                             </dialog>

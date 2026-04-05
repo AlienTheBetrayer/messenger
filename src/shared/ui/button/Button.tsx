@@ -1,11 +1,11 @@
 "use client";
 import "./Button.css";
 import { rippleEnable } from "@/src/shared/lib/ripple";
-import { ComponentPropsWithoutRef } from "react";
+import { ComponentPropsWithRef } from "react";
 
 type Props = {
     isEnabled?: boolean;
-} & ComponentPropsWithoutRef<"button">;
+} & ComponentPropsWithRef<"button">;
 
 export const Button = ({ isEnabled = true, onPointerDown, onPointerEnter, className, children, ...rest }: Props) => {
     return (

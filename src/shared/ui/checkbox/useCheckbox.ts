@@ -31,6 +31,6 @@ export const useCheckbox = (value?: boolean, onChange?: (flag: boolean) => void)
             toggle,
             keyDown,
         }),
-        [inputValue, isChecked, keyDown, toggle],
+        [inputValue, keyDown, toggle],
     );
 };

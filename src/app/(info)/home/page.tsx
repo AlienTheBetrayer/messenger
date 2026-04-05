@@ -4,6 +4,7 @@ import { Checkbox } from "@/src/shared/ui/checkbox/Checkbox";
 import { Input } from "@/src/shared/ui/input/Input";
 import { Modal } from "@/src/shared/ui/popovers/modal/Modal";
 import { Tooltip } from "@/src/shared/ui/popovers/tooltip/Tooltip";
+import { Select } from "@/src/shared/ui/select/Select";
 
 export default function HomePage() {
     return (
@@ -24,7 +25,8 @@ export default function HomePage() {
 
             <div className="flex flex-col w-64">
                 <Input />
-                <Checkbox className="ml-auto! w-fit!"/>
+                <Checkbox className="ml-auto! w-fit!" />
+                <Select items={["a", "b", "Helo owrld", "Big"]} />
             </div>
         </>
     );
