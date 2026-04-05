@@ -97,7 +97,7 @@ export const Modal = React.memo(function ModalFunction({
                                         opacity: 0,
                                         scale: 0.9,
                                     }}
-                                    transition={{ duration: 0.3, ease: "circInOut" }}
+                                    transition={{ duration: 0.3 }}
                                     ref={modalElementRef}
                                 >
                                     {additionalButtons && (

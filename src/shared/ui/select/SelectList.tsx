@@ -19,7 +19,6 @@ export const SelectList = ({ inputValue, items, onChange }: Props) => {
             initial={{ height: "0px", y: -10 }}
             animate={{ height: "auto", y: 0 }}
             exit={{ height: "0px", y: -10 }}
-            transition={{ duration: 0.3, ease: "circInOut" }}
             className="select-list"
         >
             {items.map((item) => (

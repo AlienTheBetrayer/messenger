@@ -8,11 +8,12 @@ import { MessageBox } from "@/src/shared/ui/messagebox/MessageBox";
 import { Modal } from "@/src/shared/ui/popovers/modal/Modal";
 import { Tooltip } from "@/src/shared/ui/popovers/tooltip/Tooltip";
 import { Select } from "@/src/shared/ui/select/Select";
+import { Toggle } from "@/src/shared/ui/toggle/Toggle";
 import { useState } from "react";
 
 export default function HomePage() {
     const [img, setImg] = useState<string>("");
-    const [file, setFile] = useState<File | null>(null);
+    const [toggled, setToggled] = useState<boolean>(false);
 
     return (
         <>
@@ -53,6 +54,13 @@ export default function HomePage() {
                     }}
                 />
                 <LinkButton href="/messages">Messgaes</LinkButton>
+                <Toggle
+                    className="ml-auto! w-fit!"
+                    value={toggled}
+                    onChange={() => {
+                        setToggled((prev) => !prev);
+                    }}
+                />
             </div>
         </>
     );
