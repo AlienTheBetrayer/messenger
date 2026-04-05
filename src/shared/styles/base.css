@@ -75,6 +75,12 @@
         opacity: 0.3;
     }
 
+    u {
+        text-decoration: underline wavy;
+        text-decoration-color: var(--red-1);
+        text-decoration-thickness: 1px;
+    }
+
     /* dialog */
     dialog {
         margin: 0;

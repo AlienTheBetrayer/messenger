@@ -104,7 +104,7 @@ export const Tooltip = React.memo(function TooltipFunction({
                                         ease: [0.4, 0, 0.2, 1],
                                         duration: 0.3,
                                     }}
-                                    className={`rounded-4xl ${element ? "" : "container py-1.5! px-3! rounded-full!"}`}
+                                    className={`rounded-4xl ${element ? "" : "shell py-1.5! px-3! rounded-full!"}`}
                                 >
                                     {element ?? (
                                         <span className="flex flex-col items-center">

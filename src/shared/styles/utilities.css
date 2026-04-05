@@ -17,8 +17,8 @@
         z-index: -1;
     }
 
-    /* container */
-    .container {
+    /* shell container */
+    .shell {
         display: flex;
         flex-direction: column;
         position: relative;
@@ -47,5 +47,11 @@
         border-radius: 1.5rem;
         overflow: hidden;
         animation: 4s skeletonAnimation ease-in-out infinite alternate;
+    }
+
+    /* acrylic */
+    .acrylic {
+        background: var(--bg-a-0);
+        backdrop-filter: blur(12px);
     }
 }

@@ -11,9 +11,22 @@
     --color-bg-9: var(--bg-9);
     --color-bg-10: var(--bg-10);
 
+    --color-bg-a-0: var(--bg-a-0);
+    --color-bg-a-1: var(--bg-a-1);
+    --color-bg-a-2: var(--bg-a-2);
+    --color-bg-a-3: var(--bg-a-3);
+    --color-bg-a-4: var(--bg-a-4);
+    --color-bg-a-5: var(--bg-a-5);
+    --color-bg-a-6: var(--bg-a-6);
+    --color-bg-a-7: var(--bg-a-7);
+    --color-bg-a-8: var(--bg-a-8);
+    --color-bg-a-9: var(--bg-a-9);
+    --color-bg-a-10: var(--bg-1a-0);
+
     --color-blue-1: var(--blue-1);
     --color-blue-2: var(--blue-2);
-    --color-blue-3: var(--blue-3);
+    --color-red-1: hsl(0, 100%, 61%);
+    --color-red-2: hsl(0, 75%, 61%);
 
     --text-1: var(--font-1);
     --text-2: var(--font-2);
