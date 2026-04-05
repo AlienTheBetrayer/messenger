@@ -3,6 +3,7 @@ import { Button } from "@/src/shared/ui/button/Button";
 import { Checkbox } from "@/src/shared/ui/checkbox/Checkbox";
 import { ImageSelect } from "@/src/shared/ui/imageselect/ImageSelect";
 import { Input } from "@/src/shared/ui/input/Input";
+import { LinkButton } from "@/src/shared/ui/linkbutton/LinkButton";
 import { MessageBox } from "@/src/shared/ui/messagebox/MessageBox";
 import { Modal } from "@/src/shared/ui/popovers/modal/Modal";
 import { Tooltip } from "@/src/shared/ui/popovers/tooltip/Tooltip";
@@ -17,7 +18,7 @@ export default function HomePage() {
         <>
             <Modal
                 element={(hide) => (
-                    <div className="container p-8!">
+                    <div className="shell p-8!">
                         <Button>Redirect</Button>
                     </div>
                 )}
@@ -51,6 +52,7 @@ export default function HomePage() {
                         setImg(!file ? "" : URL.createObjectURL(file));
                     }}
                 />
+                <LinkButton href="/messages">Messgaes</LinkButton>
             </div>
         </>
     );
