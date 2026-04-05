@@ -1,0 +1,7 @@
+.image-select-buttons button {
+    background: var(--bg-a-0);
+    min-width: 2rem;
+    min-height: 2rem;
+    padding: 0;
+    backdrop-filter: 8px;
+}
