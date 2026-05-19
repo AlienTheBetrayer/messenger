@@ -1,0 +1,12 @@
+:root {
+    --font-1: 3rem;
+    --font-2: 2.5rem;
+    --font-3: 2rem;
+    --font-4: 1.5rem;
+    --font-5: 1rem;
+    --font-6: 0.8rem;
+}
+
+@import "./themes/dark.css";
+@import "./themes/amoled.css";
+@import "./themes/light.css";

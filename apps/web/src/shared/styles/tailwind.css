@@ -1,0 +1,37 @@
+@theme {
+    --color-bg-0: var(--bg-0);
+    --color-bg-1: var(--bg-1);
+    --color-bg-2: var(--bg-2);
+    --color-bg-3: var(--bg-3);
+    --color-bg-4: var(--bg-4);
+    --color-bg-5: var(--bg-5);
+    --color-bg-6: var(--bg-6);
+    --color-bg-7: var(--bg-7);
+    --color-bg-8: var(--bg-8);
+    --color-bg-9: var(--bg-9);
+    --color-bg-10: var(--bg-10);
+
+    --color-bg-a-0: var(--bg-a-0);
+    --color-bg-a-1: var(--bg-a-1);
+    --color-bg-a-2: var(--bg-a-2);
+    --color-bg-a-3: var(--bg-a-3);
+    --color-bg-a-4: var(--bg-a-4);
+    --color-bg-a-5: var(--bg-a-5);
+    --color-bg-a-6: var(--bg-a-6);
+    --color-bg-a-7: var(--bg-a-7);
+    --color-bg-a-8: var(--bg-a-8);
+    --color-bg-a-9: var(--bg-a-9);
+    --color-bg-a-10: var(--bg-1a-0);
+
+    --color-blue-1: var(--blue-1);
+    --color-blue-2: var(--blue-2);
+    --color-red-1: hsl(0, 100%, 61%);
+    --color-red-2: hsl(0, 75%, 61%);
+
+    --text-1: var(--font-1);
+    --text-2: var(--font-2);
+    --text-3: var(--font-3);
+    --text-4: var(--font-4);
+    --text-5: var(--font-5);
+    --text-6: var(--font-6);
+}
