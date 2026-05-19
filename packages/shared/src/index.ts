@@ -8,28 +8,32 @@
 // ─── Example Types ───────────────────────────────────────────────
 
 export interface User {
-  id: string;
-  email: string;
-  displayName: string;
-  avatarUrl?: string;
-  createdAt: string;
-  updatedAt: string;
+    id: string;
+    email: string;
+    displayName: string;
+    avatarUrl?: string;
+    createdAt: string;
+    updatedAt: string;
 }
 
 // ─── API Response Wrapper ────────────────────────────────────────
 
 export interface ApiResponse<T> {
-  success: boolean;
-  data: T;
-  message?: string;
+    success: boolean;
+    data: T;
+    message?: string;
 }
 
 export interface ApiError {
-  success: false;
-  error: string;
-  statusCode: number;
+    success: false;
+    error: string;
+    statusCode: number;
+}
+
+export interface HelloResponse {
+    message: string;
 }
 
 // ─── Constants ───────────────────────────────────────────────────
 
-export const APP_NAME = 'Gravity';
+export const APP_NAME = "Gravity";
