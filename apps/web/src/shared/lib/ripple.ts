@@ -14,6 +14,8 @@ export const rippleEnable = <T extends HTMLElement>(e: React.PointerEvent<T>) =>
     ripple.style.width = ripple.style.height = `${size}px`;
     ripple.style.left = `${e.clientX - rect.left}px`;
     ripple.style.top = `${e.clientY - rect.top}px`;
+    const textColor = window.getComputedStyle(el).getPropertyValue("color");
+    ripple.style.background = `color-mix(in srgb, ${textColor} 15%, transparent)`;
 
     el.appendChild(ripple);
 

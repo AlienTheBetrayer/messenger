@@ -4,7 +4,7 @@
         position: relative;
         overflow: hidden;
         isolation: isolate;
-        --ripple-color: var(--bg-4);
+        --ripple-color: var(--secondary);
         --ripple-speed: 0.4s;
     }
 
@@ -26,7 +26,7 @@
         padding: 1rem;
         background: var(--card);
         border: 1px solid var(--secondary);
-        border-radius: 2rem;
+        border-radius: 14px;
     }
 
     /* skeleton */
@@ -43,7 +43,6 @@
         position: relative;
         background: linear-gradient(90deg, var(--card) 25%, var(--secondary) 37%, var(--card) 63%);
         background-size: 200% 100%;
-        border-radius: 1.5rem;
         overflow: hidden;
         animation: 4s skeletonAnimation ease-in-out infinite alternate;
     }
