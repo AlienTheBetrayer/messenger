@@ -1,32 +1,45 @@
-@theme {
-    --color-bg-0: var(--bg-0);
-    --color-bg-1: var(--bg-1);
-    --color-bg-2: var(--bg-2);
-    --color-bg-3: var(--bg-3);
-    --color-bg-4: var(--bg-4);
-    --color-bg-5: var(--bg-5);
-    --color-bg-6: var(--bg-6);
-    --color-bg-7: var(--bg-7);
-    --color-bg-8: var(--bg-8);
-    --color-bg-9: var(--bg-9);
-    --color-bg-10: var(--bg-10);
-
-    --color-bg-a-0: var(--bg-a-0);
-    --color-bg-a-1: var(--bg-a-1);
-    --color-bg-a-2: var(--bg-a-2);
-    --color-bg-a-3: var(--bg-a-3);
-    --color-bg-a-4: var(--bg-a-4);
-    --color-bg-a-5: var(--bg-a-5);
-    --color-bg-a-6: var(--bg-a-6);
-    --color-bg-a-7: var(--bg-a-7);
-    --color-bg-a-8: var(--bg-a-8);
-    --color-bg-a-9: var(--bg-a-9);
-    --color-bg-a-10: var(--bg-1a-0);
-
-    --color-blue-1: var(--blue-1);
-    --color-blue-2: var(--blue-2);
-    --color-red-1: hsl(0, 100%, 61%);
-    --color-red-2: hsl(0, 75%, 61%);
+@theme inline {
+    /* shadcn: */
+    --font-heading: var(--font-sans);
+    --font-sans: var(--font-sans);
+    --color-sidebar-ring: var(--sidebar-ring);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar: var(--sidebar);
+    --color-chart-5: var(--chart-5);
+    --color-chart-4: var(--chart-4);
+    --color-chart-3: var(--chart-3);
+    --color-chart-2: var(--chart-2);
+    --color-chart-1: var(--chart-1);
+    --color-ring: var(--ring);
+    --color-input: var(--input);
+    --color-border: var(--border);
+    --color-destructive: var(--destructive);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-accent: var(--accent);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-muted: var(--muted);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-secondary: var(--secondary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-primary: var(--primary);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-popover: var(--popover);
+    --color-card-foreground: var(--card-foreground);
+    --color-card: var(--card);
+    --color-foreground: var(--foreground);
+    --color-background: var(--background);
+    --radius-sm: calc(var(--radius) * 0.6);
+    --radius-md: calc(var(--radius) * 0.8);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) * 1.4);
+    --radius-2xl: calc(var(--radius) * 1.8);
+    --radius-3xl: calc(var(--radius) * 2.2);
+    --radius-4xl: calc(var(--radius) * 2.6);
 
     --text-1: var(--font-1);
     --text-2: var(--font-2);
