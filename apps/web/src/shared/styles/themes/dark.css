@@ -65,6 +65,8 @@
         --sidebar-accent-foreground: var(--d-sidebar-accent-foreground);
         --sidebar-border: var(--d-sidebar-border);
         --sidebar-ring: var(--d-sidebar-ring);
+
+        --scheme: dark;
     }
 }
 
@@ -101,4 +103,6 @@
     --sidebar-accent-foreground: var(--d-sidebar-accent-foreground);
     --sidebar-border: var(--d-sidebar-border);
     --sidebar-ring: var(--d-sidebar-ring);
+
+    --scheme: dark;
 }

@@ -6,6 +6,7 @@
 
     * {
         @apply border-border outline-ring/50;
+        color-scheme: "dark" !important;
     }
     body {
         @apply bg-background text-foreground;
