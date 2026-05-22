@@ -1,133 +1,133 @@
 @layer base {
-    /* global */
-    * {
-        box-sizing: border-box;
-    }
+	/* global */
+	* {
+		box-sizing: border-box;
+	}
 
-    * {
-        @apply border-border outline-ring/50;
-        color-scheme: "dark" !important;
-    }
-    body {
-        @apply bg-background text-foreground;
-    }
-    html {
-        @apply font-sans;
-    }
+	* {
+		@apply border-border outline-ring/50;
+		color-scheme: 'dark' !important;
+	}
+	body {
+		@apply bg-background text-foreground;
+	}
+	html {
+		@apply font-sans;
+	}
 
-    html {
-        padding: 0;
-        margin: 0;
-        font-family:
-            "Inter",
-            system-ui,
-            -apple-system,
-            "Segoe UI",
-            Roboto,
-            "Helvetica Neue",
-            Arial,
-            sans-serif;
-        font-weight: 450;
-        scrollbar-width: thin;
-    }
+	html {
+		padding: 0;
+		margin: 0;
+		font-family:
+			'Inter',
+			system-ui,
+			-apple-system,
+			'Segoe UI',
+			Roboto,
+			'Helvetica Neue',
+			Arial,
+			sans-serif;
+		font-weight: 450;
+		scrollbar-width: thin;
+	}
 
-    body {
-        padding: 0;
-        margin: 0;
-        background: var(--background);
-        color: var(--foreground);
-    }
+	body {
+		padding: 0;
+		margin: 0;
+		background: var(--background);
+		color: var(--foreground);
+	}
 
-    /* interactable  */
-    input,
-    button,
-    ul,
-    div[role="list"] {
-        color-scheme: var(--scheme);
-        scrollbar-width: thin;
-    }
+	/* interactable  */
+	input,
+	button,
+	ul,
+	div[role='list'] {
+		color-scheme: var(--scheme);
+		scrollbar-width: thin;
+	}
 
-    /* text */
-    h1 {
-        font-size: var(--font-1);
-        color: var(--bg-10);
-    }
+	/* text */
+	h1 {
+		font-size: var(--font-1);
+		color: var(--bg-10);
+	}
 
-    hr {
-        border: 1px solid var(--bg-3);
-        width: 100%;
-        border-radius: 1000rem;
-    }
+	hr {
+		border: 1px solid var(--bg-3);
+		width: 100%;
+		border-radius: 1000rem;
+	}
 
-    h2 {
-        font-size: var(--font-2);
-        color: var(--bg-10);
-    }
+	h2 {
+		font-size: var(--font-2);
+		color: var(--bg-10);
+	}
 
-    h3 {
-        font-size: var(--font-3);
-        color: var(--bg-9);
-    }
+	h3 {
+		font-size: var(--font-3);
+		color: var(--bg-9);
+	}
 
-    h4,
-    span,
-    p,
-    input,
-    textarea,
-    button,
-    a,
-    label {
-        font-size: var(--font-6);
-        color: var(--bg-9);
-    }
+	h4,
+	span,
+	p,
+	input,
+	textarea,
+	button,
+	a,
+	label {
+		font-size: var(--font-6);
+		color: var(--bg-9);
+	}
 
-    small {
-        font-size: 0.8em;
-        opacity: 0.3;
-    }
+	small {
+		font-size: 0.8em;
+		opacity: 0.3;
+	}
 
-    u {
-        text-decoration: underline wavy;
-        text-decoration-color: var(--red-1);
-        text-decoration-thickness: 1px;
-    }
+	u {
+		text-decoration: underline wavy;
+		text-decoration-color: var(--red-1);
+		text-decoration-thickness: 1px;
+	}
 
-    /* dialog */
-    dialog {
-        margin: 0;
-        padding: 0.25rem;
-        border: 0;
-        outline: 0;
-        background: transparent;
-        overflow: visible;
-    }
+	/* dialog */
+	dialog {
+		margin: 0;
+		padding: 0.25rem;
+		border: 0;
+		outline: 0;
+		background: transparent;
+		overflow: visible;
+	}
 
-    dialog {
-        transition:
-            opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-            display 0.3s cubic-bezier(0.4, 0, 0.2, 1) allow-discrete,
-            overlay 0.3s cubic-bezier(0.4, 0, 0.2, 1) allow-discrete;
-    }
+	dialog {
+		transition:
+			opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+			display 0.3s cubic-bezier(0.4, 0, 0.2, 1) allow-discrete,
+			overlay 0.3s cubic-bezier(0.4, 0, 0.2, 1) allow-discrete;
+	}
 
-    dialog::backdrop {
-        background: var(--backdrop);
-        opacity: 0;
-        transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
+	dialog::backdrop {
+		background: var(--backdrop);
+		opacity: 0;
+		transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	}
 
-    dialog[open]::backdrop {
-        opacity: 1;
-    }
+	dialog[open]::backdrop {
+		opacity: 1;
+	}
 
-    @starting-style {
-        dialog[open]::backdrop {
-            opacity: 0;
-        }
-    }
+	@starting-style {
+		dialog[open]::backdrop {
+			opacity: 0;
+		}
+	}
 
-    /* img */
-    img {
-        filter: invert(var(--invert-1)) grayscale(1);
-        transition: 0.1s;
-    }
+	/* img */
+	img {
+		filter: invert(var(--invert-1)) grayscale(1);
+		transition: 0.1s;
+	}
 }

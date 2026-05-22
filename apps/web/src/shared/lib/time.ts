@@ -1,4 +1,4 @@
-import { formatDistanceToNow } from "date-fns";
+import { formatDistanceToNow } from 'date-fns';
 
 /**
  * @description takes a timestamp and converts to "3 days ago" using date-fns library
@@ -7,7 +7,7 @@ import { formatDistanceToNow } from "date-fns";
  * @returns formatted string of the time distance
  */
 export const timeAgo = (date: string | Date) => {
-    return formatDistanceToNow(new Date(date), {
-        addSuffix: true,
-    });
+	return formatDistanceToNow(new Date(date), {
+		addSuffix: true,
+	});
 };

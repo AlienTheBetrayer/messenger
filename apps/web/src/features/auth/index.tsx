@@ -1,1 +1,1 @@
-export { AuthForm } from "@/features/auth/ui/AuthForm";
+export { AuthForm } from '@/features/auth/ui/AuthForm';

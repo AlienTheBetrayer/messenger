@@ -1,12 +1,12 @@
-import { Controller, Get } from "@nestjs/common";
-import { RootService } from "./root.service.js";
+import { Controller, Get } from '@nestjs/common';
+import { RootService } from './root.service.js';
 
 @Controller()
 export class RootController {
-    constructor(private readonly rootService: RootService) {}
+	constructor(private readonly rootService: RootService) {}
 
-    @Get()
-    getHealth() {
-        return this.rootService.getApiHealth();
-    }
+	@Get()
+	getHealth() {
+		return this.rootService.getApiHealth();
+	}
 }

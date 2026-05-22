@@ -1,12 +1,12 @@
 :root {
-  --font-1: clamp(1.875rem, 4vw, 2.25rem);
-  --font-2: clamp(1.5rem, 3.5vw, 1.875rem); 
-  --font-3: clamp(1.25rem, 3vw, 1.5rem);  
-  --font-4: clamp(1.125rem, 2.5vw, 1.25rem); 
-  --font-5: 1rem; 
-  --font-6: 0.875rem; 
+	--font-1: clamp(1.875rem, 4vw, 2.25rem);
+	--font-2: clamp(1.5rem, 3.5vw, 1.875rem);
+	--font-3: clamp(1.25rem, 3vw, 1.5rem);
+	--font-4: clamp(1.125rem, 2.5vw, 1.25rem);
+	--font-5: 1rem;
+	--font-6: 0.875rem;
 }
 
-@import "./themes/light.css";
-@import "./themes/amoled.css";
-@import "./themes/dark.css";
+@import './themes/light.css';
+@import './themes/amoled.css';
+@import './themes/dark.css';
