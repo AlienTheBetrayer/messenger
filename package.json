@@ -22,8 +22,11 @@
     "turbo": "^2"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.4.0",
     "axios": "^1.16.1",
     "date-fns": "^4.2.1",
-    "radix-ui": "^1.4.3"
+    "radix-ui": "^1.4.3",
+    "react-hook-form": "^7.76.0",
+    "zod": "^4.4.3"
   }
 }
