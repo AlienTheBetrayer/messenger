@@ -1,13 +1,13 @@
 'use client';
 
-import * as React from 'react';
 import useEmblaCarousel, {
 	type UseEmblaCarouselType,
 } from 'embla-carousel-react';
+import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
+import * as React from 'react';
 
 import { cn } from '@/shared/lib/utils';
 import { Button } from '@/shared/ui/button';
-import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 
 type CarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
@@ -108,7 +108,7 @@ function Carousel({
 		<CarouselContext.Provider
 			value={{
 				carouselRef,
-				api: api,
+				api,
 				opts,
 				orientation:
 					orientation || (opts?.axis === 'y' ? 'vertical' : 'horizontal'),

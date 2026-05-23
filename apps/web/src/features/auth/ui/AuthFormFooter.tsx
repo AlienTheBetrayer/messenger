@@ -1,10 +1,11 @@
+import Image from 'next/image';
+
 import {
+	type AuthFormVariantsType,
 	AuthFormVariants,
-	AuthFormVariantsType,
 } from '@/features/auth/lib/variants';
 import { Button, CardFooter } from '@/shared/ui';
 import { Field } from '@/shared/ui/field';
-import Image from 'next/image';
 
 type Props = {
 	type: AuthFormVariantsType;

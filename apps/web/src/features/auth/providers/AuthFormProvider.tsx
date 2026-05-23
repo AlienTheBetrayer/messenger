@@ -1,6 +1,8 @@
-import { useAuthForm } from '@/features/auth/hooks/useAuthForm';
-import { AuthFormData } from '@/features/auth/lib/zod';
 import { FormProvider } from 'react-hook-form';
+
+import type { AuthFormData } from '@/features/auth/lib/zod';
+
+import { useAuthForm } from '@/features/auth/hooks/useAuthForm';
 
 type Props = {
 	children: React.ReactNode;

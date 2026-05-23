@@ -1,8 +1,10 @@
-import { AuthFormData } from '@/features/auth/lib/zod';
-import { Button, CardContent, Input } from '@/shared/ui';
-import { Field, FieldError, FieldGroup, FieldLabel } from '@/shared/ui/field';
 import Link from 'next/link';
 import { Controller, useFormContext } from 'react-hook-form';
+
+import type { AuthFormData } from '@/features/auth/lib/zod';
+
+import { Button, CardContent, Input } from '@/shared/ui';
+import { Field, FieldError, FieldGroup, FieldLabel } from '@/shared/ui/field';
 
 export const AuthFormContent = () => {
 	// consuming provider

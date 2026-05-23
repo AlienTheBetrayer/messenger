@@ -1,13 +1,15 @@
 'use client';
 
-import { Card } from '@/shared/ui';
-import { AuthFormData } from '@/features/auth/lib/zod';
-import { AuthFormVariantsType } from '@/features/auth/lib/variants';
 import { useCallback } from 'react';
-import { AuthFormHeader } from '@/features/auth/ui/AuthFormHeader';
-import { AuthFormFooter } from '@/features/auth/ui/AuthFormFooter';
+
+import type { AuthFormVariantsType } from '@/features/auth/lib/variants';
+import type { AuthFormData } from '@/features/auth/lib/zod';
+
 import { AuthFormProvider } from '@/features/auth/providers/AuthFormProvider';
 import { AuthFormContent } from '@/features/auth/ui/AuthFormContent';
+import { AuthFormFooter } from '@/features/auth/ui/AuthFormFooter';
+import { AuthFormHeader } from '@/features/auth/ui/AuthFormHeader';
+import { Card } from '@/shared/ui';
 
 type Props = {
 	type: AuthFormVariantsType;
@@ -15,9 +17,16 @@ type Props = {
 
 export const AuthForm = ({ type }: Props) => {
 	// subbmitting fn
-	const onSubmit = useCallback((data: AuthFormData) => {
-		alert(data.email);
-	}, []);
+	const onSubmit = useCallback(
+		(data: AuthFormData) => {
+			if (type === 'login') {
+				console.warn(data.email);
+			} else {
+				console.warn(data.password);
+			}
+		},
+		[type],
+	);
 
 	// jsx
 	return (

@@ -1,12 +1,20 @@
 import 'dotenv/config';
-import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
+
 import { AppModule } from './app.module.js';
 
-async function bootstrap() {
+async function bootstrap(): Promise<void> {
 	const app = await NestFactory.create(AppModule);
-	app.enableCors(); // Allow requests from other ports (like 3000)
-	app.useGlobalPipes(new ValidationPipe());
+	app.enableCors();
+	app.useGlobalPipes(
+		new ValidationPipe({
+			whitelist: true,
+			forbidNonWhitelisted: true,
+			forbidUnknownValues: true,
+			transform: true,
+		}),
+	);
 	await app.listen(process.env.PORT ?? 3001);
 }
 void bootstrap();

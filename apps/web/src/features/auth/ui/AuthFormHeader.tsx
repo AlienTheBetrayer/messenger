@@ -1,5 +1,7 @@
+import Link from 'next/link';
+
 import {
-	AuthFormVariantsType,
+	type AuthFormVariantsType,
 	AuthFormVariants,
 } from '@/features/auth/lib/variants';
 import {
@@ -9,7 +11,6 @@ import {
 	CardAction,
 	Button,
 } from '@/shared/ui';
-import Link from 'next/link';
 
 type Props = {
 	type: AuthFormVariantsType;

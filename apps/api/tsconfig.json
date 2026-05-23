@@ -1,8 +1,6 @@
 {
 	"compilerOptions": {
 		"module": "nodenext",
-		"moduleResolution": "nodenext",
-		"resolvePackageJsonExports": true,
 		"esModuleInterop": true,
 		"isolatedModules": true,
 		"declaration": true,
@@ -23,5 +21,11 @@
 		"noFallthroughCasesInSwitch": true
 	},
 	"include": ["src"],
-	"exclude": ["dist", "node_modules"]
+	"exclude": ["dist", "node_modules"],
+
+	"globals": {
+		"ts-jest": {
+			"tsconfig": "./test/tsconfig.json"
+		}
+	}
 }

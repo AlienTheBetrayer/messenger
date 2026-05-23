@@ -14,9 +14,9 @@ export const rippleEnable = <T extends HTMLElement>(
 	ripple.classList.add('ripple-element');
 
 	const size = Math.max(rect.width, rect.height) * 2.5;
-	ripple.style.width = ripple.style.height = `${size}px`;
-	ripple.style.left = `${e.clientX - rect.left}px`;
-	ripple.style.top = `${e.clientY - rect.top}px`;
+	ripple.style.width = ripple.style.height = `${String(size)}px`;
+	ripple.style.left = `${String(e.clientX - rect.left)}px`;
+	ripple.style.top = `${String(e.clientY - rect.top)}px`;
 	const textColor = window.getComputedStyle(el).getPropertyValue('color');
 	ripple.style.background = `color-mix(in srgb, ${textColor} 15%, transparent)`;
 
@@ -43,7 +43,9 @@ export const rippleEnable = <T extends HTMLElement>(
 			fill: 'forwards',
 		});
 
-		fade.onfinish = () => ripple.remove();
+		fade.onfinish = () => {
+			ripple.remove();
+		};
 
 		// cleaning up listeners
 		window.removeEventListener('pointerup', handle);
