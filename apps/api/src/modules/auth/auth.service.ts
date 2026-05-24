@@ -1,3 +1,4 @@
+import { AuthSchema } from '@gravity/shared';
 import { Injectable } from '@nestjs/common';
 
 import { PrismaService } from '../prisma/prisma.service.js';
@@ -6,11 +7,14 @@ import { PrismaService } from '../prisma/prisma.service.js';
 export class AuthService {
 	constructor(private readonly prisma: PrismaService) {}
 
-	authRegister(email: string, password: string) {
+	authRegister({ email, password }: AuthSchema) {
 		this.prisma.users
-			.create({ data: { email, password }, select: { id: true } })
+			.create({
+				data: { email, password },
+				select: { id: true },
+			})
 			.then((res) => {
-				console.warn(res.id);
+				console.warn(res);
 			})
 			.catch((err: unknown) => {
 				console.error(err);

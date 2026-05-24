@@ -1,14 +1,22 @@
 {
 	"name": "@gravity/shared",
-	"version": "0.0.0",
-	"private": true,
+	"version": "1.0.0",
+	"type": "module",
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
-	"scripts": {
-		"build": "tsc --project tsconfig.json",
-		"dev": "tsc --project tsconfig.json --watch"
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js",
+			"require": "./dist/index.js",
+			"default": "./dist/index.js"
+		}
 	},
-	"devDependencies": {
-		"typescript": "^5"
+	"scripts": {
+		"build": "tsc",
+		"dev": "tsc --watch"
+	},
+	"dependencies": {
+		"zod": "^4.4.3"
 	}
 }

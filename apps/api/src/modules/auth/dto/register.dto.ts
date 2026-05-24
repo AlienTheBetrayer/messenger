@@ -1,10 +1,4 @@
-import { IsEmail, IsString, MinLength } from 'class-validator';
+import { authSchema } from '@gravity/shared';
+import { createZodDto } from 'nestjs-zod';
 
-export class RegisterDto {
-	@IsEmail({}, { message: 'Email must be a valid address.' })
-	public email!: string;
-
-	@IsString({ message: 'Password must be at least 8 characters.' })
-	@MinLength(8)
-	public password!: string;
-}
+export class RegisterDto extends createZodDto(authSchema) {}

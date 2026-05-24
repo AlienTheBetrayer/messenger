@@ -1,12 +1,12 @@
 import { FormProvider } from 'react-hook-form';
 
-import type { AuthFormData } from '@/features/auth/lib/zod';
+import type { AuthSchema } from '@gravity/shared';
 
 import { useAuthForm } from '@/features/auth/hooks/useAuthForm';
 
 type Props = {
 	children: React.ReactNode;
-	onSubmit: (data: AuthFormData) => void;
+	onSubmit: (data: AuthSchema) => void;
 };
 
 export const AuthFormProvider = ({ children, onSubmit }: Props) => {
@@ -17,9 +17,10 @@ export const AuthFormProvider = ({ children, onSubmit }: Props) => {
 	return (
 		<FormProvider {...form}>
 			<form
-				id="auth-form"
+				noValidate
+				id='auth-form'
 				onSubmit={form.handleSubmit(onSubmit)}
-				className="flex flex-col gap-5"
+				className='flex flex-col gap-5'
 			>
 				{children}
 			</form>

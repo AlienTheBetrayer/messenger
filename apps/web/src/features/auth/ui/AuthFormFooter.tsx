@@ -17,13 +17,13 @@ export const AuthFormFooter = ({ type }: Props) => {
 
 	// jsx
 	return (
-		<CardFooter className="flex-col gap-2">
-			<Field orientation="vertical">
-				<Button type="submit" className="w-full" form="auth-form">
+		<CardFooter className='flex-col gap-2'>
+			<Field orientation='vertical'>
+				<Button type='submit' className='w-full' form='auth-form'>
 					{variant.buttonText}
 				</Button>
-				<Button type="button" variant="secondary" className="w-full">
-					<Image alt="" src="/google.svg" width={14} height={14} />
+				<Button type='button' variant='secondary' className='w-full'>
+					<Image alt='' src='/google.svg' width={14} height={14} />
 					{variant.buttonText} with Google
 				</Button>
 			</Field>

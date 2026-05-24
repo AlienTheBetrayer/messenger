@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 
 type Props = {
 	children: React.ReactNode;
@@ -6,6 +6,6 @@ type Props = {
 
 export default function AuthLayout({ children }: Props) {
 	return (
-		<div className="flex items-center justify-center h-screen">{children}</div>
+		<div className='flex items-center justify-center h-screen'>{children}</div>
 	);
 }

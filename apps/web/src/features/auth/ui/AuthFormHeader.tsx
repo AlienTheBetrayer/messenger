@@ -26,7 +26,7 @@ export const AuthFormHeader = ({ type }: Props) => {
 			<CardTitle>{variant.title}</CardTitle>
 			<CardDescription>{variant.description}</CardDescription>
 			<CardAction>
-				<Button variant="link" asChild>
+				<Button variant='link' asChild>
 					<Link href={variant.href}>{variant.linkText}</Link>
 				</Button>
 			</CardAction>
