@@ -1,7 +1,10 @@
 import { authSchema, type AuthSchema } from '@gravity/shared';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMemo } from 'react';
+import axios from 'axios';
+import { useCallback, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
+
+import { transformError } from '@/shared/lib/transformError';
 
 export const useAuthForm = () => {
 	// validated form
@@ -13,8 +16,19 @@ export const useAuthForm = () => {
 		},
 	});
 
+	// subbmitting fn
+	const onSubmit = useCallback(async (data: AuthSchema) => {
+		try {
+			await axios.post('/api/auth/register', data);
+		} catch (e: unknown) {
+			// transformed error message
+			const message = transformError(e);
+
+			// updating form's ui
+			form.setError('email', { message });
+		}
+	}, []);
+
 	// return
-	return useMemo(() => {
-		return form;
-	}, [form]);
+	return useMemo(() => ({ form, onSubmit }), [form, onSubmit]);
 };

@@ -1,17 +1,14 @@
 import { FormProvider } from 'react-hook-form';
 
-import type { AuthSchema } from '@gravity/shared';
-
 import { useAuthForm } from '@/features/auth/hooks/useAuthForm';
 
 type Props = {
 	children: React.ReactNode;
-	onSubmit: (data: AuthSchema) => void;
 };
 
-export const AuthFormProvider = ({ children, onSubmit }: Props) => {
+export const AuthFormProvider = ({ children }: Props) => {
 	// form
-	const form = useAuthForm();
+	const { form, onSubmit } = useAuthForm();
 
 	// jsx
 	return (

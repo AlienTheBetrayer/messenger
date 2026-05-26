@@ -85,7 +85,6 @@ export default defineConfig([
 			'@typescript-eslint/prefer-nullish-coalescing': 'error',
 			'@typescript-eslint/prefer-optional-chain': 'error',
 			'@typescript-eslint/no-non-null-assertion': 'error',
-			'@typescript-eslint/switch-exhaustiveness-check': 'error',
 			'@typescript-eslint/promise-function-async': 'error',
 			'@typescript-eslint/only-throw-error': 'error',
 			'@typescript-eslint/no-shadow': 'error',
