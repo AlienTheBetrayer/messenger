@@ -17,3 +17,21 @@ model users {
   edited_at  DateTime? @db.Timestamptz(6)
   created_at DateTime  @default(now()) @db.Timestamptz(6)
 }
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model verification_codes {
+  id         String                 @id(map: "confirmation-codes_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email      String
+  code       String
+  expiry_at  DateTime               @db.Timestamptz(6)
+  created_at DateTime               @default(now()) @db.Timestamptz(6)
+  type       verification_code_type
+}
+
+/// This enum is commented in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+enum verification_code_type {
+  login
+  signup
+  forgot_password
+  forgot_email
+}

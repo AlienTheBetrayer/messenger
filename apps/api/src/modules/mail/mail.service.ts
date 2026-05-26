@@ -15,15 +15,15 @@ export class MailService {
 		});
 	}
 
-	async send(to: string) {
-		return this.transporter.sendMail({
+  /**
+   * sends an email from the official outwave gmail
+   * @param config email config
+   * @returns sent message info
+   */
+	async send(config: { to: string; html: string; subject: string }) {
+		return await this.transporter.sendMail({
 			from: 'Outwave <outwave.team@gmail.com>',
-			to,
-			subject: 'W',
-			html: `
-        <h1>W<h1>
-        <p>This shit works!!!</p>
-      `,
+			...config,
 		});
 	}
 }

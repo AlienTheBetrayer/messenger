@@ -19,7 +19,7 @@ export const useAuthForm = () => {
 	// subbmitting fn
 	const onSubmit = useCallback(async (data: AuthSchema) => {
 		try {
-			await axios.post('/api/auth/register', data);
+			await axios.post('/api/auth/signup', data);
 		} catch (e: unknown) {
 			// transformed error message
 			const message = transformError(e);
