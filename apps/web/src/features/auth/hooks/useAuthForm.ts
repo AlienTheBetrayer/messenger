@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useCallback, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { transformError } from '@/shared/lib/transformError';
+import { transformError } from '@/shared';
 
 export const useAuthForm = () => {
 	// validated form

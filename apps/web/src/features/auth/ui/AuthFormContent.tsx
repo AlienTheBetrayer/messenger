@@ -5,8 +5,15 @@ import { Controller, useFormContext } from 'react-hook-form';
 
 import type { AuthSchema } from '@gravity/shared';
 
-import { Button, CardContent, Input } from '@/shared/ui';
-import { Field, FieldError, FieldGroup, FieldLabel } from '@/shared/ui/field';
+import {
+	CardContent,
+	FieldGroup,
+	Field,
+	FieldError,
+	FieldLabel,
+	Input,
+	Button,
+} from '@/shared';
 
 export const AuthFormContent = () => {
 	// states

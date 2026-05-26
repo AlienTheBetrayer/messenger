@@ -10,7 +10,7 @@ import {
 	CardDescription,
 	CardAction,
 	Button,
-} from '@/shared/ui';
+} from '@/shared';
 
 type Props = {
 	type: AuthFormVariantsType;

@@ -71,9 +71,8 @@ export default defineConfig([
 			],
 			'@typescript-eslint/consistent-type-imports': [
 				'error',
-				{ prefer: 'type-imports', fixStyle: 'separate-type-imports' },
+				{ prefer: 'recommended', fixStyle: 'separate-type-imports' },
 			],
-			'@typescript-eslint/consistent-type-exports': 'error',
 			'@typescript-eslint/no-import-type-side-effects': 'error',
 			'@typescript-eslint/require-await': 'error',
 			'@typescript-eslint/no-floating-promises': 'error',

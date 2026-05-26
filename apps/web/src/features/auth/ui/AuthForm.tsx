@@ -6,7 +6,7 @@ import { AuthFormProvider } from '@/features/auth/providers/AuthFormProvider';
 import { AuthFormContent } from '@/features/auth/ui/AuthFormContent';
 import { AuthFormFooter } from '@/features/auth/ui/AuthFormFooter';
 import { AuthFormHeader } from '@/features/auth/ui/AuthFormHeader';
-import { Card } from '@/shared/ui';
+import { Card } from '@/shared';
 
 type Props = {
 	type: AuthFormVariantsType;

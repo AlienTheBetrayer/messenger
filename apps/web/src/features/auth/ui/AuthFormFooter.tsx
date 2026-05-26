@@ -4,8 +4,7 @@ import {
 	type AuthFormVariantsType,
 	AuthFormVariants,
 } from '@/features/auth/lib/variants';
-import { Button, CardFooter } from '@/shared/ui';
-import { Field } from '@/shared/ui/field';
+import { CardFooter, Button, Field } from '@/shared';
 
 type Props = {
 	type: AuthFormVariantsType;
