@@ -39,7 +39,7 @@ export const AuthOrchestrator = ({ type }: Props) => {
 				}
 			>
 				<Card className="min-h-0!">
-					<VerifyForm />
+          <VerifyForm type={type} />
 				</Card>
 			</div>
 		</div>

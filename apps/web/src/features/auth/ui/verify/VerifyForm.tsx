@@ -1,3 +1,4 @@
+import { AuthFormVariantsType } from "@/features/auth/lib/variants";
 import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
 import { VerifyFormContent } from "@/features/auth/ui/verify/VerifyFormContent";
 import { VerifyFormFooter } from "@/features/auth/ui/verify/VerifyFormFooter";
@@ -6,7 +7,11 @@ import { VerifySchema } from "@gravity/shared";
 import axios from "axios";
 import { useCallback } from "react";
 
-export const VerifyForm = () => {
+type Props = {
+  type: AuthFormVariantsType;
+}
+
+export const VerifyForm = ({ type }: Props) => {
 	const { verifyForm, authForm } = useAuthFormProvider();
 
 	// submit fn
@@ -40,7 +45,7 @@ export const VerifyForm = () => {
 			onSubmit={verifyForm.handleSubmit(onSubmit)}
 			className="flex flex-col gap-5"
 		>
-			<VerifyFormHeader />
+      <VerifyFormHeader type={type} />
 			<VerifyFormContent />
 			<VerifyFormFooter />
 		</form>

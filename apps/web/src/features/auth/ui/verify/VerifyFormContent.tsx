@@ -1,5 +1,13 @@
 import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
-import { CardContent, Field, FieldError, FieldLabel, Input } from "@/shared";
+import {
+	CardContent,
+	Field,
+	FieldDescription,
+	FieldError,
+	FieldLabel,
+	Input,
+} from "@/shared";
+import { CODE_EXPIRY_MS, CODE_LENGTH } from "@gravity/shared";
 import { Controller } from "react-hook-form";
 
 export const VerifyFormContent = () => {
@@ -14,12 +22,15 @@ export const VerifyFormContent = () => {
 				render={({ field, fieldState, formState }) => (
 					<Field data-invalid={fieldState.error}>
 						<FieldLabel htmlFor="code">Code</FieldLabel>
+						<FieldDescription>
+							Expires in {CODE_EXPIRY_MS / (60 * 1000)} min.
+						</FieldDescription>
 						<Input
 							{...field}
 							id="code"
 							type="text"
 							aria-invalid={fieldState.invalid}
-							placeholder="######"
+							placeholder={String().padStart(CODE_LENGTH, "0")}
 						/>
 						{fieldState.error && <FieldError errors={[fieldState.error]} />}
 					</Field>

@@ -1,4 +1,8 @@
 import {
+	AuthFormVariants,
+	AuthFormVariantsType,
+} from "@/features/auth/lib/variants";
+import {
 	Button,
 	CardAction,
 	CardDescription,
@@ -8,14 +12,21 @@ import {
 } from "@/shared";
 import { X } from "lucide-react";
 
-export const VerifyFormHeader = () => {
+type Props = {
+	type: AuthFormVariantsType;
+};
+
+export const VerifyFormHeader = ({ type }: Props) => {
 	// states
 	const [, setStep] = useQueryState("step");
+
+	// ui states
+	const variant = AuthFormVariants[type];
 
 	// jsx
 	return (
 		<CardHeader>
-			<CardTitle>Verify</CardTitle>
+			<CardTitle>Verify {variant.title}</CardTitle>
 			<CardDescription>Enter the code sent to your email.</CardDescription>
 			<CardAction>
 				<Button

@@ -1,11 +1,17 @@
-import { AuthSchema } from "@gravity/shared";
+import {
+	AuthSchema,
+	CODE_EXPIRY_MS,
+	CODE_LENGTH,
+	randomString,
+	VerifySchema,
+} from "@gravity/shared";
 import { Injectable } from "@nestjs/common";
 
-import { MailService } from "../mail/mail.service.js";
-import { PrismaService } from "../prisma/prisma.service.js";
+import bcrypt from "bcryptjs";
 import { createException } from "../../common/index.js";
 import { generateVerificationEmail } from "../mail/lib/constants.js";
-import bcrypt from "bcryptjs";
+import { MailService } from "../mail/mail.service.js";
+import { PrismaService } from "../prisma/prisma.service.js";
 
 /**
  * microtasks:
@@ -49,8 +55,8 @@ export class AuthService {
 		private readonly mailService: MailService,
 	) {}
 
-	async authSignup(body: AuthSchema, verificationCode?: string) {
-		if (verificationCode) {
+	async authSignup(body: AuthSchema, verification?: VerifySchema) {
+		if (verification) {
 			// 1. verifying the code
 			const code = await this.prisma.verification_codes.findFirst({
 				where: {
@@ -61,7 +67,7 @@ export class AuthService {
 				},
 			});
 
-			if (!code || code.code !== verificationCode) {
+			if (!code || code.code !== verification.code) {
 				throw createException("unauthorized", "INVALID_VERIFICATION_CODE");
 			}
 
@@ -94,10 +100,10 @@ export class AuthService {
 			// 2. create a verification code
 			const code = await this.prisma.verification_codes.create({
 				data: {
-					code: `${Math.random().toString().slice(2, 8)}`,
+					code: randomString(CODE_LENGTH, "0123456789"),
 					email: body.email,
 					type: "login",
-					expiry_at: new Date(Date.now() + 30 * 60 * 1000),
+					expiry_at: new Date(Date.now() + CODE_EXPIRY_MS),
 				},
 			});
 

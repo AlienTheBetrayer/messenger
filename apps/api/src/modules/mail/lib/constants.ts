@@ -1,3 +1,5 @@
+import { CODE_EXPIRY_MS } from "@gravity/shared";
+
 /**
  * used for login/signup/forgot confirming emails
  */
@@ -32,7 +34,7 @@ export const generateVerificationEmail = (code: string) => {
               <td align="center" style="padding-bottom:32px;">
                 <p style="margin:0;font-size:15px;line-height:24px;color:#6b7280;">
                   Use the verification code below to continue.
-                  This code will expire in 30 minutes.
+                  This code will expire in ${CODE_EXPIRY_MS / (60 * 1000)} minutes.
                 </p>
               </td>
             </tr>
