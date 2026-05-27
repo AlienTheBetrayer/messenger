@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class RootService {
 	getApiHealth() {
 		return {
-			service: 'Gravity API',
-			status: 'ok',
+			service: "Gravity API",
+			status: "ok",
 		};
 	}
 }

@@ -33,7 +33,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-	:root:not([data-theme='light']):not(.light) {
+	:root:not([data-theme="light"]):not(.light) {
 		--background: var(--d-background);
 		--foreground: var(--d-foreground);
 		--card: var(--d-card);
@@ -70,7 +70,7 @@
 	}
 }
 
-:root[data-theme='dark'],
+:root[data-theme="dark"],
 .dark {
 	--background: var(--d-background);
 	--foreground: var(--d-foreground);

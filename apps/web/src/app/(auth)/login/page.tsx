@@ -1,5 +1,5 @@
-import { AuthForm } from '@/features/auth';
+import { AuthOrchestrator } from "@/features";
 
 export default function LoginPage() {
-	return <AuthForm type='login' />;
+	return <AuthOrchestrator type="login" />;
 }

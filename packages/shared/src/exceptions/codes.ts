@@ -19,10 +19,10 @@ export type HttpStatusCode =
  * exception codes (array)
  */
 export const ExceptionCodes = [
-	'USER_ALREADY_EXISTS',
-	'USER_NOT_FOUND',
-  'INVALID_CREDENTIALS',
-  'INVALID_VERIFICATION_CODE'
+	"USER_ALREADY_EXISTS",
+	"USER_NOT_FOUND",
+	"INVALID_CREDENTIALS",
+	"INVALID_VERIFICATION_CODE",
 ] as const;
 
 /**

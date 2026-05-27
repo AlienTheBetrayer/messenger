@@ -1,4 +1,7 @@
-import type React from 'react';
+"use client";
+
+import { AuthFormProvider } from "@/features";
+import type React from "react";
 
 type Props = {
 	children: React.ReactNode;
@@ -6,6 +9,10 @@ type Props = {
 
 export default function AuthLayout({ children }: Props) {
 	return (
-		<div className='flex items-center justify-center h-screen'>{children}</div>
+		<AuthFormProvider>
+			<div className="flex items-center justify-center h-screen">
+				{children}
+			</div>
+		</AuthFormProvider>
 	);
 }

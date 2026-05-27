@@ -1,6 +1,23 @@
-import { FormProvider } from 'react-hook-form';
+"use client";
 
-import { useAuthForm } from '@/features/auth/hooks/useAuthForm';
+import { UseFormReturn } from "react-hook-form";
+
+import { useAuthForms } from "@/features/auth/hooks/useAuthForms";
+import { AuthSchema } from "@gravity/shared";
+import { createContext, useContext } from "react";
+
+// 1. create a provider context
+// 2. wrap two forms' datas into it
+// 3. make the second form popup
+// 4. make the second form consume data from the first one
+// 5. confirm
+
+type AuthFormData = {
+	authForm: UseFormReturn<AuthSchema>;
+	verifyForm: UseFormReturn<AuthSchema>;
+};
+
+export const AuthFormContext = createContext<AuthFormData | null>(null);
 
 type Props = {
 	children: React.ReactNode;
@@ -8,19 +25,23 @@ type Props = {
 
 export const AuthFormProvider = ({ children }: Props) => {
 	// form
-	const { form, onSubmit } = useAuthForm();
+	const { authForm, verifyForm } = useAuthForms();
 
-	// jsx
 	return (
-		<FormProvider {...form}>
-			<form
-				noValidate
-				id='auth-form'
-				onSubmit={form.handleSubmit(onSubmit)}
-				className='flex flex-col gap-5'
-			>
-				{children}
-			</form>
-		</FormProvider>
+		<AuthFormContext.Provider value={{ authForm, verifyForm }}>
+			{children}
+		</AuthFormContext.Provider>
 	);
+};
+
+export const useAuthFormProvider = () => {
+	const ctx = useContext(AuthFormContext);
+
+	if (!ctx) {
+		throw new Error(
+			"useFormProvider must be used within a <AuthFormProvider />",
+		);
+	}
+
+	return ctx;
 };

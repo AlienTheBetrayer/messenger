@@ -1,5 +1,5 @@
-import { baseApi } from '@/shared/model/store.reducer';
-import { configureStore } from '@reduxjs/toolkit';
+import { baseApi } from "@/shared/model/store.reducer";
+import { configureStore } from "@reduxjs/toolkit";
 
 export const AppStore = configureStore({
 	reducer: {

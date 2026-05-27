@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 /**
  * performance libraries
@@ -19,10 +19,10 @@ export const useDisabledScroll = () => {
 
 		if (!lockCount) {
 			originalScrollY = window.scrollY;
-			document.body.style.position = 'fixed';
+			document.body.style.position = "fixed";
 			document.body.style.top = `-${originalScrollY}px`;
-			document.body.style.width = '100%';
-			document.body.style.overflowY = 'scroll';
+			document.body.style.width = "100%";
+			document.body.style.overflowY = "scroll";
 		}
 
 		lockCount++;
@@ -31,10 +31,10 @@ export const useDisabledScroll = () => {
 			lockCount--;
 
 			if (!lockCount) {
-				document.body.style.position = '';
-				document.body.style.top = '';
-				document.body.style.width = '';
-				document.body.style.overflowY = '';
+				document.body.style.position = "";
+				document.body.style.top = "";
+				document.body.style.width = "";
+				document.body.style.overflowY = "";
 				window.scrollTo(0, originalScrollY);
 				originalScrollY = 0;
 			}

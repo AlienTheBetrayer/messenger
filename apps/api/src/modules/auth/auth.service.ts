@@ -1,21 +1,21 @@
-import { AuthSchema } from '@gravity/shared';
-import { Injectable } from '@nestjs/common';
+import { AuthSchema } from "@gravity/shared";
+import { Injectable } from "@nestjs/common";
 
-import { MailService } from '../mail/mail.service.js';
-import { PrismaService } from '../prisma/prisma.service.js';
-import { createException } from '../../common/index.js';
-import { generateVerificationEmail } from '../mail/lib/constants.js';
-import bcrypt from 'bcryptjs';
+import { MailService } from "../mail/mail.service.js";
+import { PrismaService } from "../prisma/prisma.service.js";
+import { createException } from "../../common/index.js";
+import { generateVerificationEmail } from "../mail/lib/constants.js";
+import bcrypt from "bcryptjs";
 
 /**
- * microtasks: ✅
+ * microtasks:
  *    register:
- * 1. check if user already exists
- * 2. generate a code with 60m. expiry (+db)
- * 3. send a confirmation email with that code
- * 4. upon correct code:
- * 5. hash password
- * 6. create a user
+ * 1. ✅ check if user already exists
+ * 2. ✅ generate a code with 60m. expiry (+db)
+ * 3. ✅ send a confirmation email with that code
+ * 4. ✅ upon correct code:
+ * 5. ✅ hash password
+ * 6. ✅ create a user
  *
  *
  *    login:
@@ -62,33 +62,33 @@ export class AuthService {
 			});
 
 			if (!code || code.code !== verificationCode) {
-				throw createException('unauthorized', 'INVALID_VERIFICATION_CODE');
+				throw createException("unauthorized", "INVALID_VERIFICATION_CODE");
 			}
 
-      // 2. hashing password
+			// 2. hashing password
 			const salt = await bcrypt.genSalt(10);
 			const hash = await bcrypt.hash(body.password, salt);
 
-      // 3. creating the user 
+			// 3. creating the user
 			const user = await this.prisma.users.create({
 				data: {
 					email: body.email,
 					password: hash,
 				},
-      });
-      
-      // 4. cleaning up the codes
-      this.prisma.verification_codes.deleteMany({
-        where: {
-          email: body.email
-        }
-      });
+			});
+
+			// 4. cleaning up the codes
+			this.prisma.verification_codes.deleteMany({
+				where: {
+					email: body.email,
+				},
+			});
 
 			return user;
 		} else {
 			// 1. already existing user check
 			if (await this.prisma.users.count({ where: { email: body.email } })) {
-				throw createException('conflict', 'USER_ALREADY_EXISTS');
+				throw createException("conflict", "USER_ALREADY_EXISTS");
 			}
 
 			// 2. create a verification code
@@ -96,7 +96,7 @@ export class AuthService {
 				data: {
 					code: `${Math.random().toString().slice(2, 7)}`,
 					email: body.email,
-					type: 'login',
+					type: "login",
 					expiry_at: new Date(Date.now() + 30 * 60 * 1000),
 				},
 			});

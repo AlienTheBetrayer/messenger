@@ -1,17 +1,17 @@
-import Link from 'next/link';
+import Link from "next/link";
 
 import {
-  type AuthFormVariantsType,
-  AuthFormVariants,
-} from '@/features/auth/lib/variants';
+	type AuthFormVariantsType,
+	AuthFormVariants,
+} from "@/features/auth/lib/variants";
 import {
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardAction,
-  Button,
-  useQueryState,
-} from '@/shared';
+	CardHeader,
+	CardTitle,
+	CardDescription,
+	CardAction,
+	Button,
+	useQueryState,
+} from "@/shared";
 
 type Props = {
 	type: AuthFormVariantsType;
@@ -23,7 +23,7 @@ export const AuthFormHeader = ({ type }: Props) => {
 
 	//// TODO: DELETE
 	// states
-	const [step, setStep] = useQueryState('step');
+	const [step, setStep] = useQueryState("step");
 
 	// jsx
 	return (
@@ -31,10 +31,16 @@ export const AuthFormHeader = ({ type }: Props) => {
 			<CardTitle>{variant.title}</CardTitle>
 			<CardDescription>{variant.description}</CardDescription>
 			<CardAction>
-				<Button onClick={() => setStep(step === 'verify' ? null : 'verify')}>
+				<Button
+					type="button"
+					onClick={() => setStep(step === "verify" ? null : "verify")}
+				>
 					Step
 				</Button>
-				<Button variant='link' asChild>
+				<Button
+					variant="link"
+					asChild
+				>
 					<Link href={variant.href}>{variant.linkText}</Link>
 				</Button>
 			</CardAction>

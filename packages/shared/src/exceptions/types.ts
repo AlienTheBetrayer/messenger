@@ -1,4 +1,4 @@
-import type { ExceptionCode, HttpStatusCode } from './codes.js';
+import type { ExceptionCode, HttpStatusCode } from "./codes.js";
 
 /**
  * api error response type

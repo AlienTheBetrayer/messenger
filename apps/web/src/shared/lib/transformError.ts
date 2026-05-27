@@ -1,15 +1,15 @@
-import axios from 'axios';
+import axios from "axios";
 
-import type { ApiError } from '@gravity/shared';
+import type { ApiError } from "@gravity/shared";
 
 /**
  * all available transformations
  */
 const transformations = {
-	USER_ALREADY_EXISTS: 'User already exists.',
-	USER_NOT_FOUND: 'User not found.',
-	INVALID_CREDENTIALS: 'Invalid credentials.',
-} as const satisfies Record<ApiError['code'], string>;
+	USER_ALREADY_EXISTS: "User already exists.",
+	USER_NOT_FOUND: "User not found.",
+	INVALID_CREDENTIALS: "Invalid credentials.",
+} as const satisfies Record<ApiError["code"], string>;
 
 /**
  * transforms the api error into frontend-friendly data
@@ -17,7 +17,7 @@ const transformations = {
  */
 export const transformError = (error: unknown) => {
 	// default error
-	let message = 'Unknown error.';
+	let message = "Unknown error.";
 
 	// transforming
 	if (axios.isAxiosError<ApiError>(error)) {

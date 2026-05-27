@@ -6,7 +6,7 @@
 
 	* {
 		@apply border-border outline-ring/50;
-		color-scheme: 'dark' !important;
+		color-scheme: "dark" !important;
 	}
 	body {
 		@apply bg-background text-foreground;
@@ -19,12 +19,12 @@
 		padding: 0;
 		margin: 0;
 		font-family:
-			'Inter',
+			"Inter",
 			system-ui,
 			-apple-system,
-			'Segoe UI',
+			"Segoe UI",
 			Roboto,
-			'Helvetica Neue',
+			"Helvetica Neue",
 			Arial,
 			sans-serif;
 		font-weight: 450;
@@ -42,7 +42,7 @@
 	input,
 	button,
 	ul,
-	div[role='list'] {
+	div[role="list"] {
 		color-scheme: var(--scheme);
 		scrollbar-width: thin;
 	}

@@ -1,5 +1,5 @@
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useCallback } from 'react';
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useCallback } from "react";
 
 /**
  * reactively changes url's state
@@ -12,10 +12,10 @@ export function useQueryState(key: string) {
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
 
-  // derived states
-  const value = searchParams.get(key);
+	// derived states
+	const value = searchParams.get(key);
 
-  // functions
+	// functions
 	const setValue = useCallback((newValue: string | null) => {
 		const params = new URLSearchParams(searchParams.toString());
 
