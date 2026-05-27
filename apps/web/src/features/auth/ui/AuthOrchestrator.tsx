@@ -11,18 +11,32 @@ type Props = {
 
 export const AuthOrchestrator = ({ type }: Props) => {
 	// states
-	const [step, setStep] = useQueryState("step");
+	const [step] = useQueryState("step");
 
 	// jsx
 	return (
 		<div className="flex flex-col gap-2 w-full max-w-sm *:w-full">
-			<Card>
+			<Card className="z-1">
 				<AuthForm type={type} />
 			</Card>
 
 			<div
 				className="grid w-full transition-all duration-300"
-				style={{ gridTemplateRows: step === "verify" ? "1fr" : "0fr" }}
+				style={
+					step === "verify"
+						? {
+								gridTemplateRows: "1fr",
+								scale: 1,
+								opacity: 1,
+								translate: `0px 0px`,
+							}
+						: {
+								gridTemplateRows: "0fr",
+								scale: 0.8,
+								opacity: 0,
+								translate: `0px -100px`,
+							}
+				}
 			>
 				<Card className="min-h-0!">
 					<VerifyForm />

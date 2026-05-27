@@ -16,7 +16,7 @@ export const VerifyFormHeader = () => {
 	return (
 		<CardHeader>
 			<CardTitle>Verify</CardTitle>
-			<CardDescription>Enter the code sent to your email</CardDescription>
+			<CardDescription>Enter the code sent to your email.</CardDescription>
 			<CardAction>
 				<Button
 					className="w-6! h-6! p-0!"

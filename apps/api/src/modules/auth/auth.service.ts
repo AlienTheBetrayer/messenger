@@ -94,7 +94,7 @@ export class AuthService {
 			// 2. create a verification code
 			const code = await this.prisma.verification_codes.create({
 				data: {
-					code: `${Math.random().toString().slice(2, 7)}`,
+					code: `${Math.random().toString().slice(2, 8)}`,
 					email: body.email,
 					type: "login",
 					expiry_at: new Date(Date.now() + 30 * 60 * 1000),
