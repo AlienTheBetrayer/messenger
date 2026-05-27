@@ -1,8 +1,23 @@
 import { Module } from "@nestjs/common";
-import { RootModule, PrismaModule, AuthModule, MailModule } from "./modules";
+import { AuthModule, MailModule, PrismaModule, RootModule } from "./modules";
+import { VerifyModule } from "./modules/verify/verify.module";
 
+/**
+ * all available modules
+ */
+const imports = [
+	RootModule,
+	PrismaModule,
+	AuthModule,
+	MailModule,
+	VerifyModule,
+];
+
+/**
+ * app module
+ */
 @Module({
-	imports: [RootModule, PrismaModule, AuthModule, MailModule],
+	imports,
 	providers: [],
 })
 export class AppModule {}

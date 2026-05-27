@@ -1,7 +1,6 @@
 import { Button, CardFooter } from "@/shared";
 
 export const ForgotPasswordFooter = () => {
-	// jsx
 	return (
 		<CardFooter className="flex flex-col gap-2">
 			<Button

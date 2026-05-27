@@ -8,7 +8,6 @@ import {
 import Link from "next/link";
 
 export const ForgotPasswordHeader = () => {
-	// jsx
 	return (
 		<CardHeader>
 			<CardTitle>Password recovery</CardTitle>

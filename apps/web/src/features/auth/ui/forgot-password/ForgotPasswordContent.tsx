@@ -11,6 +11,7 @@ import { CODE_EXPIRY_MS, CODE_LENGTH } from "@gravity/shared";
 import { Controller } from "react-hook-form";
 
 export const ForgotPasswordContent = () => {
+  // states
   const { forgotPasswordForm } = useAuthFormProvider();
 
   // jsx

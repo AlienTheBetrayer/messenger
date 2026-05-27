@@ -11,8 +11,8 @@ export const Verify = () => {
 	// states
 	const { verifyForm, authForm, forgotPasswordForm } = useAuthFormProvider();
 	const [verify] = useQueryState("verify");
-  console.log(verify);
-	// submit fn
+
+  // submit fn
 	const onSubmit = useCallback(
 		async (data: VerifySchema) => {
 			switch (verify) {

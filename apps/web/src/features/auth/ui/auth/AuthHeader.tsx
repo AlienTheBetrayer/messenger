@@ -17,7 +17,7 @@ type Props = {
 };
 
 export const AuthHeader = ({ type }: Props) => {
-	// jsx variants
+	// ui states
 	const variant = AuthFormVariants[type];
 
 	// jsx

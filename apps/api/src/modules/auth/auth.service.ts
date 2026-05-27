@@ -1,17 +1,14 @@
 import {
 	AuthSchema,
-	CODE_EXPIRY_MS,
-	CODE_LENGTH,
-	randomString,
+	ForgotPasswordSchema,
 	VerifySchema,
 } from "@gravity/shared";
 import { Injectable } from "@nestjs/common";
 
 import bcrypt from "bcryptjs";
 import { createException } from "../../common/index.js";
-import { generateVerificationEmail } from "../mail/lib/constants.js";
-import { MailService } from "../mail/mail.service.js";
 import { PrismaService } from "../prisma/prisma.service.js";
+import { VerifyService } from "../verify/verify.service.js";
 
 /**
  * microtasks:
@@ -51,32 +48,25 @@ import { PrismaService } from "../prisma/prisma.service.js";
 @Injectable()
 export class AuthService {
 	constructor(
-		private readonly prisma: PrismaService,
-		private readonly mailService: MailService,
+		private readonly prismaService: PrismaService,
+		private readonly verifyService: VerifyService,
 	) {}
 
 	async authSignup(body: AuthSchema, verification?: VerifySchema) {
 		if (verification) {
 			// 1. verifying the code
-			const code = await this.prisma.verification_codes.findFirst({
-				where: {
-					email: body.email,
-					expiry_at: {
-						gte: new Date(),
-					},
-				},
+			await this.verifyService.validateCode({
+				email: body.email,
+				type: "signup",
+				code: verification.code,
 			});
-
-			if (!code || code.code !== verification.code) {
-				throw createException("unauthorized", "INVALID_VERIFICATION_CODE");
-			}
 
 			// 2. hashing password
 			const salt = await bcrypt.genSalt(10);
 			const hash = await bcrypt.hash(body.password, salt);
 
 			// 3. creating the user
-			const user = await this.prisma.users.create({
+			const user = await this.prismaService.users.create({
 				data: {
 					email: body.email,
 					password: hash,
@@ -84,37 +74,31 @@ export class AuthService {
 			});
 
 			// 4. cleaning up the codes
-			this.prisma.verification_codes.deleteMany({
-				where: {
-					email: body.email,
-				},
-			});
+			this.verifyService.cleanupCodes({ email: body.email, type: "signup" });
 
 			return user;
 		} else {
 			// 1. already existing user check
-			if (await this.prisma.users.count({ where: { email: body.email } })) {
+			if (
+				await this.prismaService.users.count({ where: { email: body.email } })
+			) {
 				throw createException("conflict", "USER_ALREADY_EXISTS");
 			}
 
-			// 2. create a verification code
-			const code = await this.prisma.verification_codes.create({
-				data: {
-					code: randomString(CODE_LENGTH, "0123456789"),
-					email: body.email,
-					type: "login",
-					expiry_at: new Date(Date.now() + CODE_EXPIRY_MS),
-				},
+			// 2. create a verification code, send it via email
+			return await this.verifyService.issueCode({
+				email: body.email,
+				type: "signup",
 			});
+		}
+	}
 
-			// 3. send it via email
-			await this.mailService.send({
-				to: body.email,
-				html: generateVerificationEmail(code.code),
-				subject: `Verification code`,
-			});
-
-			return code;
+	async authForgotPassword(
+		body: ForgotPasswordSchema,
+		verification?: VerifySchema,
+	) {
+		if (verification) {
+		} else {
 		}
 	}
 

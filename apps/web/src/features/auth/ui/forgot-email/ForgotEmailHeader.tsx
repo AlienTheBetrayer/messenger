@@ -1,15 +1,13 @@
 import {
-  Button,
-  CardAction,
-  CardDescription,
-  CardHeader,
-  CardTitle,
+	Button,
+	CardAction,
+	CardDescription,
+	CardHeader,
+	CardTitle,
 } from "@/shared";
 import Link from "next/link";
 
-
 export const ForgotEmailHeader = () => {
-	// jsx
 	return (
 		<CardHeader>
 			<CardTitle>Email recovery</CardTitle>
