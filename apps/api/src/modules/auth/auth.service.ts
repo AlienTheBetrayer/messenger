@@ -11,38 +11,41 @@ import { PrismaService } from "../prisma/prisma.service.js";
 import { VerifyService } from "../verify/verify.service.js";
 
 /**
- * microtasks:
- *    register:
- * 1. ✅ check if user already exists
- * 2. ✅ generate a code with 60m. expiry (+db)
- * 3. ✅ send a confirmation email with that code
- * 4. ✅ upon correct code:
- * 5. ✅ hash password
- * 6. ✅ create a user
- *
- *
- *    login:
- * 1. validate hash password
- * 2. generate a code with 60m. expiry (+db)
- * 3. send a confirmation email with that code
- * 4. upon correct code enter:
- * 5. create db session
- * 6. issue an access token
- * 7. issue a refresh token
- * 8. attach tokens to http-only cookies
- * 9. return user
- *
- *
- *     request auth guard
- * 1. validate refresh token (db session + presense) = pass / reject
- * 2. attach a special flag if access token is not present (refresh token is present)
- * 3. interceptor sees that flag -> attaches a new A
- *
- *    forgot password?
- * 1. generate a code with 60m. expiry (+db)
- * 2. send a confirmation email with that code
- * 3. upon correct code enter show reset password form
- * 4. reset password
+ * NEW microtasks ✅
+ * 
+ * register:
+ * 1. fix FE validation
+ * 2. ensure it works
+ * 
+ * login:
+ * 1. FE sends a request /api/login
+ * 2. BE sends the code
+ * 3. FE requests /api/login?code=000000
+ * 4. BE validates the user
+ * 5. FE handles response + if succeded: stores user globally + shows animation
+ * 6. BE if succeded: creates a new session
+ * 7. BE issues Access and Refresh(attached to that session) tokens
+ * 
+ * 
+ * forgot password:
+ * 0. FE add password field and change schemas
+ * 1. FE requests /api/forgot-password code
+ * 2. BE sends the code
+ * 3. FE requests /api/forgot-password?code=000000
+ * 4. BE changes the password
+ * 5. FE shows animated login button
+ * 
+ * forgot email:
+ * 0. FE requests /api/forgot-email?email=m@...
+ * 1. BE route retrieves sessions from refresh token
+ * 2. FE shows it (or absense warning)
+ * 3. FE copy buttons
+ * 
+ * request cycle:
+ * 1. FE sends a request
+ * 2. BE guard checks the refresh token and passes if it's present, rejects if not
+ * 3. BE guard attaches a flag if refresh's there but access token is not
+ * 4. BE interceptor attaches a new access token if flag is present
  */
 
 @Injectable()
