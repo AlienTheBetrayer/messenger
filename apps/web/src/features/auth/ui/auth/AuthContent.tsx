@@ -1,5 +1,4 @@
 import { Eye, EyeOff } from "lucide-react";
-import Link from "next/link";
 import { useState } from "react";
 import { Controller } from "react-hook-form";
 
@@ -13,8 +12,9 @@ import {
 	FieldLabel,
 	Input,
 } from "@/shared";
+import Link from "next/link";
 
-export const AuthFormContent = () => {
+export const AuthContent = () => {
 	// states
 	const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
 	const { authForm } = useAuthFormProvider();
@@ -31,7 +31,17 @@ export const AuthFormContent = () => {
 					control={authForm.control}
 					render={({ field, fieldState }) => (
 						<Field data-invalid={fieldState.invalid}>
-							<FieldLabel htmlFor="email">Email</FieldLabel>
+							<div className="flex items-center justify-between w-full">
+								<FieldLabel htmlFor="email">Email</FieldLabel>
+								<Button
+									variant="link"
+									type="button"
+									asChild
+								>
+									<Link href="/forgot-email">Forgot email?</Link>
+								</Button>
+							</div>
+
 							<Input
 								{...field}
 								id="email"
@@ -53,9 +63,10 @@ export const AuthFormContent = () => {
 								<FieldLabel htmlFor="password">Password</FieldLabel>
 								<Button
 									variant="link"
+									type="button"
 									asChild
 								>
-									<Link href="forgot-password">Forgot password?</Link>
+									<Link href="/forgot-password">Forgot password?</Link>
 								</Button>
 							</div>
 
@@ -66,6 +77,7 @@ export const AuthFormContent = () => {
 									type={passwordInputType}
 									aria-invalid={fieldState.invalid}
 								/>
+
 								<Button
 									type="button"
 									variant="ghost"

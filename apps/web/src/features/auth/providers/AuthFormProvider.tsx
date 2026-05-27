@@ -3,12 +3,13 @@
 import { UseFormReturn } from "react-hook-form";
 
 import { useAuthForms } from "@/features/auth/hooks/useAuthForms";
-import { AuthSchema } from "@gravity/shared";
+import { AuthSchema, ForgotPasswordSchema } from "@gravity/shared";
 import { createContext, useContext } from "react";
 
 type AuthFormData = {
 	authForm: UseFormReturn<AuthSchema>;
 	verifyForm: UseFormReturn<AuthSchema>;
+	forgotPasswordForm: UseFormReturn<ForgotPasswordSchema>;
 };
 
 export const AuthFormContext = createContext<AuthFormData | null>(null);
@@ -19,10 +20,10 @@ type Props = {
 
 export const AuthFormProvider = ({ children }: Props) => {
 	// form
-	const { authForm, verifyForm } = useAuthForms();
+	const forms = useAuthForms();
 
 	return (
-		<AuthFormContext.Provider value={{ authForm, verifyForm }}>
+		<AuthFormContext.Provider value={forms}>
 			{children}
 		</AuthFormContext.Provider>
 	);

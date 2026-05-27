@@ -5,19 +5,18 @@ import {
 	AuthFormVariants,
 } from "@/features/auth/lib/variants";
 import {
+	Button,
+	CardAction,
+	CardDescription,
 	CardHeader,
 	CardTitle,
-	CardDescription,
-	CardAction,
-	Button,
-	useQueryState,
 } from "@/shared";
 
 type Props = {
 	type: AuthFormVariantsType;
 };
 
-export const AuthFormHeader = ({ type }: Props) => {
+export const AuthHeader = ({ type }: Props) => {
 	// jsx variants
 	const variant = AuthFormVariants[type];
 

@@ -10,9 +10,9 @@ type Props = {
 	type: AuthFormVariantsType;
 };
 
-export const AuthFormFooter = ({ type }: Props) => {
+export const AuthFooter = ({ type }: Props) => {
 	// states
-	const [step] = useQueryState("step");
+	const [verify] = useQueryState("verify");
 
 	// ui states
 	const variant = AuthFormVariants[type];
@@ -24,16 +24,16 @@ export const AuthFormFooter = ({ type }: Props) => {
 				type="submit"
 				className="w-full"
 				form="auth-form"
-				disabled={step === "verify"}
+				disabled={!!verify}
 			>
-				{variant.buttonText}
+				{variant.title}
 			</Button>
 
 			<Button
 				type="button"
 				variant="secondary"
 				className="w-full"
-				disabled={step === "verify"}
+				disabled={!!verify}
 			>
 				<Image
 					alt=""
@@ -41,7 +41,7 @@ export const AuthFormFooter = ({ type }: Props) => {
 					width={14}
 					height={14}
 				/>
-				{variant.buttonText} with Google
+				{variant.title} with Google
 			</Button>
 		</CardFooter>
 	);

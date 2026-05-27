@@ -1,14 +1,15 @@
 import { Button, CardFooter } from "@/shared";
 
-export const VerifyFormFooter = () => {
+export const ForgotPasswordFooter = () => {
+	// jsx
 	return (
 		<CardFooter className="flex flex-col gap-2">
 			<Button
-				type="submit"
-				variant="secondary"
+        type="submit"
+        form="forgot-password-form"
 				className="w-full"
 			>
-				Verify
+				Send an email
 			</Button>
 		</CardFooter>
 	);

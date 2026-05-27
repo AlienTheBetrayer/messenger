@@ -1,11 +1,11 @@
 import {
-	Body,
-	Controller,
-	Delete,
-	Get,
-	Post,
-	Query,
-	UseGuards,
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Post,
+  Query,
+  UseGuards,
 } from "@nestjs/common";
 
 import { AuthGuard } from "./auth.guard";

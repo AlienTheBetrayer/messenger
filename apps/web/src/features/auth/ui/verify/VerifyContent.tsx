@@ -10,7 +10,7 @@ import {
 import { CODE_EXPIRY_MS, CODE_LENGTH } from "@gravity/shared";
 import { Controller } from "react-hook-form";
 
-export const VerifyFormContent = () => {
+export const VerifyContent = () => {
 	const { verifyForm } = useAuthFormProvider();
 
 	// jsx
@@ -19,7 +19,7 @@ export const VerifyFormContent = () => {
 			<Controller
 				name="code"
 				control={verifyForm.control}
-				render={({ field, fieldState, formState }) => (
+				render={({ field, fieldState }) => (
 					<Field data-invalid={fieldState.error}>
 						<FieldLabel htmlFor="code">Code</FieldLabel>
 						<FieldDescription>
