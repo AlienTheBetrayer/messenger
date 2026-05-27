@@ -75,7 +75,14 @@ export class AuthService {
 					email: body.email,
 					password: hash,
 				},
-			});
+      });
+      
+      // 4. cleaning up the codes
+      this.prisma.verification_codes.deleteMany({
+        where: {
+          email: body.email
+        }
+      });
 
 			return user;
 		} else {

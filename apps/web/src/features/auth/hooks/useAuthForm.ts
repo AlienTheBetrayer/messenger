@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useCallback, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { transformError } from '@/shared';
+import { transformError, useQueryState } from '@/shared';
 
 export const useAuthForm = () => {
 	// validated form
@@ -14,12 +14,17 @@ export const useAuthForm = () => {
 			email: '',
 			password: '',
 		},
-	});
+  });
+  
+
+	// states
+	const [, setStep] = useQueryState('step');
 
 	// subbmitting fn
 	const onSubmit = useCallback(async (data: AuthSchema) => {
 		try {
 			await axios.post('/api/auth/signup', data);
+			setStep('verify');
 		} catch (e: unknown) {
 			// transformed error message
 			const message = transformError(e);
