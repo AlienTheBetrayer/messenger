@@ -6,7 +6,7 @@ import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider"
 import { VerifyContent } from "@/features/auth/ui/verify/VerifyContent";
 import { VerifyFooter } from "@/features/auth/ui/verify/VerifyFooter";
 import { VerifyHeader } from "@/features/auth/ui/verify/VerifyHeader";
-import { useQueryState } from "@/shared";
+import { transformError, useQueryState } from "@/shared";
 
 export const Verify = () => {
 	// states
@@ -27,11 +27,17 @@ export const Verify = () => {
 					}
 
 					const values = authForm.getValues();
-					await axios.post(`/api/auth/${verify}`, {
-						email: values.email,
-						password: values.password,
-						code: data.code,
-					});
+
+					try {
+						await axios.post(`/api/auth/${verify}`, {
+							email: values.email,
+							password: values.password,
+							code: data.code,
+						});
+					} catch (e: unknown) {
+						const message = transformError(e);
+						verifyForm.setError("code", { message });
+					}
 
 					break;
 				}

@@ -14,6 +14,7 @@ const transformations = {
 /**
  * transforms the api error into frontend-friendly data
  * @param statusCode status code of the api error
+ * @returns transformed message
  */
 export const transformError = (error: unknown) => {
 	// default error
