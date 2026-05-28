@@ -9,10 +9,10 @@ import { useCallback } from "react";
 
 export const Verify = () => {
 	// states
-	const { verifyForm, authForm, forgotPasswordForm } = useAuthFormProvider();
+	const { verifyForm, authForm } = useAuthFormProvider();
 	const [verify] = useQueryState("verify");
 
-  // submit fn
+	// submit fn
 	const onSubmit = useCallback(
 		async (data: VerifySchema) => {
 			switch (verify) {
@@ -21,7 +21,7 @@ export const Verify = () => {
 					const isValid = await authForm.trigger();
 
 					if (!isValid) {
-            break;
+						break;
 					}
 
 					const values = verifyForm.getValues();
@@ -37,13 +37,13 @@ export const Verify = () => {
 					break;
 				}
 				case "forgot-password": {
-					const isValid = await forgotPasswordForm.trigger("email");
+					const isValid = await authForm.trigger("email");
 
 					if (!isValid) {
-            break;
+						break;
 					}
 
-					const values = forgotPasswordForm.getValues();
+					const values = authForm.getValues();
 					await axios.post(
 						"/api/auth/forgot-password",
 						{ email: values.email },

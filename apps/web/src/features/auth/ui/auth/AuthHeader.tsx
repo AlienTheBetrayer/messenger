@@ -19,20 +19,24 @@ type Props = {
 export const AuthHeader = ({ type }: Props) => {
 	// ui states
 	const variant = AuthFormVariants[type];
+	const headerLink = variant.elements.headerLink;
 
 	// jsx
 	return (
 		<CardHeader>
 			<CardTitle>{variant.title}</CardTitle>
 			<CardDescription>{variant.description}</CardDescription>
-			<CardAction>
-				<Button
-					variant="link"
-					asChild
-				>
-					<Link href={variant.href}>{variant.linkText}</Link>
-				</Button>
-			</CardAction>
+
+			{headerLink.enabled && (
+				<CardAction>
+					<Button
+						variant="link"
+						asChild
+					>
+						<Link href={headerLink.href}>{headerLink.text}</Link>
+					</Button>
+				</CardAction>
+			)}
 		</CardHeader>
 	);
 };

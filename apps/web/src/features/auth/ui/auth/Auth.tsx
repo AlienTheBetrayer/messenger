@@ -40,7 +40,7 @@ export const Auth = ({ type }: Props) => {
 			className="flex flex-col gap-5"
 		>
 			<AuthHeader type={type} />
-			<AuthContent />
+			<AuthContent type={type} />
 			<AuthFooter type={type} />
 		</form>
 	);

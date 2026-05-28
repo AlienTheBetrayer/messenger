@@ -5,7 +5,7 @@ export const VerifyOrchestrator = () => {
 	// states
 	const [verify] = useQueryState("verify");
 
-  // jsx
+	// jsx
 	return (
 		<div
 			className="grid w-full transition-all duration-300"

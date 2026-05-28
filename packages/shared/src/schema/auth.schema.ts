@@ -25,15 +25,6 @@ export const authSchema = z.object({
 export type AuthSchema = z.infer<typeof authSchema>;
 
 /**
- * forgot password schema
- */
-export const forgotPasswordSchema = z.object({
-  email: z.email("Please enter a valid email address."),
-});
-
-export type ForgotPasswordSchema = z.infer<typeof forgotPasswordSchema>;
-
-/**
  * verify schema
  */
 export const verifySchema = z.object({

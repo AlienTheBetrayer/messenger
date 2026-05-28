@@ -20,29 +20,50 @@ export const AuthFooter = ({ type }: Props) => {
 	// jsx
 	return (
 		<CardFooter className="flex flex-col gap-2">
-			<Button
-				type="submit"
-				className="w-full"
-				form="auth-form"
-				disabled={!!verify}
-			>
-				{variant.title}
-			</Button>
+			{variant.elements.submitButton.enabled && (
+				<Button
+					type="submit"
+					className="w-full"
+					form="auth-form"
+					disabled={!!verify}
+				>
+					{variant.elements.submitButton.text}
+				</Button>
+			)}
 
-			<Button
-				type="button"
-				variant="secondary"
-				className="w-full"
-				disabled={!!verify}
-			>
-				<Image
-					alt=""
-					src="/google.svg"
-					width={14}
-					height={14}
-				/>
-				{variant.title} with Google
-			</Button>
+			{variant.elements.serviceButtons.enabled && (
+				<Button
+					type="button"
+					variant="secondary"
+					className="w-full"
+					disabled={!!verify}
+				>
+					<Image
+						alt=""
+						src="/google.svg"
+						width={14}
+						height={14}
+					/>
+					Continue with Google
+				</Button>
+			)}
+
+			{variant.elements.serviceButtons.enabled && (
+				<Button
+					type="button"
+					variant="secondary"
+					className="w-full"
+					disabled={!!verify}
+				>
+					<Image
+						alt=""
+						src="/github.svg"
+						width={16}
+						height={16}
+					/>
+					Continue with Github
+				</Button>
+			)}
 		</CardFooter>
 	);
 };

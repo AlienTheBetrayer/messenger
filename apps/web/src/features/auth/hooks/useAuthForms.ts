@@ -1,10 +1,8 @@
 import {
-  authSchema,
-  ForgotPasswordSchema,
-  forgotPasswordSchema,
-  verifySchema,
-  VerifySchema,
-  type AuthSchema,
+	authSchema,
+	verifySchema,
+	VerifySchema,
+	type AuthSchema,
 } from "@gravity/shared";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMemo } from "react";
@@ -22,13 +20,7 @@ export const useAuthForms = () => {
 			email: "",
 			password: "",
 		},
-	});
-
-	const forgotPasswordForm = useForm<ForgotPasswordSchema>({
-		resolver: zodResolver(forgotPasswordSchema),
-		defaultValues: {
-			email: "",
-		},
+		shouldUnregister: false,
 	});
 
 	const verifyForm = useForm<VerifySchema>({
@@ -43,7 +35,6 @@ export const useAuthForms = () => {
 		return {
 			authForm,
 			verifyForm,
-			forgotPasswordForm,
 		};
-	}, [authForm, verifyForm, forgotPasswordForm]);
+	}, [authForm, verifyForm]);
 };
