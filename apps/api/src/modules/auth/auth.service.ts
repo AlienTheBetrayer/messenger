@@ -1,7 +1,7 @@
 import { AuthRequestSchema } from "@gravity/shared";
 import { Injectable } from "@nestjs/common";
-
 import bcrypt from "bcryptjs";
+
 import { createException } from "../../common/index.js";
 import { PrismaService } from "../prisma/prisma.service.js";
 import { VerifyService } from "../verify/verify.service.js";
@@ -143,7 +143,7 @@ export class AuthService {
 		return true;
 	}
 
-	async authSession() {
+	authSession() {
 		return true;
 	}
 }

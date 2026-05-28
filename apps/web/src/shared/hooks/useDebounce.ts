@@ -19,7 +19,9 @@ export const useDebounce = <T>(
 			config?.onUpdate?.(value);
 		}, config?.delayMs ?? 300);
 
-		return () => clearTimeout(timeout);
+		return () => {
+			clearTimeout(timeout);
+		};
 	}, [value, config]);
 
 	return useMemo(

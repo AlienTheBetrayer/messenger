@@ -115,7 +115,7 @@ export const AuthFormVariants = {
 			password: {
 				enabled: true,
         placeholder: "",
-        description: "Enter a secure password you'll use to log in later.",
+        description: "Enter a secure password you'll use to log in.",
 			},
 			forgotButtons: {
 				enabled: false,

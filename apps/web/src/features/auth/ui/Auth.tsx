@@ -1,12 +1,13 @@
-import { AuthFormVariantsType } from "@/features/auth/lib/variants";
+import type { AuthSchema } from "@gravity/shared";
+import axios from "axios";
+import { useCallback } from "react";
+
+import type { AuthFormVariantsType } from "@/features/auth/lib/variants";
 import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
 import { AuthContent } from "@/features/auth/ui/auth/AuthContent";
 import { AuthFooter } from "@/features/auth/ui/auth/AuthFooter";
 import { AuthHeader } from "@/features/auth/ui/auth/AuthHeader";
 import { transformError, useQueryState } from "@/shared";
-import { AuthSchema } from "@gravity/shared";
-import axios from "axios";
-import { useCallback } from "react";
 
 type Props = {
 	type: AuthFormVariantsType;
@@ -36,7 +37,9 @@ export const Auth = ({ type }: Props) => {
 		<form
 			noValidate
 			id="auth-form"
-			onSubmit={authForm.handleSubmit(onSubmit)}
+			onSubmit={() => {
+				authForm.handleSubmit(onSubmit);
+			}}
 			className="flex flex-col gap-5"
 		>
 			<AuthHeader type={type} />

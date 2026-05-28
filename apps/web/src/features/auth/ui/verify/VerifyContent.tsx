@@ -1,3 +1,6 @@
+import { CODE_EXPIRY_MS, CODE_LENGTH } from "@gravity/shared";
+import { Controller } from "react-hook-form";
+
 import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
 import {
 	CardContent,
@@ -7,10 +10,9 @@ import {
 	FieldLabel,
 	Input,
 } from "@/shared";
-import { CODE_EXPIRY_MS, CODE_LENGTH } from "@gravity/shared";
-import { Controller } from "react-hook-form";
 
 export const VerifyContent = () => {
+	// states
 	const { verifyForm } = useAuthFormProvider();
 
 	// jsx

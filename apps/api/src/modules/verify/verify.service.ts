@@ -1,5 +1,6 @@
 import { CODE_EXPIRY_MS, CODE_LENGTH, randomString } from "@gravity/shared";
 import { Injectable } from "@nestjs/common";
+
 import { verification_code_type } from "../../../generated/prisma";
 import { createException } from "../../common";
 import { generateVerificationEmail } from "../mail/lib/constants";
@@ -69,7 +70,7 @@ export class VerifyService {
 
 		// auto-cleanup
 		if (params.cleanup !== false) {
-			this.cleanupCodes({ email: params.email, type: params.type });
+			void this.cleanupCodes({ email: params.email, type: params.type });
 		}
 
 		return status;

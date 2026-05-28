@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import Link from "next/link";
 
 import {
-	type AuthFormVariantsType,
 	AuthFormVariants,
+	type AuthFormVariantsType,
 } from "@/features/auth/lib/variants";
 import {
 	Button,

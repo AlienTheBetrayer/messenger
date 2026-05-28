@@ -36,7 +36,7 @@ export class AuthController {
 
 	@UseGuards(AuthGuard)
 	@Get("session")
-	async authSession() {
-		return await this.authService.authSession();
+	authSession() {
+		return this.authService.authSession();
 	}
 }

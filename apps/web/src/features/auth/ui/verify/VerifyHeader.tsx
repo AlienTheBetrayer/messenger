@@ -1,12 +1,13 @@
-import {
-  Button,
-  CardAction,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-  useQueryState,
-} from "@/shared";
 import { X } from "lucide-react";
+
+import {
+	Button,
+	CardAction,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+	useQueryState,
+} from "@/shared";
 
 export const VerifyHeader = () => {
 	// states

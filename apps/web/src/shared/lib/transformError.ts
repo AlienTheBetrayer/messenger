@@ -1,6 +1,5 @@
-import axios from "axios";
-
 import type { ApiError } from "@gravity/shared";
+import axios from "axios";
 
 /**
  * all available transformations

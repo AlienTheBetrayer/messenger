@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { Eye, EyeOff } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 import { Controller } from "react-hook-form";
 
@@ -17,7 +19,6 @@ import {
 	FieldLabel,
 	Input,
 } from "@/shared";
-import Link from "next/link";
 
 type Props = {
 	type: AuthFormVariantsType;

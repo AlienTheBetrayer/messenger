@@ -1,4 +1,4 @@
-import { Verify } from "@/features/auth/ui/verify/Verify";
+import { Verify } from "@/features/auth/ui/Verify";
 import { Card, useQueryState } from "@/shared";
 
 export const VerifyOrchestrator = () => {
@@ -10,7 +10,7 @@ export const VerifyOrchestrator = () => {
 		<div
 			className="grid w-full transition-all duration-300"
 			style={
-				!!verify
+				verify
 					? {
 							gridTemplateRows: "1fr",
 							scale: 1,

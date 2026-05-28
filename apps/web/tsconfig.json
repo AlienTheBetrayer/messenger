@@ -33,5 +33,6 @@
 		"**/*.mts",
 		"../../packages/shared/src"
 	],
+  "references": [{ "path": "../../packages/shared" }],
 	"exclude": ["node_modules"]
 }

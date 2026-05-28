@@ -9,8 +9,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-	title: "Gravity",
-	description: "Gravity",
+	title: "Outwave",
+	description: "Outwave",
 };
 
 export default function RootLayout({

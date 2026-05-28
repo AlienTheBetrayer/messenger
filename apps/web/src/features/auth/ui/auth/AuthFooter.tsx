@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import Image from "next/image";
 
 import {
-	type AuthFormVariantsType,
 	AuthFormVariants,
+	type AuthFormVariantsType,
 } from "@/features/auth/lib/variants";
 import { Button, CardFooter, useQueryState } from "@/shared";
 

@@ -1,4 +1,5 @@
 import { Module } from "@nestjs/common";
+
 import { AuthModule, MailModule, PrismaModule, RootModule } from "./modules";
 import { VerifyModule } from "./modules/verify/verify.module";
 
