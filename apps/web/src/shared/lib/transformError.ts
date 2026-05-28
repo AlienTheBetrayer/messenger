@@ -9,6 +9,7 @@ const transformations = {
 	USER_ALREADY_EXISTS: "User already exists.",
 	USER_NOT_FOUND: "User not found.",
 	INVALID_CREDENTIALS: "Invalid credentials.",
+	INVALID_VERIFICATION_CODE: "Invalid verification code.",
 } as const satisfies Record<ApiError["code"], string>;
 
 /**
