@@ -1,39 +1,21 @@
-import {
-	Body,
-	Controller,
-	Delete,
-	Get,
-	Post,
-	Query,
-	UseGuards,
-} from "@nestjs/common";
+import { Body, Controller, Delete, Get, Post, UseGuards } from "@nestjs/common";
 
 import { AuthGuard } from "./auth.guard";
 import { AuthService } from "./auth.service";
-import {
-	AuthenticationDto,
-	ForgotPasswordDto,
-	VerificationCodeDto,
-} from "./dto/auth.dto";
+import { AuthRequestDto } from "./dto/auth.dto";
 
 @Controller("auth")
 export class AuthController {
 	constructor(private readonly authService: AuthService) {}
 
 	@Post("signup")
-	async authRegister(
-		@Body() body: AuthenticationDto,
-		@Query("code") code?: VerificationCodeDto,
-	) {
-		return await this.authService.authSignup(body, code);
+	async authRegister(@Body() body: AuthRequestDto) {
+		return await this.authService.authSignup(body);
 	}
 
 	@Post("forgot-password")
-	async authForgotPassword(
-		@Body() body: ForgotPasswordDto,
-		@Query("cody") code?: VerificationCodeDto,
-	) {
-		return await this.authService.authForgotPassword(body, code);
+	async authForgotPassword(@Body() body: AuthRequestDto) {
+		return await this.authService.authForgotPassword(body);
 	}
 
 	@Post("login")

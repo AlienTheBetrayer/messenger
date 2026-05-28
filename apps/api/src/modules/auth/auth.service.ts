@@ -1,8 +1,4 @@
-import {
-	AuthSchema,
-	ForgotPasswordSchema,
-	VerifySchema,
-} from "@gravity/shared";
+import { AuthRequestSchema } from "@gravity/shared";
 import { Injectable } from "@nestjs/common";
 
 import bcrypt from "bcryptjs";
@@ -12,11 +8,11 @@ import { VerifyService } from "../verify/verify.service.js";
 
 /**
  * NEW microtasks ✅
- * 
+ *
  * register:
  * 1. fix FE validation
  * 2. ensure it works
- * 
+ *
  * login:
  * 1. FE sends a request /api/login
  * 2. BE sends the code
@@ -25,8 +21,8 @@ import { VerifyService } from "../verify/verify.service.js";
  * 5. FE handles response + if succeded: stores user globally + shows animation
  * 6. BE if succeded: creates a new session
  * 7. BE issues Access and Refresh(attached to that session) tokens
- * 
- * 
+ *
+ *
  * forgot password:
  * 0. FE add password field and change schemas
  * 1. FE requests /api/forgot-password code
@@ -34,13 +30,13 @@ import { VerifyService } from "../verify/verify.service.js";
  * 3. FE requests /api/forgot-password?code=000000
  * 4. BE changes the password
  * 5. FE shows animated login button
- * 
+ *
  * forgot email:
  * 0. FE requests /api/forgot-email?email=m@...
  * 1. BE route retrieves sessions from refresh token
  * 2. FE shows it (or absense warning)
  * 3. FE copy buttons
- * 
+ *
  * request cycle:
  * 1. FE sends a request
  * 2. BE guard checks the refresh token and passes if it's present, rejects if not
@@ -55,13 +51,13 @@ export class AuthService {
 		private readonly verifyService: VerifyService,
 	) {}
 
-	async authSignup(body: AuthSchema, verification?: VerifySchema) {
-		if (verification) {
+	async authSignup(body: AuthRequestSchema) {
+		if (body.code) {
 			// 1. verifying the code
 			await this.verifyService.validateCode({
 				email: body.email,
 				type: "signup",
-				code: verification.code,
+				code: body.code,
 			});
 
 			// 2. hashing password
@@ -96,13 +92,12 @@ export class AuthService {
 		}
 	}
 
-	async authForgotPassword(
-		body: ForgotPasswordSchema,
-		verification?: VerifySchema,
-	) {
-		if (verification) {
+	async authForgotPassword(body: AuthRequestSchema) {
+		if (body.code) {
 		} else {
 		}
+
+		return true;
 	}
 
 	authLogin() {
