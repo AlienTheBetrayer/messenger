@@ -53,18 +53,18 @@ export class AuthService {
 
 	async authSignup(body: AuthRequestSchema) {
 		if (body.code) {
-			// 1. verifying the code
+			// verifying the code
 			await this.verifyService.validateCode({
 				email: body.email,
 				type: "signup",
 				code: body.code,
 			});
 
-			// 2. hashing password
+			// hashing the password
 			const salt = await bcrypt.genSalt(10);
 			const hash = await bcrypt.hash(body.password, salt);
 
-			// 3. creating the user
+			// creating the user
 			const user = await this.prismaService.users.create({
 				data: {
 					email: body.email,
@@ -72,19 +72,16 @@ export class AuthService {
 				},
 			});
 
-			// 4. cleaning up the codes
-			this.verifyService.cleanupCodes({ email: body.email, type: "signup" });
-
 			return user;
 		} else {
-			// 1. already existing user check
+			// does the user already exist?
 			if (
 				await this.prismaService.users.count({ where: { email: body.email } })
 			) {
 				throw createException("conflict", "USER_ALREADY_EXISTS");
 			}
 
-			// 2. create a verification code, send it via email
+			// create a verification code, send it via email
 			return await this.verifyService.issueCode({
 				email: body.email,
 				type: "signup",
@@ -93,11 +90,45 @@ export class AuthService {
 	}
 
 	async authForgotPassword(body: AuthRequestSchema) {
-		if (body.code) {
-		} else {
+		// does this email exist?
+		if (
+			!(await this.prismaService.users.count({
+				where: { email: body.email },
+			}))
+		) {
+			throw createException("notfound", "USER_NOT_FOUND");
 		}
 
-		return true;
+		if (body.code) {
+			// verifying the code
+			await this.verifyService.validateCode({
+				email: body.email,
+				type: "forgot_password",
+				code: body.code,
+			});
+
+			// hashing the new password
+			const salt = await bcrypt.genSalt(10);
+			const hash = await bcrypt.hash(body.password, salt);
+
+			// changing user's data
+			const user = await this.prismaService.users.update({
+				where: {
+					email: body.email,
+				},
+				data: {
+					password: hash,
+				},
+			});
+
+			return user;
+		} else {
+			// create a verification code, send it via email
+			return await this.verifyService.issueCode({
+				email: body.email,
+				type: "signup",
+			});
+		}
 	}
 
 	authLogin() {

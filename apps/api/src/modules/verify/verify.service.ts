@@ -39,7 +39,7 @@ export class VerifyService {
 	}
 
 	/**
-	 * validates a code and throws if invalid
+	 * validates a code and throws if invalid (auto cleans it)
 	 * @param email the email the code was sent to
 	 * @param type the type of the code
 	 * @param code the code to validate
@@ -49,6 +49,7 @@ export class VerifyService {
 		email: string;
 		code: string;
 		type: verification_code_type;
+		cleanup?: boolean;
 	}) {
 		const status = await this.prismaService.verification_codes.findFirst({
 			where: {
@@ -61,8 +62,14 @@ export class VerifyService {
 			},
 		});
 
+		// verification
 		if (!status) {
 			throw createException("unauthorized", "INVALID_VERIFICATION_CODE");
+		}
+
+		// auto-cleanup
+		if (params.cleanup !== false) {
+			this.cleanupCodes({ email: params.email, type: params.type });
 		}
 
 		return status;

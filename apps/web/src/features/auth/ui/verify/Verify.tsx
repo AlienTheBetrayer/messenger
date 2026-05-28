@@ -37,7 +37,7 @@ export const Verify = () => {
 					break;
 				}
 				case "forgot-password": {
-					const isValid = await authForm.trigger("email");
+					const isValid = await authForm.trigger();
 
 					if (!isValid) {
 						break;
@@ -46,7 +46,7 @@ export const Verify = () => {
 					const values = authForm.getValues();
 					await axios.post(
 						"/api/auth/forgot-password",
-						{ email: values.email },
+						{ email: values.email, password: values.password },
 						{
 							params: {
 								code: data.code,
