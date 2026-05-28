@@ -37,8 +37,8 @@ export const Auth = ({ type }: Props) => {
 		<form
 			noValidate
 			id="auth-form"
-			onSubmit={() => {
-				authForm.handleSubmit(onSubmit);
+			onSubmit={(e) => {
+				void authForm.handleSubmit(onSubmit)(e);
 			}}
 			className="flex flex-col gap-5"
 		>
