@@ -1,0 +1,2 @@
+1. jest tests
+2. convert "process.env" to ConfigService

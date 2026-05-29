@@ -24,6 +24,15 @@ export default function AuthLayout({ children }: Props) {
 		}
 	}, []);
 
+	const logout = useCallback(async () => {
+		try {
+			await axios.delete("/api/auth/logout");
+		} catch (e) {
+			const message = transformError(e);
+			setData(message);
+		}
+	}, []);
+
 	return (
 		<AuthFormProvider>
 			<div className="flex items-center justify-center h-screen">
@@ -36,6 +45,15 @@ export default function AuthLayout({ children }: Props) {
 						}}
 					>
 						Fetch
+					</Button>
+
+					<Button
+						variant="destructive"
+						onClick={() => {
+							void logout();
+						}}
+					>
+						Log out
 					</Button>
 
 					<span className="max-w-32">{data}</span>

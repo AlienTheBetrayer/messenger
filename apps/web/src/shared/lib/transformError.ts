@@ -1,16 +1,5 @@
-import type { ApiError } from "@gravity/shared";
+import { type ApiError, transformations } from "@gravity/shared";
 import axios from "axios";
-
-/**
- * all available transformations
- */
-const transformations = {
-	USER_ALREADY_EXISTS: "User already exists.",
-	USER_NOT_FOUND: "User not found.",
-	INVALID_CREDENTIALS: "Invalid credentials.",
-	INVALID_VERIFICATION_CODE: "Invalid verification code.",
-	UNAUTHENTICATED: "Unauthenticated.",
-} as const satisfies Record<ApiError["code"], string>;
 
 /**
  * transforms the api error into frontend-friendly data

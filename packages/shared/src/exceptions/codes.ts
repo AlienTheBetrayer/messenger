@@ -1,3 +1,5 @@
+import { ApiError } from "./types.js";
+
 /**
  * http status codes (array)
  */
@@ -24,7 +26,22 @@ export const ExceptionCodes = [
 	"INVALID_CREDENTIALS",
 	"INVALID_VERIFICATION_CODE",
 	"UNAUTHENTICATED",
+	"EMAIL_NOT_FOUND",
+	"INVALID_BODY",
 ] as const;
+
+/**
+ * all available transformations
+ */
+export const transformations = {
+	USER_ALREADY_EXISTS: "User already exists.",
+	USER_NOT_FOUND: "User not found.",
+	INVALID_CREDENTIALS: "Invalid credentials.",
+	INVALID_VERIFICATION_CODE: "Invalid verification code.",
+	UNAUTHENTICATED: "Unauthenticated.",
+	EMAIL_NOT_FOUND: "Email not found.",
+	INVALID_BODY: "Invalid body.",
+} as const satisfies Record<ApiError["code"], string>;
 
 /**
  * exception codes (union type)

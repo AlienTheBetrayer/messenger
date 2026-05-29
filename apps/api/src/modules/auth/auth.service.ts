@@ -140,40 +140,11 @@ export class AuthService {
 				code: body.code,
 			});
 
-			// creating the session
-			const user_agent = request.headers["user-agent"] ?? "";
-			const ip_address = request.ip;
-
-			const session = await this.prismaService.auth_session.create({
-				data: {
-					user_id: user.id,
-					refresh_token_hash: "",
-					ip_address,
-					user_agent,
-				},
-			});
-
-			// issue access token (sign + set cookie)
-			const { refreshToken } = this.jwtService.issueAuthTokens({
+			// tokens + session + hashing
+			await this.jwtService.createAuthSession({
+				request,
 				response,
-				payload: {
-					sessionId: session.id,
-					userId: user.id,
-				},
-			});
-
-			// hashing refresh token
-			const salt = await bcrypt.genSalt(10);
-			const refreshTokenHash = await bcrypt.hash(refreshToken, salt);
-
-			// updating session
-			await this.prismaService.auth_session.update({
-				where: {
-					id: session.id,
-				},
-				data: {
-					refresh_token_hash: refreshTokenHash,
-				},
+				userId: user.id,
 			});
 
 			return user;
@@ -284,11 +255,28 @@ export class AuthService {
 		return user;
 	}
 
-	authRefresh() {
-		return true;
-	}
+	/**
+	 * logs out the current user, deleting the session
+	 * @param request request object
+	 * @param response response object
+	 * @returns null (if already logged out) or session
+	 */
+	async authLogout(request: Request, response: Response) {
+		// getting the token
+		const refreshToken = this.jwtService.decode({ request, type: "refresh" });
 
-	authLogout() {
-		return true;
+		if (!refreshToken) {
+			return null;
+		}
+
+		// deleting the token
+		this.jwtService.delete({ response, type: "all" });
+
+		// deleting the session
+		const session = await this.prismaService.auth_session.delete({
+			where: { id: refreshToken.payload.sessionId },
+		});
+
+		return session;
 	}
 }

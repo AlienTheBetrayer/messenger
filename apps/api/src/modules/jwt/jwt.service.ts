@@ -4,6 +4,7 @@ import {
 	TokenPayload,
 } from "@gravity/shared";
 import { Injectable } from "@nestjs/common";
+import bcrypt from "bcryptjs";
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
@@ -122,5 +123,73 @@ export class JwtService {
 		}
 
 		return { token, payload: jwt.decode(token) as TokenPayload };
+	}
+
+	/**
+	 * issues auth tokens, hashes the refresh token, and creates a new session attached to the refresh token
+	 * @param request request object
+	 * @param response response object
+	 * @param userId id of the authenticated user
+	 * @returns created session and tokens
+	 */
+	async createAuthSession(params: {
+		request: Request;
+		response: Response;
+		userId: string;
+	}) {
+		// creating the session
+		const user_agent = params.request.headers["user-agent"] ?? "";
+		const ip_address = params.request.ip;
+
+		const session = await this.prismaService.auth_session.create({
+			data: {
+				user_id: params.userId,
+				refresh_token_hash: "",
+				ip_address,
+				user_agent,
+			},
+		});
+
+		// issue access token (sign + set cookie)
+		const { accessToken, refreshToken } = this.issueAuthTokens({
+			response: params.response,
+			payload: {
+				sessionId: session.id,
+				userId: params.userId,
+			},
+		});
+
+		// hashing refresh token
+		const salt = await bcrypt.genSalt(10);
+		const refreshTokenHash = await bcrypt.hash(refreshToken, salt);
+
+		// updating session
+		await this.prismaService.auth_session.update({
+			where: {
+				id: session.id,
+			},
+			data: {
+				refresh_token_hash: refreshTokenHash,
+			},
+		});
+
+		return { accessToken, refreshToken, session };
+	}
+
+	/**
+	 * deletes a specified token from cookies
+	 * @param response response object
+	 * @param type which type of token to delete
+	 */
+	delete(params: { response: Response; type: "access" | "refresh" | "all" }) {
+		// access token
+		if (params.type === "access" || params.type === "all") {
+			params.response.clearCookie("accessToken");
+		}
+
+		// refresh token
+		if (params.type === "refresh" || params.type === "all") {
+			params.response.clearCookie("refreshToken");
+		}
 	}
 }

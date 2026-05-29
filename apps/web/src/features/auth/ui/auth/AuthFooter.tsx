@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import Image from "next/image";
+import Link from "next/link";
 
 import {
 	AuthFormVariants,
@@ -38,14 +39,18 @@ export const AuthFooter = ({ type }: Props) => {
 					variant="secondary"
 					className="w-full"
 					disabled={!!verify}
-				>
-					<Image
-						alt=""
-						src="/google.svg"
-						width={14}
-						height={14}
-					/>
-					Continue with Google
+					asChild
+        >
+          {/* redirect to the actual backend url later */}
+					<Link href="http://localhost:3001/oauth/google">
+						<Image
+							alt=""
+							src="/google.svg"
+							width={14}
+							height={14}
+						/>
+						Continue with Google
+					</Link>
 				</Button>
 			)}
 

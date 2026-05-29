@@ -8,6 +8,7 @@ import {
 	RootModule,
 	VerifyModule,
 } from "./modules";
+import { OAuthModule } from "./modules/oauth/oauth.module";
 
 /**
  * all available modules
@@ -16,6 +17,7 @@ const imports = [
 	RootModule,
 	PrismaModule,
 	AuthModule,
+	OAuthModule,
 	MailModule,
 	VerifyModule,
 	JwtModule,

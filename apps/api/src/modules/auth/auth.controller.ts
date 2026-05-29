@@ -1,16 +1,6 @@
-import {
-	Body,
-	Controller,
-	Delete,
-	Get,
-	Post,
-	Req,
-	Res,
-	UseGuards,
-} from "@nestjs/common";
+import { Body, Controller, Delete, Get, Post, Req, Res } from "@nestjs/common";
 import { Request, Response } from "express";
 
-import { AuthGuard } from "./auth.guard";
 import { AuthService } from "./auth.service";
 import { AuthRequestDto } from "./dto/auth.dto";
 
@@ -70,22 +60,25 @@ export class AuthController {
 		return await this.authService.authForgotEmail(request);
 	}
 
-	@Post("refresh")
-	authRefresh() {
-		this.authService.authRefresh();
-	}
-
-	@UseGuards(AuthGuard)
+	/**
+	 * logs out the current user, deleting the session
+	 * @param request request object
+	 * @param response response object
+	 * @returns null (if already logged out) or session
+	 */
 	@Delete("logout")
-	authLogout() {
-		this.authService.authLogout();
+	async authLogout(
+		@Req() request: Request,
+		@Res({ passthrough: true }) response: Response,
+	) {
+		return await this.authService.authLogout(request, response);
 	}
 
-  /**
-   * gets the currently logged in user (yourself)
-   * @param request request object
-   * @returns user object of currently logged in user
-   */
+	/**
+	 * gets the currently logged in user (yourself)
+	 * @param request request object
+	 * @returns user object of currently logged in user
+	 */
 	@Get("me")
 	async authMe(@Req() request: Request) {
 		return await this.authService.authMe(request);
