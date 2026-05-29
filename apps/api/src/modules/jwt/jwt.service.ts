@@ -4,7 +4,7 @@ import {
 	TokenPayload,
 } from "@gravity/shared";
 import { Injectable } from "@nestjs/common";
-import { Response, response } from "express";
+import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
 import { PrismaService } from "../prisma/prisma.service";
@@ -85,22 +85,42 @@ export class JwtService {
 	issueAuthTokens(params: { response: Response; payload: TokenPayload }) {
 		// access token
 		const accessToken = this.issue({
-			payload: params.payload as Record<string, string>,
-			expiry: Number(ACCESS_TOKEN_EXPIRY_S),
+			payload: params.payload,
+			expiry: ACCESS_TOKEN_EXPIRY_S,
 			envKey: "ACCESS_TOKEN_SECRET",
-			response,
+			response: params.response,
 			name: "accessToken",
 		});
 
 		// refresh token
 		const refreshToken = this.issue({
-			payload: params.payload as Record<string, string>,
-			expiry: Number(REFRESH_TOKEN_EXPIRY_S),
+			payload: params.payload,
+			expiry: REFRESH_TOKEN_EXPIRY_S,
 			envKey: "REFRESH_TOKEN_SECRET",
-			response,
+			response: params.response,
 			name: "refreshToken",
 		});
 
 		return { accessToken, refreshToken };
+	}
+
+	/**
+	 * decodes the jwt token payload
+	 * @param request request object
+	 * @param type type of the token
+	 * @returns token and decoded payload or null if no token
+	 */
+	decode(params: { request: Request; type: "access" | "refresh" }) {
+		// getting the token
+		const token = (params.request.cookies as Record<string, string>)[
+			`${params.type}Token`
+		];
+
+		// validating the token
+		if (!token || typeof token !== "string") {
+			return null;
+		}
+
+		return { token, payload: jwt.decode(token) as TokenPayload };
 	}
 }

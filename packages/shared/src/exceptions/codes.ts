@@ -23,6 +23,7 @@ export const ExceptionCodes = [
 	"USER_NOT_FOUND",
 	"INVALID_CREDENTIALS",
 	"INVALID_VERIFICATION_CODE",
+	"UNAUTHENTICATED",
 ] as const;
 
 /**

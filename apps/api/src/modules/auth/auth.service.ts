@@ -136,7 +136,7 @@ export class AuthService {
 			// verifying the code
 			await this.verifyService.validateCode({
 				email: body.email,
-				type: "signup",
+				type: "login",
 				code: body.code,
 			});
 
@@ -244,15 +244,51 @@ export class AuthService {
 		return await Promise.resolve(() => [request]);
 	}
 
+	/**
+	 * gets the currently logged in user (yourself)
+	 * @param request request object
+	 * @returns user object of currently logged in user
+	 */
+	async authMe(request: Request) {
+		// getting the token
+		const refreshToken = this.jwtService.decode({ request, type: "refresh" });
+
+		if (!refreshToken) {
+			throw createException("unauthorized", "UNAUTHENTICATED");
+		}
+
+		// // verifying the session
+		// const session = await this.prismaService.auth_session.findFirst({
+		// 	where: { id: refreshToken.payload.sessionId },
+		// });
+
+		// if (!session) {
+		// 	throw createException("unauthorized", "UNAUTHENTICATED");
+		// }
+
+		// // verifying hashes
+		// const isRefreshTokenCorrect = await bcrypt.compare(
+		// 	refreshToken.token,
+		// 	session.refresh_token_hash,
+		// );
+
+		// if (!isRefreshTokenCorrect) {
+		// 	throw createException("unauthorized", "UNAUTHENTICATED");
+		// }
+
+		// getting the user
+		const user = await this.prismaService.users.findFirst({
+			where: { id: refreshToken.payload.user_id },
+		});
+
+		return user;
+	}
+
 	authRefresh() {
 		return true;
 	}
 
 	authLogout() {
-		return true;
-	}
-
-	authSession() {
 		return true;
 	}
 }

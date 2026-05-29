@@ -43,7 +43,7 @@ export class AuthController {
 	async authLogin(
 		@Body() body: AuthRequestDto,
 		@Req() request: Request,
-		@Res() response: Response,
+		@Res({ passthrough: true }) response: Response,
 	) {
 		return await this.authService.authLogin(body, request, response);
 	}
@@ -81,9 +81,13 @@ export class AuthController {
 		this.authService.authLogout();
 	}
 
-	@UseGuards(AuthGuard)
-	@Get("session")
-	authSession() {
-		return this.authService.authSession();
+  /**
+   * gets the currently logged in user (yourself)
+   * @param request request object
+   * @returns user object of currently logged in user
+   */
+	@Get("me")
+	async authMe(@Req() request: Request) {
+		return await this.authService.authMe(request);
 	}
 }

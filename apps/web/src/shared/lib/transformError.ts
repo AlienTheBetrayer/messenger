@@ -9,6 +9,7 @@ const transformations = {
 	USER_NOT_FOUND: "User not found.",
 	INVALID_CREDENTIALS: "Invalid credentials.",
 	INVALID_VERIFICATION_CODE: "Invalid verification code.",
+	UNAUTHENTICATED: "Unauthenticated.",
 } as const satisfies Record<ApiError["code"], string>;
 
 /**

@@ -45,16 +45,6 @@ export const AuthContent = ({ type }: Props) => {
 							<Field data-invalid={fieldState.invalid}>
 								<div className="flex items-center justify-between w-full">
 									<FieldLabel htmlFor="email">Email</FieldLabel>
-
-									{variant.elements.forgotButtons.enabled && (
-										<Button
-											variant="link"
-											type="button"
-											asChild
-										>
-											<Link href="/forgot-email">Forgot email?</Link>
-										</Button>
-									)}
 								</div>
 
 								{variant.elements.email.description && (

@@ -17,6 +17,7 @@ export class VerifyService {
 	/**
 	 * create and send via email verification code
 	 * @param email email address to send it to
+   * @param type verification code type
 	 * @returns created code
 	 */
 	async issueCode(params: { email: string; type: verification_code_type }) {
@@ -44,6 +45,7 @@ export class VerifyService {
 	 * @param email the email the code was sent to
 	 * @param type the type of the code
 	 * @param code the code to validate
+   * @param cleanup whether to clean up the code after the verification
 	 * @returns valid code or thrown error
 	 */
 	async validateCode(params: {

@@ -16,14 +16,14 @@ type Props = {
 export const Auth = ({ type }: Props) => {
 	// states
 	const { authForm } = useAuthFormProvider();
-	const [, setVerify] = useQueryState("verify");
+	const [verify, setVerify] = useQueryState("verify");
 
 	// functions
 	const onSubmit = useCallback(
 		async (data: AuthSchema) => {
 			try {
 				const res = await axios.post(`/api/auth/${type}`, data);
-        console.warn(res);
+				console.warn(res);
 				setVerify(type);
 			} catch (e: unknown) {
 				const message = transformError(e);
@@ -41,7 +41,7 @@ export const Auth = ({ type }: Props) => {
 			onSubmit={(e) => {
 				void authForm.handleSubmit(onSubmit)(e);
 			}}
-			className="flex flex-col gap-5"
+			className={`flex flex-col gap-5 transition-all duration-300 ${verify ? "opacity-50" : ""}`}
 		>
 			<AuthHeader type={type} />
 			<AuthContent type={type} />

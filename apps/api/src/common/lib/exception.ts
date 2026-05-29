@@ -1,4 +1,4 @@
-import { HttpStatusCodes, type ExceptionCode } from "@gravity/shared";
+import { type ExceptionCode, HttpStatusCodes } from "@gravity/shared";
 import { HttpException } from "@nestjs/common";
 
 /**
