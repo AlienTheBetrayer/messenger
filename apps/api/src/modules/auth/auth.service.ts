@@ -1,8 +1,10 @@
 import { AuthRequestSchema } from "@gravity/shared";
 import { Injectable } from "@nestjs/common";
 import bcrypt from "bcryptjs";
+import { Request, Response } from "express";
 
 import { createException } from "../../common/index.js";
+import { JwtService } from "../jwt/jwt.service.js";
 import { PrismaService } from "../prisma/prisma.service.js";
 import { VerifyService } from "../verify/verify.service.js";
 
@@ -49,8 +51,16 @@ export class AuthService {
 	constructor(
 		private readonly prismaService: PrismaService,
 		private readonly verifyService: VerifyService,
+		private readonly jwtService: JwtService,
 	) {}
 
+	/**
+	 * no code: sends the signup code. code: creates the user.
+	 * @param email email address (required)
+	 * @param password password (required, will be hashed)
+	 * @param code (optional, used to verify)
+	 * @returns code or user
+	 */
 	async authSignup(body: AuthRequestSchema) {
 		if (body.code) {
 			// verifying the code
@@ -89,6 +99,100 @@ export class AuthService {
 		}
 	}
 
+	/**
+	 * no code: sends the login code. code: authenticated the user.
+	 * @param email email address (required)
+	 * @param password password (required, will be hashed)
+	 * @param code (optional, used to verify)
+	 * @param request request object
+	 * @param response response object
+	 * @returns code or user
+	 */
+	async authLogin(
+		body: AuthRequestSchema,
+		request: Request,
+		response: Response,
+	) {
+		// does the user already exist?
+		const user = await this.prismaService.users.findFirst({
+			where: { email: body.email },
+		});
+
+		if (!user) {
+			throw createException("notfound", "USER_NOT_FOUND");
+		}
+
+		// do passwords' hashes match?
+		const isPasswordCorrect = await bcrypt.compare(
+			body.password,
+			user.password,
+		);
+
+		if (!isPasswordCorrect) {
+			throw createException("unauthorized", "INVALID_CREDENTIALS");
+		}
+
+		if (body.code) {
+			// verifying the code
+			await this.verifyService.validateCode({
+				email: body.email,
+				type: "signup",
+				code: body.code,
+			});
+
+			// creating the session
+			const user_agent = request.headers["user-agent"] ?? "";
+			const ip_address = request.ip;
+
+			const session = await this.prismaService.auth_session.create({
+				data: {
+					user_id: user.id,
+					refresh_token_hash: "",
+					ip_address,
+					user_agent,
+				},
+			});
+
+			// issue access token (sign + set cookie)
+			const { refreshToken } = this.jwtService.issueAuthTokens({
+				response,
+				payload: {
+					sessionId: session.id,
+					userId: user.id,
+				},
+			});
+
+			// hashing refresh token
+			const salt = await bcrypt.genSalt(10);
+			const refreshTokenHash = await bcrypt.hash(refreshToken, salt);
+
+			// updating session
+			await this.prismaService.auth_session.update({
+				where: {
+					id: session.id,
+				},
+				data: {
+					refresh_token_hash: refreshTokenHash,
+				},
+			});
+
+			return user;
+		} else {
+			// create a verification code, send it via email
+			return await this.verifyService.issueCode({
+				email: body.email,
+				type: "login",
+			});
+		}
+	}
+
+	/**
+	 * no code: sends the forgot-password code. code: changes the password
+	 * @param email email address (required)
+	 * @param password password (required, will be hashed)
+	 * @param code (optional, used to verify)
+	 * @returns code or user
+	 */
 	async authForgotPassword(body: AuthRequestSchema) {
 		// does this email exist?
 		if (
@@ -126,13 +230,18 @@ export class AuthService {
 			// create a verification code, send it via email
 			return await this.verifyService.issueCode({
 				email: body.email,
-				type: "signup",
+				type: "forgot_password",
 			});
 		}
 	}
 
-	authLogin() {
-		return true;
+	/**
+	 * attempts to retrieve the last used email from the authenticated session
+	 * @param request request object
+	 * @returns retrieved email or nothing
+	 */
+	async authForgotEmail(request: Request) {
+		return await Promise.resolve(() => [request]);
 	}
 
 	authRefresh() {

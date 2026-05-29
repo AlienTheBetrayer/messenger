@@ -22,7 +22,8 @@ export const Auth = ({ type }: Props) => {
 	const onSubmit = useCallback(
 		async (data: AuthSchema) => {
 			try {
-				await axios.post(`/api/auth/${type}`, data);
+				const res = await axios.post(`/api/auth/${type}`, data);
+        console.warn(res);
 				setVerify(type);
 			} catch (e: unknown) {
 				const message = transformError(e);
