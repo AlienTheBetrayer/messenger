@@ -1,4 +1,4 @@
-import { ApiError } from "./types.js";
+import { ApiErrorSchema } from "../schema/error.schema.js";
 
 /**
  * http status codes (array)
@@ -41,7 +41,7 @@ export const ExceptionCodeTransformations = {
 	UNAUTHENTICATED: "Unauthenticated.",
 	EMAIL_NOT_FOUND: "Email not found.",
 	INVALID_BODY: "Invalid body.",
-} as const satisfies Record<ApiError["code"], string>;
+} as const satisfies Record<ApiErrorSchema["code"], string>;
 
 /**
  * exception codes (union type)

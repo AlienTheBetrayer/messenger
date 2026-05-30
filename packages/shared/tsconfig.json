@@ -7,14 +7,15 @@
 		"target": "ES2022",
 		"declaration": true,
 		"declarationMap": true,
+		"resolveJsonModule": true,
 		"allowSyntheticDefaultImports": true,
 		"sourceMap": true,
 		"strict": true,
-    "composite": true,
+		"composite": true,
 		"skipLibCheck": true,
-    "types": ["node"],
+		"types": ["node"],
 		"esModuleInterop": true
 	},
 
-	"include": ["src"]
+	"include": ["src/**/*", "src/**/*.json"]
 }

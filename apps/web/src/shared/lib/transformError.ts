@@ -1,5 +1,19 @@
-import { type ApiError, ExceptionCodeTransformations } from "@gravity/shared";
-import axios from "axios";
+import {
+	ApiErrorSchema,
+	apiErrorSchema,
+	AxiosErrorSchema,
+	axiosErrorSchema,
+	ExceptionCodeTransformations,
+	ReduxErrorSchema,
+	reduxErrorSchema,
+} from "@gravity/shared";
+import z from "zod";
+
+const schemas = new Map<"api" | "axios" | "redux", z.ZodType>([
+	["api", apiErrorSchema],
+	["axios", axiosErrorSchema],
+	["redux", reduxErrorSchema],
+]);
 
 /**
  * transforms the api error into frontend-friendly data
@@ -10,14 +24,33 @@ export const transformError = (error: unknown) => {
 	// default error
 	let message = "Unknown error.";
 
-	// transforming
-	if (axios.isAxiosError<ApiError>(error)) {
-		const apiError = error.response?.data;
+	// parsing
+	for (const [name, schema] of schemas) {
+		const parsed = z.safeParse(schema, error);
+		let data: ApiErrorSchema | undefined;
 
-		if (apiError?.code && apiError.code in ExceptionCodeTransformations) {
-			message = ExceptionCodeTransformations[apiError.code];
-		} else if (apiError?.message) {
-			message = apiError.message;
+		if (!parsed.success) {
+			continue;
+		}
+
+		switch (name) {
+			case "api": {
+				data = parsed.data as ApiErrorSchema;
+				break;
+			}
+			case "axios": {
+				data = (parsed.data as AxiosErrorSchema).response?.data;
+				break;
+			}
+			case "redux": {
+				data = (parsed.data as ReduxErrorSchema).data;
+				break;
+			}
+		}
+
+		if (data) {
+			message = data.message || ExceptionCodeTransformations[data.code];
+			break;
 		}
 	}
 

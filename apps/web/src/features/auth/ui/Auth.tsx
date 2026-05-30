@@ -1,8 +1,8 @@
 import type { AuthSchema } from "@gravity/shared";
-import axios from "axios";
 import { useCallback } from "react";
 
 import type { AuthFormVariantsType } from "@/features/auth/lib/variants";
+import { useAuthMutation } from "@/features/auth/model/auth.slice";
 import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
 import { AuthContent } from "@/features/auth/ui/auth/AuthContent";
 import { AuthFooter } from "@/features/auth/ui/auth/AuthFooter";
@@ -17,20 +17,20 @@ export const Auth = ({ type }: Props) => {
 	// states
 	const { authForm } = useAuthFormProvider();
 	const [verify, setVerify] = useQueryState("verify");
+	const [auth, { isLoading: _ }] = useAuthMutation();
 
 	// functions
 	const onSubmit = useCallback(
 		async (data: AuthSchema) => {
 			try {
-				const res = await axios.post(`/api/auth/${type}`, data);
-				console.warn(res);
+				await auth({ ...data, type }).unwrap();
 				setVerify(type);
-			} catch (e: unknown) {
+			} catch (e) {
 				const message = transformError(e);
 				authForm.setError("email", { message });
 			}
 		},
-		[authForm, setVerify, type],
+		[authForm, setVerify, type, auth],
 	);
 
 	// jsx

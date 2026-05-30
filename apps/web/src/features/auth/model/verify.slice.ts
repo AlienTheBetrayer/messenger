@@ -1,4 +1,4 @@
-import { AuthRequestSchema, PrismaTypes } from "@gravity/shared";
+import { FullAuthRequestSchema, PrismaTypes } from "@gravity/shared";
 
 import { AuthFormVariantsType } from "@/features/auth/lib/variants";
 import { baseApi } from "@/shared";
@@ -8,9 +8,9 @@ import { baseApi } from "@/shared";
  */
 export const authApi = baseApi.injectEndpoints({
 	endpoints: (builder) => ({
-		auth: builder.mutation<
+		authVerify: builder.mutation<
 			PrismaTypes["verification_codes"],
-			AuthRequestSchema & { type: AuthFormVariantsType }
+			FullAuthRequestSchema & { type: AuthFormVariantsType }
 		>({
 			query: (body) => ({
 				url: `/auth/${body.type}`,
@@ -21,4 +21,4 @@ export const authApi = baseApi.injectEndpoints({
 	}),
 });
 
-export const { useAuthMutation } = authApi;
+export const { useAuthVerifyMutation } = authApi;

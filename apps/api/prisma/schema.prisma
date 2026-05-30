@@ -3,6 +3,11 @@ generator client {
   output   = "../generated/prisma"
 }
 
+generator jsonSchema {
+  provider = "prisma-json-schema-generator"
+  output   = "../../../packages/shared/src/prisma"
+}
+
 datasource db {
   provider = "postgresql"
 }

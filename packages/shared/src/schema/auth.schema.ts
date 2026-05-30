@@ -43,4 +43,9 @@ export const authRequestSchema = authSchema.extend({
 	code: verifySchema.shape.code.optional(),
 });
 
+export const fullAuthRequestSchema = authSchema.extend({
+	code: verifySchema.shape.code,
+});
+
 export type AuthRequestSchema = z.infer<typeof authRequestSchema>;
+export type FullAuthRequestSchema = z.infer<typeof fullAuthRequestSchema>;
