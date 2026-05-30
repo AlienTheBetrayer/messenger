@@ -33,7 +33,7 @@ export const ExceptionCodes = [
 /**
  * all available transformations
  */
-export const transformations = {
+export const ExceptionCodeTransformations = {
 	USER_ALREADY_EXISTS: "User already exists.",
 	USER_NOT_FOUND: "User not found.",
 	INVALID_CREDENTIALS: "Invalid credentials.",

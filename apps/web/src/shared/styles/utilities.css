@@ -1,7 +1,6 @@
 @layer utilities {
 	/* ripple */
 	.ripple {
-		position: relative;
 		overflow: hidden;
 		isolation: isolate;
 		--ripple-color: var(--secondary);

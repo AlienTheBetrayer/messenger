@@ -1,0 +1,6 @@
+@layer pseudo {
+	::selection {
+		background: var(--foreground);
+		color: var(--background);
+	}
+}

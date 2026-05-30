@@ -1,6 +1,5 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import { Slot } from "radix-ui";
-
 import type * as React from "react";
 
 import { rippleEnable } from "@/shared/lib/ripple";
@@ -68,7 +67,10 @@ function Button({
 			data-slot="button"
 			data-variant={variant}
 			data-size={size}
-			className={cn("ripple ", buttonVariants({ variant, size, className }))}
+			className={cn(
+				"relative ripple",
+				buttonVariants({ variant, size, className }),
+			)}
 			{...props}
 		/>
 	);

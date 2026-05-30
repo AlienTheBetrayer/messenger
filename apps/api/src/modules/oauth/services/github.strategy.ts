@@ -31,8 +31,7 @@ export class GithubStrategy extends PassportStrategy(Strategy, "github") {
 			profileUrl: profile.profileUrl,
 		};
 
-    if (data.email) {
-      // data.error = "EMAIL_NOT_FOUND";
+		if (data.email) {
 			return data;
 		}
 

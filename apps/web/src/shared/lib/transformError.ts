@@ -1,4 +1,4 @@
-import { type ApiError, transformations } from "@gravity/shared";
+import { type ApiError, ExceptionCodeTransformations } from "@gravity/shared";
 import axios from "axios";
 
 /**
@@ -14,8 +14,8 @@ export const transformError = (error: unknown) => {
 	if (axios.isAxiosError<ApiError>(error)) {
 		const apiError = error.response?.data;
 
-		if (apiError?.code && apiError.code in transformations) {
-			message = transformations[apiError.code];
+		if (apiError?.code && apiError.code in ExceptionCodeTransformations) {
+			message = ExceptionCodeTransformations[apiError.code];
 		} else if (apiError?.message) {
 			message = apiError.message;
 		}

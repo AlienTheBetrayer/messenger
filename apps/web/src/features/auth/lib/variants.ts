@@ -1,3 +1,5 @@
+import { ExceptionCode } from "@gravity/shared";
+
 /**
  * template type for all variants
  */
@@ -45,13 +47,13 @@ export const AuthFormVariants = {
 		elements: {
 			email: {
 				enabled: true,
-        placeholder: "m@example.com",
-        description: "",
+				placeholder: "m@example.com",
+				description: "",
 			},
 			password: {
-        enabled: true,
-        placeholder: "",
-        description: ""
+				enabled: true,
+				placeholder: "",
+				description: "",
 			},
 			forgotButtons: {
 				enabled: true,
@@ -78,12 +80,12 @@ export const AuthFormVariants = {
 			email: {
 				enabled: true,
 				placeholder: "m@example.com",
-        description: "",
+				description: "",
 			},
 			password: {
-        enabled: true,
-        description: "",
-        placeholder: "",
+				enabled: true,
+				description: "",
+				placeholder: "",
 			},
 			forgotButtons: {
 				enabled: false,
@@ -109,13 +111,13 @@ export const AuthFormVariants = {
 		elements: {
 			email: {
 				enabled: true,
-        placeholder: "m@example.com",
-        description: "",
+				placeholder: "m@example.com",
+				description: "",
 			},
 			password: {
 				enabled: true,
-        placeholder: "",
-        description: "Enter a new secure password you'll use to log in.",
+				placeholder: "",
+				description: "Enter a new secure password you'll use to log in.",
 			},
 			forgotButtons: {
 				enabled: false,
@@ -140,3 +142,22 @@ export const AuthFormVariants = {
  * types of authentication
  */
 export type AuthFormVariantsType = keyof typeof AuthFormVariants;
+
+/**
+ * variants for the redirect popup
+ */
+export type RedirectPopupVariant = {
+	title: string;
+	description: string;
+	content: string;
+};
+
+export const RedirectPopupVariants = {
+	EMAIL_NOT_FOUND: {
+		title: "Email unavailable",
+		description:
+			"We couldn't retrieve a verified email address from your authentication provider.",
+		content:
+			"This can happen if your provider account does not expose a public or verified email, or if access to email information was not granted during sign-in. Please ensure your account has a verified email or try a different sign-in method.",
+	},
+} as const satisfies Partial<Record<ExceptionCode, RedirectPopupVariant>>;
