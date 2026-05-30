@@ -1,17 +1,29 @@
+import { ExceptionCodes } from "@gravity/shared";
 import { z } from "zod";
 
 /**
- * oauth user retrieved from services schema
+ * oauth identity retrieved from services schema
  */
-export const OAuthUserSchema = z.object({
-	provider: z.literal("google"),
+export const oAuthIdentitySchema = z.object({
+	provider: z.enum(["google", "github"]),
 	providerId: z.string(),
-	email: z.email(),
+	email: z.email().optional(),
 	name: z.string(),
 	profileUrl: z.string().optional(),
+	error: z.enum(ExceptionCodes).optional(),
 });
 
 /**
- * oauth user retrieved from services
+ * oauth identity retrieved from services
  */
-export type OAuthUser = z.infer<typeof OAuthUserSchema>;
+export type OAuthIdentity = z.infer<typeof oAuthIdentitySchema>;
+
+/**
+ * github api
+ */
+export type GithubUserEmails = {
+	email: string;
+	primary: boolean;
+	verified: boolean;
+	visibility: "public" | "private";
+};

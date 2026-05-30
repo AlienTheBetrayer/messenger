@@ -27,6 +27,28 @@ export class OAuthController {
 		@Req() request: Request,
 		@Res({ passthrough: true }) response: Response,
 	) {
-		await this.oauthService.googleCallback(request, response);
+		await this.oauthService.callback(request, response);
+	}
+
+	/**
+	 * used to initiate the github authentication process
+	 */
+	@Get("github")
+	@UseGuards(AuthGuard("github"))
+	githubAuth() {}
+
+	/**
+	 * finished github authentication session
+	 * @param request request object
+	 * @param response response object
+	 * @returns redirects the user back to the frontend
+	 */
+	@Get("github/callback")
+	@UseGuards(AuthGuard("github"))
+	async githubCallback(
+		@Req() request: Request,
+		@Res({ passthrough: true }) response: Response,
+	) {
+		await this.oauthService.callback(request, response);
 	}
 }

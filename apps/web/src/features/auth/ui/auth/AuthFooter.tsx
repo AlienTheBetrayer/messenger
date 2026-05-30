@@ -40,8 +40,8 @@ export const AuthFooter = ({ type }: Props) => {
 					className="w-full"
 					disabled={!!verify}
 					asChild
-        >
-          {/* redirect to the actual backend url later */}
+				>
+					{/* redirect to the actual backend url later */}
 					<Link href="http://localhost:3001/oauth/google">
 						<Image
 							alt=""
@@ -60,14 +60,18 @@ export const AuthFooter = ({ type }: Props) => {
 					variant="secondary"
 					className="w-full"
 					disabled={!!verify}
+					asChild
 				>
-					<Image
-						alt=""
-						src="/github.svg"
-						width={16}
-						height={16}
-					/>
-					Continue with Github
+					{/* redirect to the actual backend url later */}
+					<Link href="http://localhost:3001/oauth/github">
+						<Image
+							alt=""
+							src="/github.svg"
+							width={16}
+							height={16}
+						/>
+						Continue with Github
+					</Link>
 				</Button>
 			)}
 		</CardFooter>

@@ -4,7 +4,7 @@ import { Request, Response } from "express";
 import { createException } from "../../common";
 import { JwtService } from "../jwt/jwt.service";
 import { PrismaService } from "../prisma/prisma.service";
-import { OAuthUser, OAuthUserSchema } from "./oauth.types";
+import { OAuthIdentity, oAuthIdentitySchema } from "./oauth.types";
 
 @Injectable()
 export class OAuthService {
@@ -14,19 +14,26 @@ export class OAuthService {
 	) {}
 
 	/**
-	 * finished google authentication session
+	 * finished authentication session
 	 * @param request request object
-   * @param response response object
+	 * @param response response object
 	 * @returns redirects the user back to the frontend
 	 */
-	async googleCallback(request: Request, response: Response) {
-		const parsed = await OAuthUserSchema.safeParseAsync(request.user);
+	async callback(request: Request, response: Response) {
+		const parsed = await oAuthIdentitySchema.safeParseAsync(request.user);
 
-		if (!parsed.success) {
-			throw createException("badrequest", "INVALID_BODY");
+		// handling error
+		if (parsed.data?.error) {
+			response.redirect(
+				`http://localhost:3000/login?error=${parsed.data.error.toLowerCase()}`,
+			);
 		}
 
-		await this.login(response, request, request.user as OAuthUser);
+		// login upon success
+		if (parsed.success) {
+			await this.login(response, request, parsed.data);
+		}
+
 		response.redirect("http://localhost:3000/login");
 	}
 
@@ -35,7 +42,7 @@ export class OAuthService {
 	 * @param ouser user object retrieved from oauth
 	 * @returns user object
 	 */
-	async login(response: Response, request: Request, ouser: OAuthUser) {
+	async login(response: Response, request: Request, ouser: OAuthIdentity) {
 		// does the user have an email?
 		if (!ouser.email) {
 			throw createException("notfound", "EMAIL_NOT_FOUND");

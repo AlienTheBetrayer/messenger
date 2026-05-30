@@ -4,6 +4,7 @@ import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
 import { Profile, Strategy } from "passport-google-oauth20";
+import { OAuthIdentity } from "../oauth.types";
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
@@ -17,12 +18,19 @@ export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
 	}
 
 	validate(_accessToken: string, _refreshToken: string, profile: Profile) {
-		return {
+		const data: OAuthIdentity = {
 			provider: "google",
 			providerId: profile.id,
 			email: profile.emails?.[0]?.value,
 			name: profile.displayName || profile.username || "Unnamed",
 			profileUrl: profile.profileUrl,
 		};
+
+		// error handling
+		if (!data.email) {
+			data.error = "EMAIL_NOT_FOUND";
+		}
+
+		return data;
 	}
 }
