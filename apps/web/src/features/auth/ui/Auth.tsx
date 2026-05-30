@@ -7,7 +7,7 @@ import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider"
 import { AuthContent } from "@/features/auth/ui/auth/AuthContent";
 import { AuthFooter } from "@/features/auth/ui/auth/AuthFooter";
 import { AuthHeader } from "@/features/auth/ui/auth/AuthHeader";
-import { transformError, useQueryState } from "@/shared";
+import { normalizeError, useQueryState } from "@/shared";
 
 type Props = {
 	type: AuthFormVariantsType;
@@ -17,7 +17,7 @@ export const Auth = ({ type }: Props) => {
 	// states
 	const { authForm } = useAuthFormProvider();
 	const [verify, setVerify] = useQueryState("verify");
-	const [auth, { isLoading: _ }] = useAuthMutation();
+	const [auth] = useAuthMutation();
 
 	// functions
 	const onSubmit = useCallback(
@@ -26,7 +26,7 @@ export const Auth = ({ type }: Props) => {
 				await auth({ ...data, type }).unwrap();
 				setVerify(type);
 			} catch (e) {
-				const message = transformError(e);
+				const message = normalizeError(e);
 				authForm.setError("email", { message });
 			}
 		},
@@ -41,7 +41,8 @@ export const Auth = ({ type }: Props) => {
 			onSubmit={(e) => {
 				void authForm.handleSubmit(onSubmit)(e);
 			}}
-			className={`flex flex-col gap-5 transition-all duration-300 ${verify ? "opacity-50" : ""}`}
+			className={`flex flex-col gap-5 transition-all duration-300 ${verify ? "opacity-30" : ""}`}
+			inert={!!verify}
 		>
 			<AuthHeader type={type} />
 			<AuthContent type={type} />

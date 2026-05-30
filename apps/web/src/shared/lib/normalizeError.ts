@@ -20,7 +20,7 @@ const schemas = new Map<"api" | "axios" | "redux", z.ZodType>([
  * @param statusCode status code of the api error
  * @returns transformed message
  */
-export const transformError = (error: unknown) => {
+export const normalizeError = (error: unknown) => {
 	// default error
 	let message = "Unknown error.";
 

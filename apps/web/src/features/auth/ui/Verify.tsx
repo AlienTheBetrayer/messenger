@@ -1,17 +1,18 @@
 import type { VerifySchema } from "@gravity/shared";
-import axios from "axios";
 import { useCallback } from "react";
 
+import { useAuthVerifyMutation } from "@/features/auth/model/verify.slice";
 import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
 import { VerifyContent } from "@/features/auth/ui/verify/VerifyContent";
 import { VerifyFooter } from "@/features/auth/ui/verify/VerifyFooter";
 import { VerifyHeader } from "@/features/auth/ui/verify/VerifyHeader";
-import { transformError, useQueryState } from "@/shared";
+import { normalizeError, useQueryState } from "@/shared";
 
 export const Verify = () => {
 	// states
 	const { verifyForm, authForm } = useAuthFormProvider();
 	const [verify] = useQueryState("verify");
+	const [authVerify] = useAuthVerifyMutation();
 
 	// verify fn
 	const onSubmit = useCallback(
@@ -29,13 +30,9 @@ export const Verify = () => {
 					const values = authForm.getValues();
 
 					try {
-						await axios.post(`/api/auth/${verify}`, {
-							email: values.email,
-							password: values.password,
-							code: data.code,
-						});
+						await authVerify({ ...values, ...data, type: verify }).unwrap();
 					} catch (e: unknown) {
-						const message = transformError(e);
+						const message = normalizeError(e);
 						verifyForm.setError("code", { message });
 					}
 
@@ -50,7 +47,7 @@ export const Verify = () => {
 				}
 			}
 		},
-		[verifyForm, authForm, verify],
+		[verifyForm, authVerify, authForm, verify],
 	);
 
 	// jsx

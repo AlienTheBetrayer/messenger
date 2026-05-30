@@ -1,12 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import Image from "next/image";
 import Link from "next/link";
+import { useSelector } from "react-redux";
 
 import {
 	AuthFormVariants,
 	type AuthFormVariantsType,
 } from "@/features/auth/lib/variants";
-import { Button, CardFooter, useQueryState } from "@/shared";
+import { Button, CardFooter, Spinner } from "@/shared";
+import { selectRouteStatus } from "@/shared/model/redux.selectors";
 
 type Props = {
 	type: AuthFormVariantsType;
@@ -14,7 +16,7 @@ type Props = {
 
 export const AuthFooter = ({ type }: Props) => {
 	// states
-	const [verify] = useQueryState("verify");
+	const isLoading = useSelector(selectRouteStatus("auth"));
 
 	// ui states
 	const variant = AuthFormVariants[type];
@@ -27,8 +29,8 @@ export const AuthFooter = ({ type }: Props) => {
 					type="submit"
 					className="w-full"
 					form="auth-form"
-					disabled={!!verify}
 				>
+					{isLoading && <Spinner />}
 					{variant.elements.submitButton.text}
 				</Button>
 			)}
@@ -38,7 +40,6 @@ export const AuthFooter = ({ type }: Props) => {
 					type="button"
 					variant="secondary"
 					className="w-full"
-					disabled={!!verify}
 					asChild
 				>
 					{/* redirect to the actual backend url later */}
@@ -59,7 +60,6 @@ export const AuthFooter = ({ type }: Props) => {
 					type="button"
 					variant="secondary"
 					className="w-full"
-					disabled={!!verify}
 					asChild
 				>
 					{/* redirect to the actual backend url later */}
