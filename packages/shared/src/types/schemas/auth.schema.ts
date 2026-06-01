@@ -5,11 +5,12 @@ import {
 	PASSWORD_MAX_LENGTH,
 	PASSWORD_MIN_LENGTH,
 } from "../../config/auth.js";
+import { verification_code_typeSchema } from "../prisma/schemas/enums/verification_code_type.schema.js";
 
 /**
- * auth schema
+ * auth form
  */
-export const authSchema = z.object({
+export const authFormSchema = z.object({
 	email: z.email("Please enter a valid email address."),
 	password: z
 		.string()
@@ -23,29 +24,30 @@ export const authSchema = z.object({
 		),
 });
 
-export type AuthSchema = z.infer<typeof authSchema>;
+export type AuthFormSchema = z.infer<typeof authFormSchema>;
 
 /**
- * verification code schema
+ * verification form
  */
-export const verificationSchema = z.object({
+export const verificationFormSchema = z.object({
 	code: z
 		.string()
 		.length(CODE_LENGTH, `Code must be ${CODE_LENGTH} characters.`),
 });
 
-export type VerificationSchema = z.infer<typeof verificationSchema>;
+export type VerificationFormSchema = z.infer<typeof verificationFormSchema>;
 
 /**
- * full auth schema
+ * /auth/login /, /auth/signup /, /auth/forgot-password /
  */
-export const authRequestSchema = authSchema.extend({
-	code: verificationSchema.shape.code.optional(),
-});
+export const authSchema = authFormSchema.extend(verificationFormSchema.shape);
+export type AuthSchema = z.infer<typeof authSchema>;
 
-export const fullAuthRequestSchema = authSchema.extend({
-	code: verificationSchema.shape.code,
+/**
+ * /auth/code
+ */
+export const codeSchema = z.object({
+	email: z.email(),
+	type: verification_code_typeSchema,
 });
-
-export type AuthRequestSchema = z.infer<typeof authRequestSchema>;
-export type FullAuthRequestSchema = z.infer<typeof fullAuthRequestSchema>;
+export type CodeSchema = z.infer<typeof codeSchema>;

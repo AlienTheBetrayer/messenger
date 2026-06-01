@@ -31,7 +31,7 @@ export class OAuthService {
 
 		// login upon success
 		if (parsed.success) {
-			await this.login(response, request, parsed.data);
+			await this.login(response, parsed.data);
 		}
 
 		response.redirect("http://localhost:3000/login");
@@ -39,10 +39,11 @@ export class OAuthService {
 
 	/**
 	 * oauth-specific login
+	 * @param response response object
 	 * @param ouser user object retrieved from oauth
 	 * @returns user object
 	 */
-	async login(response: Response, request: Request, ouser: OAuthIdentity) {
+	async login(response: Response, ouser: OAuthIdentity) {
 		// does the user have an email?
 		if (!ouser.email) {
 			throw createException("notfound", "EMAIL_NOT_FOUND");
@@ -65,12 +66,13 @@ export class OAuthService {
 			});
 		}
 
-		// tokens + session + hashing
-		await this.jwtService.createAuthSession({
-			request,
-			response,
+		// tokens + hashing + session
+		const tokens = await this.jwtService.issueAuthTokens({
 			userId: user.id,
 		});
+
+		// cookies
+		this.jwtService.setAuthHttpCookies({ ...tokens, response });
 
 		return user;
 	}

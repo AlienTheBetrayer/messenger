@@ -3,7 +3,7 @@ import { useIsLoading } from "@/shared/model/redux.selectors";
 
 export const VerifyFooter = () => {
 	// states
-	const isLoading = useIsLoading("authVerify");
+	const isLoading = useIsLoading(["login", "signup", "forgotPassword"]);
 
 	// jsx
 	return (

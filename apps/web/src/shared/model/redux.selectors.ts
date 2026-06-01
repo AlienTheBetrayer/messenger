@@ -1,41 +1,64 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
+import { createSelector } from "@reduxjs/toolkit";
 import { QueryStatus } from "@reduxjs/toolkit/query";
 import { useSelector } from "react-redux";
 
-import { RootState } from "@/shared/model/redux.types";
+import {
+	RootState,
+	RTKEndpointName,
+	RTKQueryEntry,
+} from "@/shared/model/redux.types";
 
 /**
- * selects whether a route is in state
- * @param route api route to watch
- * @param status type of status
- * @returns whether it's in the specified state right now
+ * root api state selector
+ * @param state root state
+ * @returns api
  */
-export const selectRouteStatus =
-	(route: string, status: QueryStatus) => (state: RootState) => {
-		const all = [
-			...Object.values(state.api.queries),
-			...Object.values(state.api.mutations),
-		];
-
-		return all.some((x) => {
-			return x?.status === status && x.endpointName === route;
-		});
-	};
+const selectApiState = (state: RootState) => state.api;
 
 /**
- * selects whether a route is in state (hook-form)
- * @param route api route to watch
- * @param status type of status
- * @returns whether it's in the specified state right now
+ * selector that memoizes and maps all endpoints to their queries and mutations in one record
+ * @param index mapped index state
  */
-export const useSelectRouteStatus = (route: string, status: QueryStatus) => {
-	return useSelector(selectRouteStatus(route, status));
+const selectEndpointIndex = createSelector(selectApiState, (api) => {
+	const index = new Map<string, RTKQueryEntry[]>();
+
+	for (const entry of [
+		...Object.values(api.queries ?? {}),
+		...Object.values(api.mutations ?? {}),
+	]) {
+		if (!entry?.endpointName) continue;
+		index.getOrInsert(entry.endpointName, []).push(entry);
+	}
+
+	return index;
+});
+
+/**
+ * selector that memoizes specified endpoints and their status
+ * @param endpoints endpoints to watch
+ * @param status status to check
+ * @returns
+ */
+export const selectRouteStatus = (
+	endpoints: RTKEndpointName[],
+	status: QueryStatus,
+) => {
+	return createSelector<[typeof selectEndpointIndex], boolean>(
+		selectEndpointIndex,
+		(index) => {
+			return endpoints.some((endpoint) => {
+				return index.get(endpoint)?.some((x) => x?.status === status);
+			});
+		},
+	);
 };
 
 /**
- * selects whether a route is currently loading (hook-form)
- * @param route api route to watch
- * @returns whether it's loading right now
+ * determines whether specified endpoints are loading
+ * @param endpoints endpoints to watch
+ * @returns whether at least any of them are loading
  */
-export const useIsLoading = (route: string) => {
-	return useSelector(selectRouteStatus(route, QueryStatus.pending));
+export const useIsLoading = (endpoints: RTKEndpointName[]) => {
+	return useSelector(selectRouteStatus(endpoints, QueryStatus.pending));
 };

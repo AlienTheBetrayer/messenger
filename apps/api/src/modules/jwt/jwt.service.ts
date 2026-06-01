@@ -1,13 +1,11 @@
-import {
-	ACCESS_TOKEN_EXPIRY_S,
-	REFRESH_TOKEN_EXPIRY_S,
-	TokenPayload,
-} from "@gravity/shared";
+import { ACCESS_TOKEN_EXPIRY_S, REFRESH_TOKEN_EXPIRY_S } from "@gravity/shared";
 import { Injectable } from "@nestjs/common";
 import bcrypt from "bcryptjs";
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
+import z from "zod";
 
+import { TokenPayloadSchema, tokenPayloadSchema } from "../auth/auth.types";
 import { PrismaService } from "../prisma/prisma.service";
 
 @Injectable()
@@ -48,123 +46,111 @@ export class JwtService {
 	}
 
 	/**
-	 * signs the token, then sets the secure cookie
-	 * @param payload data to be signed
-	 * @param envKey environmental secret key
-	 * @param expiry expiry time in seconds
-	 * @param response raw response object
+	 * securely sets the jwt token at the http-only cookies
 	 * @param name name of the token
-	 * @returns jwt token
+	 * @param token jwt token
+	 * @param expiryS expiry in seconds
+	 * @param response Response object
 	 */
-	issue(
-		params: Parameters<typeof this.sign>[0] & {
-			response: Response;
-			name: string;
-		},
-	) {
-		// signing the token
-		const token = this.sign(params);
-
-		// setting the cookie
-		params.response.cookie(params.name, token, {
+	setHttpCookie(params: {
+		name: string;
+		token: string;
+		expiryS: number;
+		response: Response;
+	}) {
+		params.response.cookie(params.name, params.token, {
 			httpOnly: true,
 			secure: true,
 			sameSite: "lax",
-			maxAge: params.expiry * 1000,
+			maxAge: params.expiryS * 1000,
 		});
-
-		return token;
 	}
 
 	/**
-	 * signs access and refresh tokens, sets the secure cookie, and returns them
-	 * @param response raw response object
-	 * @param sessionId id of the database's session
-	 * @param userId id of the user
-	 * @returns access and refresh tokens
+	 * validates and decodes the jwt token payload
+	 * @param token jwt token
+	 * @param schema schema to validate the token with
+	 * @returns token and decoded payload or null if not validated
 	 */
-	issueAuthTokens(params: { response: Response; payload: TokenPayload }) {
-		// access token
-		const accessToken = this.issue({
-			payload: params.payload,
-			expiry: ACCESS_TOKEN_EXPIRY_S,
-			envKey: "ACCESS_TOKEN_SECRET",
-			response: params.response,
-			name: "accessToken",
-		});
-
-		// refresh token
-		const refreshToken = this.issue({
-			payload: params.payload,
-			expiry: REFRESH_TOKEN_EXPIRY_S,
-			envKey: "REFRESH_TOKEN_SECRET",
-			response: params.response,
-			name: "refreshToken",
-		});
-
-		return { accessToken, refreshToken };
-	}
-
-	/**
-	 * decodes the jwt token payload
-	 * @param request request object
-	 * @param type type of the token
-	 * @returns token and decoded payload or null if no token
-	 */
-	decode(params: { request: Request; type: "access" | "refresh" }) {
-		// getting the token
-		const token = (params.request.cookies as Record<string, string>)[
-			`${params.type}Token`
-		];
-
+	decode<T extends z.ZodType = typeof tokenPayloadSchema>(params: {
+		token: unknown;
+		schema?: T;
+	}): z.infer<T> | null {
 		// validating the token
-		if (!token || typeof token !== "string") {
+		if (!params.token || typeof params.token !== "string") {
 			return null;
 		}
 
-		return { token, payload: jwt.decode(token) as TokenPayload };
+		const decodedToken = jwt.decode(params.token);
+
+		if (!decodedToken) {
+			return null;
+		}
+
+		const parsed = ((params.schema ?? tokenPayloadSchema) as T).safeParse(
+			decodedToken,
+		);
+
+		if (!parsed.success) {
+			return null;
+		}
+
+		return parsed.data;
+	}
+
+  /**
+   * gets the raw versions of access and refresh tokens cookies
+   * @param request Request object
+   * @returns access and refresh tokens (or null if not found)
+   */
+	getAuthTokens(params: { request: Request }) {
+		const accessToken = params.request.cookies["accessToken"] as unknown;
+		const refreshToken = params.request.cookies["refreshToken"] as unknown;
+
+		return {
+			accessToken: typeof accessToken === "string" ? accessToken : null,
+			refreshToken: typeof refreshToken === "string" ? refreshToken : null,
+		};
 	}
 
 	/**
-	 * issues auth tokens, hashes the refresh token, and creates a new session attached to the refresh token
-	 * @param request request object
-	 * @param response response object
-	 * @param userId id of the authenticated user
-	 * @returns created session and tokens
+	 * issues access and refresh tokens along with a session, tied to the user
+	 * @param userId id of the user
+	 * @returns access token, refresh token and session
 	 */
-	async createAuthSession(params: {
-		request: Request;
-		response: Response;
-		userId: string;
-	}) {
-		// creating the session
-		const user_agent = params.request.headers["user-agent"] ?? "";
-		const ip_address = params.request.ip;
-
+	async issueAuthTokens(params: { userId: string }) {
+		// session
 		const session = await this.prismaService.auth_session.create({
 			data: {
 				user_id: params.userId,
 				refresh_token_hash: "",
-				ip_address,
-				user_agent,
 			},
 		});
 
-		// issue access token (sign + set cookie)
-		const { accessToken, refreshToken } = this.issueAuthTokens({
-			response: params.response,
-			payload: {
-				sessionId: session.id,
-				userId: params.userId,
-			},
+		// signing tokens
+		const payload: TokenPayloadSchema = {
+			sessionId: session.id,
+			userId: params.userId,
+		};
+
+		const accessToken = this.sign({
+			payload,
+			expiry: ACCESS_TOKEN_EXPIRY_S,
+			envKey: "ACCESS_TOKEN_SECRET",
 		});
 
-		// hashing refresh token
+		const refreshToken = this.sign({
+			payload,
+			expiry: REFRESH_TOKEN_EXPIRY_S,
+			envKey: "REFRESH_TOKEN_SECRET",
+		});
+
+		// hashing the refresh token
 		const salt = await bcrypt.genSalt(10);
 		const refreshTokenHash = await bcrypt.hash(refreshToken, salt);
 
-		// updating session
-		await this.prismaService.auth_session.update({
+		// updating the session
+		const updatedSession = await this.prismaService.auth_session.update({
 			where: {
 				id: session.id,
 			},
@@ -173,7 +159,35 @@ export class JwtService {
 			},
 		});
 
-		return { accessToken, refreshToken, session };
+		return { accessToken, refreshToken, session: updatedSession };
+	}
+
+	/**
+	 * sets both access and refresh tokens securely at the http-only cookies
+	 * @param accessToken access jwt token
+	 * @param refreshToken refresh jwt token
+	 * @param response response object
+	 */
+	setAuthHttpCookies(params: {
+		accessToken: string;
+		refreshToken: string;
+		response: Response;
+	}) {
+		// access
+		this.setHttpCookie({
+			name: "accessToken",
+			token: params.accessToken,
+			expiryS: ACCESS_TOKEN_EXPIRY_S,
+			response: params.response,
+		});
+
+		// refresh
+		this.setHttpCookie({
+			name: "refreshToken",
+			token: params.refreshToken,
+			expiryS: REFRESH_TOKEN_EXPIRY_S,
+			response: params.response,
+		});
 	}
 
 	/**
@@ -181,7 +195,10 @@ export class JwtService {
 	 * @param response response object
 	 * @param type which type of token to delete
 	 */
-	delete(params: { response: Response; type: "access" | "refresh" | "all" }) {
+	deleteAuthTokens(params: {
+		response: Response;
+		type: "access" | "refresh" | "all";
+	}) {
 		// access token
 		if (params.type === "access" || params.type === "all") {
 			params.response.clearCookie("accessToken");

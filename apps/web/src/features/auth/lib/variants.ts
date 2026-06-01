@@ -1,4 +1,4 @@
-import { ExceptionCode } from "@gravity/shared";
+import { ExceptionCode, verification_codesType } from "@gravity/shared";
 
 /**
  * template type for all variants
@@ -104,7 +104,7 @@ export const AuthFormVariants = {
 			},
 		},
 	},
-	"forgot-password": {
+	"forgot_password": {
 		title: "Password recovery",
 		description: "Enter the email address associated with your account.",
 
@@ -136,7 +136,7 @@ export const AuthFormVariants = {
 			},
 		},
 	},
-} as const satisfies Record<string, AuthFormVariant>;
+} as const satisfies Record<verification_codesType["type"], AuthFormVariant>;
 
 /**
  * types of authentication

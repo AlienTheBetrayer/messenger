@@ -1,8 +1,8 @@
-import type { AuthSchema } from "@gravity/shared";
+import type { AuthFormSchema } from "@gravity/shared";
 import { useCallback } from "react";
 
 import type { AuthFormVariantsType } from "@/features/auth/lib/variants";
-import { useAuthMutation } from "@/features/auth/model/auth.slice";
+import { useGetCodeMutation } from "@/features/auth/model/auth.slice";
 import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
 import { AuthContent } from "@/features/auth/ui/auth/AuthContent";
 import { AuthFooter } from "@/features/auth/ui/auth/AuthFooter";
@@ -14,23 +14,25 @@ type Props = {
 };
 
 export const Auth = ({ type }: Props) => {
+  // redux
+  const [getCode] = useGetCodeMutation();
+  
 	// states
 	const { authForm } = useAuthFormProvider();
-	const [verify, setVerify] = useQueryState("verify");
-	const [auth] = useAuthMutation();
+  const [, setVerify] = useQueryState("verify");
 
 	// functions
 	const onSubmit = useCallback(
-		async (data: AuthSchema) => {
+		async (data: AuthFormSchema) => {
 			try {
-				await auth({ ...data, type }).unwrap();
+				await getCode({ email: data.email, type }).unwrap();
 				setVerify(type);
 			} catch (e) {
 				const message = normalizeError(e);
 				authForm.setError("email", { message });
 			}
 		},
-		[authForm, setVerify, type, auth],
+		[authForm, setVerify, type, getCode],
 	);
 
 	// jsx
@@ -41,8 +43,7 @@ export const Auth = ({ type }: Props) => {
 			onSubmit={(e) => {
 				void authForm.handleSubmit(onSubmit)(e);
 			}}
-			className={`flex flex-col gap-5 transition-all duration-300 ${verify ? "opacity-30" : ""}`}
-			inert={!!verify}
+			className="flex flex-col gap-5 transition-all duration-300"
 		>
 			<AuthHeader type={type} />
 			<AuthContent type={type} />

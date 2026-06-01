@@ -1,4 +1,9 @@
-import { CODE_EXPIRY_MS, CODE_LENGTH, randomString } from "@gravity/shared";
+import {
+	CODE_EXPIRY_MS,
+	CODE_LENGTH,
+	CodeSchema,
+	randomString,
+} from "@gravity/shared";
 import { Injectable } from "@nestjs/common";
 
 import { verification_code_type } from "../../../generated/prisma";
@@ -17,10 +22,10 @@ export class VerifyService {
 	/**
 	 * create and send via email verification code
 	 * @param email email address to send it to
-   * @param type verification code type
+	 * @param type verification code type
 	 * @returns created code
 	 */
-	async issueCode(params: { email: string; type: verification_code_type }) {
+	async issueCode(params: CodeSchema) {
 		const code = await this.prismaService.verification_codes.create({
 			data: {
 				code: randomString(CODE_LENGTH, "0123456789"),
@@ -45,7 +50,7 @@ export class VerifyService {
 	 * @param email the email the code was sent to
 	 * @param type the type of the code
 	 * @param code the code to validate
-   * @param cleanup whether to clean up the code after the verification
+	 * @param cleanup whether to clean up the code after the verification
 	 * @returns valid code or thrown error
 	 */
 	async validateCode(params: {

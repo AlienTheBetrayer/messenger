@@ -18,6 +18,7 @@ import {
 	FieldGroup,
 	FieldLabel,
 	Input,
+	useQueryState,
 } from "@/shared";
 
 type Props = {
@@ -27,6 +28,7 @@ type Props = {
 export const AuthContent = ({ type }: Props) => {
 	// states
 	const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
+	const [verify] = useQueryState("verify");
 	const { authForm } = useAuthFormProvider();
 
 	// ui states
@@ -40,6 +42,7 @@ export const AuthContent = ({ type }: Props) => {
 				{variant.elements.email.enabled && (
 					<Controller
 						name="email"
+						disabled={!!verify}
 						control={authForm.control}
 						render={({ field, fieldState }) => (
 							<Field data-invalid={fieldState.invalid}>

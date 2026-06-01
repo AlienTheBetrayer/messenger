@@ -1,50 +1,12 @@
-import { AuthRequestSchema } from "@gravity/shared";
+import { AuthSchema, CodeSchema } from "@gravity/shared";
 import { Injectable } from "@nestjs/common";
 import bcrypt from "bcryptjs";
-import { Request, Response } from "express";
 
 import { createException } from "../../common/index.js";
 import { JwtService } from "../jwt/jwt.service.js";
 import { PrismaService } from "../prisma/prisma.service.js";
 import { VerifyService } from "../verify/verify.service.js";
-
-/**
- * NEW microtasks ✅
- *
- * register:
- * 1. fix FE validation
- * 2. ensure it works
- *
- * login:
- * 1. FE sends a request /api/login
- * 2. BE sends the code
- * 3. FE requests /api/login?code=000000
- * 4. BE validates the user
- * 5. FE handles response + if succeded: stores user globally + shows animation
- * 6. BE if succeded: creates a new session
- * 7. BE issues Access and Refresh(attached to that session) tokens
- *
- *
- * forgot password:
- * 0. FE add password field and change schemas
- * 1. FE requests /api/forgot-password code
- * 2. BE sends the code
- * 3. FE requests /api/forgot-password?code=000000
- * 4. BE changes the password
- * 5. FE shows animated login button
- *
- * forgot email:
- * 0. FE requests /api/forgot-email?email=m@...
- * 1. BE route retrieves sessions from refresh token
- * 2. FE shows it (or absense warning)
- * 3. FE copy buttons
- *
- * request cycle:
- * 1. FE sends a request
- * 2. BE guard checks the refresh token and passes if it's present, rejects if not
- * 3. BE guard attaches a flag if refresh's there but access token is not
- * 4. BE interceptor attaches a new access token if flag is present
- */
+import { TokenPayloadSchema } from "./auth.types.js";
 
 @Injectable()
 export class AuthService {
@@ -55,64 +17,87 @@ export class AuthService {
 	) {}
 
 	/**
-	 * no code: sends the signup code. code: creates the user.
-	 * @param email email address (required)
-	 * @param password password (required, will be hashed)
-	 * @param code (optional, used to verify)
-	 * @returns code or user
+	 * validates and sends an authentication code via email
+	 * @param email email to issue the code to
+	 * @returns newly generated code (also sent to email) if validated
 	 */
-	async authSignup(body: AuthRequestSchema) {
-		if (body.code) {
-			// verifying the code
-			await this.verifyService.validateCode({
-				email: body.email,
-				type: "signup",
-				code: body.code,
-			});
+	async code(body: CodeSchema) {
+		// validating
+		switch (body.type) {
+			case "signup": {
+				// does the user exist?
+				if (
+					await this.prismaService.users.count({ where: { email: body.email } })
+				) {
+					throw createException("conflict", "USER_ALREADY_EXISTS");
+				}
 
-			// hashing the password
-			const salt = await bcrypt.genSalt(10);
-			const hash = await bcrypt.hash(body.password, salt);
-
-			// creating the user
-			const user = await this.prismaService.users.create({
-				data: {
-					email: body.email,
-					password: hash,
-				},
-			});
-
-			return user;
-		} else {
-			// does the user already exist?
-			if (
-				await this.prismaService.users.count({ where: { email: body.email } })
-			) {
-				throw createException("conflict", "USER_ALREADY_EXISTS");
+				break;
 			}
+			case "forgot_password": {
+				// does the eamil exist?
+				if (
+					!(await this.prismaService.users.count({
+						where: { email: body.email },
+					}))
+				) {
+					throw createException("notfound", "USER_NOT_FOUND");
+				}
 
-			// create a verification code, send it via email
-			return await this.verifyService.issueCode({
-				email: body.email,
-				type: "signup",
-			});
+				break;
+			}
 		}
+
+		// issuing the code
+		const code = await this.verifyService.issueCode(body);
+		return code;
 	}
 
 	/**
-	 * no code: sends the login code. code: authenticated the user.
-	 * @param email email address (required)
-	 * @param password password (required, will be hashed)
-	 * @param code (optional, used to verify)
-	 * @param request request object
-	 * @param response response object
-	 * @returns code or user with authentication tokens
+	 * signs the user up
+	 * @param email email address
+	 * @param password secure password
+	 * @param code code that was sent to email (use /code/)
+	 * @returns user object
 	 */
-	async authLogin(
-		body: AuthRequestSchema,
-		request: Request,
-		response: Response,
-	) {
+	async signup(body: AuthSchema) {
+		// verifying the code
+		await this.verifyService.validateCode({
+			email: body.email,
+			type: "signup",
+			code: body.code,
+		});
+
+		// hashing the password
+		const salt = await bcrypt.genSalt(10);
+		const hash = await bcrypt.hash(body.password, salt);
+
+		// creating the user
+		const user = await this.prismaService.users.create({
+			data: {
+				email: body.email,
+				password: hash,
+			},
+		});
+
+		return user;
+	}
+
+	/**
+	 * authenticates the user.
+	 * @param email email address
+	 * @param password secure password
+	 * @param code code that was sent to email (use /code/)
+	 * @returns authentication tokens and a session
+	 */
+	async login(body: AuthSchema) {
+		// verifying the code
+		await this.verifyService.validateCode({
+			email: body.email,
+			type: "login",
+			code: body.code,
+		});
+
 		// does the user already exist?
 		const user = await this.prismaService.users.findFirst({
 			where: { email: body.email },
@@ -122,7 +107,7 @@ export class AuthService {
 			throw createException("notfound", "USER_NOT_FOUND");
 		}
 
-		// do passwords' hashes match?
+		// do password hashes match?
 		const isPasswordCorrect = await bcrypt.compare(
 			body.password,
 			user.password,
@@ -132,150 +117,65 @@ export class AuthService {
 			throw createException("unauthorized", "INVALID_CREDENTIALS");
 		}
 
-		if (body.code) {
-			// verifying the code
-			await this.verifyService.validateCode({
-				email: body.email,
-				type: "login",
-				code: body.code,
-			});
-
-			// tokens + session + hashing
-			const { accessToken, refreshToken } =
-				await this.jwtService.createAuthSession({
-					request,
-					response,
-					userId: user.id,
-				});
-
-			return { accessToken, refreshToken, user };
-		} else {
-			// create a verification code, send it via email
-			return await this.verifyService.issueCode({
-				email: body.email,
-				type: "login",
-			});
-		}
+		return await this.jwtService.issueAuthTokens({ userId: user.id });
 	}
 
 	/**
-	 * no code: sends the forgot-password code. code: changes the password
+	 * changes the password
 	 * @param email email address (required)
 	 * @param password password (required, will be hashed)
 	 * @param code (optional, used to verify)
-	 * @returns code or user
+	 * @returns new user object
 	 */
-	async authForgotPassword(body: AuthRequestSchema) {
-		// does this email exist?
-		if (
-			!(await this.prismaService.users.count({
-				where: { email: body.email },
-			}))
-		) {
-			throw createException("notfound", "USER_NOT_FOUND");
-		}
+	async forgotPassword(body: AuthSchema) {
+		// verifying the code
+		await this.verifyService.validateCode({
+			email: body.email,
+			type: "forgot_password",
+			code: body.code,
+		});
 
-		if (body.code) {
-			// verifying the code
-			await this.verifyService.validateCode({
+		// hashing the new password
+		const salt = await bcrypt.genSalt(10);
+		const hash = await bcrypt.hash(body.password, salt);
+
+		// changing user's data
+		const user = await this.prismaService.users.update({
+			where: {
 				email: body.email,
-				type: "forgot_password",
-				code: body.code,
-			});
-
-			// hashing the new password
-			const salt = await bcrypt.genSalt(10);
-			const hash = await bcrypt.hash(body.password, salt);
-
-			// changing user's data
-			const user = await this.prismaService.users.update({
-				where: {
-					email: body.email,
-				},
-				data: {
-					password: hash,
-				},
-			});
-
-			return user;
-		} else {
-			// create a verification code, send it via email
-			return await this.verifyService.issueCode({
-				email: body.email,
-				type: "forgot_password",
-			});
-		}
-	}
-
-	/**
-	 * attempts to retrieve the last used email from the authenticated session
-	 * @param request request object
-	 * @returns retrieved email or nothing
-	 */
-	async authForgotEmail(request: Request) {
-		return await Promise.resolve(() => [request]);
-	}
-
-	/**
-	 * gets the currently logged in user (yourself)
-	 * @param request request object
-	 * @returns user object of currently logged in user
-	 */
-	async authMe(request: Request) {
-		// getting the token
-		const refreshToken = this.jwtService.decode({ request, type: "refresh" });
-
-		if (!refreshToken) {
-			throw createException("unauthorized", "UNAUTHENTICATED");
-		}
-
-		// // verifying the session
-		// const session = await this.prismaService.auth_session.findFirst({
-		// 	where: { id: refreshToken.payload.sessionId },
-		// });
-
-		// if (!session) {
-		// 	throw createException("unauthorized", "UNAUTHENTICATED");
-		// }
-
-		// // verifying hashes
-		// const isRefreshTokenCorrect = await bcrypt.compare(
-		// 	refreshToken.token,
-		// 	session.refresh_token_hash,
-		// );
-
-		// if (!isRefreshTokenCorrect) {
-		// 	throw createException("unauthorized", "UNAUTHENTICATED");
-		// }
-
-		// getting the user
-		const user = await this.prismaService.users.findFirst({
-			where: { id: refreshToken.payload.user_id },
+			},
+			data: {
+				password: hash,
+			},
 		});
 
 		return user;
 	}
 
 	/**
-	 * logs out the current user, deleting the session
-	 * @param request request object
-	 * @param response response object
+	 * gets the currently logged in user (yourself)
+	 * @param refreshToken refresh token
+	 * @returns user object along with the session of currently logged in user
+	 */
+	async me(refreshToken: TokenPayloadSchema) {
+		// getting the user
+		return await this.prismaService.users.findFirst({
+			where: { id: refreshToken.userId },
+			include: {
+				auth_session: true,
+			},
+		});
+	}
+
+	/**
+	 * logs out a specific session id, deleting the session
+	 * @param sessionId id of the session to be deleted
 	 * @returns null (if already logged out) or session
 	 */
-	async authLogout(request: Request, response: Response) {
-		// getting the token
-		const refreshToken = this.jwtService.decode({ request, type: "refresh" });
-
-		if (!refreshToken) {
-			return null;
-		}
-
-		// deleting the token
-		this.jwtService.delete({ response, type: "all" });
-
+	async logout(sessionId: string) {
 		// deleting the session
 		const session = await this.prismaService.auth_session.delete({
-			where: { id: refreshToken.payload.sessionId },
+			where: { id: sessionId },
 		});
 
 		return session;

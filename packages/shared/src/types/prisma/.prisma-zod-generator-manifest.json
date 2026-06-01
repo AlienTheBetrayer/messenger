@@ -1,0 +1,20 @@
+{
+  "version": "1.0",
+  "generatorVersion": "0.0.0",
+  "generatedAt": "2026-06-01T22:41:42.030Z",
+  "outputPath": "C:\\Users\\user\\Documents\\GitHub\\messenger\\packages\\shared\\src\\types\\prisma",
+  "files": [
+    "schemas\\enums\\TransactionIsolationLevel.schema.ts",
+    "schemas\\enums\\UsersScalarFieldEnum.schema.ts",
+    "schemas\\enums\\VerificationCodesScalarFieldEnum.schema.ts",
+    "schemas\\enums\\AuthSessionScalarFieldEnum.schema.ts",
+    "schemas\\enums\\SortOrder.schema.ts",
+    "schemas\\enums\\QueryMode.schema.ts",
+    "schemas\\enums\\NullsOrder.schema.ts",
+    "schemas\\enums\\verification_code_type.schema.ts"
+  ],
+  "directories": [
+    "schemas\\enums"
+  ],
+  "singleFileMode": false
+}

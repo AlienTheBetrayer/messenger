@@ -1,6 +1,10 @@
-import { AuthRequestSchema, PrismaTypes } from "@gravity/shared";
+import {
+	auth_sessionType,
+	AuthSchema,
+	CodeSchema,
+	verification_codesType,
+} from "@gravity/shared";
 
-import { AuthFormVariantsType } from "@/features/auth/lib/variants";
 import { baseApi } from "@/shared";
 
 /**
@@ -8,12 +12,52 @@ import { baseApi } from "@/shared";
  */
 export const authApi = baseApi.injectEndpoints({
 	endpoints: (builder) => ({
-		auth: builder.mutation<
-			PrismaTypes["verification_codes"],
-			AuthRequestSchema & { type: AuthFormVariantsType }
+		/**
+		 * /auth/code/
+		 */
+		getCode: builder.mutation<verification_codesType, CodeSchema>({
+			query: (body) => ({
+				url: "/auth/code",
+				method: "POST",
+				body,
+			}),
+		}),
+
+		/**
+		 * /auth/login
+		 */
+		login: builder.mutation<
+			{
+				accessToken: string;
+				refreshToken: string;
+				session: auth_sessionType;
+			},
+			AuthSchema
 		>({
 			query: (body) => ({
-				url: `/auth/${body.type}`,
+				url: "/auth/login",
+				method: "POST",
+				body,
+			}),
+		}),
+
+		/**
+		 * /auth/signup
+		 */
+		signup: builder.mutation<auth_sessionType, AuthSchema>({
+			query: (body) => ({
+				url: "/auth/signup",
+				method: "POST",
+				body,
+			}),
+		}),
+
+		/**
+		 * /auth/forgot-password
+		 */
+		forgotPassword: builder.mutation<auth_sessionType, AuthSchema>({
+			query: (body) => ({
+				url: "/auth/forgot-password",
 				method: "POST",
 				body,
 			}),
@@ -21,4 +65,9 @@ export const authApi = baseApi.injectEndpoints({
 	}),
 });
 
-export const { useAuthMutation } = authApi;
+export const {
+	useGetCodeMutation,
+	useLoginMutation,
+	useSignupMutation,
+	useForgotPasswordMutation,
+} = authApi;

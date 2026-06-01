@@ -1,6 +1,6 @@
 "use client";
 
-import { AuthSchema, VerificationSchema } from "@gravity/shared";
+import { AuthFormSchema, VerificationFormSchema } from "@gravity/shared";
 import { createContext, useContext } from "react";
 import { UseFormReturn } from "react-hook-form";
 
@@ -10,8 +10,8 @@ import { useAuthForms } from "@/features/auth/hooks/useAuthForms";
  * context
  */
 type AuthFormData = {
-	authForm: UseFormReturn<AuthSchema>;
-	verifyForm: UseFormReturn<VerificationSchema>;
+	authForm: UseFormReturn<AuthFormSchema>;
+	verifyForm: UseFormReturn<VerificationFormSchema>;
 };
 
 export const AuthFormContext = createContext<AuthFormData | null>(null);

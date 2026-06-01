@@ -1,13 +1,12 @@
-import {
-	authRequestSchema,
-	authSchema,
-	verificationSchema,
-} from "@gravity/shared";
+import { authSchema, codeSchema } from "@gravity/shared";
 import { createZodDto } from "nestjs-zod";
 
 /**
- * shared DTOs
+ * /auth/code/
  */
-export class AuthenticationDto extends createZodDto(authSchema) {}
-export class VerificationCodeDto extends createZodDto(verificationSchema) {}
-export class AuthRequestDto extends createZodDto(authRequestSchema) {}
+export class CodeDto extends createZodDto(codeSchema) {}
+
+/**
+ * /auth/login/, /auth/signup/, /auth/forgot-password/
+ */
+export class AuthDto extends createZodDto(authSchema) {}
