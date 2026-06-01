@@ -4,15 +4,17 @@ import { useEffect, useMemo, useState } from "react";
  * debounced state
  * @param initialValue initial value to set
  * @param delayMs how many seconds to wait until setting
- * @returns debounced value and a function to poll the update
+ * @returns debounced value, raw value and a function to poll the update
  */
 export const useDebounce = <T>(
 	initialValue: T,
 	config?: { delayMs?: number; onUpdate?: (debounced: T) => void },
 ) => {
+	// states
 	const [debounced, setDebounced] = useState<T>(initialValue);
 	const [value, setValue] = useState<T>(initialValue);
 
+	// debouncing
 	useEffect(() => {
 		const timeout = setTimeout(() => {
 			setDebounced(value);

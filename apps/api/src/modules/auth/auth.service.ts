@@ -106,7 +106,7 @@ export class AuthService {
 	 * @param code (optional, used to verify)
 	 * @param request request object
 	 * @param response response object
-	 * @returns code or user
+	 * @returns code or user with authentication tokens
 	 */
 	async authLogin(
 		body: AuthRequestSchema,
@@ -141,13 +141,14 @@ export class AuthService {
 			});
 
 			// tokens + session + hashing
-			await this.jwtService.createAuthSession({
-				request,
-				response,
-				userId: user.id,
-			});
+			const { accessToken, refreshToken } =
+				await this.jwtService.createAuthSession({
+					request,
+					response,
+					userId: user.id,
+				});
 
-			return user;
+			return { accessToken, refreshToken, user };
 		} else {
 			// create a verification code, send it via email
 			return await this.verifyService.issueCode({

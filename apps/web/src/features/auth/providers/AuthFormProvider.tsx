@@ -1,18 +1,24 @@
 "use client";
 
-import { AuthSchema, VerifySchema } from "@gravity/shared";
+import { AuthSchema, VerificationSchema } from "@gravity/shared";
 import { createContext, useContext } from "react";
 import { UseFormReturn } from "react-hook-form";
 
 import { useAuthForms } from "@/features/auth/hooks/useAuthForms";
 
+/**
+ * context
+ */
 type AuthFormData = {
 	authForm: UseFormReturn<AuthSchema>;
-	verifyForm: UseFormReturn<VerifySchema>;
+	verifyForm: UseFormReturn<VerificationSchema>;
 };
 
 export const AuthFormContext = createContext<AuthFormData | null>(null);
 
+/**
+ * provider
+ */
 type Props = {
 	children: React.ReactNode;
 };
@@ -28,12 +34,16 @@ export const AuthFormProvider = ({ children }: Props) => {
 	);
 };
 
+/**
+ * hook to access form context (must be used in a component within an <AuthFormProvider />)
+ * @returns reactive context data
+ */
 export const useAuthFormProvider = () => {
 	const ctx = useContext(AuthFormContext);
 
 	if (!ctx) {
 		throw new Error(
-			"useFormProvider must be used within a <AuthFormProvider />",
+			"useFormProvider must be used within an <AuthFormProvider />",
 		);
 	}
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 import {
 	ApiErrorSchema,
 	apiErrorSchema,
@@ -9,6 +10,9 @@ import {
 } from "@gravity/shared";
 import z from "zod";
 
+/**
+ * error schemas
+ */
 const schemas = new Map<"api" | "axios" | "redux", z.ZodType>([
 	["api", apiErrorSchema],
 	["axios", axiosErrorSchema],
@@ -49,7 +53,11 @@ export const normalizeError = (error: unknown) => {
 		}
 
 		if (data) {
-			message = data.message || ExceptionCodeTransformations[data.code];
+			message =
+				data.message ||
+				ExceptionCodeTransformations[
+					data.code as keyof typeof ExceptionCodeTransformations
+				];
 			break;
 		}
 	}

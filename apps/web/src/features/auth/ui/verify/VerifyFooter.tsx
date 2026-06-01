@@ -1,10 +1,9 @@
-import { useSelector } from "react-redux";
-
 import { Button, CardFooter, Spinner } from "@/shared";
-import { selectRouteStatus } from "@/shared/model/redux.selectors";
+import { useIsLoading } from "@/shared/model/redux.selectors";
 
 export const VerifyFooter = () => {
-	const isLoading = useSelector(selectRouteStatus("authVerify"));
+	// states
+	const isLoading = useIsLoading("authVerify");
 
 	// jsx
 	return (

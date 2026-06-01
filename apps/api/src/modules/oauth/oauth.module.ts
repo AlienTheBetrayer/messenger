@@ -2,10 +2,10 @@ import { Module } from "@nestjs/common";
 
 import { JwtModule } from "../jwt/jwt.module";
 import { PrismaModule } from "../prisma/prisma.module";
+import { GithubStrategy } from "./external/github.service";
+import { GoogleStrategy } from "./external/google.service";
 import { OAuthController } from "./oauth.controller";
 import { OAuthService } from "./oauth.service";
-import { GithubStrategy } from "./services/github.strategy";
-import { GoogleStrategy } from "./services/google.strategy";
 
 /**
  * all oauth services

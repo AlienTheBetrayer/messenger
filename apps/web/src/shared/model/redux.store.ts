@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 /**
- * raw api slice
+ * global api slice
  * has to be injected later into
  */
 export const baseApi = createApi({

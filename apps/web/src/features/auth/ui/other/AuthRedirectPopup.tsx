@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { RedirectPopupVariants } from "@/features/auth/lib/variants";
 import {
-	Button,
-	Dialog,
-	DialogClose,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-	useQueryState,
+  Button,
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  useQueryState,
 } from "@/shared";
 
 export const AuthRedirectPopup = () => {

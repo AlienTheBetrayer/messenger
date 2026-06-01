@@ -1,7 +1,7 @@
 /**
- * @description enables ripple effect on any interactable element
- *
+ * enables ripple effect on any interactable element
  * @param e - pointer event of a given interactable element
+ * @returns nothing
  */
 export const rippleEnable = <T extends HTMLElement>(
 	e: React.PointerEvent<T>,

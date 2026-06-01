@@ -1,17 +1,20 @@
 import { useEffect, useState } from "react";
 
 /**
- * performance libraries
+ * optimization
  */
 let lockCount = 0;
 let originalScrollY = 0;
 
 /**
  * locks scroll by disabling the overflow of the document without UI snapping
+ * @returns nothing
  */
 export const useDisabledScroll = () => {
+	// states
 	const [isDisabled, setIsDisabled] = useState<boolean>(false);
 
+	// disabling
 	useEffect(() => {
 		if (!isDisabled) {
 			return;

@@ -1,4 +1,4 @@
-import { ApiErrorSchema } from "../schema/error.schema.js";
+import { ApiErrorSchema } from "./schemas/error.schema.js";
 
 /**
  * http status codes (array)

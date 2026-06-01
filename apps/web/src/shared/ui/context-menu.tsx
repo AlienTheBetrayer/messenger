@@ -3,7 +3,7 @@
 import * as React from "react";
 import { ContextMenu as ContextMenuPrimitive } from "radix-ui";
 
-import { cn } from "@/shared/lib/utils";
+import { cn } from "@/shared/lib/tailwind";
 import { ChevronRightIcon, CheckIcon } from "lucide-react";
 
 function ContextMenu({

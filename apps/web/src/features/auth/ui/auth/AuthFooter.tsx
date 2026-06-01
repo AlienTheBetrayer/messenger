@@ -1,14 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import Image from "next/image";
 import Link from "next/link";
-import { useSelector } from "react-redux";
 
 import {
-	AuthFormVariants,
-	type AuthFormVariantsType,
+  AuthFormVariants,
+  type AuthFormVariantsType,
 } from "@/features/auth/lib/variants";
 import { Button, CardFooter, Spinner } from "@/shared";
-import { selectRouteStatus } from "@/shared/model/redux.selectors";
+import { useIsLoading } from "@/shared/model/redux.selectors";
 
 type Props = {
 	type: AuthFormVariantsType;
@@ -16,7 +15,7 @@ type Props = {
 
 export const AuthFooter = ({ type }: Props) => {
 	// states
-	const isLoading = useSelector(selectRouteStatus("auth"));
+	const isLoading = useIsLoading("auth");
 
 	// ui states
 	const variant = AuthFormVariants[type];

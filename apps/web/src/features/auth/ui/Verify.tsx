@@ -1,4 +1,4 @@
-import type { VerifySchema } from "@gravity/shared";
+import { VerificationSchema } from "@gravity/shared";
 import { useCallback } from "react";
 
 import { useAuthVerifyMutation } from "@/features/auth/model/verify.slice";
@@ -16,7 +16,7 @@ export const Verify = () => {
 
 	// verify fn
 	const onSubmit = useCallback(
-		async (data: VerifySchema) => {
+		async (data: VerificationSchema) => {
 			switch (verify) {
 				case "signup":
 				case "login":
@@ -36,9 +36,6 @@ export const Verify = () => {
 						verifyForm.setError("code", { message });
 					}
 
-					break;
-				}
-				case "forgot-email": {
 					break;
 				}
 				default: {

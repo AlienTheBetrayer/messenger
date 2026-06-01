@@ -1,5 +1,9 @@
-import type { VerifySchema } from "@gravity/shared";
-import { type AuthSchema, authSchema, verifySchema } from "@gravity/shared";
+import {
+	AuthSchema,
+	authSchema,
+	VerificationSchema,
+	verificationSchema,
+} from "@gravity/shared";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
@@ -19,14 +23,13 @@ export const useAuthForms = () => {
 		shouldUnregister: false,
 	});
 
-	const verifyForm = useForm<VerifySchema>({
-		resolver: zodResolver(verifySchema),
+	const verifyForm = useForm<VerificationSchema>({
+		resolver: zodResolver(verificationSchema),
 		defaultValues: {
 			code: "",
 		},
 	});
 
-	// return
 	return useMemo(() => {
 		return {
 			authForm,
