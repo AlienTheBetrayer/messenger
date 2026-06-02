@@ -1,4 +1,4 @@
-import { ACCESS_TOKEN_EXPIRY_S, REFRESH_TOKEN_EXPIRY_S } from "@gravity/shared";
+import { AuthConfig } from "@gravity/shared";
 import { Injectable } from "@nestjs/common";
 import bcrypt from "bcryptjs";
 import { Request, Response } from "express";
@@ -16,13 +16,13 @@ export class JwtService {
 	 * safely signs the JWT token
 	 * @param payload data to be signed
 	 * @param envKey environmental secret key
-	 * @param expiry expiry time in seconds
+	 * @param expiryMs expiry time in milliseconds
 	 * @returns jwt token
 	 */
 	sign(params: {
 		payload: Record<string, string>;
 		envKey: string;
-		expiry: number;
+		expiryMs: number;
 	}) {
 		// error handling
 		if (!(params.envKey in process.env)) {
@@ -38,7 +38,7 @@ export class JwtService {
 			params.payload,
 			process.env[params.envKey] as string,
 			{
-				expiresIn: params.expiry,
+				expiresIn: `${params.expiryMs}`,
 			},
 		);
 
@@ -49,20 +49,20 @@ export class JwtService {
 	 * securely sets the jwt token at the http-only cookies
 	 * @param name name of the token
 	 * @param token jwt token
-	 * @param expiryS expiry in seconds
+	 * @param expiryMs expiry in milliseconds
 	 * @param response Response object
 	 */
 	setHttpCookie(params: {
 		name: string;
 		token: string;
-		expiryS: number;
+		expiryMs: number;
 		response: Response;
 	}) {
 		params.response.cookie(params.name, params.token, {
 			httpOnly: true,
 			secure: true,
 			sameSite: "lax",
-			maxAge: params.expiryS * 1000,
+			maxAge: params.expiryMs,
 		});
 	}
 
@@ -98,11 +98,11 @@ export class JwtService {
 		return parsed.data;
 	}
 
-  /**
-   * gets the raw versions of access and refresh tokens cookies
-   * @param request Request object
-   * @returns access and refresh tokens (or null if not found)
-   */
+	/**
+	 * gets the raw versions of access and refresh tokens cookies
+	 * @param request Request object
+	 * @returns access and refresh tokens (or null if not found)
+	 */
 	getAuthTokens(params: { request: Request }) {
 		const accessToken = params.request.cookies["accessToken"] as unknown;
 		const refreshToken = params.request.cookies["refreshToken"] as unknown;
@@ -135,13 +135,14 @@ export class JwtService {
 
 		const accessToken = this.sign({
 			payload,
-			expiry: ACCESS_TOKEN_EXPIRY_S,
+			expiryMs: AuthConfig.tokens.access.expiryMs,
+
 			envKey: "ACCESS_TOKEN_SECRET",
 		});
 
 		const refreshToken = this.sign({
 			payload,
-			expiry: REFRESH_TOKEN_EXPIRY_S,
+			expiryMs: AuthConfig.tokens.refresh.expiryMs,
 			envKey: "REFRESH_TOKEN_SECRET",
 		});
 
@@ -177,7 +178,7 @@ export class JwtService {
 		this.setHttpCookie({
 			name: "accessToken",
 			token: params.accessToken,
-			expiryS: ACCESS_TOKEN_EXPIRY_S,
+			expiryMs: AuthConfig.tokens.access.expiryMs,
 			response: params.response,
 		});
 
@@ -185,7 +186,7 @@ export class JwtService {
 		this.setHttpCookie({
 			name: "refreshToken",
 			token: params.refreshToken,
-			expiryS: REFRESH_TOKEN_EXPIRY_S,
+			expiryMs: AuthConfig.tokens.refresh.expiryMs,
 			response: params.response,
 		});
 	}

@@ -1,1 +1,2 @@
-export * from "./lib/exception";
+export * from './jest/types';
+export * from './lib/exception';

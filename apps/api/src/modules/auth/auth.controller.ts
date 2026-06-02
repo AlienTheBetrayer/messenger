@@ -20,7 +20,8 @@ export class AuthController {
 	 */
 	@Post("code")
 	async code(@Body() body: CodeDto) {
-		return await this.authService.code(body);
+		await this.authService.code(body);
+		return true;
 	}
 
 	/**

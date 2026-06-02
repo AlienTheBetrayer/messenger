@@ -1,10 +1,6 @@
 import z from "zod";
 
-import {
-	CODE_LENGTH,
-	PASSWORD_MAX_LENGTH,
-	PASSWORD_MIN_LENGTH,
-} from "../../config/auth.js";
+import { AuthConfig } from "../../config/auth.js";
 import { verification_code_typeSchema } from "../prisma/schemas/enums/verification_code_type.schema.js";
 
 /**
@@ -15,12 +11,12 @@ export const authFormSchema = z.object({
 	password: z
 		.string()
 		.min(
-			PASSWORD_MIN_LENGTH,
-			`Password must be at least ${PASSWORD_MIN_LENGTH} characters.`,
+			AuthConfig.password.min,
+			`Password must be at least ${AuthConfig.password.min} characters.`,
 		)
 		.max(
-			PASSWORD_MAX_LENGTH,
-			`Password must be at most ${PASSWORD_MAX_LENGTH} characters.`,
+			AuthConfig.password.max,
+			`Password must be at most ${AuthConfig.password.max} characters.`,
 		),
 });
 
@@ -32,7 +28,10 @@ export type AuthFormSchema = z.infer<typeof authFormSchema>;
 export const verificationFormSchema = z.object({
 	code: z
 		.string()
-		.length(CODE_LENGTH, `Code must be ${CODE_LENGTH} characters.`),
+		.length(
+			AuthConfig.code.length,
+			`Code must be ${AuthConfig.code.length} characters.`,
+		),
 });
 
 export type VerificationFormSchema = z.infer<typeof verificationFormSchema>;
