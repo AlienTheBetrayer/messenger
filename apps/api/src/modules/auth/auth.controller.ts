@@ -16,7 +16,7 @@ export class AuthController {
 	/**
 	 * validates and sends an authentication code via email
 	 * @param email email to issue the code to
-	 * @returns newly generated code (also sent to email) if validated
+	 * @returns true if the code was generated
 	 */
 	@Post("code")
 	async code(@Body() body: CodeDto) {

@@ -49,8 +49,8 @@ export class AuthService {
 		}
 
 		// issuing the code
-		const code = await this.verifyService.issueCode(body);
-		return code;
+		await this.verifyService.issueCode(body);
+    return true;
 	}
 
 	/**
