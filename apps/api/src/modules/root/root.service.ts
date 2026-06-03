@@ -2,9 +2,9 @@ import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class RootService {
-	getApiHealth() {
+	health() {
 		return {
-			service: "Gravity API",
+			service: "Outwave API",
 			status: "ok",
 		};
 	}

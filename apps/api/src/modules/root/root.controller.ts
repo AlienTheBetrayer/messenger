@@ -7,7 +7,7 @@ export class RootController {
 	constructor(private readonly rootService: RootService) {}
 
 	@Get()
-	getHealth() {
-		return this.rootService.getApiHealth();
+	health() {
+		return this.rootService.health();
 	}
 }
