@@ -30,7 +30,7 @@ export class VerifyService {
 			},
 		});
 
-		// 3. send it via email
+		// send it via email
 		await this.mailService.send({
 			to: params.email,
 			html: generateVerificationEmail(code.code),
@@ -82,9 +82,21 @@ export class VerifyService {
 	 * cleans up the codes for a specific email
 	 * @param email the email the code was sent to
 	 * @param type the type of the code
-	 * @returns deleted codes
+	 * @returns deleted codes or null if not found
 	 */
 	async cleanupCodes(params: { email: string; type?: verification_code_type }) {
+		// do codes exist?
+		const isFound = await this.prismaService.verification_codes.count({
+			where: {
+				email: params.email,
+				type: params.type,
+			},
+		});
+
+		if (!isFound) {
+			return null;
+		}
+
 		return await this.prismaService.verification_codes.deleteMany({
 			where: {
 				email: params.email,
