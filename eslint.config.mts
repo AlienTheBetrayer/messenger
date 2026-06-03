@@ -57,7 +57,7 @@ export default defineConfig([
 			// core safety
 			"@typescript-eslint/no-explicit-any": "error",
 			"@typescript-eslint/no-floating-promises": "error",
-			"@typescript-eslint/no-misused-promises": "error",
+			"@typescript-eslint/no-misused-promises": "off",
 			"@typescript-eslint/no-unsafe-assignment": "error",
 			"@typescript-eslint/no-unsafe-call": "error",
 

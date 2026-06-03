@@ -46,7 +46,7 @@ export class VerifyService {
 	 * @param type the type of the code
 	 * @param code the code to validate
 	 * @param cleanup whether to clean up the code after the verification
-	 * @returns valid code or thrown error
+	 * @returns code or thrown error
 	 */
 	async validateCode(params: {
 		email: string;

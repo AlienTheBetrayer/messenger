@@ -34,7 +34,7 @@ export class AuthService {
 
 				break;
 			}
-			case "forgot_password": {
+			default: {
 				// does the eamil exist?
 				if (
 					!(await this.prismaService.users.count({
@@ -172,7 +172,16 @@ export class AuthService {
 	 * @param sessionId id of the session to be deleted
 	 * @returns null (if already logged out) or session
 	 */
-	async logout(sessionId: string) {
+  async logout(sessionId: string) {
+    // check if it exists at all
+    const isFound = await this.prismaService.auth_session.count({
+      where: { id: sessionId },
+    });
+
+    if (!isFound) {
+      return null;
+    }
+
 		// deleting the session
 		const session = await this.prismaService.auth_session.delete({
 			where: { id: sessionId },

@@ -14,6 +14,13 @@ export const jestInitAuth = async () => {
 	const mockPrismaService = {
 		users: {
 			count: jest.fn(),
+			findFirst: jest.fn(),
+			update: jest.fn(),
+      create: jest.fn(),
+		},
+		auth_session: {
+			delete: jest.fn(),
+			count: jest.fn(),
 		},
 	};
 
