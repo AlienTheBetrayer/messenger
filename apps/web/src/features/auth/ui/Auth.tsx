@@ -1,4 +1,4 @@
-import type { AuthFormSchema } from "@gravity/shared";
+import { type AuthFormSchema } from "@gravity/shared";
 import { useCallback } from "react";
 
 import type { AuthFormVariantsType } from "@/features/auth/lib/variants";
@@ -7,19 +7,19 @@ import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider"
 import { AuthContent } from "@/features/auth/ui/auth/AuthContent";
 import { AuthFooter } from "@/features/auth/ui/auth/AuthFooter";
 import { AuthHeader } from "@/features/auth/ui/auth/AuthHeader";
-import { normalizeError, useQueryState } from "@/shared";
+import { normalizeError, useQueryStateHooks } from "@/shared";
 
 type Props = {
 	type: AuthFormVariantsType;
 };
 
 export const Auth = ({ type }: Props) => {
-  // redux
-  const [getCode] = useGetCodeMutation();
-  
+	// redux
+	const [getCode] = useGetCodeMutation();
+
 	// states
 	const { authForm } = useAuthFormProvider();
-  const [, setVerify] = useQueryState("verify");
+	const [, setVerify] = useQueryStateHooks.verify();
 
 	// functions
 	const onSubmit = useCallback(

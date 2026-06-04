@@ -1,9 +1,9 @@
 import { Verify } from "@/features/auth/ui/Verify";
-import { Card, useQueryState } from "@/shared";
+import { Card, useQueryStateHooks } from "@/shared";
 
 export const VerifyOrchestrator = () => {
 	// states
-	const [verify] = useQueryState("verify");
+	const [verify] = useQueryStateHooks.verify();
 
 	// jsx
 	return (
@@ -25,7 +25,7 @@ export const VerifyOrchestrator = () => {
 						}
 			}
 		>
-			<Card className="min-h-0!">
+			<Card className="min-h-0! shadowed">
 				<Verify />
 			</Card>
 		</div>

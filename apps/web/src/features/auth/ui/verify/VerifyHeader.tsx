@@ -6,12 +6,12 @@ import {
 	CardDescription,
 	CardHeader,
 	CardTitle,
-	useQueryState,
+	useQueryStateHooks,
 } from "@/shared";
 
 export const VerifyHeader = () => {
 	// states
-	const [, setVerify] = useQueryState("verify");
+	const [, setVerify] = useQueryStateHooks.verify();
 
 	// jsx
 	return (

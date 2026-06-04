@@ -10,7 +10,7 @@ import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider"
 import { VerifyContent } from "@/features/auth/ui/verify/VerifyContent";
 import { VerifyFooter } from "@/features/auth/ui/verify/VerifyFooter";
 import { VerifyHeader } from "@/features/auth/ui/verify/VerifyHeader";
-import { normalizeError, useQueryState } from "@/shared";
+import { normalizeError, useQueryStateHooks } from "@/shared";
 
 export const Verify = () => {
 	// redux
@@ -20,7 +20,7 @@ export const Verify = () => {
 
 	// states
 	const { verifyForm, authForm } = useAuthFormProvider();
-	const [verify] = useQueryState("verify");
+	const [verify] = useQueryStateHooks.verify();
 
 	// verify fn
 	const onSubmit = useCallback(
@@ -52,7 +52,10 @@ export const Verify = () => {
 						break;
 					}
 
-					case "forgot-password": {
+            /**
+             * @description inspect!
+             */
+					case "forgot_password": {
 						await forgotPassword({
 							email: values.email,
 							password: values.password,

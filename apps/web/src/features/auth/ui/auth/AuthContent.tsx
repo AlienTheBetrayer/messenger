@@ -18,8 +18,8 @@ import {
 	FieldGroup,
 	FieldLabel,
 	Input,
-	useQueryState,
 } from "@/shared";
+import { useQueryStateHooks } from "@/shared/hooks/queryStates";
 
 type Props = {
 	type: AuthFormVariantsType;
@@ -28,7 +28,7 @@ type Props = {
 export const AuthContent = ({ type }: Props) => {
 	// states
 	const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
-	const [verify] = useQueryState("verify");
+	const [verify] = useQueryStateHooks.verify();
 	const { authForm } = useAuthFormProvider();
 
 	// ui states

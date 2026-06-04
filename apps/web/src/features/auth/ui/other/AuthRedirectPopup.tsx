@@ -8,12 +8,12 @@ import {
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
-	useQueryState,
+	useQueryStateHooks,
 } from "@/shared";
 
 export const AuthRedirectPopup = () => {
 	// states
-	const [error, setError] = useQueryState("error");
+	const [error, setError] = useQueryStateHooks.error();
 
 	// ui states
 	const errorCode = error?.toUpperCase();
