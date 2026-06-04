@@ -1,4 +1,5 @@
 "use client";
+
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
 
@@ -17,18 +18,21 @@ export function useQueryState(key: string) {
 	const value = searchParams.get(key);
 
 	// functions
-	const setValue = useCallback((newValue: string | null) => {
-		const params = new URLSearchParams(searchParams.toString());
+	const setValue = useCallback(
+		(newValue: string | null) => {
+			const params = new URLSearchParams(searchParams.toString());
 
-		if (!newValue) {
-			params.delete(key);
-		} else {
-			params.set(key, newValue);
-		}
+			if (!newValue) {
+				params.delete(key);
+			} else {
+				params.set(key, newValue);
+			}
 
-		const query = params.toString();
-		router.replace(query ? `${pathname}?${query}` : pathname);
-	}, [router, pathname, searchParams, key]);
+			const query = params.toString();
+			router.replace(query ? `${pathname}?${query}` : pathname);
+		},
+		[router, pathname, searchParams, key],
+	);
 
 	return [value, setValue] as const;
 }

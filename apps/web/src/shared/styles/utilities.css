@@ -51,10 +51,27 @@
 		animation: 4s skeletonAnimation ease-in-out infinite alternate;
 	}
 
+	.dotted {
+		background-image: radial-gradient(
+			circle,
+			var(--dotted) 1px,
+			transparent 1px
+		);
+		background-size: 24px 24px;
+	}
+
 	/* acrylic */
 	.acrylic {
 		background: var(--bg-a-0);
 		backdrop-filter: blur(12px);
+	}
+
+	.shadowed {
+		box-shadow:
+			0 0 0 1px var(--border),
+			0 1px 1px rgb(0 0 0 / 0.04),
+			0 4px 8px rgb(0 0 0 / 0.08),
+			0 12px 24px rgb(0 0 0 / 0.08);
 	}
 
 	/* Radix entry/exit transitions */

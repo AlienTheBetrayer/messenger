@@ -1,5 +1,4 @@
 :root,
-:root[data-theme="light"],
 .light {
 	/* shadcn: */
 	--card: oklch(1 0 0);
@@ -32,8 +31,9 @@
 	--sidebar-accent-foreground: oklch(0.205 0 0);
 	--sidebar-border: oklch(0.922 0 0);
 	--sidebar-ring: oklch(0.708 0 0);
-	--background: oklch(94.007% 0.00011 271.152);
+	--background: oklch(97.315% 0.00011 271.152);
 	--foreground: oklch(0.145 0 0);
+	--dotted: var(--muted-foreground);
 
 	--scheme: light;
 }

@@ -6,7 +6,10 @@ import { ApiProvider } from "@reduxjs/toolkit/query/react";
 import { Inter } from "next/font/google";
 import { Suspense } from "react";
 
+import { ThemesProvider } from "@/features/ui/providers/ThemesProvider";
 import { baseApi } from "@/shared";
+
+import { Header } from "../features/ui/ui/header/Header";
 
 const inter = Inter({
 	variable: "--font-inter",
@@ -20,13 +23,20 @@ export default function RootLayout({
 }>) {
 	return (
 		<html
+			suppressHydrationWarning
 			lang="en"
 			className={`${inter.variable} antialiased`}
 		>
-			<body className="min-h-screen flex flex-col">
-				<Suspense fallback={null}>
-					<ApiProvider api={baseApi}>{children}</ApiProvider>
-				</Suspense>
+			<body className="min-h-[200vh] flex flex-col">
+				<ThemesProvider>
+					<Suspense fallback={null}>
+						<ApiProvider api={baseApi}>
+							<Header />
+
+							{children}
+						</ApiProvider>
+					</Suspense>
+				</ThemesProvider>
 			</body>
 		</html>
 	);

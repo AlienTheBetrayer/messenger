@@ -1,6 +1,6 @@
 import type * as React from "react";
 
-import { cn } from "@/shared/lib/tailwind";
+import { cn } from "@/features/ui/lib/tailwind";
 
 function Card({
 	className,

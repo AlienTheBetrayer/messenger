@@ -12,11 +12,11 @@ type Props = {
 export default function AuthLayout({ children }: Props) {
 	return (
 		<AuthFormProvider>
-			<div className="flex items-center justify-center h-screen">
+			<main className="flex justify-center min-h-screen mt-30">
 				{children}
 
 				<AuthRedirectPopup />
-			</div>
+			</main>
 		</AuthFormProvider>
 	);
 }
