@@ -41,7 +41,7 @@ export class AuthController {
 	 * @param email email address
 	 * @param password secure password
 	 * @param code code that was sent to email (use /code/)
-	 * @returns authentication tokens and a session
+	 * @returns authentication tokens, user and a session
 	 */
 	@Post("login")
 	async login(
@@ -49,13 +49,13 @@ export class AuthController {
 		@Res({ passthrough: true }) response: Response,
 	) {
 		// authenticating
-		const { accessToken, refreshToken, session } =
+		const { accessToken, refreshToken, session, user } =
 			await this.authService.login(body);
 
 		// cookies
 		this.jwtService.setAuthHttpCookies({ accessToken, refreshToken, response });
 
-		return { accessToken, refreshToken, session };
+		return { accessToken, refreshToken, session, user };
 	}
 
 	/**

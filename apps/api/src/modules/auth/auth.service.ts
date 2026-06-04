@@ -88,7 +88,7 @@ export class AuthService {
 	 * @param email email address
 	 * @param password secure password
 	 * @param code code that was sent to email (use /code/)
-	 * @returns authentication tokens and a session
+	 * @returns authentication tokens, user and a session
 	 */
 	async login(body: AuthSchema) {
 		// verifying the code
@@ -117,7 +117,10 @@ export class AuthService {
 			throw createException("unauthorized", "INVALID_CREDENTIALS");
 		}
 
-		return await this.jwtService.issueAuthTokens({ userId: user.id });
+		return {
+			...(await this.jwtService.issueAuthTokens({ userId: user.id })),
+			user,
+		};
 	}
 
 	/**
@@ -172,15 +175,15 @@ export class AuthService {
 	 * @param sessionId id of the session to be deleted
 	 * @returns null (if already logged out) or session
 	 */
-  async logout(sessionId: string) {
-    // check if it exists at all
-    const isFound = await this.prismaService.auth_session.count({
-      where: { id: sessionId },
-    });
+	async logout(sessionId: string) {
+		// check if it exists at all
+		const isFound = await this.prismaService.auth_session.count({
+			where: { id: sessionId },
+		});
 
-    if (!isFound) {
-      return null;
-    }
+		if (!isFound) {
+			return null;
+		}
 
 		// deleting the session
 		const session = await this.prismaService.auth_session.delete({
