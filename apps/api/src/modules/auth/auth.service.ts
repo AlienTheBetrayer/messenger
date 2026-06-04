@@ -173,7 +173,7 @@ export class AuthService {
 	/**
 	 * logs out a specific session id, deleting the session
 	 * @param sessionId id of the session to be deleted
-	 * @returns null (if already logged out) or session
+	 * @returns succesful log out should return a session
 	 */
 	async logout(sessionId: string) {
 		// check if it exists at all
@@ -182,7 +182,7 @@ export class AuthService {
 		});
 
 		if (!isFound) {
-			return null;
+			return { message: "no user is found." };
 		}
 
 		// deleting the session

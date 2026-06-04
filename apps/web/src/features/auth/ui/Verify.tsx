@@ -20,7 +20,7 @@ export const Verify = () => {
 
 	// states
 	const { type, verifyForm, authForm } = useAuthFormProvider();
-	const [verify] = useQueryStateHooks.verify();
+	const [, setVerify] = useQueryStateHooks.verify();
 
 	// verify fn
 	const onSubmit = useCallback(
@@ -61,17 +61,20 @@ export const Verify = () => {
 						break;
 					}
 					default: {
-						verifyForm.setError("code", { message: "Invalid URL state." });
-						break;
+            verifyForm.setError("code", { message: "Invalid URL state." });
+            return;
 					}
-				}
+        }
+
+        setVerify("success");
 			} catch (e) {
 				// error handling
 				const message = normalizeError(e);
-				verifyForm.setError("code", { message });
+        verifyForm.setError("code", { message });
+        setVerify("error");
 			}
 		},
-		[verifyForm, authForm, type, login, signup, forgotPassword],
+		[verifyForm, authForm, type, setVerify, login, signup, forgotPassword],
 	);
 
 	// jsx

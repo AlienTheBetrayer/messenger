@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 
+import { AuthButtons } from "@/features/ui/ui/header/AuthButtons";
 import { ThemeButton } from "@/features/ui/ui/header/ThemeButton";
 import { Button, Separator } from "@/shared";
 
@@ -37,22 +40,8 @@ export const Header = () => {
 						/>
 					</li>
 
-					<li>
-						<Button
-							asChild
-							variant="ghost"
-						>
-							<Link href="/login">Log in</Link>
-						</Button>
-					</li>
-
-					<li>
-						<Button
-							asChild
-							variant="default"
-						>
-							<Link href="/signup">Sign up</Link>
-						</Button>
+					<li className="flex">
+						<AuthButtons />
 					</li>
 				</ul>
 			</nav>

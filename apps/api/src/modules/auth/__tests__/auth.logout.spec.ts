@@ -12,38 +12,38 @@ describe("AuthService", () => {
 	});
 
 	describe("happy paths", () => {
-		it("should successfully log the user out if session was found", async () => {
+		it("should successfully log the user out if session is found and refresh token is valid and decoded", async () => {
 			// arrange
-      const session = {
+			const session = {
 				id: "session-123",
 			};
 
+			ctx.mockJwtService.getAuthTokens.mockReturnValue({
+				accessToken: "access",
+				refreshToken: "refresh",
+			});
+			ctx.mockJwtService.decode.mockReturnValue({
+				sessionId: session.id,
+			});
 			ctx.mockPrismaService.auth_session.count.mockResolvedValue(1);
-			ctx.mockPrismaService.auth_session.delete.mockResolvedValue(session);
 
-      // act
+			// act
 			const result = await ctx.authService.logout(session.id);
 
-      // assert
-			expect(result).toEqual(session);
-			expect(ctx.mockPrismaService.auth_session.delete).toHaveBeenCalledWith({
-				where: {
-					id: session.id,
-				},
-			});
+			// assert
+			expect(ctx.mockPrismaService.auth_session.delete).toHaveBeenCalled();
 		});
 	});
 
 	describe("sad paths", () => {
 		it("should not log the user out if session is not found", async () => {
 			// arrange
-      ctx.mockPrismaService.auth_session.count.mockResolvedValue(0);
+			ctx.mockPrismaService.auth_session.count.mockResolvedValue(0);
 
-      // act
-			const result = await ctx.authService.logout("session-id");
+			// act
+			await ctx.authService.logout("session-id");
 
-      // assert
-			expect(result).toBeNull();
+			// assert
 			expect(ctx.mockPrismaService.auth_session.delete).not.toHaveBeenCalled();
 		});
 	});

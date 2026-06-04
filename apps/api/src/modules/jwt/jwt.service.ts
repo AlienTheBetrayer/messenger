@@ -73,7 +73,7 @@ export class JwtService {
 	 * @returns token and decoded payload or null if not validated
 	 */
 	decode<T extends z.ZodType = typeof tokenPayloadSchema>(params: {
-		token: unknown;
+		token: string;
 		schema?: T;
 	}): z.infer<T> | null {
 		// validating the token

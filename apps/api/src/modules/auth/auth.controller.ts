@@ -76,7 +76,7 @@ export class AuthController {
 	 * @returns user object along with the session of currently logged in user
 	 */
 	@Get("me")
-	async me(@Req() request: Request) {
+  async me(@Req() request: Request) {
 		// getting and validating the refresh token
 		const refreshToken = this.jwtService.decode({
 			token: request.cookies["refreshToken"],
@@ -92,7 +92,7 @@ export class AuthController {
 	/**
 	 * logs out a specific session id, deleting the session
 	 * @param sessionId id of the session to be deleted
-	 * @returns null (if already logged out) or session
+	 * @returns succesful log out should return a session
 	 */
 	@Delete("logout")
 	async logout(
@@ -100,11 +100,16 @@ export class AuthController {
 		@Res({ passthrough: true }) response: Response,
 	) {
 		// getting and decoding the token
-		const refreshToken = this.jwtService.getAuthTokens({ request });
+		const { refreshToken } = this.jwtService.getAuthTokens({ request });
+
+		if (!refreshToken) {
+			return { message: "no refresh token found." };
+		}
+
 		const decoded = this.jwtService.decode({ token: refreshToken });
 
 		if (!decoded) {
-			return true;
+			return { message: "refresh token is not valid." };
 		}
 
 		// clearing the token

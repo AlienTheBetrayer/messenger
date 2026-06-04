@@ -5,7 +5,7 @@ import { RedirectPopupVariants } from "@/features/auth/lib/variants";
 const verify = () => {
 	return useQueryState(
 		"verify",
-		parseAsStringLiteral(["pending", "success"] as const),
+		parseAsStringLiteral(["pending", "success", "error"] as const),
 	);
 };
 

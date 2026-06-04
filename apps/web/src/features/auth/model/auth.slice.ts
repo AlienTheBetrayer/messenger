@@ -2,6 +2,7 @@ import {
 	auth_sessionType,
 	AuthSchema,
 	CodeSchema,
+	usersType,
 	verification_codesType,
 } from "@gravity/shared";
 
@@ -39,6 +40,7 @@ export const authApi = baseApi.injectEndpoints({
 				method: "POST",
 				body,
 			}),
+			invalidatesTags: ["me"],
 		}),
 
 		/**
@@ -62,6 +64,30 @@ export const authApi = baseApi.injectEndpoints({
 				body,
 			}),
 		}),
+
+		/**
+		 * /auth/me
+		 */
+		me: builder.query<auth_sessionType & usersType, void>({
+			query: () => ({
+				url: "/auth/me",
+				method: "GET",
+			}),
+			providesTags: ["me"],
+		}),
+
+		/**
+		 * /auth/logout
+		 */
+		logout: builder.mutation<void, void>({
+			query: () => ({
+				url: "/auth/logout",
+				method: "DELETE",
+			}),
+			onQueryStarted(args, { dispatch }) {
+				dispatch(authApi.util.resetApiState());
+			},
+		}),
 	}),
 });
 
@@ -70,4 +96,7 @@ export const {
 	useLoginMutation,
 	useSignupMutation,
 	useForgotPasswordMutation,
+	useLogoutMutation,
+	useMeQuery,
+	useLazyMeQuery,
 } = authApi;

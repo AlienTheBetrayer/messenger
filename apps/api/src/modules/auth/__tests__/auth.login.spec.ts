@@ -29,7 +29,7 @@ describe("AuthService", () => {
 			const user = {
 				id: "user-id",
 			};
-			ctx.mockVerifyService.validateCode.mockResolvedValue(undefined as never);
+      ctx.mockVerifyService.validateCode.mockResolvedValue({} as never);
 			ctx.mockPrismaService.users.findFirst.mockResolvedValue(user);
 			jest.spyOn(bcrypt, "compare").mockResolvedValue(true as never);
 			ctx.mockJwtService.issueAuthTokens.mockResolvedValue({} as never);

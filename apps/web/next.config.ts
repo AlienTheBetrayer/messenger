@@ -2,11 +2,11 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
 	transpilePackages: ["@gravity/shared"],
-	async rewrites() {
+	rewrites() {
 		return [
 			{
 				source: "/api/:path*",
-				destination: "http://localhost:3001/:path*", // Proxy to NestJS
+        destination: "http://localhost:3001/:path*", // Proxy to NestJS
 			},
 		];
 	},

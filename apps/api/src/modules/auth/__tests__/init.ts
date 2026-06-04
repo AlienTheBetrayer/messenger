@@ -16,7 +16,7 @@ export const jestInitAuth = async () => {
 			count: jest.fn(),
 			findFirst: jest.fn(),
 			update: jest.fn(),
-      create: jest.fn(),
+			create: jest.fn(),
 		},
 		auth_session: {
 			delete: jest.fn(),
@@ -24,8 +24,14 @@ export const jestInitAuth = async () => {
 		},
 	};
 
-	const mockJwtService: MockType<JwtService, "issueAuthTokens"> = {
+	const mockJwtService: MockType<
+		JwtService,
+		"issueAuthTokens" | "getAuthTokens" | "decode" | "deleteAuthTokens"
+	> = {
 		issueAuthTokens: jest.fn(),
+		getAuthTokens: jest.fn(),
+		decode: jest.fn(),
+		deleteAuthTokens: jest.fn(),
 	};
 
 	const mockVerifyService: MockType<

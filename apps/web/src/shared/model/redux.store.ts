@@ -1,22 +1,33 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import {
+	createApi,
+	fetchBaseQuery,
+	setupListeners,
+} from "@reduxjs/toolkit/query/react";
 
 /**
  * global api slice
  * has to be injected later into
  */
 export const baseApi = createApi({
+	tagTypes: ["me"],
 	reducerPath: "api",
 	baseQuery: fetchBaseQuery({ baseUrl: "/api" }),
-  endpoints: () => ({
-  }),
+	endpoints: () => ({}),
 });
 
 /**
  * global app store
  */
-export const AppStore = configureStore({
-	reducer: {
-		[baseApi.reducerPath]: baseApi.reducer,
-	},
-});
+export const makeStore = () => {
+	const store = configureStore({
+		reducer: {
+			[baseApi.reducerPath]: baseApi.reducer,
+		},
+		middleware: (gDM) => gDM().concat(baseApi.middleware),
+	});
+	setupListeners(store.dispatch);
+	return store;
+};
+
+export type AppStore = ReturnType<typeof makeStore>;
