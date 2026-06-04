@@ -1,10 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import Link from "next/link";
 
-import {
-	AuthFormVariants,
-	type AuthFormVariantsType,
-} from "@/features/auth/lib/variants";
+import { AuthFormVariants } from "@/features/auth/lib/variants";
+import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
 import {
 	Button,
 	CardAction,
@@ -13,11 +10,10 @@ import {
 	CardTitle,
 } from "@/shared";
 
-type Props = {
-	type: AuthFormVariantsType;
-};
+export const AuthHeader = () => {
+	// states
+	const { type } = useAuthFormProvider();
 
-export const AuthHeader = ({ type }: Props) => {
 	// ui states
 	const variant = AuthFormVariants[type];
 	const headerLink = variant.elements.headerLink;

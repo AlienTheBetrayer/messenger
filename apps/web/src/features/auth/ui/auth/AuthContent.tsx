@@ -4,10 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { Controller } from "react-hook-form";
 
-import {
-	AuthFormVariants,
-	AuthFormVariantsType,
-} from "@/features/auth/lib/variants";
+import { AuthFormVariants } from "@/features/auth/lib/variants";
 import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
 import {
 	Button,
@@ -21,15 +18,11 @@ import {
 } from "@/shared";
 import { useQueryStateHooks } from "@/shared/hooks/queryStates";
 
-type Props = {
-	type: AuthFormVariantsType;
-};
-
-export const AuthContent = ({ type }: Props) => {
+export const AuthContent = () => {
 	// states
 	const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
 	const [verify] = useQueryStateHooks.verify();
-	const { authForm } = useAuthFormProvider();
+	const { type, authForm } = useAuthFormProvider();
 
 	// ui states
 	const passwordInputType = passwordVisible ? "text" : "password";

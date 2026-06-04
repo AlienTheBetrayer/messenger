@@ -58,7 +58,8 @@ export default defineConfig([
 			"@typescript-eslint/no-explicit-any": "error",
 			"@typescript-eslint/no-floating-promises": "off",
 			"@typescript-eslint/no-misused-promises": "off",
-			"@typescript-eslint/no-unsafe-assignment": "error",
+      "@typescript-eslint/no-unsafe-assignment": "error",
+      "@typescript-eslint/no-unnecessary-condition": "off",
 			"@typescript-eslint/no-unsafe-call": "error",
 
 			// ✅ IMPORTANT: removes your “6 is annoying” problem

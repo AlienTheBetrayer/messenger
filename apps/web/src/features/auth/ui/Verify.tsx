@@ -19,7 +19,7 @@ export const Verify = () => {
 	const [forgotPassword] = useForgotPasswordMutation();
 
 	// states
-	const { verifyForm, authForm } = useAuthFormProvider();
+	const { type, verifyForm, authForm } = useAuthFormProvider();
 	const [verify] = useQueryStateHooks.verify();
 
 	// verify fn
@@ -33,7 +33,7 @@ export const Verify = () => {
 
 			// api requests
 			try {
-				switch (verify) {
+				switch (type) {
 					case "login": {
 						await login({
 							email: values.email,
@@ -52,9 +52,6 @@ export const Verify = () => {
 						break;
 					}
 
-            /**
-             * @description inspect!
-             */
 					case "forgot_password": {
 						await forgotPassword({
 							email: values.email,
@@ -74,7 +71,7 @@ export const Verify = () => {
 				verifyForm.setError("code", { message });
 			}
 		},
-		[verifyForm, authForm, verify, login, signup, forgotPassword],
+		[verifyForm, authForm, type, login, signup, forgotPassword],
 	);
 
 	// jsx

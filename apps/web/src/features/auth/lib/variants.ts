@@ -104,7 +104,7 @@ export const AuthFormVariants = {
 			},
 		},
 	},
-	"forgot_password": {
+	forgot_password: {
 		title: "Password recovery",
 		description: "Enter the email address associated with your account.",
 

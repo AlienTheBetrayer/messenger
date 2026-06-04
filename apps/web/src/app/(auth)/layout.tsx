@@ -1,5 +1,7 @@
 "use client";
 
+import { verification_codesType } from "@gravity/shared";
+import { usePathname } from "next/navigation";
 import type React from "react";
 
 import { AuthFormProvider } from "@/features";
@@ -10,8 +12,15 @@ type Props = {
 };
 
 export default function AuthLayout({ children }: Props) {
+	// states
+	const pathName = usePathname();
+	const page = pathName.split("/")[1];
+
+	// jsx
 	return (
-		<AuthFormProvider>
+		<AuthFormProvider
+			type={page.replace("-", "_") as verification_codesType["type"]}
+		>
 			<main className="flex justify-center min-h-screen mt-16">
 				{children}
 

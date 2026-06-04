@@ -1,7 +1,6 @@
 import { type AuthFormSchema } from "@gravity/shared";
 import { useCallback } from "react";
 
-import type { AuthFormVariantsType } from "@/features/auth/lib/variants";
 import { useGetCodeMutation } from "@/features/auth/model/auth.slice";
 import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
 import { AuthContent } from "@/features/auth/ui/auth/AuthContent";
@@ -9,16 +8,12 @@ import { AuthFooter } from "@/features/auth/ui/auth/AuthFooter";
 import { AuthHeader } from "@/features/auth/ui/auth/AuthHeader";
 import { normalizeError, useQueryStateHooks } from "@/shared";
 
-type Props = {
-	type: AuthFormVariantsType;
-};
-
-export const Auth = ({ type }: Props) => {
+export const Auth = () => {
 	// redux
 	const [getCode] = useGetCodeMutation();
 
 	// states
-	const { authForm } = useAuthFormProvider();
+	const { type, authForm } = useAuthFormProvider();
 	const [, setVerify] = useQueryStateHooks.verify();
 
 	// functions
@@ -26,7 +21,7 @@ export const Auth = ({ type }: Props) => {
 		async (data: AuthFormSchema) => {
 			try {
 				await getCode({ email: data.email, type }).unwrap();
-				setVerify(type);
+				setVerify("pending");
 			} catch (e) {
 				const message = normalizeError(e);
 				authForm.setError("email", { message });
@@ -45,9 +40,9 @@ export const Auth = ({ type }: Props) => {
 			}}
 			className="flex flex-col gap-5 transition-all duration-300"
 		>
-			<AuthHeader type={type} />
-			<AuthContent type={type} />
-			<AuthFooter type={type} />
+			<AuthHeader/>
+			<AuthContent />
+			<AuthFooter />
 		</form>
 	);
 };

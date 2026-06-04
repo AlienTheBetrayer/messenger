@@ -1,4 +1,3 @@
-import { verification_codesSchema } from "@gravity/shared";
 import { parseAsStringLiteral, useQueryState } from "nuqs";
 
 import { RedirectPopupVariants } from "@/features/auth/lib/variants";
@@ -6,9 +5,7 @@ import { RedirectPopupVariants } from "@/features/auth/lib/variants";
 const verify = () => {
 	return useQueryState(
 		"verify",
-		parseAsStringLiteral(
-			Object.values(verification_codesSchema.def.shape.type.enum),
-		),
+		parseAsStringLiteral(["pending", "success"] as const),
 	);
 };
 
