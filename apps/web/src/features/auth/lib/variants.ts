@@ -1,4 +1,8 @@
-import { ExceptionCode, verification_codesType } from "@gravity/shared";
+import {
+	AuthConfig,
+	ExceptionCode,
+	verification_codesType,
+} from "@gravity/shared";
 
 /**
  * template type for all variants
@@ -36,13 +40,26 @@ type AuthFormVariant = {
 	};
 };
 
+type VerifyFormVariant = {
+	title: string;
+	description: string;
+
+	elements: {
+		code: {
+			enabled: boolean;
+			placeholder: string;
+			description: string;
+		};
+	};
+};
+
 /**
  * text variants for the auth form's fields
  */
 export const AuthFormVariants = {
 	login: {
 		title: "Login",
-		description: "Log in to an existing account.",
+		description: "Welcome back! Log in to continue.",
 
 		elements: {
 			email: {
@@ -53,7 +70,8 @@ export const AuthFormVariants = {
 			password: {
 				enabled: true,
 				placeholder: "",
-				description: "",
+				description:
+					"Your account password. Incorrect entry will require restarting the verification process.",
 			},
 			forgotButtons: {
 				enabled: true,
@@ -74,7 +92,7 @@ export const AuthFormVariants = {
 	},
 	signup: {
 		title: "Sign up",
-		description: "Register a brand new account!",
+		description: "Create your account to get started.",
 
 		elements: {
 			email: {
@@ -84,8 +102,8 @@ export const AuthFormVariants = {
 			},
 			password: {
 				enabled: true,
-				description: "",
 				placeholder: "",
+				description: "",
 			},
 			forgotButtons: {
 				enabled: false,
@@ -106,7 +124,7 @@ export const AuthFormVariants = {
 	},
 	forgot_password: {
 		title: "Password recovery",
-		description: "Enter the email address associated with your account.",
+		description: "Enter your email to receive a verification code.",
 
 		elements: {
 			email: {
@@ -117,7 +135,7 @@ export const AuthFormVariants = {
 			password: {
 				enabled: true,
 				placeholder: "",
-				description: "Enter a new secure password you'll use to log in.",
+				description: "Choose a new secure password for your account.",
 			},
 			forgotButtons: {
 				enabled: false,
@@ -137,6 +155,19 @@ export const AuthFormVariants = {
 		},
 	},
 } as const satisfies Record<verification_codesType["type"], AuthFormVariant>;
+
+export const VerifyFormVariants = {
+	title: "Verification",
+	description: `Enter the verification code that's been sent to your email.`,
+
+	elements: {
+		code: {
+			enabled: true,
+			description: `This code will expire in ${AuthConfig.code.expiryMs / (60 * 1000)} minutes.`,
+			placeholder: String().padStart(AuthConfig.code.length, "0"),
+		},
+	},
+} as const satisfies VerifyFormVariant;
 
 /**
  * types of authentication

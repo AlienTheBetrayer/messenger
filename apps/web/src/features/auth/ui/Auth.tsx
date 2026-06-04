@@ -35,12 +35,10 @@ export const Auth = () => {
 		<form
 			noValidate
 			id="auth-form"
-			onSubmit={(e) => {
-				void authForm.handleSubmit(onSubmit)(e);
-			}}
+			onSubmit={authForm.handleSubmit(onSubmit)}
 			className="flex flex-col gap-5 transition-all duration-300"
 		>
-			<AuthHeader/>
+			<AuthHeader />
 			<AuthContent />
 			<AuthFooter />
 		</form>

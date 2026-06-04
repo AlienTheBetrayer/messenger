@@ -79,9 +79,7 @@ export const Verify = () => {
 		<form
 			noValidate
 			id="auth-form"
-			onSubmit={(e) => {
-				void verifyForm.handleSubmit(onSubmit)(e);
-			}}
+			onSubmit={verifyForm.handleSubmit(onSubmit)}
 			className="flex flex-col gap-5"
 		>
 			<VerifyHeader />
