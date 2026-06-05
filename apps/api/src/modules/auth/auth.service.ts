@@ -6,7 +6,7 @@ import { createException } from "../../common/index.js";
 import { JwtService } from "../jwt/jwt.service.js";
 import { PrismaService } from "../prisma/prisma.service.js";
 import { VerifyService } from "../verify/verify.service.js";
-import { TokenPayloadSchema } from "./auth.types.js";
+import { AuthContextType, RefreshTokenType } from "./auth.decorators.js";
 
 @Injectable()
 export class AuthService {
@@ -90,7 +90,7 @@ export class AuthService {
 	 * @param code code that was sent to email (use /code/)
 	 * @returns authentication tokens, user and a session
 	 */
-	async login(body: AuthSchema) {
+	async login(body: AuthSchema, ctx: AuthContextType) {
 		// verifying the code
 		await this.verifyService.validateCode({
 			email: body.email,
@@ -103,7 +103,7 @@ export class AuthService {
 			where: { email: body.email },
 		});
 
-		if (!user) {
+		if (!user?.password) {
 			throw createException("notfound", "USER_NOT_FOUND");
 		}
 
@@ -118,7 +118,7 @@ export class AuthService {
 		}
 
 		return {
-			...(await this.jwtService.issueAuthTokens({ userId: user.id })),
+			...(await this.jwtService.issueAuthTokens({ userId: user.id, ctx })),
 			user,
 		};
 	}
@@ -160,10 +160,35 @@ export class AuthService {
 	 * @param refreshToken refresh token
 	 * @returns user object along with the session of currently logged in user
 	 */
-	async me(refreshToken: TokenPayloadSchema) {
+	async me(refreshToken: RefreshTokenType) {
+		// checking token
+		if (!refreshToken) {
+			throw createException("unauthorized", "UNAUTHENTICATED");
+		}
+
+		// validating token
+		const decoded = this.jwtService.decode({
+			token: refreshToken,
+		});
+
+		if (!decoded) {
+			throw createException("unauthorized", "UNAUTHENTICATED");
+		}
+
+		// database validating
+		const isFound = await this.prismaService.auth_session.count({
+			where: {
+				user_id: decoded.userId,
+			},
+		});
+
+		if (!isFound) {
+			throw createException("unauthorized", "UNAUTHENTICATED");
+		}
+
 		// getting the user
 		return await this.prismaService.users.findFirst({
-			where: { id: refreshToken.userId },
+			where: { id: decoded.userId },
 			include: {
 				auth_session: true,
 			},

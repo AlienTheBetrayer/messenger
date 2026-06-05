@@ -1,4 +1,3 @@
-import { TokenPayloadSchema } from "../auth.types";
 import { jestInitAuth } from "./init";
 
 describe("AuthService", () => {
@@ -12,41 +11,48 @@ describe("AuthService", () => {
 		jest.clearAllMocks();
 	});
 
+	// init variables
+	const refreshToken = "refresh";
+
 	describe("happy paths", () => {
-		it("should return a user if the user exists", async () => {
+		it("should return a user if jwt token decoded and session found", async () => {
 			// arrange
-			const refreshPayload: TokenPayloadSchema = {
-				sessionId: "session-123",
-				userId: "user-123",
-			};
-			const user = {
-				id: "user-123",
-			};
-			ctx.mockPrismaService.users.findFirst.mockResolvedValue(user);
+			ctx.mockJwtService.decode.mockReturnValue({});
+			ctx.mockPrismaService.auth_session.count.mockResolvedValue(1);
 
 			// act
-			const result = await ctx.authService.me(refreshPayload);
+			const result = await ctx.authService.me(refreshToken);
 
 			// assert
 			expect(result).not.toBeNull();
-			expect(result?.id).toBe(user.id);
+			expect(ctx.mockPrismaService.users.findFirst).toHaveBeenCalled();
 		});
 	});
 
 	describe("sad paths", () => {
-		it("should return null if the user does not exist", async () => {
+		it("should return null if jwt token is not decoded", async () => {
 			// arrange
-			const refreshPayload: TokenPayloadSchema = {
-				sessionId: "session-123",
-				userId: "user-123",
-			};
-			ctx.mockPrismaService.users.findFirst.mockResolvedValue(null);
+			ctx.mockJwtService.decode.mockReturnValue(null);
 
 			// act
-			const result = await ctx.authService.me(refreshPayload);
+			const result = ctx.authService.me(refreshToken);
 
 			// assert
-			expect(result).toBeNull();
+			await expect(result).rejects.toThrow();
+			expect(ctx.mockPrismaService.users.findFirst).not.toHaveBeenCalled();
+		});
+
+		it("should return null if session is not found", async () => {
+			// arrange
+			ctx.mockJwtService.decode.mockReturnValue({});
+			ctx.mockPrismaService.auth_session.count.mockResolvedValue(0);
+
+			// act
+			const result = ctx.authService.me(refreshToken);
+
+			// assert
+			await expect(result).rejects.toThrow();
+			expect(ctx.mockPrismaService.users.findFirst).not.toHaveBeenCalled();
 		});
 	});
 });

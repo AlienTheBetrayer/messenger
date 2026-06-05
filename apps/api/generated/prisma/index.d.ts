@@ -1245,7 +1245,7 @@ export namespace Prisma {
     id: string
     email: string
     username: string | null
-    password: string
+    password: string | null
     deleted_at: Date | null
     edited_at: Date | null
     created_at: Date
@@ -1327,7 +1327,7 @@ export namespace Prisma {
       id: string
       email: string
       username: string | null
-      password: string
+      password: string | null
       deleted_at: Date | null
       edited_at: Date | null
       created_at: Date
@@ -3224,30 +3224,31 @@ export namespace Prisma {
     id: string | null
     user_id: string | null
     refresh_token_hash: string | null
-    user_agent: string | null
-    ip_address: string | null
     last_seen_at: Date | null
     created_at: Date | null
+    ip: string | null
   }
 
   export type Auth_sessionMaxAggregateOutputType = {
     id: string | null
     user_id: string | null
     refresh_token_hash: string | null
-    user_agent: string | null
-    ip_address: string | null
     last_seen_at: Date | null
     created_at: Date | null
+    ip: string | null
   }
 
   export type Auth_sessionCountAggregateOutputType = {
     id: number
     user_id: number
     refresh_token_hash: number
-    user_agent: number
-    ip_address: number
     last_seen_at: number
     created_at: number
+    browser: number
+    os: number
+    device: number
+    cpu: number
+    ip: number
     _all: number
   }
 
@@ -3256,30 +3257,31 @@ export namespace Prisma {
     id?: true
     user_id?: true
     refresh_token_hash?: true
-    user_agent?: true
-    ip_address?: true
     last_seen_at?: true
     created_at?: true
+    ip?: true
   }
 
   export type Auth_sessionMaxAggregateInputType = {
     id?: true
     user_id?: true
     refresh_token_hash?: true
-    user_agent?: true
-    ip_address?: true
     last_seen_at?: true
     created_at?: true
+    ip?: true
   }
 
   export type Auth_sessionCountAggregateInputType = {
     id?: true
     user_id?: true
     refresh_token_hash?: true
-    user_agent?: true
-    ip_address?: true
     last_seen_at?: true
     created_at?: true
+    browser?: true
+    os?: true
+    device?: true
+    cpu?: true
+    ip?: true
     _all?: true
   }
 
@@ -3359,10 +3361,13 @@ export namespace Prisma {
     id: string
     user_id: string
     refresh_token_hash: string
-    user_agent: string | null
-    ip_address: string | null
     last_seen_at: Date | null
     created_at: Date
+    browser: JsonValue | null
+    os: JsonValue | null
+    device: JsonValue | null
+    cpu: JsonValue | null
+    ip: string | null
     _count: Auth_sessionCountAggregateOutputType | null
     _min: Auth_sessionMinAggregateOutputType | null
     _max: Auth_sessionMaxAggregateOutputType | null
@@ -3386,10 +3391,13 @@ export namespace Prisma {
     id?: boolean
     user_id?: boolean
     refresh_token_hash?: boolean
-    user_agent?: boolean
-    ip_address?: boolean
     last_seen_at?: boolean
     created_at?: boolean
+    browser?: boolean
+    os?: boolean
+    device?: boolean
+    cpu?: boolean
+    ip?: boolean
     users?: boolean | usersDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["auth_session"]>
 
@@ -3397,10 +3405,13 @@ export namespace Prisma {
     id?: boolean
     user_id?: boolean
     refresh_token_hash?: boolean
-    user_agent?: boolean
-    ip_address?: boolean
     last_seen_at?: boolean
     created_at?: boolean
+    browser?: boolean
+    os?: boolean
+    device?: boolean
+    cpu?: boolean
+    ip?: boolean
     users?: boolean | usersDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["auth_session"]>
 
@@ -3408,10 +3419,13 @@ export namespace Prisma {
     id?: boolean
     user_id?: boolean
     refresh_token_hash?: boolean
-    user_agent?: boolean
-    ip_address?: boolean
     last_seen_at?: boolean
     created_at?: boolean
+    browser?: boolean
+    os?: boolean
+    device?: boolean
+    cpu?: boolean
+    ip?: boolean
     users?: boolean | usersDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["auth_session"]>
 
@@ -3419,13 +3433,16 @@ export namespace Prisma {
     id?: boolean
     user_id?: boolean
     refresh_token_hash?: boolean
-    user_agent?: boolean
-    ip_address?: boolean
     last_seen_at?: boolean
     created_at?: boolean
+    browser?: boolean
+    os?: boolean
+    device?: boolean
+    cpu?: boolean
+    ip?: boolean
   }
 
-  export type auth_sessionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_id" | "refresh_token_hash" | "user_agent" | "ip_address" | "last_seen_at" | "created_at", ExtArgs["result"]["auth_session"]>
+  export type auth_sessionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_id" | "refresh_token_hash" | "last_seen_at" | "created_at" | "browser" | "os" | "device" | "cpu" | "ip", ExtArgs["result"]["auth_session"]>
   export type auth_sessionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     users?: boolean | usersDefaultArgs<ExtArgs>
   }
@@ -3445,10 +3462,13 @@ export namespace Prisma {
       id: string
       user_id: string
       refresh_token_hash: string
-      user_agent: string | null
-      ip_address: string | null
       last_seen_at: Date | null
       created_at: Date
+      browser: Prisma.JsonValue | null
+      os: Prisma.JsonValue | null
+      device: Prisma.JsonValue | null
+      cpu: Prisma.JsonValue | null
+      ip: string | null
     }, ExtArgs["result"]["auth_session"]>
     composites: {}
   }
@@ -3876,10 +3896,13 @@ export namespace Prisma {
     readonly id: FieldRef<"auth_session", 'String'>
     readonly user_id: FieldRef<"auth_session", 'String'>
     readonly refresh_token_hash: FieldRef<"auth_session", 'String'>
-    readonly user_agent: FieldRef<"auth_session", 'String'>
-    readonly ip_address: FieldRef<"auth_session", 'String'>
     readonly last_seen_at: FieldRef<"auth_session", 'DateTime'>
     readonly created_at: FieldRef<"auth_session", 'DateTime'>
+    readonly browser: FieldRef<"auth_session", 'Json'>
+    readonly os: FieldRef<"auth_session", 'Json'>
+    readonly device: FieldRef<"auth_session", 'Json'>
+    readonly cpu: FieldRef<"auth_session", 'Json'>
+    readonly ip: FieldRef<"auth_session", 'String'>
   }
     
 
@@ -4342,10 +4365,13 @@ export namespace Prisma {
     id: 'id',
     user_id: 'user_id',
     refresh_token_hash: 'refresh_token_hash',
-    user_agent: 'user_agent',
-    ip_address: 'ip_address',
     last_seen_at: 'last_seen_at',
-    created_at: 'created_at'
+    created_at: 'created_at',
+    browser: 'browser',
+    os: 'os',
+    device: 'device',
+    cpu: 'cpu',
+    ip: 'ip'
   };
 
   export type Auth_sessionScalarFieldEnum = (typeof Auth_sessionScalarFieldEnum)[keyof typeof Auth_sessionScalarFieldEnum]
@@ -4357,6 +4383,14 @@ export namespace Prisma {
   };
 
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+  export const NullableJsonNullValueInput: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull
+  };
+
+  export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
   export const QueryMode: {
@@ -4373,6 +4407,15 @@ export namespace Prisma {
   };
 
   export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+  export const JsonNullValueFilter: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull,
+    AnyNull: typeof AnyNull
+  };
+
+  export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
   /**
@@ -4423,6 +4466,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Json'
+   */
+  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+  /**
+   * Reference to a field of type 'QueryMode'
+   */
+  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+  /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -4446,7 +4503,7 @@ export namespace Prisma {
     id?: UuidFilter<"users"> | string
     email?: StringFilter<"users"> | string
     username?: StringNullableFilter<"users"> | string | null
-    password?: StringFilter<"users"> | string
+    password?: StringNullableFilter<"users"> | string | null
     deleted_at?: DateTimeNullableFilter<"users"> | Date | string | null
     edited_at?: DateTimeNullableFilter<"users"> | Date | string | null
     created_at?: DateTimeFilter<"users"> | Date | string
@@ -4457,7 +4514,7 @@ export namespace Prisma {
     id?: SortOrder
     email?: SortOrder
     username?: SortOrderInput | SortOrder
-    password?: SortOrder
+    password?: SortOrderInput | SortOrder
     deleted_at?: SortOrderInput | SortOrder
     edited_at?: SortOrderInput | SortOrder
     created_at?: SortOrder
@@ -4471,7 +4528,7 @@ export namespace Prisma {
     AND?: usersWhereInput | usersWhereInput[]
     OR?: usersWhereInput[]
     NOT?: usersWhereInput | usersWhereInput[]
-    password?: StringFilter<"users"> | string
+    password?: StringNullableFilter<"users"> | string | null
     deleted_at?: DateTimeNullableFilter<"users"> | Date | string | null
     edited_at?: DateTimeNullableFilter<"users"> | Date | string | null
     created_at?: DateTimeFilter<"users"> | Date | string
@@ -4482,7 +4539,7 @@ export namespace Prisma {
     id?: SortOrder
     email?: SortOrder
     username?: SortOrderInput | SortOrder
-    password?: SortOrder
+    password?: SortOrderInput | SortOrder
     deleted_at?: SortOrderInput | SortOrder
     edited_at?: SortOrderInput | SortOrder
     created_at?: SortOrder
@@ -4498,7 +4555,7 @@ export namespace Prisma {
     id?: UuidWithAggregatesFilter<"users"> | string
     email?: StringWithAggregatesFilter<"users"> | string
     username?: StringNullableWithAggregatesFilter<"users"> | string | null
-    password?: StringWithAggregatesFilter<"users"> | string
+    password?: StringNullableWithAggregatesFilter<"users"> | string | null
     deleted_at?: DateTimeNullableWithAggregatesFilter<"users"> | Date | string | null
     edited_at?: DateTimeNullableWithAggregatesFilter<"users"> | Date | string | null
     created_at?: DateTimeWithAggregatesFilter<"users"> | Date | string
@@ -4568,10 +4625,13 @@ export namespace Prisma {
     id?: UuidFilter<"auth_session"> | string
     user_id?: UuidFilter<"auth_session"> | string
     refresh_token_hash?: StringFilter<"auth_session"> | string
-    user_agent?: StringNullableFilter<"auth_session"> | string | null
-    ip_address?: StringNullableFilter<"auth_session"> | string | null
     last_seen_at?: DateTimeNullableFilter<"auth_session"> | Date | string | null
     created_at?: DateTimeFilter<"auth_session"> | Date | string
+    browser?: JsonNullableFilter<"auth_session">
+    os?: JsonNullableFilter<"auth_session">
+    device?: JsonNullableFilter<"auth_session">
+    cpu?: JsonNullableFilter<"auth_session">
+    ip?: StringNullableFilter<"auth_session"> | string | null
     users?: XOR<UsersScalarRelationFilter, usersWhereInput>
   }
 
@@ -4579,10 +4639,13 @@ export namespace Prisma {
     id?: SortOrder
     user_id?: SortOrder
     refresh_token_hash?: SortOrder
-    user_agent?: SortOrderInput | SortOrder
-    ip_address?: SortOrderInput | SortOrder
     last_seen_at?: SortOrderInput | SortOrder
     created_at?: SortOrder
+    browser?: SortOrderInput | SortOrder
+    os?: SortOrderInput | SortOrder
+    device?: SortOrderInput | SortOrder
+    cpu?: SortOrderInput | SortOrder
+    ip?: SortOrderInput | SortOrder
     users?: usersOrderByWithRelationInput
   }
 
@@ -4593,10 +4656,13 @@ export namespace Prisma {
     NOT?: auth_sessionWhereInput | auth_sessionWhereInput[]
     user_id?: UuidFilter<"auth_session"> | string
     refresh_token_hash?: StringFilter<"auth_session"> | string
-    user_agent?: StringNullableFilter<"auth_session"> | string | null
-    ip_address?: StringNullableFilter<"auth_session"> | string | null
     last_seen_at?: DateTimeNullableFilter<"auth_session"> | Date | string | null
     created_at?: DateTimeFilter<"auth_session"> | Date | string
+    browser?: JsonNullableFilter<"auth_session">
+    os?: JsonNullableFilter<"auth_session">
+    device?: JsonNullableFilter<"auth_session">
+    cpu?: JsonNullableFilter<"auth_session">
+    ip?: StringNullableFilter<"auth_session"> | string | null
     users?: XOR<UsersScalarRelationFilter, usersWhereInput>
   }, "id">
 
@@ -4604,10 +4670,13 @@ export namespace Prisma {
     id?: SortOrder
     user_id?: SortOrder
     refresh_token_hash?: SortOrder
-    user_agent?: SortOrderInput | SortOrder
-    ip_address?: SortOrderInput | SortOrder
     last_seen_at?: SortOrderInput | SortOrder
     created_at?: SortOrder
+    browser?: SortOrderInput | SortOrder
+    os?: SortOrderInput | SortOrder
+    device?: SortOrderInput | SortOrder
+    cpu?: SortOrderInput | SortOrder
+    ip?: SortOrderInput | SortOrder
     _count?: auth_sessionCountOrderByAggregateInput
     _max?: auth_sessionMaxOrderByAggregateInput
     _min?: auth_sessionMinOrderByAggregateInput
@@ -4620,17 +4689,20 @@ export namespace Prisma {
     id?: UuidWithAggregatesFilter<"auth_session"> | string
     user_id?: UuidWithAggregatesFilter<"auth_session"> | string
     refresh_token_hash?: StringWithAggregatesFilter<"auth_session"> | string
-    user_agent?: StringNullableWithAggregatesFilter<"auth_session"> | string | null
-    ip_address?: StringNullableWithAggregatesFilter<"auth_session"> | string | null
     last_seen_at?: DateTimeNullableWithAggregatesFilter<"auth_session"> | Date | string | null
     created_at?: DateTimeWithAggregatesFilter<"auth_session"> | Date | string
+    browser?: JsonNullableWithAggregatesFilter<"auth_session">
+    os?: JsonNullableWithAggregatesFilter<"auth_session">
+    device?: JsonNullableWithAggregatesFilter<"auth_session">
+    cpu?: JsonNullableWithAggregatesFilter<"auth_session">
+    ip?: StringNullableWithAggregatesFilter<"auth_session"> | string | null
   }
 
   export type usersCreateInput = {
     id?: string
     email: string
     username?: string | null
-    password: string
+    password?: string | null
     deleted_at?: Date | string | null
     edited_at?: Date | string | null
     created_at?: Date | string
@@ -4641,7 +4713,7 @@ export namespace Prisma {
     id?: string
     email: string
     username?: string | null
-    password: string
+    password?: string | null
     deleted_at?: Date | string | null
     edited_at?: Date | string | null
     created_at?: Date | string
@@ -4652,7 +4724,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     username?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     edited_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -4663,7 +4735,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     username?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     edited_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -4674,7 +4746,7 @@ export namespace Prisma {
     id?: string
     email: string
     username?: string | null
-    password: string
+    password?: string | null
     deleted_at?: Date | string | null
     edited_at?: Date | string | null
     created_at?: Date | string
@@ -4684,7 +4756,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     username?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     edited_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -4694,7 +4766,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     username?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     edited_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -4766,10 +4838,13 @@ export namespace Prisma {
   export type auth_sessionCreateInput = {
     id?: string
     refresh_token_hash: string
-    user_agent?: string | null
-    ip_address?: string | null
     last_seen_at?: Date | string | null
     created_at?: Date | string
+    browser?: NullableJsonNullValueInput | InputJsonValue
+    os?: NullableJsonNullValueInput | InputJsonValue
+    device?: NullableJsonNullValueInput | InputJsonValue
+    cpu?: NullableJsonNullValueInput | InputJsonValue
+    ip?: string | null
     users: usersCreateNestedOneWithoutAuth_sessionInput
   }
 
@@ -4777,19 +4852,25 @@ export namespace Prisma {
     id?: string
     user_id: string
     refresh_token_hash: string
-    user_agent?: string | null
-    ip_address?: string | null
     last_seen_at?: Date | string | null
     created_at?: Date | string
+    browser?: NullableJsonNullValueInput | InputJsonValue
+    os?: NullableJsonNullValueInput | InputJsonValue
+    device?: NullableJsonNullValueInput | InputJsonValue
+    cpu?: NullableJsonNullValueInput | InputJsonValue
+    ip?: string | null
   }
 
   export type auth_sessionUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     refresh_token_hash?: StringFieldUpdateOperationsInput | string
-    user_agent?: NullableStringFieldUpdateOperationsInput | string | null
-    ip_address?: NullableStringFieldUpdateOperationsInput | string | null
     last_seen_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    browser?: NullableJsonNullValueInput | InputJsonValue
+    os?: NullableJsonNullValueInput | InputJsonValue
+    device?: NullableJsonNullValueInput | InputJsonValue
+    cpu?: NullableJsonNullValueInput | InputJsonValue
+    ip?: NullableStringFieldUpdateOperationsInput | string | null
     users?: usersUpdateOneRequiredWithoutAuth_sessionNestedInput
   }
 
@@ -4797,39 +4878,51 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
     refresh_token_hash?: StringFieldUpdateOperationsInput | string
-    user_agent?: NullableStringFieldUpdateOperationsInput | string | null
-    ip_address?: NullableStringFieldUpdateOperationsInput | string | null
     last_seen_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    browser?: NullableJsonNullValueInput | InputJsonValue
+    os?: NullableJsonNullValueInput | InputJsonValue
+    device?: NullableJsonNullValueInput | InputJsonValue
+    cpu?: NullableJsonNullValueInput | InputJsonValue
+    ip?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type auth_sessionCreateManyInput = {
     id?: string
     user_id: string
     refresh_token_hash: string
-    user_agent?: string | null
-    ip_address?: string | null
     last_seen_at?: Date | string | null
     created_at?: Date | string
+    browser?: NullableJsonNullValueInput | InputJsonValue
+    os?: NullableJsonNullValueInput | InputJsonValue
+    device?: NullableJsonNullValueInput | InputJsonValue
+    cpu?: NullableJsonNullValueInput | InputJsonValue
+    ip?: string | null
   }
 
   export type auth_sessionUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     refresh_token_hash?: StringFieldUpdateOperationsInput | string
-    user_agent?: NullableStringFieldUpdateOperationsInput | string | null
-    ip_address?: NullableStringFieldUpdateOperationsInput | string | null
     last_seen_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    browser?: NullableJsonNullValueInput | InputJsonValue
+    os?: NullableJsonNullValueInput | InputJsonValue
+    device?: NullableJsonNullValueInput | InputJsonValue
+    cpu?: NullableJsonNullValueInput | InputJsonValue
+    ip?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type auth_sessionUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     user_id?: StringFieldUpdateOperationsInput | string
     refresh_token_hash?: StringFieldUpdateOperationsInput | string
-    user_agent?: NullableStringFieldUpdateOperationsInput | string | null
-    ip_address?: NullableStringFieldUpdateOperationsInput | string | null
     last_seen_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    browser?: NullableJsonNullValueInput | InputJsonValue
+    os?: NullableJsonNullValueInput | InputJsonValue
+    device?: NullableJsonNullValueInput | InputJsonValue
+    cpu?: NullableJsonNullValueInput | InputJsonValue
+    ip?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UuidFilter<$PrismaModel = never> = {
@@ -5063,6 +5156,29 @@ export namespace Prisma {
     _min?: NestedEnumverification_code_typeFilter<$PrismaModel>
     _max?: NestedEnumverification_code_typeFilter<$PrismaModel>
   }
+  export type JsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
 
   export type UsersScalarRelationFilter = {
     is?: usersWhereInput
@@ -5073,30 +5189,57 @@ export namespace Prisma {
     id?: SortOrder
     user_id?: SortOrder
     refresh_token_hash?: SortOrder
-    user_agent?: SortOrder
-    ip_address?: SortOrder
     last_seen_at?: SortOrder
     created_at?: SortOrder
+    browser?: SortOrder
+    os?: SortOrder
+    device?: SortOrder
+    cpu?: SortOrder
+    ip?: SortOrder
   }
 
   export type auth_sessionMaxOrderByAggregateInput = {
     id?: SortOrder
     user_id?: SortOrder
     refresh_token_hash?: SortOrder
-    user_agent?: SortOrder
-    ip_address?: SortOrder
     last_seen_at?: SortOrder
     created_at?: SortOrder
+    ip?: SortOrder
   }
 
   export type auth_sessionMinOrderByAggregateInput = {
     id?: SortOrder
     user_id?: SortOrder
     refresh_token_hash?: SortOrder
-    user_agent?: SortOrder
-    ip_address?: SortOrder
     last_seen_at?: SortOrder
     created_at?: SortOrder
+    ip?: SortOrder
+  }
+  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedJsonNullableFilter<$PrismaModel>
+    _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
   export type auth_sessionCreateNestedManyWithoutUsersInput = {
@@ -5350,23 +5493,52 @@ export namespace Prisma {
     _min?: NestedEnumverification_code_typeFilter<$PrismaModel>
     _max?: NestedEnumverification_code_typeFilter<$PrismaModel>
   }
+  export type NestedJsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
 
   export type auth_sessionCreateWithoutUsersInput = {
     id?: string
     refresh_token_hash: string
-    user_agent?: string | null
-    ip_address?: string | null
     last_seen_at?: Date | string | null
     created_at?: Date | string
+    browser?: NullableJsonNullValueInput | InputJsonValue
+    os?: NullableJsonNullValueInput | InputJsonValue
+    device?: NullableJsonNullValueInput | InputJsonValue
+    cpu?: NullableJsonNullValueInput | InputJsonValue
+    ip?: string | null
   }
 
   export type auth_sessionUncheckedCreateWithoutUsersInput = {
     id?: string
     refresh_token_hash: string
-    user_agent?: string | null
-    ip_address?: string | null
     last_seen_at?: Date | string | null
     created_at?: Date | string
+    browser?: NullableJsonNullValueInput | InputJsonValue
+    os?: NullableJsonNullValueInput | InputJsonValue
+    device?: NullableJsonNullValueInput | InputJsonValue
+    cpu?: NullableJsonNullValueInput | InputJsonValue
+    ip?: string | null
   }
 
   export type auth_sessionCreateOrConnectWithoutUsersInput = {
@@ -5402,17 +5574,20 @@ export namespace Prisma {
     id?: UuidFilter<"auth_session"> | string
     user_id?: UuidFilter<"auth_session"> | string
     refresh_token_hash?: StringFilter<"auth_session"> | string
-    user_agent?: StringNullableFilter<"auth_session"> | string | null
-    ip_address?: StringNullableFilter<"auth_session"> | string | null
     last_seen_at?: DateTimeNullableFilter<"auth_session"> | Date | string | null
     created_at?: DateTimeFilter<"auth_session"> | Date | string
+    browser?: JsonNullableFilter<"auth_session">
+    os?: JsonNullableFilter<"auth_session">
+    device?: JsonNullableFilter<"auth_session">
+    cpu?: JsonNullableFilter<"auth_session">
+    ip?: StringNullableFilter<"auth_session"> | string | null
   }
 
   export type usersCreateWithoutAuth_sessionInput = {
     id?: string
     email: string
     username?: string | null
-    password: string
+    password?: string | null
     deleted_at?: Date | string | null
     edited_at?: Date | string | null
     created_at?: Date | string
@@ -5422,7 +5597,7 @@ export namespace Prisma {
     id?: string
     email: string
     username?: string | null
-    password: string
+    password?: string | null
     deleted_at?: Date | string | null
     edited_at?: Date | string | null
     created_at?: Date | string
@@ -5448,7 +5623,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     username?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     edited_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -5458,7 +5633,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     username?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     edited_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -5467,37 +5642,49 @@ export namespace Prisma {
   export type auth_sessionCreateManyUsersInput = {
     id?: string
     refresh_token_hash: string
-    user_agent?: string | null
-    ip_address?: string | null
     last_seen_at?: Date | string | null
     created_at?: Date | string
+    browser?: NullableJsonNullValueInput | InputJsonValue
+    os?: NullableJsonNullValueInput | InputJsonValue
+    device?: NullableJsonNullValueInput | InputJsonValue
+    cpu?: NullableJsonNullValueInput | InputJsonValue
+    ip?: string | null
   }
 
   export type auth_sessionUpdateWithoutUsersInput = {
     id?: StringFieldUpdateOperationsInput | string
     refresh_token_hash?: StringFieldUpdateOperationsInput | string
-    user_agent?: NullableStringFieldUpdateOperationsInput | string | null
-    ip_address?: NullableStringFieldUpdateOperationsInput | string | null
     last_seen_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    browser?: NullableJsonNullValueInput | InputJsonValue
+    os?: NullableJsonNullValueInput | InputJsonValue
+    device?: NullableJsonNullValueInput | InputJsonValue
+    cpu?: NullableJsonNullValueInput | InputJsonValue
+    ip?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type auth_sessionUncheckedUpdateWithoutUsersInput = {
     id?: StringFieldUpdateOperationsInput | string
     refresh_token_hash?: StringFieldUpdateOperationsInput | string
-    user_agent?: NullableStringFieldUpdateOperationsInput | string | null
-    ip_address?: NullableStringFieldUpdateOperationsInput | string | null
     last_seen_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    browser?: NullableJsonNullValueInput | InputJsonValue
+    os?: NullableJsonNullValueInput | InputJsonValue
+    device?: NullableJsonNullValueInput | InputJsonValue
+    cpu?: NullableJsonNullValueInput | InputJsonValue
+    ip?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type auth_sessionUncheckedUpdateManyWithoutUsersInput = {
     id?: StringFieldUpdateOperationsInput | string
     refresh_token_hash?: StringFieldUpdateOperationsInput | string
-    user_agent?: NullableStringFieldUpdateOperationsInput | string | null
-    ip_address?: NullableStringFieldUpdateOperationsInput | string | null
     last_seen_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    browser?: NullableJsonNullValueInput | InputJsonValue
+    os?: NullableJsonNullValueInput | InputJsonValue
+    device?: NullableJsonNullValueInput | InputJsonValue
+    cpu?: NullableJsonNullValueInput | InputJsonValue
+    ip?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
 

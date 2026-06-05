@@ -1,8 +1,13 @@
-import { Body, Controller, Delete, Get, Post, Req, Res } from "@nestjs/common";
-import { Request, Response } from "express";
+import { Body, Controller, Delete, Get, Post, Res } from "@nestjs/common";
+import { Response } from "express";
 
-import { createException } from "../../common";
 import { JwtService } from "../jwt/jwt.service";
+import {
+	AuthContext,
+	AuthContextType,
+	RefreshToken,
+	RefreshTokenType,
+} from "./auth.decorators";
 import { AuthService } from "./auth.service";
 import { AuthDto, CodeDto } from "./dto/auth.dto";
 
@@ -46,11 +51,12 @@ export class AuthController {
 	@Post("login")
 	async login(
 		@Body() body: AuthDto,
+		@AuthContext() ctx: AuthContextType,
 		@Res({ passthrough: true }) response: Response,
 	) {
 		// authenticating
 		const { accessToken, refreshToken, session, user } =
-			await this.authService.login(body);
+			await this.authService.login(body, ctx);
 
 		// cookies
 		this.jwtService.setAuthHttpCookies({ accessToken, refreshToken, response });
@@ -76,16 +82,7 @@ export class AuthController {
 	 * @returns user object along with the session of currently logged in user
 	 */
 	@Get("me")
-  async me(@Req() request: Request) {
-		// getting and validating the refresh token
-		const refreshToken = this.jwtService.decode({
-			token: request.cookies["refreshToken"],
-		});
-
-		if (!refreshToken) {
-			throw createException("unauthorized", "UNAUTHENTICATED");
-		}
-
+	async me(@RefreshToken() refreshToken: RefreshTokenType) {
 		return await this.authService.me(refreshToken);
 	}
 
@@ -96,12 +93,10 @@ export class AuthController {
 	 */
 	@Delete("logout")
 	async logout(
-		@Req() request: Request,
+		@RefreshToken() refreshToken: RefreshTokenType,
 		@Res({ passthrough: true }) response: Response,
 	) {
-		// getting and decoding the token
-		const { refreshToken } = this.jwtService.getAuthTokens({ request });
-
+		// validating tokens
 		if (!refreshToken) {
 			return { message: "no refresh token found." };
 		}

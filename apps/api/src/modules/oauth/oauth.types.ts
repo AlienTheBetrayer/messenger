@@ -14,11 +14,6 @@ export const oAuthIdentitySchema = z.object({
 });
 
 /**
- * oauth identity retrieved from services
- */
-export type OAuthIdentity = z.infer<typeof oAuthIdentitySchema>;
-
-/**
  * github api
  */
 export type GithubUserEmails = {

@@ -1,11 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
 import { Profile, Strategy } from "passport-github2";
 
-import { GithubUserEmails, OAuthIdentity } from "../oauth.types";
+import { OAuthIdentityType } from "../oauth.decorators";
+import { GithubUserEmails } from "../oauth.types";
 
 @Injectable()
 export class GithubStrategy extends PassportStrategy(Strategy, "github") {
@@ -23,7 +22,7 @@ export class GithubStrategy extends PassportStrategy(Strategy, "github") {
 		_refreshToken: string,
 		profile: Profile,
 	) {
-		const data: OAuthIdentity = {
+		const data: OAuthIdentityType = {
 			provider: "github",
 			providerId: profile.id,
 			email: profile.emails?.[0]?.value,

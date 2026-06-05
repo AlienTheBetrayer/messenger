@@ -143,15 +143,23 @@ exports.Prisma.Auth_sessionScalarFieldEnum = {
   id: 'id',
   user_id: 'user_id',
   refresh_token_hash: 'refresh_token_hash',
-  user_agent: 'user_agent',
-  ip_address: 'ip_address',
   last_seen_at: 'last_seen_at',
-  created_at: 'created_at'
+  created_at: 'created_at',
+  browser: 'browser',
+  os: 'os',
+  device: 'device',
+  cpu: 'cpu',
+  ip: 'ip'
 };
 
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.QueryMode = {
@@ -162,6 +170,12 @@ exports.Prisma.QueryMode = {
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
+};
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
 };
 exports.verification_code_type = exports.$Enums.verification_code_type = {
   login: 'login',

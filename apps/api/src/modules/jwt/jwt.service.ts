@@ -3,8 +3,10 @@ import { Injectable } from "@nestjs/common";
 import bcrypt from "bcryptjs";
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
+import { UAParser } from "ua-parser-js";
 import z from "zod";
 
+import { AuthContextType } from "../auth/auth.decorators";
 import { TokenPayloadSchema, tokenPayloadSchema } from "../auth/auth.types";
 import { PrismaService } from "../prisma/prisma.service";
 
@@ -118,7 +120,7 @@ export class JwtService {
 	 * @param userId id of the user
 	 * @returns access token, refresh token and session
 	 */
-	async issueAuthTokens(params: { userId: string }) {
+	async issueAuthTokens(params: { userId: string; ctx: AuthContextType }) {
 		// session
 		const session = await this.prismaService.auth_session.create({
 			data: {
@@ -150,6 +152,11 @@ export class JwtService {
 		const salt = await bcrypt.genSalt(10);
 		const refreshTokenHash = await bcrypt.hash(refreshToken, salt);
 
+		// parsing user agent
+		const { browser, cpu, device, os } = await UAParser(
+			params.ctx.userAgent,
+		).withClientHints();
+
 		// updating the session
 		const updatedSession = await this.prismaService.auth_session.update({
 			where: {
@@ -157,6 +164,25 @@ export class JwtService {
 			},
 			data: {
 				refresh_token_hash: refreshTokenHash,
+				ip: params.ctx.ip,
+				browser: {
+					major: browser.major,
+					name: browser.name,
+					type: browser.type,
+					version: browser.version,
+				},
+				device: {
+					model: device.model,
+					type: device.type ?? "desktop",
+					vendor: device.vendor,
+				},
+				cpu: {
+					architecture: cpu.architecture,
+				},
+				os: {
+					name: os.name,
+					version: os.version,
+				},
 			},
 		});
 

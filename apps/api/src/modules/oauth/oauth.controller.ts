@@ -1,7 +1,9 @@
-import { Controller, Get, Req, Res, UseGuards } from "@nestjs/common";
+import { Controller, Get, Res, UseGuards } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
-import { Request, Response } from "express";
+import { Response } from "express";
 
+import { AuthContext, AuthContextType } from "../auth/auth.decorators";
+import { OAuthIdentity, OAuthIdentityType } from "./oauth.decorators";
 import { OAuthService } from "./oauth.service";
 
 @Controller("oauth")
@@ -24,10 +26,11 @@ export class OAuthController {
 	@Get("google/callback")
 	@UseGuards(AuthGuard("google"))
 	async googleCallback(
-		@Req() request: Request,
+		@OAuthIdentity() identity: OAuthIdentityType,
+		@AuthContext() ctx: AuthContextType,
 		@Res({ passthrough: true }) response: Response,
 	) {
-		await this.oauthService.callback(request, response);
+		await this.oauthService.callback(identity, ctx, response);
 	}
 
 	/**
@@ -46,9 +49,10 @@ export class OAuthController {
 	@Get("github/callback")
 	@UseGuards(AuthGuard("github"))
 	async githubCallback(
-		@Req() request: Request,
+		@OAuthIdentity() identity: OAuthIdentityType,
+		@AuthContext() ctx: AuthContextType,
 		@Res({ passthrough: true }) response: Response,
 	) {
-		await this.oauthService.callback(request, response);
+		await this.oauthService.callback(identity, ctx, response);
 	}
 }

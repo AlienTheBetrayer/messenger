@@ -1,10 +1,11 @@
 import { Injectable } from "@nestjs/common";
-import { Request, Response } from "express";
+import { Response } from "express";
 
 import { createException } from "../../common";
+import { AuthContextType } from "../auth/auth.decorators";
 import { JwtService } from "../jwt/jwt.service";
 import { PrismaService } from "../prisma/prisma.service";
-import { OAuthIdentity, oAuthIdentitySchema } from "./oauth.types";
+import { OAuthIdentityType } from "./oauth.decorators";
 
 @Injectable()
 export class OAuthService {
@@ -19,19 +20,21 @@ export class OAuthService {
 	 * @param response response object
 	 * @returns redirects the user back to the frontend
 	 */
-	async callback(request: Request, response: Response) {
-		const parsed = await oAuthIdentitySchema.safeParseAsync(request.user);
-
+	async callback(
+		identity: OAuthIdentityType,
+		ctx: AuthContextType,
+		response: Response,
+	) {
 		// handling error
-		if (parsed.data?.error) {
+		if (identity?.error) {
 			response.redirect(
-				`http://localhost:3000/login?error=${parsed.data.error.toLowerCase()}`,
+				`http://localhost:3000/login?error=${identity.error.toLowerCase()}`,
 			);
 		}
 
 		// login upon success
-		if (parsed.success) {
-			await this.login(response, parsed.data);
+		if (identity) {
+			await this.login(identity, ctx, response);
 		}
 
 		response.redirect("http://localhost:3000/login");
@@ -43,16 +46,20 @@ export class OAuthService {
 	 * @param ouser user object retrieved from oauth
 	 * @returns user object
 	 */
-	async login(response: Response, ouser: OAuthIdentity) {
+	async login(
+		identity: OAuthIdentityType,
+		ctx: AuthContextType,
+		response: Response,
+	) {
 		// does the user have an email?
-		if (!ouser.email) {
+		if (!identity?.email) {
 			throw createException("notfound", "EMAIL_NOT_FOUND");
 		}
 
 		// does the user already exist?
 		let user = await this.prismaService.users.findFirst({
 			where: {
-				email: ouser.email,
+				email: identity.email,
 			},
 		});
 
@@ -60,7 +67,7 @@ export class OAuthService {
 		if (!user) {
 			user = await this.prismaService.users.create({
 				data: {
-					email: ouser.email,
+					email: identity.email,
 					password: "SET IT TO NULL, CHANGE DB SCHEMA",
 				},
 			});
@@ -69,6 +76,7 @@ export class OAuthService {
 		// tokens + hashing + session
 		const tokens = await this.jwtService.issueAuthTokens({
 			userId: user.id,
+			ctx,
 		});
 
 		// cookies
