@@ -9,7 +9,7 @@ type Props = {
 export const ThemesProvider = ({ children }: Props) => {
 	return (
 		<ThemeProvider
-			attribute="class"
+			attribute="data-theme"
 			defaultTheme="system"
 			themes={themes}
 		>

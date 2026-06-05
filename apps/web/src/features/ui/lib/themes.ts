@@ -1,7 +1,7 @@
 /**
  * all available themes (array)
  */
-export const themes = ["light", "dark", "amoled"];
+export const themes = ["light", "dark", "amoled", "high-contrast"];
 
 /**
  * all available themes (literal)

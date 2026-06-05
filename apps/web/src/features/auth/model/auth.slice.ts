@@ -73,8 +73,9 @@ export const authApi = baseApi.injectEndpoints({
 				url: "/auth/me",
 				method: "GET",
 			}),
-			providesTags: ["me"],
-		}),
+      providesTags: ["me"],
+      keepUnusedDataFor: 99999999,
+    }),
 
 		/**
 		 * /auth/logout

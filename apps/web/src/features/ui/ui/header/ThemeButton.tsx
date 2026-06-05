@@ -15,8 +15,10 @@ import {
 } from "@/shared";
 
 export const ThemeButton = () => {
+  // logic
 	const { theme, setTheme, themes } = useTheme();
 
+  // jsx
 	return (
 		<Popover>
 			<PopoverTrigger asChild>

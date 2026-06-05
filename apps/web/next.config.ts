@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
 	transpilePackages: ["@gravity/shared"],
-	rewrites() {
+	async rewrites() {
 		return [
 			{
 				source: "/api/:path*",

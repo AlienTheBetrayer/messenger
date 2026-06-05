@@ -1,7 +1,7 @@
 import { CircleUserRound } from "lucide-react";
 import Link from "next/link";
 
-import { useAuth } from "@/features/auth/model/auth.selectors";
+import { useAuth } from "@/features/auth/hooks/useAuthWatcher";
 import { Button, Spinner } from "@/shared";
 
 export const AuthButtons = () => {

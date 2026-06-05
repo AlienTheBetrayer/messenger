@@ -17,6 +17,7 @@
 	--d-border: oklch(1 0 0 / 10%);
 	--d-input: oklch(1 0 0 / 15%);
 	--d-ring: oklch(0.556 0 0);
+	--radius: 0.625rem;
 	--d-chart-1: oklch(0.87 0 0);
 	--d-chart-2: oklch(0.556 0 0);
 	--d-chart-3: oklch(0.439 0 0);
@@ -33,7 +34,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-	:root:not(.light) {
+	:root:not([data-theme]) {
 		--background: var(--d-background);
 		--foreground: var(--d-foreground);
 		--card: var(--d-card);
@@ -71,8 +72,7 @@
 	}
 }
 
-:root[data-theme="dark"],
-.dark {
+:root[data-theme="dark"] {
 	--background: var(--d-background);
 	--foreground: var(--d-foreground);
 	--card: var(--d-card);
