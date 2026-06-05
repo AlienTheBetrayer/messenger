@@ -81,6 +81,12 @@ importers:
 
   apps/api:
     dependencies:
+      '@dicebear/core':
+        specifier: ^10.0.2
+        version: 10.0.2
+      '@dicebear/styles':
+        specifier: ^10.1.0
+        version: 10.1.0
       '@gravity/shared':
         specifier: workspace:*
         version: link:../../packages/shared
@@ -687,6 +693,13 @@ packages:
       '@typescript-eslint/parser': ^7.0.0 || ^8.0.0
       class-validator: '*'
       eslint: '>=9.18.0'
+
+  '@dicebear/core@10.0.2':
+    resolution: {integrity: sha512-Lw3Tjw0tf5Jg6SBszJ57YhowgMWv/eqU4K0hmnIxj0rgCjFYeM2/SDWl0dQNdDmVcWrfsR0Q5f+78f1uxF76Sg==}
+    engines: {node: '>=22.0.0'}
+
+  '@dicebear/styles@10.1.0':
+    resolution: {integrity: sha512-IrCy3X5TQvlqigKmErsHqQuTwXthbGtzf0cgd6gOugx01LIXCMNNCUjnPKWchHvhmu4ACJ7xwfjQ1Myl20wd5Q==}
 
   '@dotenvx/dotenvx@1.66.0':
     resolution: {integrity: sha512-qlQFhHUjhRDybrinqLAD0MClVZDOrsq80O8eD5iSjz3Qa/4f3Jg7SQrOaSobrRyP1QaWIYLGtGpj2c7H0D8NUw==}
@@ -7249,6 +7262,10 @@ snapshots:
       - eslint-import-resolver-webpack
       - supports-color
       - typescript
+
+  '@dicebear/core@10.0.2': {}
+
+  '@dicebear/styles@10.1.0': {}
 
   '@dotenvx/dotenvx@1.66.0':
     dependencies:

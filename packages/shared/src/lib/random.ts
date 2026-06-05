@@ -13,3 +13,16 @@ export const randomString = (length: number, characters?: string) => {
 
 	return Array.from({ length }, () => randomInt(0, chars.length)).join("");
 };
+
+/**
+ * generates a random hex color with # at the beginning
+ * @returns hex color
+ */
+export const randomHex = () => {
+	return (
+		"#" +
+		Math.floor(Math.random() * 16777215)
+			.toString(16)
+			.padStart(6, "0")
+	);
+};

@@ -1114,6 +1114,8 @@ export namespace Prisma {
     deleted_at: Date | null
     edited_at: Date | null
     created_at: Date | null
+    color: string | null
+    image_url: string | null
   }
 
   export type UsersMaxAggregateOutputType = {
@@ -1124,6 +1126,8 @@ export namespace Prisma {
     deleted_at: Date | null
     edited_at: Date | null
     created_at: Date | null
+    color: string | null
+    image_url: string | null
   }
 
   export type UsersCountAggregateOutputType = {
@@ -1134,6 +1138,8 @@ export namespace Prisma {
     deleted_at: number
     edited_at: number
     created_at: number
+    color: number
+    image_url: number
     _all: number
   }
 
@@ -1146,6 +1152,8 @@ export namespace Prisma {
     deleted_at?: true
     edited_at?: true
     created_at?: true
+    color?: true
+    image_url?: true
   }
 
   export type UsersMaxAggregateInputType = {
@@ -1156,6 +1164,8 @@ export namespace Prisma {
     deleted_at?: true
     edited_at?: true
     created_at?: true
+    color?: true
+    image_url?: true
   }
 
   export type UsersCountAggregateInputType = {
@@ -1166,6 +1176,8 @@ export namespace Prisma {
     deleted_at?: true
     edited_at?: true
     created_at?: true
+    color?: true
+    image_url?: true
     _all?: true
   }
 
@@ -1249,6 +1261,8 @@ export namespace Prisma {
     deleted_at: Date | null
     edited_at: Date | null
     created_at: Date
+    color: string | null
+    image_url: string | null
     _count: UsersCountAggregateOutputType | null
     _min: UsersMinAggregateOutputType | null
     _max: UsersMaxAggregateOutputType | null
@@ -1276,6 +1290,8 @@ export namespace Prisma {
     deleted_at?: boolean
     edited_at?: boolean
     created_at?: boolean
+    color?: boolean
+    image_url?: boolean
     auth_session?: boolean | users$auth_sessionArgs<ExtArgs>
     _count?: boolean | UsersCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["users"]>
@@ -1288,6 +1304,8 @@ export namespace Prisma {
     deleted_at?: boolean
     edited_at?: boolean
     created_at?: boolean
+    color?: boolean
+    image_url?: boolean
   }, ExtArgs["result"]["users"]>
 
   export type usersSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1298,6 +1316,8 @@ export namespace Prisma {
     deleted_at?: boolean
     edited_at?: boolean
     created_at?: boolean
+    color?: boolean
+    image_url?: boolean
   }, ExtArgs["result"]["users"]>
 
   export type usersSelectScalar = {
@@ -1308,9 +1328,11 @@ export namespace Prisma {
     deleted_at?: boolean
     edited_at?: boolean
     created_at?: boolean
+    color?: boolean
+    image_url?: boolean
   }
 
-  export type usersOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "username" | "password" | "deleted_at" | "edited_at" | "created_at", ExtArgs["result"]["users"]>
+  export type usersOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "username" | "password" | "deleted_at" | "edited_at" | "created_at" | "color" | "image_url", ExtArgs["result"]["users"]>
   export type usersInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     auth_session?: boolean | users$auth_sessionArgs<ExtArgs>
     _count?: boolean | UsersCountOutputTypeDefaultArgs<ExtArgs>
@@ -1331,6 +1353,8 @@ export namespace Prisma {
       deleted_at: Date | null
       edited_at: Date | null
       created_at: Date
+      color: string | null
+      image_url: string | null
     }, ExtArgs["result"]["users"]>
     composites: {}
   }
@@ -1762,6 +1786,8 @@ export namespace Prisma {
     readonly deleted_at: FieldRef<"users", 'DateTime'>
     readonly edited_at: FieldRef<"users", 'DateTime'>
     readonly created_at: FieldRef<"users", 'DateTime'>
+    readonly color: FieldRef<"users", 'String'>
+    readonly image_url: FieldRef<"users", 'String'>
   }
     
 
@@ -4343,7 +4369,9 @@ export namespace Prisma {
     password: 'password',
     deleted_at: 'deleted_at',
     edited_at: 'edited_at',
-    created_at: 'created_at'
+    created_at: 'created_at',
+    color: 'color',
+    image_url: 'image_url'
   };
 
   export type UsersScalarFieldEnum = (typeof UsersScalarFieldEnum)[keyof typeof UsersScalarFieldEnum]
@@ -4507,6 +4535,8 @@ export namespace Prisma {
     deleted_at?: DateTimeNullableFilter<"users"> | Date | string | null
     edited_at?: DateTimeNullableFilter<"users"> | Date | string | null
     created_at?: DateTimeFilter<"users"> | Date | string
+    color?: StringNullableFilter<"users"> | string | null
+    image_url?: StringNullableFilter<"users"> | string | null
     auth_session?: Auth_sessionListRelationFilter
   }
 
@@ -4518,6 +4548,8 @@ export namespace Prisma {
     deleted_at?: SortOrderInput | SortOrder
     edited_at?: SortOrderInput | SortOrder
     created_at?: SortOrder
+    color?: SortOrderInput | SortOrder
+    image_url?: SortOrderInput | SortOrder
     auth_session?: auth_sessionOrderByRelationAggregateInput
   }
 
@@ -4532,6 +4564,8 @@ export namespace Prisma {
     deleted_at?: DateTimeNullableFilter<"users"> | Date | string | null
     edited_at?: DateTimeNullableFilter<"users"> | Date | string | null
     created_at?: DateTimeFilter<"users"> | Date | string
+    color?: StringNullableFilter<"users"> | string | null
+    image_url?: StringNullableFilter<"users"> | string | null
     auth_session?: Auth_sessionListRelationFilter
   }, "id" | "email" | "username">
 
@@ -4543,6 +4577,8 @@ export namespace Prisma {
     deleted_at?: SortOrderInput | SortOrder
     edited_at?: SortOrderInput | SortOrder
     created_at?: SortOrder
+    color?: SortOrderInput | SortOrder
+    image_url?: SortOrderInput | SortOrder
     _count?: usersCountOrderByAggregateInput
     _max?: usersMaxOrderByAggregateInput
     _min?: usersMinOrderByAggregateInput
@@ -4559,6 +4595,8 @@ export namespace Prisma {
     deleted_at?: DateTimeNullableWithAggregatesFilter<"users"> | Date | string | null
     edited_at?: DateTimeNullableWithAggregatesFilter<"users"> | Date | string | null
     created_at?: DateTimeWithAggregatesFilter<"users"> | Date | string
+    color?: StringNullableWithAggregatesFilter<"users"> | string | null
+    image_url?: StringNullableWithAggregatesFilter<"users"> | string | null
   }
 
   export type verification_codesWhereInput = {
@@ -4706,6 +4744,8 @@ export namespace Prisma {
     deleted_at?: Date | string | null
     edited_at?: Date | string | null
     created_at?: Date | string
+    color?: string | null
+    image_url?: string | null
     auth_session?: auth_sessionCreateNestedManyWithoutUsersInput
   }
 
@@ -4717,6 +4757,8 @@ export namespace Prisma {
     deleted_at?: Date | string | null
     edited_at?: Date | string | null
     created_at?: Date | string
+    color?: string | null
+    image_url?: string | null
     auth_session?: auth_sessionUncheckedCreateNestedManyWithoutUsersInput
   }
 
@@ -4728,6 +4770,8 @@ export namespace Prisma {
     deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     edited_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    image_url?: NullableStringFieldUpdateOperationsInput | string | null
     auth_session?: auth_sessionUpdateManyWithoutUsersNestedInput
   }
 
@@ -4739,6 +4783,8 @@ export namespace Prisma {
     deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     edited_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    image_url?: NullableStringFieldUpdateOperationsInput | string | null
     auth_session?: auth_sessionUncheckedUpdateManyWithoutUsersNestedInput
   }
 
@@ -4750,6 +4796,8 @@ export namespace Prisma {
     deleted_at?: Date | string | null
     edited_at?: Date | string | null
     created_at?: Date | string
+    color?: string | null
+    image_url?: string | null
   }
 
   export type usersUpdateManyMutationInput = {
@@ -4760,6 +4808,8 @@ export namespace Prisma {
     deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     edited_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    image_url?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type usersUncheckedUpdateManyInput = {
@@ -4770,6 +4820,8 @@ export namespace Prisma {
     deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     edited_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    image_url?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type verification_codesCreateInput = {
@@ -5012,6 +5064,8 @@ export namespace Prisma {
     deleted_at?: SortOrder
     edited_at?: SortOrder
     created_at?: SortOrder
+    color?: SortOrder
+    image_url?: SortOrder
   }
 
   export type usersMaxOrderByAggregateInput = {
@@ -5022,6 +5076,8 @@ export namespace Prisma {
     deleted_at?: SortOrder
     edited_at?: SortOrder
     created_at?: SortOrder
+    color?: SortOrder
+    image_url?: SortOrder
   }
 
   export type usersMinOrderByAggregateInput = {
@@ -5032,6 +5088,8 @@ export namespace Prisma {
     deleted_at?: SortOrder
     edited_at?: SortOrder
     created_at?: SortOrder
+    color?: SortOrder
+    image_url?: SortOrder
   }
 
   export type UuidWithAggregatesFilter<$PrismaModel = never> = {
@@ -5591,6 +5649,8 @@ export namespace Prisma {
     deleted_at?: Date | string | null
     edited_at?: Date | string | null
     created_at?: Date | string
+    color?: string | null
+    image_url?: string | null
   }
 
   export type usersUncheckedCreateWithoutAuth_sessionInput = {
@@ -5601,6 +5661,8 @@ export namespace Prisma {
     deleted_at?: Date | string | null
     edited_at?: Date | string | null
     created_at?: Date | string
+    color?: string | null
+    image_url?: string | null
   }
 
   export type usersCreateOrConnectWithoutAuth_sessionInput = {
@@ -5627,6 +5689,8 @@ export namespace Prisma {
     deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     edited_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    image_url?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type usersUncheckedUpdateWithoutAuth_sessionInput = {
@@ -5637,6 +5701,8 @@ export namespace Prisma {
     deleted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     edited_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
+    image_url?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type auth_sessionCreateManyUsersInput = {

@@ -1,5 +1,6 @@
 export * from "./config/auth.js";
 export * from "./lib/random.js";
+export * from "./lib/utils.js";
 export * from "./types/exceptions.js";
 export * from "./types/prisma/schemas/models/auth_session.schema.js";
 export * from "./types/prisma/schemas/models/users.schema.js";

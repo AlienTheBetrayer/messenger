@@ -25,6 +25,8 @@ model users {
   deleted_at   DateTime?      @db.Timestamptz(6)
   edited_at    DateTime?      @db.Timestamptz(6)
   created_at   DateTime       @default(now()) @db.Timestamptz(6)
+  color        String?
+  image_url    String?
   auth_session auth_session[]
 }
 

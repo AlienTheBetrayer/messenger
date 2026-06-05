@@ -127,7 +127,9 @@ exports.Prisma.UsersScalarFieldEnum = {
   password: 'password',
   deleted_at: 'deleted_at',
   edited_at: 'edited_at',
-  created_at: 'created_at'
+  created_at: 'created_at',
+  color: 'color',
+  image_url: 'image_url'
 };
 
 exports.Prisma.Verification_codesScalarFieldEnum = {

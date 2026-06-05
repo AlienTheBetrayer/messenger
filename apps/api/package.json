@@ -21,6 +21,8 @@
 		"build": "pnpm test && tsc -p tsconfig.build.json"
 	},
 	"dependencies": {
+		"@dicebear/core": "^10.0.2",
+		"@dicebear/styles": "^10.1.0",
 		"@gravity/shared": "workspace:*",
 		"@nestjs/common": "^11.0.1",
 		"@nestjs/config": "^4.0.4",

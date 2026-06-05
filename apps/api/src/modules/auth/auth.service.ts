@@ -1,4 +1,6 @@
-import { AuthSchema, CodeSchema } from "@gravity/shared";
+import { Avatar, Style } from "@dicebear/core";
+import definition from "@dicebear/styles/identicon.json";
+import { AuthSchema, CodeSchema, randomHex, svgToUrl } from "@gravity/shared";
 import { Injectable } from "@nestjs/common";
 import bcrypt from "bcryptjs";
 
@@ -72,11 +74,21 @@ export class AuthService {
 		const salt = await bcrypt.genSalt(10);
 		const hash = await bcrypt.hash(body.password, salt);
 
+		// user generation
+		const color = randomHex();
+		const style = new Style(definition);
+		const avatar = new Avatar(style, {
+			seed: body.email,
+			rowColor: color,
+		});
+
 		// creating the user
 		const user = await this.prismaService.users.create({
 			data: {
 				email: body.email,
 				password: hash,
+				color,
+				image_url: svgToUrl(avatar.toString()),
 			},
 		});
 

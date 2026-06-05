@@ -8,6 +8,8 @@ export const usersSchema = z.object({
   deleted_at: z.date().nullish(),
   edited_at: z.date().nullish(),
   created_at: z.date(),
+  color: z.string().nullish(),
+  image_url: z.string().nullish(),
 });
 
 export type usersType = z.infer<typeof usersSchema>;
