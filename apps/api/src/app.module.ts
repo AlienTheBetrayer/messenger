@@ -1,12 +1,13 @@
 import { Module } from "@nestjs/common";
 
 import {
-	AuthModule,
-	JwtModule,
-	MailModule,
-	PrismaModule,
-	RootModule,
-	VerifyModule,
+  AuthModule,
+  JwtModule,
+  MailModule,
+  PrismaModule,
+  RootModule,
+  UserModule,
+  VerifyModule,
 } from "./modules";
 import { OAuthModule } from "./modules/oauth/oauth.module";
 
@@ -19,6 +20,7 @@ const imports = [
 	AuthModule,
 	OAuthModule,
 	MailModule,
+	UserModule,
 	VerifyModule,
 	JwtModule,
 ];

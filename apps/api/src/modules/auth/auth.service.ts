@@ -1,12 +1,11 @@
-import { Avatar, Style } from "@dicebear/core";
-import definition from "@dicebear/styles/identicon.json";
-import { AuthSchema, CodeSchema, randomHex, svgToUrl } from "@gravity/shared";
+import { AuthSchema, CodeSchema } from "@gravity/shared";
 import { Injectable } from "@nestjs/common";
 import bcrypt from "bcryptjs";
 
 import { createException } from "../../common/index.js";
 import { JwtService } from "../jwt/jwt.service.js";
 import { PrismaService } from "../prisma/prisma.service.js";
+import { UserService } from "../user/user.service.js";
 import { VerifyService } from "../verify/verify.service.js";
 import { AuthContextType, RefreshTokenType } from "./auth.decorators.js";
 
@@ -16,6 +15,7 @@ export class AuthService {
 		private readonly prismaService: PrismaService,
 		private readonly verifyService: VerifyService,
 		private readonly jwtService: JwtService,
+		private readonly userService: UserService,
 	) {}
 
 	/**
@@ -70,26 +70,10 @@ export class AuthService {
 			code: body.code,
 		});
 
-		// hashing the password
-		const salt = await bcrypt.genSalt(10);
-		const hash = await bcrypt.hash(body.password, salt);
-
-		// user generation
-		const color = randomHex();
-		const style = new Style(definition);
-		const avatar = new Avatar(style, {
-			seed: body.email,
-			rowColor: color,
-		});
-
 		// creating the user
-		const user = await this.prismaService.users.create({
-			data: {
-				email: body.email,
-				password: hash,
-				color,
-				image_url: svgToUrl(avatar.toString()),
-			},
+		const user = await this.userService.create({
+			email: body.email,
+			password: body.password,
 		});
 
 		return user;

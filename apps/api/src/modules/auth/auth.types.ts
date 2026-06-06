@@ -9,9 +9,3 @@ export const tokenPayloadSchema = z.object({
 });
 
 export type TokenPayloadSchema = z.infer<typeof tokenPayloadSchema>;
-
-export type LoginNeededRequest = {
-	ip: string | undefined;
-	cookies: Record<string, string>;
-	[key: string]: unknown;
-};

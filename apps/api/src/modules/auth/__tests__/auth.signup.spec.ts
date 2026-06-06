@@ -1,6 +1,3 @@
-import bcrypt from "bcryptjs";
-
-import { createException } from "../../../common";
 import { jestInitAuth } from "./init";
 
 describe("AuthService", () => {
@@ -22,20 +19,13 @@ describe("AuthService", () => {
 				password: "password",
 				code: "code",
 			};
-			ctx.mockVerifyService.validateCode.mockResolvedValue(undefined as never);
-
-			jest.spyOn(bcrypt, "hash").mockResolvedValue("hashed-password" as never);
+			ctx.mockVerifyService.validateCode.mockResolvedValue({} as never);
 
 			// act
 			await ctx.authService.signup(dto);
 
 			// assert
-      expect(ctx.mockPrismaService.users.create).toHaveBeenCalledWith({
-        data: {
-          email: dto.email,
-          password: "hashed-password",
-        }
-      });
+			expect(ctx.mockUserService.create).toHaveBeenCalled();
 		});
 	});
 
@@ -46,18 +36,16 @@ describe("AuthService", () => {
 				email: "email",
 				password: "password",
 				code: "code",
-      };
-      const error = new Error();
+			};
+			const error = new Error();
 			ctx.mockVerifyService.validateCode.mockRejectedValue(error);
-			jest.spyOn(bcrypt, "hash");
 
 			// act
 			const result = ctx.authService.signup(dto);
 
 			// assert
 			await expect(result).rejects.toThrow(error);
-			expect(bcrypt.hash).not.toHaveBeenCalled();
-			expect(ctx.mockPrismaService.users.create).not.toHaveBeenCalled();
+			expect(ctx.mockUserService.create).not.toHaveBeenCalled();
 		});
 	});
 });

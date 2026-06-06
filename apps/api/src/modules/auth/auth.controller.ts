@@ -8,8 +8,8 @@ import {
 	RefreshToken,
 	RefreshTokenType,
 } from "./auth.decorators";
+import { AuthDto, CodeDto } from "./auth.dto";
 import { AuthService } from "./auth.service";
-import { AuthDto, CodeDto } from "./dto/auth.dto";
 
 @Controller("auth")
 export class AuthController {

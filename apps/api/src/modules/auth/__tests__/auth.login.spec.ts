@@ -3,7 +3,6 @@ import bcrypt from "bcryptjs";
 import { AuthContextType } from "../auth.decorators";
 import { jestInitAuth } from "./init";
 
-// Mock bcrypt so we don't run expensive hashing algorithms in unit tests
 jest.mock("bcryptjs", () => ({
 	compare: jest.fn(),
 }));
@@ -31,6 +30,7 @@ describe("AuthService", () => {
 	};
 	const user = {
 		id: "user-id",
+		password: "password",
 	};
 
 	describe("happy paths", () => {
@@ -39,7 +39,6 @@ describe("AuthService", () => {
 			ctx.mockVerifyService.validateCode.mockResolvedValue({} as never);
 			ctx.mockPrismaService.users.findFirst.mockResolvedValue(user);
 			jest.spyOn(bcrypt, "compare").mockResolvedValue(true as never);
-			ctx.mockJwtService.issueAuthTokens.mockResolvedValue({} as never);
 
 			// act
 			const result = await ctx.authService.login(dto, authCtx);

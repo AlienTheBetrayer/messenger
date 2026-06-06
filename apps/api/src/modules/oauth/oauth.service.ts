@@ -5,6 +5,7 @@ import { createException } from "../../common";
 import { AuthContextType } from "../auth/auth.decorators";
 import { JwtService } from "../jwt/jwt.service";
 import { PrismaService } from "../prisma/prisma.service";
+import { UserService } from "../user/user.service";
 import { OAuthIdentityType } from "./oauth.decorators";
 
 @Injectable()
@@ -12,6 +13,7 @@ export class OAuthService {
 	constructor(
 		private readonly prismaService: PrismaService,
 		private readonly jwtService: JwtService,
+		private readonly userService: UserService,
 	) {}
 
 	/**
@@ -65,11 +67,9 @@ export class OAuthService {
 
 		// user doesn't exist? - create
 		if (!user) {
-			user = await this.prismaService.users.create({
-				data: {
-					email: identity.email,
-					password: "SET IT TO NULL, CHANGE DB SCHEMA",
-				},
+			user = await this.userService.create({
+				email: identity.email,
+				password: null,
 			});
 		}
 

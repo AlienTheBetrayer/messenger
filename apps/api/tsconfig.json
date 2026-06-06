@@ -12,11 +12,11 @@
 		"emitDecoratorMetadata": true,
 		"sourceMap": true,
 		"incremental": false,
-		"rootDir": "./src",
+		"rootDir": ".",
 		"outDir": "./dist",
     "types": ["node", "jest"]
 	},
   
-	"include": ["src"],
+	"include": ["src", "jest.config.ts"],
 	"exclude": ["node_modules", "dist"]
 }

@@ -3,6 +3,7 @@ import { Test } from "@nestjs/testing";
 import { MockType } from "../../../common";
 import { JwtService } from "../../jwt/jwt.service";
 import { PrismaService } from "../../prisma/prisma.service";
+import { UserService } from "../../user/user.service";
 import { VerifyService } from "../../verify/verify.service";
 import { AuthService } from "../auth.service";
 
@@ -22,6 +23,10 @@ export const jestInitAuth = async () => {
 			delete: jest.fn(),
 			count: jest.fn(),
 		},
+	};
+
+	const mockUserService: MockType<UserService, "create"> = {
+		create: jest.fn(),
 	};
 
 	const mockJwtService: MockType<
@@ -58,6 +63,10 @@ export const jestInitAuth = async () => {
 				provide: VerifyService,
 				useValue: mockVerifyService,
 			},
+			{
+				provide: UserService,
+				useValue: mockUserService,
+			},
 		],
 	}).compile();
 
@@ -66,6 +75,7 @@ export const jestInitAuth = async () => {
 	return {
 		authService,
 		mockPrismaService,
+		mockUserService,
 		mockJwtService,
 		mockVerifyService,
 	};

@@ -23,7 +23,7 @@ export default {
 	collectCoverageFrom: ["src/**/*.(t|j)s"],
 
 	// 3. FIXED: Handle both localized and hoisting monorepo node_modules structures
-	transformIgnorePatterns: ["node_modules/(?!(\\.pnpm/|@gravity/shared))"],
+	transformIgnorePatterns: ["/node_modules/.pnpm/(?!(@dicebear\\+core)@)"],
 
 	// 4. ADDED: Tell Jest how to resolve relative ESM file paths inside your shared package
 	moduleNameMapper: {
