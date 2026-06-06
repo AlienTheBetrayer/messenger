@@ -5,6 +5,8 @@ import {
 	setupListeners,
 } from "@reduxjs/toolkit/query/react";
 
+import { notificationSlice } from "@/features/notifications/model/notification.slice";
+
 /**
  * global api slice
  * has to be injected later into
@@ -23,6 +25,7 @@ export const makeStore = () => {
 	const store = configureStore({
 		reducer: {
 			[baseApi.reducerPath]: baseApi.reducer,
+			[notificationSlice.name]: notificationSlice.reducer,
 		},
 		middleware: (gDM) => gDM().concat(baseApi.middleware),
 	});

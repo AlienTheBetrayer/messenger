@@ -1,6 +1,5 @@
 generator client {
   provider               = "prisma-client-js"
-  output                 = "../generated/prisma"
   generatedFileExtension = "ts"
   importFileExtension    = "js"
   moduleFormat           = "esm"
