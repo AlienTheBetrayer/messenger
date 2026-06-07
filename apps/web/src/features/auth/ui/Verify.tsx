@@ -10,7 +10,7 @@ import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider"
 import { VerifyContent } from "@/features/auth/ui/verify/VerifyContent";
 import { VerifyFooter } from "@/features/auth/ui/verify/VerifyFooter";
 import { VerifyHeader } from "@/features/auth/ui/verify/VerifyHeader";
-import { normalizeError, useQueryStateHooks } from "@/shared";
+import { normalizeError, queryStateHooks } from "@/shared";
 
 export const Verify = () => {
 	// redux
@@ -20,7 +20,7 @@ export const Verify = () => {
 
 	// states
 	const { type, verifyForm, authForm } = useAuthFormProvider();
-	const [, setVerify] = useQueryStateHooks.verify();
+	const [, setVerify] = queryStateHooks.useVerify();
 
 	// verify fn
 	const onSubmit = useCallback(
@@ -61,17 +61,18 @@ export const Verify = () => {
 						break;
 					}
 					default: {
-            verifyForm.setError("code", { message: "Invalid URL state." });
-            return;
+						verifyForm.setError("code", { message: "Invalid URL state." });
+						return;
 					}
-        }
+				}
 
-        setVerify("success");
+				setVerify("success");
 			} catch (e) {
 				// error handling
 				const message = normalizeError(e);
-        verifyForm.setError("code", { message });
-        setVerify("error");
+				verifyForm.setError("code", { message });
+			} finally {
+				verifyForm.reset();
 			}
 		},
 		[verifyForm, authForm, type, setVerify, login, signup, forgotPassword],

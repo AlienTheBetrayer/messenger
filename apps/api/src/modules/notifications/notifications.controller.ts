@@ -1,4 +1,4 @@
-import { Controller, Patch, Post } from "@nestjs/common";
+import { Body, Controller, Patch, Post } from "@nestjs/common";
 
 import {
 	NotificationsPushDto,
@@ -11,12 +11,12 @@ export class NotificationsController {
 	constructor(private readonly notificationsService: NotificationsService) {}
 
 	@Post("push")
-	async push(dto: NotificationsPushDto) {
+	async push(@Body() dto: NotificationsPushDto) {
 		return await this.notificationsService.push(dto);
 	}
 
 	@Patch("update")
-	async update(dto: NotificationsUpdateDto) {
+	async update(@Body() dto: NotificationsUpdateDto) {
 		return await this.notificationsService.update(dto);
 	}
 }

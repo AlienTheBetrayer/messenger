@@ -1,4 +1,4 @@
-import { AuthConfig } from "@gravity/shared";
+import { AuthConfig, generateId } from "@gravity/shared";
 import { Injectable } from "@nestjs/common";
 import bcrypt from "bcryptjs";
 import { Request, Response } from "express";
@@ -128,6 +128,7 @@ export class JwtService {
 		// session
 		const session = await this.prismaService.auth_session.create({
 			data: {
+				id: generateId(),
 				user_id: params.userId,
 				refresh_token_hash: "",
 			},

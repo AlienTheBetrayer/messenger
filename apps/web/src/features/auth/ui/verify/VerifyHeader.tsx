@@ -1,27 +1,25 @@
 import { X } from "lucide-react";
 
-import { VerifyFormVariants } from "@/features/auth/lib/variants";
 import {
-  Button,
-  CardAction,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-  useQueryStateHooks,
+	Button,
+	CardAction,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+	queryStateHooks,
 } from "@/shared";
 
 export const VerifyHeader = () => {
 	// states
-	const [, setVerify] = useQueryStateHooks.verify();
-
-	// ui states
-	const variant = VerifyFormVariants;
+	const [, setVerify] = queryStateHooks.useVerify();
 
 	// jsx
 	return (
 		<CardHeader>
-			<CardTitle>{variant.title}</CardTitle>
-			<CardDescription>{variant.description}</CardDescription>
+			<CardTitle>Verification</CardTitle>
+			<CardDescription>
+				Enter the verification code that's been sent to your email.
+			</CardDescription>
 			<CardAction>
 				<Button
 					className="w-6! h-6! p-0!"

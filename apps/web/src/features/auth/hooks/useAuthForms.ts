@@ -28,6 +28,7 @@ export const useAuthForms = () => {
 		defaultValues: {
 			code: "",
 		},
+		shouldUnregister: true,
 	});
 
 	return useMemo(() => {

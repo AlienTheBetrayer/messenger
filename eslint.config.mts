@@ -80,7 +80,7 @@ export default defineConfig([
 	pluginReact.configs.flat["jsx-runtime"],
 
 	{
-		files: ["**/*.{jsx,tsx}"],
+		files: ["**/*.{jsx,tsx,js,ts}"],
 		plugins: {
 			"react-hooks": pluginReactHooks as any,
 		},

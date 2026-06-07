@@ -14,13 +14,13 @@ import {
 	FieldGroup,
 	FieldLabel,
 	Input,
+	queryStateHooks,
 } from "@/shared";
-import { useQueryStateHooks } from "@/shared/hooks/queryStates";
 
 export const AuthContent = () => {
 	// states
 	const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
-	const [verify] = useQueryStateHooks.verify();
+	const [verify] = queryStateHooks.useVerify();
 	const { type, authForm } = useAuthFormProvider();
 
 	// ui states
@@ -34,7 +34,7 @@ export const AuthContent = () => {
 				{variant.elements.email.enabled && (
 					<Controller
 						name="email"
-						disabled={!!verify}
+						disabled={verify === "pending"}
 						control={authForm.control}
 						render={({ field, fieldState }) => (
 							<Field data-invalid={fieldState.invalid}>

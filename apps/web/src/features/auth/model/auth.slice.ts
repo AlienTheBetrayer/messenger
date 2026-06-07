@@ -1,9 +1,9 @@
 import {
-	auth_sessionType,
-	AuthSchema,
-	CodeSchema,
-	usersType,
-	verification_codesType,
+  auth_sessionType,
+  AuthSchema,
+  CodeSchema,
+  usersType,
+  verification_codesType,
 } from "@gravity/shared";
 
 import { baseApi } from "@/shared";
@@ -68,7 +68,7 @@ export const authApi = baseApi.injectEndpoints({
 		/**
 		 * /auth/me
 		 */
-		me: builder.query<auth_sessionType & usersType, void>({
+		me: builder.query<usersType, void>({
 			query: () => ({
 				url: "/auth/me",
 				method: "GET",

@@ -17,7 +17,7 @@ datasource db {
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model users {
-  id            String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id            String          @id
   email         String          @unique
   username      String?         @unique
   password      String?
@@ -26,13 +26,12 @@ model users {
   created_at    DateTime        @default(now()) @db.Timestamptz(6)
   color         String?
   image_url     String?
-  auth_session  auth_session[]
   notifications notifications[]
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model verification_codes {
-  id         String                 @id(map: "confirmation-codes_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id         String                 @id(map: "confirmation-codes_pkey")
   email      String
   code       String
   expiry_at  DateTime               @db.Timestamptz(6)
@@ -42,8 +41,8 @@ model verification_codes {
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model auth_session {
-  id                 String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  user_id            String    @db.Uuid
+  id                 String    @id
+  user_id            String
   refresh_token_hash String
   last_seen_at       DateTime? @default(now()) @db.Timestamptz(6)
   created_at         DateTime  @default(now()) @db.Timestamptz(6)
@@ -52,18 +51,17 @@ model auth_session {
   device             Json?
   cpu                Json?
   ip                 String?
-  users              users     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model notifications {
-  id             String                       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id             String                       @id
   text           String
   description    String?
   type           notification_type
   promise_status notification_promise_status?
   created_at     DateTime                     @default(now()) @db.Timestamptz(6)
-  user_id        String                       @db.Uuid
+  user_id        String
   users          users                        @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 

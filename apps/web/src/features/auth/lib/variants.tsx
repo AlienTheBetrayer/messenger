@@ -1,8 +1,18 @@
-import {
-	AuthConfig,
-	ExceptionCode,
-	verification_codesType,
-} from "@gravity/shared";
+import { ExceptionCode, verification_codesType } from "@gravity/shared";
+import { CircleUser, KeyRound } from "lucide-react";
+
+type VerifySuccessVariant = {
+	title: string;
+	description: string;
+
+	elements: {
+		redirectButton: {
+			img: React.ReactNode;
+			text: string;
+			href: string;
+		};
+	};
+};
 
 /**
  * template type for all variants
@@ -36,19 +46,6 @@ type AuthFormVariant = {
 		submitButton: {
 			enabled: boolean;
 			text: string;
-		};
-	};
-};
-
-type VerifyFormVariant = {
-	title: string;
-	description: string;
-
-	elements: {
-		code: {
-			enabled: boolean;
-			placeholder: string;
-			description: string;
 		};
 	};
 };
@@ -156,23 +153,51 @@ export const AuthFormVariants = {
 	},
 } as const satisfies Record<verification_codesType["type"], AuthFormVariant>;
 
-export const VerifyFormVariants = {
-	title: "Verification",
-	description: `Enter the verification code that's been sent to your email.`,
-
-	elements: {
-		code: {
-			enabled: true,
-			description: `This code will expire in ${AuthConfig.code.expiryMs / (60 * 1000)} minutes.`,
-			placeholder: String().padStart(AuthConfig.code.length, "0"),
-		},
-	},
-} as const satisfies VerifyFormVariant;
-
 /**
  * types of authentication
  */
 export type AuthFormVariantsType = keyof typeof AuthFormVariants;
+
+export const VerifySuccessVariants = {
+	forgot_password: {
+		title: "Password Changed",
+		description: "Your password has been updated successfully.",
+		elements: {
+			redirectButton: {
+				img: <KeyRound />,
+				text: "Sign In",
+				href: "/login",
+			},
+		},
+	},
+
+	login: {
+		title: "You're Signed In",
+		description: "Your login was verified successfully.",
+		elements: {
+			redirectButton: {
+				img: <CircleUser />,
+				text: "Profile",
+				href: "/profile",
+			},
+		},
+	},
+
+	signup: {
+		title: "Account Created",
+		description:
+			"Your account has been created successfully. You can now sign in.",
+		elements: {
+			redirectButton: {
+				img: <KeyRound />,
+				text: "Sign In",
+				href: "/login",
+			},
+		},
+	},
+} as const satisfies Partial<
+	Record<"login" | "signup" | "forgot_password", VerifySuccessVariant>
+>;
 
 /**
  * variants for the redirect popup

@@ -1,4 +1,9 @@
-import { AuthConfig, CodeSchema, randomString } from "@gravity/shared";
+import {
+	AuthConfig,
+	CodeSchema,
+	generateId,
+	randomString,
+} from "@gravity/shared";
 import { Injectable } from "@nestjs/common";
 
 import { verification_code_type } from "../../../generated/prisma";
@@ -23,6 +28,7 @@ export class VerifyService {
 	async issueCode(params: CodeSchema) {
 		const code = await this.prismaService.verification_codes.create({
 			data: {
+				id: generateId(),
 				code: randomString(AuthConfig.code.length, "0123456789"),
 				email: params.email,
 				type: params.type,

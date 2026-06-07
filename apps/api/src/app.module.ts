@@ -9,6 +9,7 @@ import {
 	UserModule,
 	VerifyModule,
 } from "./modules";
+import { NotificationsModule } from "./modules/notifications/notifications.module";
 import { OAuthModule } from "./modules/oauth/oauth.module";
 
 /**
@@ -23,6 +24,7 @@ const imports = [
 	UserModule,
 	VerifyModule,
 	JwtModule,
+	NotificationsModule,
 ];
 
 /**

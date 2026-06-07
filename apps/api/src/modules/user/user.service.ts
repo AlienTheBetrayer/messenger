@@ -1,6 +1,6 @@
 import { Avatar, Style } from "@dicebear/core";
 import definition from "@dicebear/styles/identicon.json";
-import { randomHex } from "@gravity/shared";
+import { generateId, randomHex } from "@gravity/shared";
 import { Injectable } from "@nestjs/common";
 import bcrypt from "bcryptjs";
 
@@ -49,6 +49,7 @@ export class UserService {
 		// creating the user
 		const user = await this.prismaService.users.create({
 			data: {
+				id: generateId(),
 				email: body.email,
 				password,
 				color,

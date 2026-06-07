@@ -1,5 +1,4 @@
-import { notification_type } from "@gravity/shared";
-import { nanoid } from "@reduxjs/toolkit";
+import { generateId, notification_type } from "@gravity/shared";
 import { useCallback, useMemo } from "react";
 import { toast } from "sonner";
 
@@ -13,7 +12,7 @@ import { NotificationExtra } from "@/features/notifications/model/notifications.
  * util hook to generate dispatch functions
  * @returns dispatcn helper functions
  */
-export const useNotificationDispatch = (userId: string) => {
+export const useNotificationDispatch = (userId?: string) => {
 	// redux
 	const [push] = useNotificationPushMutation();
 	const [update] = useNotificationUpdateMutation();
@@ -31,12 +30,16 @@ export const useNotificationDispatch = (userId: string) => {
 		}) => {
 			toast[params.type](params.text, params.extra);
 
+			if (!userId) {
+				return;
+			}
+
 			push({
 				...params,
 				userId,
 			});
 		},
-		[push],
+		[push, userId],
 	);
 
 	/**
@@ -64,15 +67,7 @@ export const useNotificationDispatch = (userId: string) => {
 			},
 		) => {
 			// generate id
-			const id = nanoid();
-
-			// loading dispatch
-			push({
-				id,
-				userId,
-				type: "promise",
-				text: params.loading({ id }).text,
-			});
+			const id = generateId();
 
 			const promise = fn();
 
@@ -84,6 +79,21 @@ export const useNotificationDispatch = (userId: string) => {
 				...(params.extra ?? {}),
 			});
 
+			if (!userId) {
+				return;
+			}
+
+			console.warn(id, userId);
+
+			// loading dispatch
+			push({
+				id,
+				userId,
+				type: "promise",
+				promiseStatus: "pending",
+				text: params.loading({ id }).text,
+			});
+
 			// success & error dispatch
 			promise
 				.then((data) => {
@@ -91,6 +101,7 @@ export const useNotificationDispatch = (userId: string) => {
 						id,
 						userId,
 						text: params.success(data).text,
+						promiseStatus: "resolved",
 					});
 				})
 				.catch((err: unknown) => {
@@ -98,10 +109,11 @@ export const useNotificationDispatch = (userId: string) => {
 						id,
 						userId,
 						text: params.error(err).text,
+						promiseStatus: "rejected",
 					});
 				});
 		},
-		[update, push],
+		[update, push, userId],
 	);
 
 	return useMemo(() => {

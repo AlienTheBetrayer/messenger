@@ -156,7 +156,7 @@ export class AuthService {
 	 * @param refreshToken refresh token
 	 * @returns user object along with the session of currently logged in user
 	 */
-	async me(refreshToken: RefreshTokenType) {
+  async me(refreshToken: RefreshTokenType) {
 		// checking token
 		if (!refreshToken) {
 			throw createException("unauthorized", "UNAUTHENTICATED");
@@ -164,8 +164,8 @@ export class AuthService {
 
 		// validating token
 		const verified = this.jwtService.verify({
-      token: refreshToken,
-      key: "REFRESH_TOKEN_SECRET"
+			token: refreshToken,
+			key: "REFRESH_TOKEN_SECRET",
     });
 
 		// database validating
@@ -182,9 +182,6 @@ export class AuthService {
 		// getting the user
 		return await this.prismaService.users.findFirst({
 			where: { id: verified.userId },
-			include: {
-				auth_session: true,
-			},
 		});
 	}
 

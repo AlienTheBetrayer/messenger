@@ -1,6 +1,7 @@
 import { type AuthFormSchema } from "@gravity/shared";
 import { useCallback } from "react";
 
+import { useAuth } from "@/features/auth/hooks/useAuthWatcher";
 import { useGetCodeMutation } from "@/features/auth/model/auth.slice";
 import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
 import { AuthContent } from "@/features/auth/ui/auth/AuthContent";
@@ -8,16 +9,17 @@ import { AuthFooter } from "@/features/auth/ui/auth/AuthFooter";
 import { AuthHeader } from "@/features/auth/ui/auth/AuthHeader";
 import { useNotificationDispatch } from "@/features/notifications/hooks/useNotificationDispatch";
 import { NotificationLayout } from "@/features/notifications/ui/layout/NotificationLayout";
-import { Button, normalizeError, useQueryStateHooks } from "@/shared";
+import { Button, normalizeError, queryStateHooks } from "@/shared";
 
 export const Auth = () => {
 	// redux
+	const auth = useAuth();
 	const [getCode] = useGetCodeMutation();
-	const { notify, promise } = useNotificationDispatch("343434");
+	const { notify, promise } = useNotificationDispatch(auth.data?.id);
 
 	// states
 	const { type, authForm } = useAuthFormProvider();
-	const [, setVerify] = useQueryStateHooks.verify();
+	const [, setVerify] = queryStateHooks.useVerify();
 
 	// functions
 	const onSubmit = useCallback(
