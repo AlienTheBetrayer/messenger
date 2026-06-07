@@ -1,9 +1,38 @@
 "use client";
 
+import { AnimatePresence, motion, Variants } from "motion/react";
+
 import { Verify } from "@/features/auth/ui/Verify";
 import { VerifySuccess } from "@/features/auth/ui/verify/VerifySuccess";
 import { Card, queryStateHooks } from "@/shared";
 import { useMounted } from "@/shared/hooks/useMounted";
+
+// Shared animation variants matching your exact CSS styles
+const animationVariants: Variants = {
+	initial: {
+    opacity: 0,
+		scale: 0.8,
+		y: -100,
+	},
+	animate: {
+    opacity: 1,
+		scale: 1,
+		y: 0,
+		transition: {
+			duration: 0.3,
+			ease: [0.25, 0.1, 0.25, 1.0],
+		},
+	},
+	exit: {
+		opacity: 0,
+    scale: 0.8,
+		y: -100,
+    transition: {
+      duration: 0.3,
+			ease: [0.25, 0.1, 0.25, 1.0],
+    },
+	},
+};
 
 export const VerifyOrchestrator = () => {
 	// states
@@ -12,56 +41,42 @@ export const VerifyOrchestrator = () => {
 
 	if (!mounted) {
 		return null;
-  }
-  
+	}
+
 	// jsx
 	return (
-		<div className="relative *:absolute *:top-0">
-			<div
-				className="grid w-full transition-all duration-300"
-				style={
-					verify === "pending"
-						? {
-								gridTemplateRows: "1fr",
-								scale: 1,
-								opacity: 1,
-								translate: `0px 0px`,
-							}
-						: {
-								gridTemplateRows: "0fr",
-								scale: 0.8,
-								opacity: 0,
-								translate: `0px -100px`,
-							}
-				}
-			>
-				<Card className="min-h-0! shadowed">
-					<Verify />
-				</Card>
-			</div>
+		<div className="relative w-full">
+			<AnimatePresence mode="popLayout">
+				{verify === "pending" && (
+					<motion.div
+						key="pending-form"
+						variants={animationVariants}
+						initial="initial"
+						animate="animate"
+						exit="exit"
+						className="absolute top-0 left-0 w-full"
+					>
+						<Card className="min-h-0! shadowed">
+							<Verify />
+						</Card>
+					</motion.div>
+				)}
 
-			<div
-				className="grid w-full transition-all duration-300"
-				style={
-					verify === "success"
-						? {
-								gridTemplateRows: "1fr",
-								scale: 1,
-								opacity: 1,
-								translate: `0px 0px`,
-							}
-						: {
-								gridTemplateRows: "0fr",
-								scale: 0.8,
-								opacity: 0,
-								translate: `0px -100px`,
-							}
-				}
-			>
-				<Card className="min-h-0! shadowed">
-					<VerifySuccess />
-				</Card>
-			</div>
+				{verify === "success" && (
+					<motion.div
+						key="success-form"
+						variants={animationVariants}
+						initial="initial"
+						animate="animate"
+						exit="exit"
+						className="absolute top-0 left-0 w-full"
+					>
+						<Card className="min-h-0! shadowed">
+							<VerifySuccess />
+						</Card>
+					</motion.div>
+				)}
+			</AnimatePresence>
 		</div>
 	);
 };

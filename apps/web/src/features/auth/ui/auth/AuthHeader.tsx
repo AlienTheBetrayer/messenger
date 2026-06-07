@@ -15,8 +15,6 @@ export const AuthHeader = () => {
 	// states
 	const { type } = useAuthFormProvider();
 
-	const [, setVerify] = queryStateHooks.useVerify();
-
 	// ui states
 	const variant = AuthFormVariants[type];
 	const headerLink = variant.elements.headerLink;
@@ -34,20 +32,6 @@ export const AuthHeader = () => {
 						asChild
 					>
 						<Link href={headerLink.href}>{headerLink.text}</Link>
-					</Button>
-
-					<Button
-						onClick={() => {
-							setVerify((prev) =>
-								prev === "pending"
-									? "success"
-									: prev === "success"
-										? "pending"
-										: null,
-							);
-						}}
-					>
-						change
 					</Button>
 				</CardAction>
 			)}

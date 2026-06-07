@@ -52,6 +52,7 @@ export const AuthContent = () => {
 									{...field}
 									id="email"
 									type="email"
+									autoComplete="email"
 									aria-invalid={fieldState.invalid}
 									placeholder={variant.elements.email.placeholder}
 								/>
@@ -93,6 +94,7 @@ export const AuthContent = () => {
 									<Input
 										{...field}
 										id="password"
+										autoComplete="current-password"
 										type={passwordInputType}
 										aria-invalid={fieldState.invalid}
 										placeholder={variant.elements.password.placeholder}
