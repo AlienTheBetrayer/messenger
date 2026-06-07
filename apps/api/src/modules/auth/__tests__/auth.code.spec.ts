@@ -13,7 +13,7 @@ describe("AuthService", () => {
 	});
 
 	afterEach(() => {
-		jest.clearAllMocks();
+		jest.resetAllMocks();
 	});
 
 	describe("happy paths", () => {

@@ -13,7 +13,7 @@ import { Button, normalizeError, useQueryStateHooks } from "@/shared";
 export const Auth = () => {
 	// redux
 	const [getCode] = useGetCodeMutation();
-	const { notify, promise } = useNotificationDispatch();
+	const { notify, promise } = useNotificationDispatch("343434");
 
 	// states
 	const { type, authForm } = useAuthFormProvider();

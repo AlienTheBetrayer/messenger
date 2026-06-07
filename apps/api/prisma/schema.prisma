@@ -17,16 +17,17 @@ datasource db {
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model users {
-  id           String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  email        String         @unique
-  username     String?        @unique
-  password     String?
-  deleted_at   DateTime?      @db.Timestamptz(6)
-  edited_at    DateTime?      @db.Timestamptz(6)
-  created_at   DateTime       @default(now()) @db.Timestamptz(6)
-  color        String?
-  image_url    String?
-  auth_session auth_session[]
+  id            String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email         String          @unique
+  username      String?         @unique
+  password      String?
+  deleted_at    DateTime?       @db.Timestamptz(6)
+  edited_at     DateTime?       @db.Timestamptz(6)
+  created_at    DateTime        @default(now()) @db.Timestamptz(6)
+  color         String?
+  image_url     String?
+  auth_session  auth_session[]
+  notifications notifications[]
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
@@ -54,9 +55,37 @@ model auth_session {
   users              users     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model notifications {
+  id             String                       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  text           String
+  description    String?
+  type           notification_type
+  promise_status notification_promise_status?
+  created_at     DateTime                     @default(now()) @db.Timestamptz(6)
+  user_id        String                       @db.Uuid
+  users          users                        @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
 /// This enum is commented in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 enum verification_code_type {
   login
   signup
   forgot_password
+}
+
+/// This enum is commented in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+enum notification_promise_status {
+  pending
+  resolved
+  rejected
+}
+
+/// This enum is commented in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+enum notification_type {
+  success
+  error
+  warning
+  info
+  promise
 }

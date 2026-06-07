@@ -8,7 +8,7 @@ describe("AuthService", () => {
 	});
 
 	afterEach(() => {
-		jest.clearAllMocks();
+		jest.resetAllMocks();
 	});
 
 	describe("happy paths", () => {
@@ -22,7 +22,7 @@ describe("AuthService", () => {
 				accessToken: "access",
 				refreshToken: "refresh",
 			});
-			ctx.mockJwtService.decode.mockReturnValue({
+			ctx.mockJwtService.verify.mockReturnValue({
 				sessionId: session.id,
 			});
 			ctx.mockPrismaService.auth_session.count.mockResolvedValue(1);

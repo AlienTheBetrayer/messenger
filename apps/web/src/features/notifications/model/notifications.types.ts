@@ -1,19 +1,5 @@
+import { notification_type } from "@gravity/shared";
 import { ExternalToast } from "sonner";
-
-/**
- * notification statuses
- */
-export type NotificationStatus = "idle" | "pending" | "resolved" | "rejected";
-
-/**
- * notification types
- */
-export type NotificationType =
-	| "success"
-	| "error"
-	| "warning"
-	| "info"
-	| "promise";
 
 /**
  * extra notification data
@@ -28,10 +14,10 @@ export type NotificationExtra = {
 /**
  * notification type
  */
-export type Notification = {
+export type NotificationInput = {
 	id: string;
 	text: string;
-	type: NotificationType;
+	type: notification_type;
 	createdAt: string;
 	extra?: Partial<NotificationExtra>;
 };

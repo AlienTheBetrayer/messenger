@@ -36,17 +36,4 @@ export const verificationFormSchema = z.object({
 
 export type VerificationFormSchema = z.infer<typeof verificationFormSchema>;
 
-/**
- * /auth/login /, /auth/signup /, /auth/forgot-password /
- */
-export const authSchema = authFormSchema.extend(verificationFormSchema.shape);
-export type AuthSchema = z.infer<typeof authSchema>;
 
-/**
- * /auth/code
- */
-export const codeSchema = z.object({
-	email: z.email(),
-	type: verification_code_typeSchema,
-});
-export type CodeSchema = z.infer<typeof codeSchema>;

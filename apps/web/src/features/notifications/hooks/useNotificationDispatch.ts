@@ -1,24 +1,22 @@
+import { notification_type } from "@gravity/shared";
 import { nanoid } from "@reduxjs/toolkit";
 import { useCallback, useMemo } from "react";
-import { useDispatch } from "react-redux";
 import { toast } from "sonner";
 
 import {
-	addNotification,
-	updateNotification,
-} from "@/features/notifications/model/notification.slice";
-import {
-	NotificationExtra,
-	NotificationType,
-} from "@/features/notifications/types/notifications";
+	useNotificationPushMutation,
+	useNotificationUpdateMutation,
+} from "@/features/notifications/model/notifications.slice";
+import { NotificationExtra } from "@/features/notifications/model/notifications.types";
 
 /**
  * util hook to generate dispatch functions
  * @returns dispatcn helper functions
  */
-export const useNotificationDispatch = () => {
+export const useNotificationDispatch = (userId: string) => {
 	// redux
-	const dispatch = useDispatch();
+	const [push] = useNotificationPushMutation();
+	const [update] = useNotificationUpdateMutation();
 
 	/**
 	 * dispatches a notification to the middleware
@@ -29,13 +27,16 @@ export const useNotificationDispatch = () => {
 		(params: {
 			text: string;
 			extra?: Partial<NotificationExtra>;
-			type: Exclude<NotificationType, "promise">;
+			type: Exclude<notification_type, "promise">;
 		}) => {
 			toast[params.type](params.text, params.extra);
 
-			dispatch(addNotification(params));
+			push({
+				...params,
+				userId,
+			});
 		},
-		[dispatch],
+		[push],
 	);
 
 	/**
@@ -66,13 +67,12 @@ export const useNotificationDispatch = () => {
 			const id = nanoid();
 
 			// loading dispatch
-			dispatch(
-				addNotification({
-					id,
-					type: "promise",
-					text: params.loading({ id }).text,
-				}),
-			);
+			push({
+				id,
+				userId,
+				type: "promise",
+				text: params.loading({ id }).text,
+			});
 
 			const promise = fn();
 
@@ -87,13 +87,21 @@ export const useNotificationDispatch = () => {
 			// success & error dispatch
 			promise
 				.then((data) => {
-					dispatch(updateNotification({ id, text: params.success(data).text }));
+					update({
+						id,
+						userId,
+						text: params.success(data).text,
+					});
 				})
 				.catch((err: unknown) => {
-					dispatch(updateNotification({ id, text: params.error(err).text }));
+					update({
+						id,
+						userId,
+						text: params.error(err).text,
+					});
 				});
 		},
-		[dispatch],
+		[update, push],
 	);
 
 	return useMemo(() => {

@@ -15,7 +15,7 @@ describe("AuthService", () => {
 	});
 
 	afterEach(() => {
-		jest.clearAllMocks();
+		jest.resetAllMocks();
 	});
 
 	// init variables

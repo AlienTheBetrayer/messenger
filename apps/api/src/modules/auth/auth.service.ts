@@ -163,18 +163,15 @@ export class AuthService {
 		}
 
 		// validating token
-		const decoded = this.jwtService.decode({
-			token: refreshToken,
-		});
-
-		if (!decoded) {
-			throw createException("unauthorized", "UNAUTHENTICATED");
-		}
+		const verified = this.jwtService.verify({
+      token: refreshToken,
+      key: "REFRESH_TOKEN_SECRET"
+    });
 
 		// database validating
 		const isFound = await this.prismaService.auth_session.count({
 			where: {
-				user_id: decoded.userId,
+				user_id: verified.userId,
 			},
 		});
 
@@ -184,7 +181,7 @@ export class AuthService {
 
 		// getting the user
 		return await this.prismaService.users.findFirst({
-			where: { id: decoded.userId },
+			where: { id: verified.userId },
 			include: {
 				auth_session: true,
 			},

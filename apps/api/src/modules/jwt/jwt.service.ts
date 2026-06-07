@@ -6,13 +6,19 @@ import jwt from "jsonwebtoken";
 import { UAParser } from "ua-parser-js";
 import z from "zod";
 
+import { createException } from "../../common";
 import { AuthContextType } from "../auth/auth.decorators";
 import { TokenPayloadSchema, tokenPayloadSchema } from "../auth/auth.types";
+import { AppConfigService } from "../config/config.service";
+import { EnvSchema } from "../config/config.types";
 import { PrismaService } from "../prisma/prisma.service";
 
 @Injectable()
 export class JwtService {
-	constructor(private readonly prismaService: PrismaService) {}
+	constructor(
+		private readonly prismaService: PrismaService,
+		private readonly configService: AppConfigService,
+	) {}
 
 	/**
 	 * safely signs the JWT token
@@ -23,22 +29,18 @@ export class JwtService {
 	 */
 	sign(params: {
 		payload: Record<string, string>;
-		envKey: string;
+		envKey: keyof EnvSchema;
 		expiryMs: number;
 	}) {
 		// error handling
-		if (!(params.envKey in process.env)) {
-			throw new Error(`Missing environment variable: ${params.envKey}`);
-		}
-
-		if (typeof process.env[params.envKey] !== "string") {
+		if (typeof this.configService.get(params.envKey) !== "string") {
 			throw new Error(`Invalid environment variable: ${params.envKey}`);
 		}
 
 		// signing
 		const token = jwt.sign(
 			params.payload,
-			process.env[params.envKey] as string,
+			this.configService.get(params.envKey),
 			{
 				expiresIn: `${params.expiryMs}`,
 			},
@@ -69,35 +71,37 @@ export class JwtService {
 	}
 
 	/**
-	 * validates and decodes the jwt token payload
+	 * verifies and decodes the jwt token payload
 	 * @param token jwt token
 	 * @param schema schema to validate the token with
 	 * @returns token and decoded payload or null if not validated
 	 */
-	decode<T extends z.ZodType = typeof tokenPayloadSchema>(params: {
+	verify<T extends z.ZodType = typeof tokenPayloadSchema>(params: {
 		token: string;
+		key: keyof EnvSchema;
 		schema?: T;
-	}): z.infer<T> | null {
-		// validating the token
-		if (!params.token || typeof params.token !== "string") {
-			return null;
+	}): z.infer<T> {
+		// validating
+		try {
+			// verifying
+			const decodedToken = jwt.verify(
+				params.token,
+				this.configService.get(params.key),
+			);
+
+			// parsing token
+			const parsed = ((params.schema ?? tokenPayloadSchema) as T).safeParse(
+				decodedToken,
+			);
+
+			if (!parsed.success) {
+				throw new Error();
+			}
+
+			return parsed.data;
+		} catch {
+			throw createException("unauthorized", "UNAUTHENTICATED");
 		}
-
-		const decodedToken = jwt.decode(params.token);
-
-		if (!decodedToken) {
-			return null;
-		}
-
-		const parsed = ((params.schema ?? tokenPayloadSchema) as T).safeParse(
-			decodedToken,
-		);
-
-		if (!parsed.success) {
-			return null;
-		}
-
-		return parsed.data;
 	}
 
 	/**

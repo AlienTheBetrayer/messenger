@@ -8,7 +8,7 @@ describe("AuthService", () => {
 	});
 
 	afterEach(() => {
-		jest.clearAllMocks();
+		jest.resetAllMocks();
 	});
 
 	// init variables
@@ -17,7 +17,7 @@ describe("AuthService", () => {
 	describe("happy paths", () => {
 		it("should return a user if jwt token decoded and session found", async () => {
 			// arrange
-			ctx.mockJwtService.decode.mockReturnValue({});
+			ctx.mockJwtService.verify.mockReturnValue({});
 			ctx.mockPrismaService.auth_session.count.mockResolvedValue(1);
 
 			// act
@@ -30,9 +30,12 @@ describe("AuthService", () => {
 	});
 
 	describe("sad paths", () => {
-		it("should return null if jwt token is not decoded", async () => {
+		it("should throw if jwt token is not verified", async () => {
 			// arrange
-			ctx.mockJwtService.decode.mockReturnValue(null);
+			const error = new Error("invalid");
+			ctx.mockJwtService.verify.mockImplementation(() => {
+				throw error;
+			});
 
 			// act
 			const result = ctx.authService.me(refreshToken);
@@ -42,9 +45,9 @@ describe("AuthService", () => {
 			expect(ctx.mockPrismaService.users.findFirst).not.toHaveBeenCalled();
 		});
 
-		it("should return null if session is not found", async () => {
+		it("should throw if session is not found", async () => {
 			// arrange
-			ctx.mockJwtService.decode.mockReturnValue({});
+			ctx.mockJwtService.verify.mockReturnValue({});
 			ctx.mockPrismaService.auth_session.count.mockResolvedValue(0);
 
 			// act

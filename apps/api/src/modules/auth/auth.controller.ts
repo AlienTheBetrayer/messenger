@@ -3,10 +3,10 @@ import { Response } from "express";
 
 import { JwtService } from "../jwt/jwt.service";
 import {
-	AuthContext,
-	AuthContextType,
-	RefreshToken,
-	RefreshTokenType,
+  AuthContext,
+  AuthContextType,
+  RefreshToken,
+  RefreshTokenType,
 } from "./auth.decorators";
 import { AuthDto, CodeDto } from "./auth.dto";
 import { AuthService } from "./auth.service";
@@ -87,8 +87,8 @@ export class AuthController {
 	}
 
 	/**
-	 * logs out a specific session id, deleting the session
-	 * @param sessionId id of the session to be deleted
+	 * logs out currently logged in session
+	 * @param refreshToken current logged in refresh token
 	 * @returns succesful log out should return a session
 	 */
 	@Delete("logout")
@@ -101,11 +101,10 @@ export class AuthController {
 			return { message: "no refresh token found." };
 		}
 
-		const decoded = this.jwtService.decode({ token: refreshToken });
-
-		if (!decoded) {
-			return { message: "refresh token is not valid." };
-		}
+		const decoded = this.jwtService.verify({
+			token: refreshToken,
+			key: "REFRESH_TOKEN_SECRET",
+		});
 
 		// clearing the token
 		this.jwtService.deleteAuthTokens({ response, type: "all" });

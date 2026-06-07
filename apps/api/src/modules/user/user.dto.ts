@@ -24,4 +24,4 @@ export const userSchema = z.object({
  * type + dto
  */
 export type UserSchema = z.infer<typeof userSchema>;
-export const UserSchemaDto = createZodDto(userSchema);
+export class UserSchemaDto extends createZodDto(userSchema) {}
