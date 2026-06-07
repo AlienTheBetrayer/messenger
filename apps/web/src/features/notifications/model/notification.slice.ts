@@ -5,8 +5,21 @@ import {
 	PayloadAction,
 } from "@reduxjs/toolkit";
 
-import { Notification } from "@/features/notifications/types/notifications";
+import {
+	Notification,
+	NotificationExtra,
+	NotificationStatus,
+	NotificationType,
+} from "@/features/notifications/types/notifications";
 import { RootState } from "@/shared";
+
+export type AddNotificationAction = {
+	id?: string;
+  text: string;
+	type: NotificationType;
+  status?: NotificationStatus;
+	extra?: Partial<NotificationExtra>;
+};
 
 /**
  * adapter
@@ -26,14 +39,13 @@ export const notificationSlice = createSlice({
 		 * adds a notification, generates id and createdAt
 		 * @param type type of the notification
 		 * @param text text content inside of the notification
+		 * @param extra (optional extra data)
+		 * @param id (optional custom id)
 		 */
-		addNotification: (
-			state,
-			action: PayloadAction<Pick<Notification, "type" | "text">>,
-		) => {
+		addNotification: (state, action: PayloadAction<AddNotificationAction>) => {
 			notificationAdapter.addOne(state, {
 				...action.payload,
-				id: nanoid(),
+				id: action.payload.id ?? nanoid(),
 				createdAt: new Date().toISOString(),
 			});
 		},
@@ -42,11 +54,25 @@ export const notificationSlice = createSlice({
 		 * deletes a certain notification
 		 * @param id id of the notification
 		 */
-		deleteNotification: (
+		deleteNotification: (state, action: PayloadAction<string>) => {
+			notificationAdapter.removeOne(state, action.payload);
+		},
+
+		/**
+		 * updates a certain notification
+		 * @param id id of the notification
+		 * @param text new text
+		 */
+		updateNotification: (
 			state,
-			action: PayloadAction<Pick<Notification, "id">>,
+			action: PayloadAction<{ id: string; text: string }>,
 		) => {
-			notificationAdapter.removeOne(state, action.payload.id);
+			notificationAdapter.updateOne(state, {
+				id: action.payload.id,
+				changes: {
+					text: action.payload.text,
+				},
+			});
 		},
 	},
 });
@@ -56,3 +82,6 @@ export const notificationSlice = createSlice({
  */
 export const notificationSelectors =
 	notificationAdapter.getSelectors<RootState>((state) => state.notifications);
+
+export const { addNotification, deleteNotification, updateNotification } =
+	notificationSlice.actions;

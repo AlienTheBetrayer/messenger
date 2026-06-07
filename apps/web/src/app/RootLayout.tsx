@@ -1,12 +1,12 @@
 "use client";
 
-import Link from "next/link";
 import { NuqsAdapter } from "nuqs/adapters/react";
+import { Provider } from "react-redux";
 
+import { NotificationSonner } from "@/features/notifications/ui/NotificationSonner";
 import { ThemesProvider } from "@/features/ui/providers/ThemesProvider";
 import { Header } from "@/features/ui/ui/header/Header";
-import { Watcher } from "@/shared";
-import { ReduxProvider } from "@/shared/model/ReduxProvider";
+import { store, Watcher } from "@/shared";
 
 type Props = {
 	children: React.ReactNode;
@@ -14,15 +14,16 @@ type Props = {
 
 export const Layout = ({ children }: Props) => {
 	return (
-		<ReduxProvider>
+		<Provider store={store}>
 			<Watcher />
 			<ThemesProvider>
 				<NuqsAdapter>
 					<Header />
+					<NotificationSonner />
 
 					{children}
 				</NuqsAdapter>
 			</ThemesProvider>
-		</ReduxProvider>
+		</Provider>
 	);
 };

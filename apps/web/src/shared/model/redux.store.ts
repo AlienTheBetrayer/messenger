@@ -1,10 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
-import {
-	createApi,
-	fetchBaseQuery,
-	setupListeners,
-} from "@reduxjs/toolkit/query/react";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+import { notificationMiddleware } from "@/features/notifications/model/notification.middleware";
 import { notificationSlice } from "@/features/notifications/model/notification.slice";
 
 /**
@@ -21,16 +18,11 @@ export const baseApi = createApi({
 /**
  * global app store
  */
-export const makeStore = () => {
-	const store = configureStore({
-		reducer: {
-			[baseApi.reducerPath]: baseApi.reducer,
-			[notificationSlice.name]: notificationSlice.reducer,
-		},
-		middleware: (gDM) => gDM().concat(baseApi.middleware),
-	});
-	setupListeners(store.dispatch);
-	return store;
-};
-
-export type AppStore = ReturnType<typeof makeStore>;
+export const store = configureStore({
+	reducer: {
+		[baseApi.reducerPath]: baseApi.reducer,
+		[notificationSlice.name]: notificationSlice.reducer,
+	},
+	middleware: (gDM) =>
+		gDM().concat(baseApi.middleware, notificationMiddleware),
+});
