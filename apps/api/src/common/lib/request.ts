@@ -1,0 +1,52 @@
+import { Request } from "express";
+
+import { authGuardUserSchema } from "../../modules";
+import { createException } from "./exception";
+
+const getBodyUserTypes = ["user_id", "userId", "userid", "USERID"] as const;
+
+/**
+ * tries to find user id in the request body
+ * @param request express request object
+ * @returns user id or throws
+ */
+export const getBodyUser = (request: Request) => {
+	// vars
+	const body = request.body as Record<string, unknown>;
+
+	for (const type of getBodyUserTypes) {
+		if (type in body && body[type] && typeof body[type] === "string") {
+			return { id: body[type] };
+		}
+	}
+
+	throw createException("unauthorized", "UNAUTHENTICATED");
+};
+
+/**
+ * parses a custom user in the request user object
+ * @param request express request object
+ * @returns user id or throws
+ */
+export const getRequestUser = (request: Request) => {
+	if (!request.user) {
+		throw createException("unauthorized", "UNAUTHENTICATED");
+	}
+
+	const parsed = authGuardUserSchema.safeParse(request.user);
+
+	if (!parsed.success) {
+		throw createException("unauthorized", "UNAUTHENTICATED");
+	}
+
+	return parsed.data;
+};
+
+/**
+ *
+ * @param request epxress request object
+ * @returns body user id and authenticated user object. or throws
+ */
+export const resolveRequestUsers = (request: Request) => {
+	return { request: getRequestUser(request), body: getBodyUser(request) };
+};
