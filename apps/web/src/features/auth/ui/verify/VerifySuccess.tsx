@@ -4,11 +4,11 @@ import { useEffect, useRef, useState } from "react";
 
 import { VerifySuccessVariants } from "@/features/auth/lib/variants";
 import {
-	Button,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
+  Button,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
 } from "@/shared";
 
 export const VerifySuccess = () => {
@@ -60,7 +60,7 @@ export const VerifySuccessTimer = ({
 	// interval
 	useEffect(() => {
 		const interval = setInterval(() => {
-			setRemaining((prev) => prev - 1);
+			setRemaining((prev) => (prev > 0 ? prev - 1 : prev));
 		}, 1000);
 
 		return () => {
