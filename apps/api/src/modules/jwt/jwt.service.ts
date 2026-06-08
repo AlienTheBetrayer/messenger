@@ -143,7 +143,6 @@ export class JwtService {
 		const accessToken = this.sign({
 			payload,
 			expiryMs: AuthConfig.tokens.access.expiryMs,
-
 			envKey: "ACCESS_TOKEN_SECRET",
 		});
 

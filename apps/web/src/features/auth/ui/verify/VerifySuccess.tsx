@@ -9,20 +9,16 @@ import {
 	CardDescription,
 	CardHeader,
 	CardTitle,
-	queryStateHooks,
 } from "@/shared";
 
 export const VerifySuccess = () => {
-  // router
-  const router = useRouter();
+	// router
+	const router = useRouter();
 
 	// variant
 	const pathname = usePathname().split("/")[1].replace("-", "_");
 	const variant =
 		VerifySuccessVariants[pathname as keyof typeof VerifySuccessVariants];
-
-	// nuqs
-	const [, setVerify] = queryStateHooks.useVerify();
 
 	// jsx
 	return (
@@ -34,20 +30,14 @@ export const VerifySuccess = () => {
 
 			<CardContent className="flex flex-col gap-2">
 				<Button asChild>
-          <Link
-            replace
-						href={variant.elements.redirectButton.href}
-					>
+					<Link href={variant.elements.redirectButton.href}>
 						{variant.elements.redirectButton.img}
 						{variant.elements.redirectButton.text}
 
 						<VerifySuccessTimer
 							onRedirect={() => {
-								setVerify(null);
-
 								setTimeout(() => {
-                  redirect(variant.elements.redirectButton.href);
-                  
+									redirect(variant.elements.redirectButton.href);
 								}, 500);
 							}}
 						/>

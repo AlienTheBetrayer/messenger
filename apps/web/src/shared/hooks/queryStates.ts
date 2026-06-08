@@ -1,24 +1,16 @@
-import { parseAsStringLiteral, useQueryState } from "nuqs";
-
 import { RedirectPopupVariants } from "@/features/auth/lib/variants";
-
-export const useVerifyLiteral = ["idle", "pending", "success"] as const;
+import { useQueryState } from "@/shared/hooks/useQueryState";
 
 const useVerify = () => {
-	return useQueryState(
-		"verify",
-		parseAsStringLiteral(useVerifyLiteral),
-	);
+	return useQueryState("verify", ["pending", "success"] as const);
 };
 
 const useError = () => {
 	return useQueryState(
 		"error",
-		parseAsStringLiteral<keyof typeof RedirectPopupVariants>(
-			Object.keys(
-				RedirectPopupVariants,
-			) as (keyof typeof RedirectPopupVariants)[],
-		),
+		Object.keys(
+			RedirectPopupVariants,
+		) as (keyof typeof RedirectPopupVariants)[],
 	);
 };
 

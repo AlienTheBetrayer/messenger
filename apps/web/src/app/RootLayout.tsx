@@ -1,6 +1,5 @@
 "use client";
 
-import { NuqsAdapter } from "nuqs/adapters/react";
 import { Provider } from "react-redux";
 
 import { NotificationSonner } from "@/features/notifications/ui/NotificationSonner";
@@ -17,12 +16,10 @@ export const Layout = ({ children }: Props) => {
 		<Provider store={store}>
 			<Watcher />
 			<ThemesProvider>
-				<NuqsAdapter>
-					<Header />
-					<NotificationSonner />
+				<Header />
+				<NotificationSonner />
 
-					{children}
-				</NuqsAdapter>
+				{children}
 			</ThemesProvider>
 		</Provider>
 	);

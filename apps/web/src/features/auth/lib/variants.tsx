@@ -211,9 +211,8 @@ export type RedirectPopupVariant = {
 export const RedirectPopupVariants = {
 	EMAIL_NOT_FOUND: {
 		title: "Email unavailable",
-		description:
-			"We couldn't retrieve a verified email address from your authentication provider.",
+		description: "We couldn't retrieve a verified email address.",
 		content:
-			"This can happen if your provider account does not expose a public or verified email, or if access to email information was not granted during sign-in. Please ensure your account has a verified email or try a different sign-in method.",
+			"This can happen if your provider account does not expose a public or verified email.",
 	},
 } as const satisfies Partial<Record<ExceptionCode, RedirectPopupVariant>>;

@@ -3,12 +3,12 @@ import { Controller } from "react-hook-form";
 
 import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
 import {
-  CardContent,
-  Field,
-  FieldDescription,
-  FieldError,
-  FieldLabel,
-  Input,
+	CardContent,
+	Field,
+	FieldDescription,
+	FieldError,
+	FieldLabel,
+	Input,
 } from "@/shared";
 
 export const VerifyContent = () => {
@@ -25,7 +25,7 @@ export const VerifyContent = () => {
 					<Field data-invalid={fieldState.error}>
 						<FieldLabel htmlFor="code">Code</FieldLabel>
 						<FieldDescription>
-							This code will expire in ${AuthConfig.code.expiryMs / (60 * 1000)}{" "}
+							This code will expire in {AuthConfig.code.expiryMs / (60 * 1000)}{" "}
 							minutes.
 						</FieldDescription>
 						<Input
