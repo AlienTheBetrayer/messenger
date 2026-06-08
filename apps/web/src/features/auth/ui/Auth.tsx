@@ -1,24 +1,26 @@
 import { type AuthFormSchema } from "@gravity/shared";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 
-import { useAuth } from "@/features/auth/hooks/useAuthWatcher";
 import { useGetCodeMutation } from "@/features/auth/model/auth.slice";
 import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
 import { AuthContent } from "@/features/auth/ui/auth/AuthContent";
 import { AuthFooter } from "@/features/auth/ui/auth/AuthFooter";
 import { AuthHeader } from "@/features/auth/ui/auth/AuthHeader";
 import { useNotificationDispatch } from "@/features/notifications/hooks/useNotificationDispatch";
-import { NotificationLayout } from "@/features/notifications/ui/layout/NotificationLayout";
-import { Button, normalizeError, queryStateHooks } from "@/shared";
+import { normalizeError, queryStateHooks } from "@/shared";
 
 export const Auth = () => {
 	// redux
-	const auth = useAuth();
 	const [getCode] = useGetCodeMutation();
+	const { notify } = useNotificationDispatch();
 
 	// states
 	const { type, authForm } = useAuthFormProvider();
 	const [, setVerify] = queryStateHooks.useVerify();
+
+	// useEffect(() => {
+	// 	notify({ text: "Check your email", type: "success" });
+	// }, [notify]);
 
 	// functions
 	const onSubmit = useCallback(
@@ -31,7 +33,7 @@ export const Auth = () => {
 				authForm.setError("email", { message });
 			}
 		},
-		[authForm, setVerify, type, getCode],
+		[authForm, type, setVerify, getCode],
 	);
 
 	// jsx

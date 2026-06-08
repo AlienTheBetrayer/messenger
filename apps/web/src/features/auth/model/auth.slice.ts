@@ -1,9 +1,9 @@
 import {
-  auth_sessionType,
-  AuthSchema,
-  CodeSchema,
-  usersType,
-  verification_codesType,
+	auth_sessionType,
+	AuthSchema,
+	CodeSchema,
+	usersType,
+	verification_codesType,
 } from "@gravity/shared";
 
 import { baseApi } from "@/shared";
@@ -73,9 +73,9 @@ export const authApi = baseApi.injectEndpoints({
 				url: "/auth/me",
 				method: "GET",
 			}),
-      providesTags: ["me"],
-      keepUnusedDataFor: 99999999,
-    }),
+			providesTags: ["me"],
+			keepUnusedDataFor: 99999999,
+		}),
 
 		/**
 		 * /auth/logout

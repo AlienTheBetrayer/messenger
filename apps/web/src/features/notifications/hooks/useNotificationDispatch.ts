@@ -2,6 +2,7 @@ import { generateId, notification_type } from "@gravity/shared";
 import { useCallback, useMemo } from "react";
 import { toast } from "sonner";
 
+import { useAuth } from "@/features/auth/hooks/useAuthWatcher";
 import {
 	useNotificationPushMutation,
 	useNotificationUpdateMutation,
@@ -12,7 +13,11 @@ import { NotificationExtra } from "@/features/notifications/model/notifications.
  * util hook to generate dispatch functions
  * @returns dispatcn helper functions
  */
-export const useNotificationDispatch = (userId?: string) => {
+export const useNotificationDispatch = () => {
+	// auth
+	const auth = useAuth();
+	const userId = auth.data?.id;
+
 	// redux
 	const [push] = useNotificationPushMutation();
 	const [update] = useNotificationUpdateMutation();
@@ -25,8 +30,8 @@ export const useNotificationDispatch = (userId?: string) => {
 	const notify = useCallback(
 		(params: {
 			text: string;
-			extra?: Partial<NotificationExtra>;
 			type: Exclude<notification_type, "promise">;
+			extra?: Partial<NotificationExtra>;
 		}) => {
 			toast[params.type](params.text, params.extra);
 
@@ -82,8 +87,6 @@ export const useNotificationDispatch = (userId?: string) => {
 			if (!userId) {
 				return;
 			}
-
-			console.warn(id, userId);
 
 			// loading dispatch
 			push({

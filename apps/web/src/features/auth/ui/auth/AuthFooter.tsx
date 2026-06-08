@@ -3,13 +3,20 @@ import Link from "next/link";
 
 import { AuthFormVariants } from "@/features/auth/lib/variants";
 import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
-import { Button, CardFooter, Separator, Spinner } from "@/shared";
+import {
+	Button,
+	CardFooter,
+	queryStateHooks,
+	Separator,
+	Spinner,
+} from "@/shared";
 import { useIsLoading } from "@/shared/model/redux.selectors";
 
 export const AuthFooter = () => {
 	// states
 	const { type } = useAuthFormProvider();
 	const isLoading = useIsLoading(["getCode"]);
+	const [verify] = queryStateHooks.useVerify();
 
 	// ui states
 	const variant = AuthFormVariants[type];
@@ -19,6 +26,7 @@ export const AuthFooter = () => {
 		<CardFooter className="flex flex-col gap-2">
 			{variant.elements.submitButton.enabled && (
 				<Button
+					disabled={!!verify}
 					type="submit"
 					className="w-full"
 					form="auth-form"

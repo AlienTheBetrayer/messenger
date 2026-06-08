@@ -11,7 +11,11 @@ export class NotificationsGuard implements CanActivate {
 		const users = resolveRequestUsers(request);
 
 		if (users.body.id !== users.request.id) {
-			throw createException("unauthorized", "UNAUTHENTICATED");
+			throw createException(
+				"unauthorized",
+				"UNAUTHENTICATED",
+				"user id mismatch.",
+			);
 		}
 
 		return true;

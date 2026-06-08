@@ -2,8 +2,8 @@ import { Body, Controller, Patch, Post, UseGuards } from "@nestjs/common";
 
 import { AuthGuard } from "../auth/auth.guard";
 import {
-	NotificationsPushDto,
-	NotificationsUpdateDto,
+  NotificationsPushDto,
+  NotificationsUpdateDto,
 } from "./notifications.dto";
 import { NotificationsGuard } from "./notifications.guard";
 import { NotificationsService } from "./notifications.service";

@@ -25,7 +25,11 @@ export class AuthGuard implements CanActivate {
 		const request: Request = context.switchToHttp().getRequest();
 
 		if (!("accessToken" in request.cookies)) {
-			throw createException("unauthorized", "UNAUTHENTICATED");
+			throw createException(
+				"unauthorized",
+				"UNAUTHENTICATED",
+				"no access token found.",
+			);
 		}
 
 		// verifying
@@ -40,7 +44,11 @@ export class AuthGuard implements CanActivate {
 
 			return true;
 		} catch {
-			throw createException("unauthorized", "UNAUTHENTICATED");
+			throw createException(
+				"unauthorized",
+				"UNAUTHENTICATED",
+				"access token could not be verified.",
+			);
 		}
 	}
 }

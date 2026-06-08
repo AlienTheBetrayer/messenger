@@ -20,7 +20,11 @@ export const getBodyUser = (request: Request) => {
 		}
 	}
 
-	throw createException("unauthorized", "UNAUTHENTICATED");
+	throw createException(
+		"unauthorized",
+		"UNAUTHENTICATED",
+		"request body does not have userId.",
+	);
 };
 
 /**
@@ -30,13 +34,21 @@ export const getBodyUser = (request: Request) => {
  */
 export const getRequestUser = (request: Request) => {
 	if (!request.user) {
-		throw createException("unauthorized", "UNAUTHENTICATED");
+		throw createException(
+			"unauthorized",
+			"UNAUTHENTICATED",
+			"request user object is missing.",
+		);
 	}
 
 	const parsed = authGuardUserSchema.safeParse(request.user);
 
 	if (!parsed.success) {
-		throw createException("unauthorized", "UNAUTHENTICATED");
+		throw createException(
+			"unauthorized",
+			"UNAUTHENTICATED",
+			"request user object is not valid.",
+		);
 	}
 
 	return parsed.data;
