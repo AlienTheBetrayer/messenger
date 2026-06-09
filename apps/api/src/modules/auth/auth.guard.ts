@@ -28,19 +28,18 @@ export class AuthGuard implements CanActivate {
 		// request
 		const request: Request = context.switchToHttp().getRequest();
 
-		if (!("accessToken" in request.cookies)) {
-			throw createException(
-				"unauthorized",
-				"UNAUTHENTICATED",
-				"no access token found.",
-			);
+		if (
+			!("refreshToken" in request.cookies) ||
+			!request.cookies["refreshToken"]
+		) {
+			throw new Error("no refrseh token found.");
 		}
 
 		try {
-			// verifying the access token
+			// verifying the refresh token
 			const verified = this.jwtService.verify({
-				token: request.cookies["accessToken"] as string,
-				key: "ACCESS_TOKEN_SECRET",
+				token: request.cookies["refreshToken"] as string,
+				key: "REFRESH_TOKEN_SECRET",
 			});
 
 			// verifying the session
@@ -61,7 +60,7 @@ export class AuthGuard implements CanActivate {
 			throw createException(
 				"unauthorized",
 				"UNAUTHENTICATED",
-				message ?? "access token could not be verified.",
+				message ?? "refresh token could not be verified.",
 			);
 		}
 	}

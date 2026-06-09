@@ -1,5 +1,5 @@
 import { type AuthFormSchema } from "@gravity/shared";
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 
 import { useGetCodeMutation } from "@/features/auth/model/auth.slice";
 import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
@@ -12,28 +12,42 @@ import { normalizeError, queryStateHooks } from "@/shared";
 export const Auth = () => {
 	// redux
 	const [getCode] = useGetCodeMutation();
-	const { notify } = useNotificationDispatch();
+	const { notify, promise } = useNotificationDispatch();
 
 	// states
 	const { type, authForm } = useAuthFormProvider();
 	const [, setVerify] = queryStateHooks.useVerify();
 
-	useEffect(() => {
-		notify({ text: "Check your email", type: "success" });
-	}, [notify]);
-
 	// functions
 	const onSubmit = useCallback(
-		async (data: AuthFormSchema) => {
-			try {
-				await getCode({ email: data.email, type }).unwrap();
-				setVerify("pending");
-			} catch (e) {
-				const message = normalizeError(e);
-				authForm.setError("email", { message });
-			}
+		(data: AuthFormSchema) => {
+			const fn = async () => {
+				try {
+					const res = await getCode({ email: data.email, type }).unwrap();
+					setVerify("pending");
+					return res;
+				} catch (e) {
+					const message = normalizeError(e);
+					authForm.setError("email", { message });
+				}
+			};
+
+			promise(fn, {
+				loading: ({ id }) => ({
+					node: "started loading...",
+					text: "started loading...",
+				}),
+				error: (err) => ({
+					node: "error!",
+					text: "error",
+				}),
+				success: (data) => ({
+					node: `code sent to ${data?.email}`,
+					text: `code sent to ${data?.email}`,
+				}),
+			});
 		},
-		[authForm, type, setVerify, getCode],
+		[authForm, type, setVerify, getCode, promise],
 	);
 
 	// jsx
