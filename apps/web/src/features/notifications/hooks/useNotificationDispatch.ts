@@ -56,7 +56,7 @@ export const useNotificationDispatch = () => {
 		<R>(
 			fn: () => Promise<R>,
 			params: {
-				loading: (ret: { id: string }) => {
+				loading?: (ret: { id: string }) => {
 					node: React.ReactNode;
 					text: string;
 				};
@@ -78,7 +78,7 @@ export const useNotificationDispatch = () => {
 
 			// toasting
 			toast.promise<R>(promise, {
-				loading: params.loading({ id }).node,
+				loading: params.loading ? params.loading({ id }).node : undefined,
 				success: (data) => params.success(data).node,
 				error: (err: unknown) => params.error(err).node,
 				...(params.extra ?? {}),
@@ -94,7 +94,7 @@ export const useNotificationDispatch = () => {
 				userId,
 				type: "promise",
 				promiseStatus: "pending",
-				text: params.loading({ id }).text,
+				text: params.loading ? params.loading({ id }).text : `loading ${id}`,
 			});
 
 			// success & error dispatch

@@ -7,7 +7,8 @@ import { AuthContent } from "@/features/auth/ui/auth/AuthContent";
 import { AuthFooter } from "@/features/auth/ui/auth/AuthFooter";
 import { AuthHeader } from "@/features/auth/ui/auth/AuthHeader";
 import { useNotificationDispatch } from "@/features/notifications/hooks/useNotificationDispatch";
-import { normalizeError, queryStateHooks } from "@/shared";
+import { NotificationLayout } from "@/features/notifications/ui/layout/NotificationLayout";
+import { Button, normalizeError, queryStateHooks } from "@/shared";
 
 export const Auth = () => {
 	// redux
@@ -22,30 +23,44 @@ export const Auth = () => {
 	const onSubmit = useCallback(
 		(data: AuthFormSchema) => {
 			const fn = async () => {
-				try {
+        try {
 					const res = await getCode({ email: data.email, type }).unwrap();
 					setVerify("pending");
 					return res;
 				} catch (e) {
 					const message = normalizeError(e);
-					authForm.setError("email", { message });
+          authForm.setError("email", { message });
+          throw e;
 				}
 			};
 
-			promise(fn, {
-				loading: ({ id }) => ({
-					node: "started loading...",
-					text: "started loading...",
-				}),
-				error: (err) => ({
-					node: "error!",
-					text: "error",
-				}),
-				success: (data) => ({
-					node: `code sent to ${data?.email}`,
-					text: `code sent to ${data?.email}`,
-				}),
-			});
+			const pushPromise = () => {
+				promise(fn, {
+					error: (err) => ({
+						node: (
+							<NotificationLayout
+								text="Code generation failed."
+								action={
+									<Button
+										onClick={() => {
+											pushPromise();
+										}}
+									>
+										Retry
+									</Button>
+								}
+							/>
+						),
+						text: "error",
+					}),
+					success: (ret) => ({
+						node: `Code sent to ${data.email}!`,
+						text: `Code sent to ${data.email}!`,
+					}),
+				});
+			};
+
+      pushPromise();
 		},
 		[authForm, type, setVerify, getCode, promise],
 	);
