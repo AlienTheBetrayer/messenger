@@ -87,8 +87,8 @@ export class JwtService {
 			const decodedToken = jwt.verify(
 				params.token,
 				this.configService.get(params.key),
-			);
-
+      );
+      
 			// parsing token
 			const parsed = ((params.schema ?? tokenPayloadSchema) as T).safeParse(
 				decodedToken,

@@ -47,8 +47,9 @@ export class AuthInterceptor implements NestInterceptor {
 							token: accessToken,
 							key: "ACCESS_TOKEN_SECRET",
 						});
-					} catch {
 						return data;
+					} catch {
+						/**/
 					}
 				}
 

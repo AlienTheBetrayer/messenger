@@ -12,7 +12,7 @@ export const AuthConfig = {
 	},
 	tokens: {
 		access: {
-			expiryMs: 15 * 60 * 1000,
+			expiryMs: 5 * 60 * 1000,
 		},
 		refresh: {
 			expiryMs: 30 * 24 * 60 * 60 * 1000,
