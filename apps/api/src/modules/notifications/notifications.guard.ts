@@ -1,8 +1,7 @@
 import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
 import { Request } from "express";
 
-import { createException } from "../../common";
-import { resolveRequestUsers } from "../../common/lib/request";
+import { createException, resolveRequestUsers } from "../../common";
 
 @Injectable()
 export class NotificationsGuard implements CanActivate {

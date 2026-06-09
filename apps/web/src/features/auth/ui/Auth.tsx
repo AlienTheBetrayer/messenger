@@ -18,9 +18,9 @@ export const Auth = () => {
 	const { type, authForm } = useAuthFormProvider();
 	const [, setVerify] = queryStateHooks.useVerify();
 
-	// useEffect(() => {
-	// 	notify({ text: "Check your email", type: "success" });
-	// }, [notify]);
+	useEffect(() => {
+		notify({ text: "Check your email", type: "success" });
+	}, [notify]);
 
 	// functions
 	const onSubmit = useCallback(

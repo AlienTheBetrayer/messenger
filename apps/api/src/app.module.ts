@@ -1,4 +1,5 @@
 import { Module } from "@nestjs/common";
+import { APP_INTERCEPTOR } from "@nestjs/core";
 
 import {
 	AuthModule,
@@ -9,6 +10,7 @@ import {
 	UserModule,
 	VerifyModule,
 } from "./modules";
+import { AuthInterceptor } from "./modules/auth/auth.interceptor";
 import { NotificationsModule } from "./modules/notifications/notifications.module";
 import { OAuthModule } from "./modules/oauth/oauth.module";
 
@@ -32,6 +34,11 @@ const imports = [
  */
 @Module({
 	imports,
-	providers: [],
+	providers: [
+		{
+			provide: APP_INTERCEPTOR,
+			useClass: AuthInterceptor,
+		},
+	],
 })
 export class AppModule {}

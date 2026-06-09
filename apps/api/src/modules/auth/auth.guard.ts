@@ -4,6 +4,7 @@ import z from "zod";
 
 import { createException } from "../../common";
 import { JwtService } from "../jwt/jwt.service";
+import { PrismaService } from "../prisma/prisma.service";
 
 /**
  * schema + type for user set auth guard
@@ -18,9 +19,12 @@ export type AuthGuardUserType = z.infer<typeof authGuardUserSchema>;
  */
 @Injectable()
 export class AuthGuard implements CanActivate {
-	constructor(private readonly jwtService: JwtService) {}
+	constructor(
+		private readonly jwtService: JwtService,
+		private readonly prismaService: PrismaService,
+	) {}
 
-	canActivate(context: ExecutionContext) {
+	async canActivate(context: ExecutionContext) {
 		// request
 		const request: Request = context.switchToHttp().getRequest();
 
@@ -32,22 +36,32 @@ export class AuthGuard implements CanActivate {
 			);
 		}
 
-		// verifying
 		try {
-			const decoded = this.jwtService.verify({
+			// verifying the access token
+			const verified = this.jwtService.verify({
 				token: request.cookies["accessToken"] as string,
 				key: "ACCESS_TOKEN_SECRET",
 			});
 
+			// verifying the session
+			const found = await this.prismaService.auth_session.count({
+				where: { id: verified.sessionId, user_id: verified.userId },
+			});
+
+			if (!found) {
+				throw new Error("session not found in the database.");
+			}
+
 			// setting user
-			request.user ??= { id: decoded.userId } satisfies AuthGuardUserType;
+			request.user ??= { id: verified.userId } satisfies AuthGuardUserType;
 
 			return true;
-		} catch {
+		} catch (m: unknown) {
+			const message = m instanceof Error ? m.message : null;
 			throw createException(
 				"unauthorized",
 				"UNAUTHENTICATED",
-				"access token could not be verified.",
+				message ?? "access token could not be verified.",
 			);
 		}
 	}

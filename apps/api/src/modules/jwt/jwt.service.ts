@@ -120,11 +120,43 @@ export class JwtService {
 	}
 
 	/**
+	 * sets both tokens given a payload
+	 * @param payload token payload
+	 * @param request request object
+	 * @param response response object
+	 */
+	issueAuthTokens(params: {
+		payload: TokenPayloadSchema;
+		request: Request;
+		response: Response;
+	}) {
+		// signing tokens
+		const accessToken = this.sign({
+			payload: params.payload,
+			expiryMs: AuthConfig.tokens.access.expiryMs,
+			envKey: "ACCESS_TOKEN_SECRET",
+		});
+
+		const refreshToken = this.sign({
+			payload: params.payload,
+			expiryMs: AuthConfig.tokens.refresh.expiryMs,
+			envKey: "REFRESH_TOKEN_SECRET",
+		});
+
+		// setting cookies
+		this.setAuthHttpCookies({
+			accessToken,
+			refreshToken,
+			response: params.response,
+		});
+	}
+
+	/**
 	 * issues access and refresh tokens along with a session, tied to the user
 	 * @param userId id of the user
 	 * @returns access token, refresh token and session
 	 */
-	async issueAuthTokens(params: { userId: string; ctx: AuthContextType }) {
+	async issueAuthData(params: { userId: string; ctx: AuthContextType }) {
 		// session
 		const session = await this.prismaService.auth_session.create({
 			data: {

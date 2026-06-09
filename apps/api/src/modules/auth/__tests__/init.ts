@@ -31,9 +31,9 @@ export const jestInitAuth = async () => {
 
 	const mockJwtService: MockType<
 		JwtService,
-		"issueAuthTokens" | "getAuthTokens" | "verify" | "deleteAuthTokens"
+		"issueAuthData" | "getAuthTokens" | "verify" | "deleteAuthTokens"
 	> = {
-		issueAuthTokens: jest.fn(),
+		issueAuthData: jest.fn(),
 		getAuthTokens: jest.fn(),
 		verify: jest.fn(),
 		deleteAuthTokens: jest.fn(),

@@ -114,7 +114,7 @@ export class AuthService {
 		}
 
 		return {
-			...(await this.jwtService.issueAuthTokens({ userId: user.id, ctx })),
+			...(await this.jwtService.issueAuthData({ userId: user.id, ctx })),
 			user,
 		};
 	}
@@ -156,7 +156,7 @@ export class AuthService {
 	 * @param refreshToken refresh token
 	 * @returns user object along with the session of currently logged in user
 	 */
-  async me(refreshToken: RefreshTokenType) {
+	async me(refreshToken: RefreshTokenType) {
 		// checking token
 		if (!refreshToken) {
 			throw createException("unauthorized", "UNAUTHENTICATED");
@@ -166,7 +166,7 @@ export class AuthService {
 		const verified = this.jwtService.verify({
 			token: refreshToken,
 			key: "REFRESH_TOKEN_SECRET",
-    });
+		});
 
 		// database validating
 		const isFound = await this.prismaService.auth_session.count({

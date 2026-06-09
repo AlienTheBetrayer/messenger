@@ -74,7 +74,7 @@ export class OAuthService {
 		}
 
 		// tokens + hashing + session
-		const tokens = await this.jwtService.issueAuthTokens({
+		const tokens = await this.jwtService.issueAuthData({
 			userId: user.id,
 			ctx,
 		});
