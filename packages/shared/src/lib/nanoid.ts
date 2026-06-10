@@ -1,4 +1,4 @@
-import { customAlphabet } from "nanoid";
+import { nanoid } from "nanoid";
 
 import { GlobalConfig } from "../config/global.js";
 
@@ -8,5 +8,5 @@ import { GlobalConfig } from "../config/global.js";
  * @returns a unique nanoid
  */
 export const generateId = (length: number = GlobalConfig.id.length) => {
-	return customAlphabet("0123456789abcdefghijklmnopqrstuvwxyz", length)();
+	return nanoid(length);
 };

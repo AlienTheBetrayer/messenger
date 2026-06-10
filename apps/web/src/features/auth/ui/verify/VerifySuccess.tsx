@@ -12,9 +12,6 @@ import {
 } from "@/shared";
 
 export const VerifySuccess = () => {
-	// router
-	const router = useRouter();
-
 	// variant
 	const pathname = usePathname().split("/")[1].replace("-", "_");
 	const variant =

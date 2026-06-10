@@ -17,6 +17,7 @@
 		"dev": "tsc --watch"
 	},
 	"dependencies": {
+		"nestjs-zod": "^5.4.0",
 		"zod": "^4.4.3"
 	},
 	"devDependencies": {

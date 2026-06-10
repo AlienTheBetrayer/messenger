@@ -41,10 +41,11 @@ describe("AuthService", () => {
 			ctx.mockPrismaService.auth_session.count.mockResolvedValue(0);
 
 			// act
-			await ctx.authService.logout("session-id");
+			const result = ctx.authService.logout("session-id");
 
 			// assert
-			expect(ctx.mockPrismaService.auth_session.delete).not.toHaveBeenCalled();
+      expect(ctx.mockPrismaService.auth_session.delete).not.toHaveBeenCalled();
+      await expect(result).rejects.toThrow();
 		});
 	});
 });

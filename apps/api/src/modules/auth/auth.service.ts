@@ -1,5 +1,5 @@
-import { AuthSchema, CodeSchema } from "@gravity/shared";
-import { forwardRef, Inject, Injectable } from "@nestjs/common";
+import { AuthCodeSchema, AuthSchema } from "@gravity/shared";
+import { Injectable } from "@nestjs/common";
 import bcrypt from "bcryptjs";
 
 import { createException } from "../../common";
@@ -14,7 +14,6 @@ export class AuthService {
 	constructor(
 		private readonly prismaService: PrismaService,
 		private readonly verifyService: VerifyService,
-		// @Inject(forwardRef(() => AppJwtService))
 		private readonly jwtService: AppJwtService,
 		private readonly userService: UserService,
 	) {}
@@ -24,7 +23,7 @@ export class AuthService {
 	 * @param email email to issue the code to
 	 * @returns newly generated code (also sent to email) if validated
 	 */
-	async code(body: CodeSchema) {
+	async code(body: AuthCodeSchema) {
 		// validating
 		switch (body.type) {
 			case "signup": {
@@ -198,7 +197,7 @@ export class AuthService {
 		});
 
 		if (!isFound) {
-			return { message: "no user is found." };
+			throw createException("unauthorized", "UNAUTHENTICATED");
 		}
 
 		// deleting the session

@@ -1,4 +1,4 @@
-import { CodeSchema } from "@gravity/shared";
+import { AuthCodeSchema } from "@gravity/shared";
 
 import { jestInitAuth } from "./init";
 
@@ -17,14 +17,14 @@ describe("AuthService", () => {
 	});
 
 	describe("happy paths", () => {
-		for (const [type, count] of new Map<CodeSchema["type"], 0 | 1>([
+		for (const [type, count] of new Map<AuthCodeSchema["type"], 0 | 1>([
 			["signup", 0],
 			["login", 1],
 			["forgot_password", 1],
 		])) {
 			it(`should issue a code for ${type} if user does ${count ? "" : "not"} exist`, async () => {
 				// arrange
-				const dto: CodeSchema = {
+				const dto: AuthCodeSchema = {
 					email: "email",
 					type,
 				};
@@ -40,14 +40,14 @@ describe("AuthService", () => {
 	});
 
 	describe("sad paths", () => {
-		for (const [type, count] of new Map<CodeSchema["type"], 0 | 1>([
+		for (const [type, count] of new Map<AuthCodeSchema["type"], 0 | 1>([
 			["signup", 1],
 			["login", 0],
 			["forgot_password", 0],
 		])) {
 			it(`should not issue a code for ${type} if user does ${count ? "" : "not"} exist`, async () => {
 				// arrange
-				const dto: CodeSchema = {
+				const dto: AuthCodeSchema = {
 					email: "email",
 					type,
 				};

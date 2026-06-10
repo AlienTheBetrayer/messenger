@@ -11,7 +11,7 @@ import { PrismaService } from "../prisma/prisma.service";
 export class NotificationsService {
 	constructor(private readonly prismaService: PrismaService) {}
 
-	async push(dto: NotificationsPushSchema) {
+	push = async (dto: NotificationsPushSchema) => {
 		return await this.prismaService.notifications.create({
 			data: {
 				id: dto.id ?? generateId(),
@@ -22,7 +22,7 @@ export class NotificationsService {
 				description: dto.description,
 			},
 		});
-	}
+	};
 
 	async update(dto: NotificationsUpdateSchema) {
 		return await this.prismaService.notifications.update({

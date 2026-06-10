@@ -1,4 +1,4 @@
-import { CodeSchema } from "@gravity/shared";
+import { AuthCodeSchema } from "@gravity/shared";
 
 import { jestInitVerify } from "./init";
 
@@ -16,7 +16,7 @@ describe("VerifyService", () => {
 	describe("happy paths", () => {
 		it("should return and send the code if it's been issued", async () => {
 			// arrange
-			const dto: CodeSchema = {
+			const dto: AuthCodeSchema = {
 				email: "email",
 				type: "signup",
 			};

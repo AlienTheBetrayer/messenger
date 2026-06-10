@@ -1,9 +1,9 @@
 "use client";
 
 import {
-  AuthFormSchema,
-  verification_codesType,
-  VerificationFormSchema,
+	AuthFormSchema,
+	verification_codesType,
+	VerificationFormSchema,
 } from "@gravity/shared";
 import { createContext, useContext } from "react";
 import { UseFormReturn } from "react-hook-form";
@@ -24,12 +24,13 @@ export const AuthFormContext = createContext<AuthFormData | null>(null);
 /**
  * provider
  */
-type Props = {
+export const AuthFormProvider = ({
+	type,
+	children,
+}: {
 	type: verification_codesType["type"];
 	children: React.ReactNode;
-};
-
-export const AuthFormProvider = ({ type, children }: Props) => {
+}) => {
 	// form
 	const forms = useAuthForms();
 

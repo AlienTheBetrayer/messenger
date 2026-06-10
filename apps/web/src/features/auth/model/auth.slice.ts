@@ -1,8 +1,14 @@
 import {
-  auth_sessionType,
-  AuthSchema,
-  CodeSchema,
-  usersType,
+	AuthCodeReturn,
+	AuthCodeSchema,
+	AuthForgotPasswordReturn,
+	AuthLoginReturn,
+	AuthLogoutReturn,
+	AuthLogoutSchema,
+	AuthMeReturn,
+	AuthMeSchema,
+	AuthSchema,
+	AuthSignupReturn,
 } from "@gravity/shared";
 
 import { baseApi } from "@/shared";
@@ -15,7 +21,7 @@ export const authApi = baseApi.injectEndpoints({
 		/**
 		 * /auth/code/
 		 */
-		getCode: builder.mutation<boolean, CodeSchema>({
+		getCode: builder.mutation<AuthCodeReturn, AuthCodeSchema>({
 			query: (body) => ({
 				url: "/auth/code",
 				method: "POST",
@@ -26,14 +32,7 @@ export const authApi = baseApi.injectEndpoints({
 		/**
 		 * /auth/login
 		 */
-		login: builder.mutation<
-			{
-				accessToken: string;
-				refreshToken: string;
-				session: auth_sessionType;
-			},
-			AuthSchema
-		>({
+		login: builder.mutation<AuthLoginReturn, AuthSchema>({
 			query: (body) => ({
 				url: "/auth/login",
 				method: "POST",
@@ -45,7 +44,7 @@ export const authApi = baseApi.injectEndpoints({
 		/**
 		 * /auth/signup
 		 */
-		signup: builder.mutation<auth_sessionType, AuthSchema>({
+		signup: builder.mutation<AuthSignupReturn, AuthSchema>({
 			query: (body) => ({
 				url: "/auth/signup",
 				method: "POST",
@@ -56,7 +55,7 @@ export const authApi = baseApi.injectEndpoints({
 		/**
 		 * /auth/forgot-password
 		 */
-		forgotPassword: builder.mutation<auth_sessionType, AuthSchema>({
+		forgotPassword: builder.mutation<AuthForgotPasswordReturn, AuthSchema>({
 			query: (body) => ({
 				url: "/auth/forgot-password",
 				method: "POST",
@@ -67,7 +66,7 @@ export const authApi = baseApi.injectEndpoints({
 		/**
 		 * /auth/me
 		 */
-		me: builder.query<usersType, void>({
+		me: builder.query<AuthMeReturn, AuthMeSchema>({
 			query: () => ({
 				url: "/auth/me",
 				method: "GET",
@@ -79,7 +78,7 @@ export const authApi = baseApi.injectEndpoints({
 		/**
 		 * /auth/logout
 		 */
-		logout: builder.mutation<void, void>({
+		logout: builder.mutation<AuthLogoutReturn, AuthLogoutSchema>({
 			query: () => ({
 				url: "/auth/logout",
 				method: "DELETE",

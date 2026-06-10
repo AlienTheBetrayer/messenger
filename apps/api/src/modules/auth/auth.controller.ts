@@ -1,14 +1,24 @@
+import {
+  AuthCodeDto,
+  AuthCodeReturn,
+  AuthDto,
+  AuthForgotPasswordReturn,
+  AuthLoginReturn,
+  AuthLogoutReturn,
+  AuthMeReturn,
+  AuthSignupReturn,
+} from "@gravity/shared";
 import { Body, Controller, Delete, Get, Post, Res } from "@nestjs/common";
 import { Response } from "express";
 
+import { createException } from "../../common";
 import { AppJwtService } from "../jwt/jwt.service";
 import {
-	AuthContext,
-	AuthContextType,
-	RefreshToken,
-	RefreshTokenType,
+  AuthContext,
+  AuthContextType,
+  RefreshToken,
+  RefreshTokenType,
 } from "./auth.decorators";
-import { AuthDto, CodeDto } from "./auth.dto";
 import { AuthService } from "./auth.service";
 
 @Controller("auth")
@@ -24,7 +34,7 @@ export class AuthController {
 	 * @returns true if the code was generated
 	 */
 	@Post("code")
-	async code(@Body() body: CodeDto) {
+	async code(@Body() body: AuthCodeDto): Promise<AuthCodeReturn> {
 		await this.authService.code(body);
 		return true;
 	}
@@ -37,8 +47,9 @@ export class AuthController {
 	 * @returns user object
 	 */
 	@Post("signup")
-	async signup(@Body() body: AuthDto) {
-		return await this.authService.signup(body);
+	async signup(@Body() body: AuthDto): Promise<AuthSignupReturn> {
+		const user = await this.authService.signup(body);
+		return { user };
 	}
 
 	/**
@@ -53,7 +64,7 @@ export class AuthController {
 		@Body() body: AuthDto,
 		@AuthContext() ctx: AuthContextType,
 		@Res({ passthrough: true }) response: Response,
-	) {
+	): Promise<AuthLoginReturn> {
 		// authenticating
 		const { accessToken, refreshToken, session, user } =
 			await this.authService.login(body, ctx);
@@ -72,18 +83,24 @@ export class AuthController {
 	 * @returns new user object
 	 */
 	@Post("forgot-password")
-	async forgotPassword(@Body() body: AuthDto) {
-		return await this.authService.forgotPassword(body);
+	async forgotPassword(
+		@Body() body: AuthDto,
+	): Promise<AuthForgotPasswordReturn> {
+		const user = await this.authService.forgotPassword(body);
+		return { user };
 	}
 
 	/**
 	 * gets the currently logged in user (yourself).
 	 * @param refreshToken refresh token
-	 * @returns user object along with the session of currently logged in user
+	 * @returns user object
 	 */
 	@Get("me")
-	async me(@RefreshToken() refreshToken: RefreshTokenType) {
-		return await this.authService.me(refreshToken);
+	async me(
+		@RefreshToken() refreshToken: RefreshTokenType,
+	): Promise<AuthMeReturn> {
+		const user = await this.authService.me(refreshToken);
+		return { user };
 	}
 
 	/**
@@ -95,10 +112,10 @@ export class AuthController {
 	async logout(
 		@RefreshToken() refreshToken: RefreshTokenType,
 		@Res({ passthrough: true }) response: Response,
-	) {
+	): Promise<AuthLogoutReturn> {
 		// validating tokens
 		if (!refreshToken) {
-			return { message: "no refresh token found." };
+			throw createException("unauthorized", "UNAUTHENTICATED");
 		}
 
 		const decoded = this.jwtService.verify({
@@ -110,6 +127,7 @@ export class AuthController {
 		this.jwtService.deleteAuthTokens({ response, type: "all" });
 
 		// logging out
-		return await this.authService.logout(decoded.sessionId);
+		const session = await this.authService.logout(decoded.sessionId);
+		return { session };
 	}
 }
