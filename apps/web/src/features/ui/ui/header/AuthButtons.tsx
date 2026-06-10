@@ -1,23 +1,18 @@
+"use client";
+
 import { CircleUserRound } from "lucide-react";
 import Link from "next/link";
 
-import { useAuth } from "@/features/auth/hooks/useAuthWatcher";
-import { Button, Spinner } from "@/shared";
+import { getUser } from "@/features/auth/server/routes";
+import { Button } from "@/shared";
 
-export const AuthButtons = () => {
-	// authentication
-	const auth = useAuth();
-
-	if (auth.isLoading || auth.isUninitialized) {
-		return (
-			<span className="flex items-center justify-center">
-				<Spinner />
-			</span>
-		);
-	}
-
+export const AuthButtons = ({
+	auth,
+}: {
+	auth: Awaited<ReturnType<typeof getUser>>;
+}) => {
 	// logged in
-	if (auth.data) {
+	if ("id" in auth) {
 		return (
 			<ul className="flex gap-1">
 				<li>

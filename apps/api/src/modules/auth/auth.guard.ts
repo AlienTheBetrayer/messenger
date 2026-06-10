@@ -1,18 +1,10 @@
 import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
 import { Request } from "express";
-import z from "zod";
 
 import { createException } from "../../common";
 import { AppJwtService } from "../jwt/jwt.service";
 import { PrismaService } from "../prisma/prisma.service";
-
-/**
- * schema + type for user set auth guard
- */
-export const authGuardUserSchema = z.object({
-	id: z.string(),
-});
-export type AuthGuardUserType = z.infer<typeof authGuardUserSchema>;
+import { AuthGuardUserType } from "./auth.types";
 
 /**
  * auth guard

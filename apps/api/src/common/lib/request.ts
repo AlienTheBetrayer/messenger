@@ -1,6 +1,6 @@
 import { Request } from "express";
 
-import { authGuardUserSchema } from "../../modules/auth/auth.guard";
+import { authGuardUserSchema } from "../../modules/auth/auth.types";
 import { createException } from "./exception";
 
 const getBodyUserTypes = ["user_id", "userId", "userid", "USERID"] as const;

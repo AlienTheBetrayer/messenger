@@ -2,7 +2,10 @@ import "@/shared/styles/globals.css";
 
 import { Inter } from "next/font/google";
 
-import { Layout } from "@/app/RootLayout";
+import { NotificationSonner } from "@/features/notifications/ui/NotificationSonner";
+import { ThemesProvider } from "@/features/ui/providers/ThemesProvider";
+import { Header } from "@/features/ui/ui/header/Header";
+import { ReduxProvider } from "@/shared/model/ReduxProvider";
 
 export const metadata = {
 	title: "Create Next App",
@@ -28,7 +31,14 @@ export default function RootLayout({
 			suppressHydrationWarning
 		>
 			<body className="min-h-[200vh] flex flex-col">
-				<Layout>{children}</Layout>
+				<ReduxProvider>
+					<ThemesProvider>
+						<Header />
+						<NotificationSonner />
+
+						{children}
+					</ThemesProvider>
+				</ReduxProvider>
 			</body>
 		</html>
 	);

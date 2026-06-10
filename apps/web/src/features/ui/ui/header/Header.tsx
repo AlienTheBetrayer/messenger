@@ -1,25 +1,20 @@
-"use client";
+"use server";
 
-import Link from "next/link";
-
+import { getUser } from "@/features/auth/server/routes";
 import { AuthButtons } from "@/features/ui/ui/header/AuthButtons";
+import { Navigation } from "@/features/ui/ui/header/Navigation";
 import { ThemeButton } from "@/features/ui/ui/header/ThemeButton";
-import { Button, Separator } from "@/shared";
+import { Separator } from "@/shared";
 
-export const Header = () => {
+export const Header = async () => {
+	// server fetching
+	const auth = await getUser();
+
+	// jsx
 	return (
 		<header className="sticky! top-0 w-full z-2 mx-auto flex items-center justify-center backdrop-blur-xl p-4">
 			<nav className="w-full max-w-400 flex gap-2 items-center">
-				<ul className="flex gap-1">
-					<li>
-						<Button
-							asChild
-							variant="ghost"
-						>
-							<Link href="/">Home</Link>
-						</Button>
-					</li>
-				</ul>
+				<Navigation />
 
 				<ul className="flex gap-1 ml-auto">
 					<li className="flex">
@@ -41,7 +36,7 @@ export const Header = () => {
 					</li>
 
 					<li className="flex">
-						<AuthButtons />
+						<AuthButtons auth={auth} />
 					</li>
 				</ul>
 			</nav>
