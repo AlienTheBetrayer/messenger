@@ -1,6 +1,6 @@
+import { usersSchema } from "@gravity/shared";
 import { Request } from "express";
 
-import { authGuardUserSchema } from "../../modules/auth/auth.types";
 import { createException } from "./exception";
 
 const getBodyUserTypes = ["user_id", "userId", "userid", "USERID"] as const;
@@ -41,7 +41,7 @@ export const getRequestUser = (request: Request) => {
 		);
 	}
 
-	const parsed = authGuardUserSchema.safeParse(request.user);
+	const parsed = usersSchema.safeParse(request.user);
 
 	if (!parsed.success) {
 		throw createException(

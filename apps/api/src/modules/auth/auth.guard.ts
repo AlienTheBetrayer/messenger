@@ -1,10 +1,10 @@
+import { usersType } from "@gravity/shared";
 import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
 import { Request } from "express";
 
 import { createException } from "../../common";
 import { AppJwtService } from "../jwt/jwt.service";
 import { PrismaService } from "../prisma/prisma.service";
-import { AuthGuardUserType } from "./auth.types";
 
 /**
  * auth guard
@@ -35,8 +35,9 @@ export class AuthGuard implements CanActivate {
 			});
 
 			// verifying the session
-			const found = await this.prismaService.auth_session.count({
+			const found = await this.prismaService.auth_session.findFirst({
 				where: { id: verified.sessionId, user_id: verified.userId },
+				include: { users: true },
 			});
 
 			if (!found) {
@@ -44,7 +45,7 @@ export class AuthGuard implements CanActivate {
 			}
 
 			// setting user
-			request.user ??= { id: verified.userId } satisfies AuthGuardUserType;
+			request.user ??= found.users satisfies usersType;
 
 			return true;
 		} catch (m: unknown) {

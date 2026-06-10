@@ -8,7 +8,15 @@ import {
 	AuthMeReturn,
 	AuthSignupReturn,
 } from "@gravity/shared";
-import { Body, Controller, Delete, Get, Post, Res } from "@nestjs/common";
+import {
+	Body,
+	Controller,
+	Delete,
+	Get,
+	Post,
+	Res,
+	UseGuards,
+} from "@nestjs/common";
 import { Response } from "express";
 
 import { createException } from "../../common";
@@ -16,9 +24,12 @@ import { AppJwtService } from "../jwt/jwt.service";
 import {
 	AuthContext,
 	AuthContextType,
+	AuthenticatedUser,
+	AuthenticatedUserType,
 	RefreshToken,
 	RefreshTokenType,
 } from "./auth.decorators";
+import { AuthGuard } from "./auth.guard";
 import { AuthService } from "./auth.service";
 
 @Controller("auth")
@@ -95,11 +106,9 @@ export class AuthController {
 	 * @param refreshToken refresh token
 	 * @returns user object
 	 */
+	@UseGuards(AuthGuard)
 	@Get("me")
-	async me(
-		@RefreshToken() refreshToken: RefreshTokenType,
-	): Promise<AuthMeReturn> {
-		const user = await this.authService.me(refreshToken);
+	me(@AuthenticatedUser() user: AuthenticatedUserType): AuthMeReturn {
 		return { user };
 	}
 

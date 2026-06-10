@@ -87,15 +87,15 @@ export class AppJwtService {
 			const decodedToken = jwt.verify(
 				params.token,
 				this.configService.get(params.key),
-			);
-
+      );
+      
 			// parsing token
 			const parsed = ((params.schema ?? tokenPayloadSchema) as T).safeParse(
 				decodedToken,
 			);
 
 			if (!parsed.success) {
-				throw new Error("jwt token is verified but not parsed.");
+				throw new Error(`jwt token is verified but not parsed. ${parsed.error.message}`);
 			}
 
 			return parsed.data;

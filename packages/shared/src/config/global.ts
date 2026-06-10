@@ -3,6 +3,6 @@
  */
 export const GlobalConfig = {
   id: {
-    length: 23
+    length: 21
   }
 }

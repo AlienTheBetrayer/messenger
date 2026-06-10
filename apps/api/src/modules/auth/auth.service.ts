@@ -168,48 +168,6 @@ export class AuthService {
 	}
 
 	/**
-	 * gets the currently logged in user (yourself)
-	 * @param refreshToken refresh token
-	 * @returns user object along with the session of currently logged in user
-	 */
-	async me(refreshToken: RefreshTokenType) {
-		// checking token
-		if (!refreshToken) {
-			throw createException(
-				"unauthorized",
-				"UNAUTHENTICATED",
-				"no refresh token is provided.",
-			);
-		}
-
-		// validating token
-		const verified = this.jwtService.verify({
-			token: refreshToken,
-			key: "REFRESH_TOKEN_SECRET",
-		});
-
-		// database validating
-		const isFound = await this.prismaService.auth_session.count({
-			where: {
-				user_id: verified.userId,
-			},
-		});
-
-		if (!isFound) {
-			throw createException(
-				"unauthorized",
-				"UNAUTHENTICATED",
-				"session is not validated in the database.",
-			);
-		}
-
-		// getting the user
-		return await this.prismaService.users.findFirst({
-			where: { id: verified.userId },
-		});
-	}
-
-	/**
 	 * logs out a specific session id, deleting the session
 	 * @param sessionId id of the session to be deleted
 	 * @returns succesful log out should return a session
