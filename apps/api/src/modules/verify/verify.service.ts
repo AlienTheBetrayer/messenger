@@ -1,8 +1,8 @@
 import {
-	AuthCodeSchema,
-	AuthConfig,
-	generateId,
-	randomString,
+  AuthCodeSchema,
+  AuthConfig,
+  generateId,
+  randomString,
 } from "@gravity/shared";
 import { Injectable } from "@nestjs/common";
 import { verification_code_type } from "@prisma/client";
@@ -73,7 +73,11 @@ export class VerifyService {
 
 		// verification
 		if (!status) {
-			throw createException("unauthorized", "INVALID_VERIFICATION_CODE");
+			throw createException(
+				"unauthorized",
+				"INVALID_VERIFICATION_CODE",
+				"verification code could not be verified.",
+			);
 		}
 
 		// auto-cleanup

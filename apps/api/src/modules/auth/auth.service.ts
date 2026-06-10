@@ -31,7 +31,11 @@ export class AuthService {
 				if (
 					await this.prismaService.users.count({ where: { email: body.email } })
 				) {
-					throw createException("conflict", "USER_ALREADY_EXISTS");
+					throw createException(
+						"conflict",
+						"USER_ALREADY_EXISTS",
+						"email is already taken.",
+					);
 				}
 
 				break;
@@ -43,7 +47,11 @@ export class AuthService {
 						where: { email: body.email },
 					}))
 				) {
-					throw createException("notfound", "USER_NOT_FOUND");
+					throw createException(
+						"notfound",
+						"USER_NOT_FOUND",
+						"email does not exist.",
+					);
 				}
 
 				break;
@@ -100,7 +108,11 @@ export class AuthService {
 		});
 
 		if (!user?.password) {
-			throw createException("notfound", "USER_NOT_FOUND");
+			throw createException(
+				"notfound",
+				"USER_NOT_FOUND",
+				"user does not exist.",
+			);
 		}
 
 		// do password hashes match?
@@ -110,7 +122,11 @@ export class AuthService {
 		);
 
 		if (!isPasswordCorrect) {
-			throw createException("unauthorized", "INVALID_CREDENTIALS");
+			throw createException(
+				"unauthorized",
+				"INVALID_CREDENTIALS",
+				"either password or email are incorrect.",
+			);
 		}
 
 		return {
@@ -159,7 +175,11 @@ export class AuthService {
 	async me(refreshToken: RefreshTokenType) {
 		// checking token
 		if (!refreshToken) {
-			throw createException("unauthorized", "UNAUTHENTICATED");
+			throw createException(
+				"unauthorized",
+				"UNAUTHENTICATED",
+				"no refresh token is provided.",
+			);
 		}
 
 		// validating token
@@ -176,7 +196,11 @@ export class AuthService {
 		});
 
 		if (!isFound) {
-			throw createException("unauthorized", "UNAUTHENTICATED");
+			throw createException(
+				"unauthorized",
+				"UNAUTHENTICATED",
+				"session is not validated in the database.",
+			);
 		}
 
 		// getting the user
@@ -197,7 +221,11 @@ export class AuthService {
 		});
 
 		if (!isFound) {
-			throw createException("unauthorized", "UNAUTHENTICATED");
+			throw createException(
+				"unauthorized",
+				"UNAUTHENTICATED",
+				"session not found.",
+			);
 		}
 
 		// deleting the session

@@ -55,7 +55,11 @@ export class OAuthService {
 	) {
 		// does the user have an email?
 		if (!identity?.email) {
-			throw createException("notfound", "EMAIL_NOT_FOUND");
+			throw createException(
+				"notfound",
+				"EMAIL_NOT_FOUND",
+				"identity has no email attached.",
+			);
 		}
 
 		// does the user already exist?

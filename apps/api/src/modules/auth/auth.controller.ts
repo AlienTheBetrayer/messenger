@@ -1,12 +1,12 @@
 import {
-  AuthCodeDto,
-  AuthCodeReturn,
-  AuthDto,
-  AuthForgotPasswordReturn,
-  AuthLoginReturn,
-  AuthLogoutReturn,
-  AuthMeReturn,
-  AuthSignupReturn,
+	AuthCodeDto,
+	AuthCodeReturn,
+	AuthDto,
+	AuthForgotPasswordReturn,
+	AuthLoginReturn,
+	AuthLogoutReturn,
+	AuthMeReturn,
+	AuthSignupReturn,
 } from "@gravity/shared";
 import { Body, Controller, Delete, Get, Post, Res } from "@nestjs/common";
 import { Response } from "express";
@@ -14,10 +14,10 @@ import { Response } from "express";
 import { createException } from "../../common";
 import { AppJwtService } from "../jwt/jwt.service";
 import {
-  AuthContext,
-  AuthContextType,
-  RefreshToken,
-  RefreshTokenType,
+	AuthContext,
+	AuthContextType,
+	RefreshToken,
+	RefreshTokenType,
 } from "./auth.decorators";
 import { AuthService } from "./auth.service";
 
@@ -115,7 +115,11 @@ export class AuthController {
 	): Promise<AuthLogoutReturn> {
 		// validating tokens
 		if (!refreshToken) {
-			throw createException("unauthorized", "UNAUTHENTICATED");
+			throw createException(
+				"unauthorized",
+				"UNAUTHENTICATED",
+				"no refresh token. already logged out",
+			);
 		}
 
 		const decoded = this.jwtService.verify({

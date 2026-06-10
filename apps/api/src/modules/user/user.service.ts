@@ -27,7 +27,11 @@ export class UserService {
 		});
 
 		if (isFound) {
-			throw createException("conflict", "USER_ALREADY_EXISTS");
+			throw createException(
+				"conflict",
+				"USER_ALREADY_EXISTS",
+				"email is already taken.",
+			);
 		}
 
 		// password (optional hashing)

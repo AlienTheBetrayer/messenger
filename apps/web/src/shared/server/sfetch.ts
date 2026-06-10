@@ -22,9 +22,9 @@ export const sfetch = async (input: string, init?: RequestInit) => {
 		? "https://api.outwave.com"
 		: "http://localhost:3001";
 	const slash = input.startsWith("/") ? "" : "/";
-	const url = `${backendUrl}${slash}${input}`;
+  const url = `${backendUrl}${slash}${input}`;
 
-	// fetching
+  // fetching
 	const promise = fetch(url, {
 		headers: {
 			Cookie: `accessToken=${accessToken}; refreshToken=${refreshToken}`,

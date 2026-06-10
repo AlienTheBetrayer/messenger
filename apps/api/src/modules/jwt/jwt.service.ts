@@ -95,12 +95,17 @@ export class AppJwtService {
 			);
 
 			if (!parsed.success) {
-				throw new Error();
+				throw new Error("jwt token is verified but not parsed.");
 			}
 
 			return parsed.data;
-		} catch {
-			throw createException("unauthorized", "UNAUTHENTICATED");
+		} catch (e) {
+			const message = e instanceof Error ? e.message : null;
+			throw createException(
+				"unauthorized",
+				"UNAUTHENTICATED",
+				message ?? "jwt token not verified.",
+			);
 		}
 	}
 
