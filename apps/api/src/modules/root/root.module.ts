@@ -1,8 +1,8 @@
 import { Module } from "@nestjs/common";
 
-import { AppConfigModule } from "../config/config.module.js";
-import { RootController } from "./root.controller.js";
-import { RootService } from "./root.service.js";
+import { AppConfigModule } from "../config/config.module";
+import { RootController } from "./root.controller";
+import { RootService } from "./root.service";
 
 @Module({
 	controllers: [RootController],

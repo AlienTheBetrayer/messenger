@@ -1,12 +1,12 @@
 import { Body, Controller, Delete, Get, Post, Res } from "@nestjs/common";
 import { Response } from "express";
 
-import { JwtService } from "../jwt/jwt.service";
+import { AppJwtService } from "../jwt/jwt.service";
 import {
-  AuthContext,
-  AuthContextType,
-  RefreshToken,
-  RefreshTokenType,
+	AuthContext,
+	AuthContextType,
+	RefreshToken,
+	RefreshTokenType,
 } from "./auth.decorators";
 import { AuthDto, CodeDto } from "./auth.dto";
 import { AuthService } from "./auth.service";
@@ -15,7 +15,7 @@ import { AuthService } from "./auth.service";
 export class AuthController {
 	constructor(
 		private readonly authService: AuthService,
-		private readonly jwtService: JwtService,
+		private readonly jwtService: AppJwtService,
 	) {}
 
 	/**

@@ -1,8 +1,11 @@
-import { generateId, NotificationsPushSchema } from "@gravity/shared";
+import {
+	generateId,
+	NotificationsPushSchema,
+	NotificationsUpdateSchema,
+} from "@gravity/shared";
 import { Injectable } from "@nestjs/common";
 
 import { PrismaService } from "../prisma/prisma.service";
-import { NotificationsUpdateDto } from "./notifications.dto";
 
 @Injectable()
 export class NotificationsService {
@@ -21,7 +24,7 @@ export class NotificationsService {
 		});
 	}
 
-	async update(dto: NotificationsUpdateDto) {
+	async update(dto: NotificationsUpdateSchema) {
 		return await this.prismaService.notifications.update({
 			where: {
 				id: dto.id,

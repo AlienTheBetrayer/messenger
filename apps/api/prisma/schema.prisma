@@ -7,7 +7,7 @@ generator client {
 
 generator zod {
   provider = "prisma-zod-generator"
-  output   = "../../../packages/shared/src/types/prisma"
+  output   = "../../../packages/shared/src/schemas/prisma"
   config   = "./prismazod.config.json"
 }
 

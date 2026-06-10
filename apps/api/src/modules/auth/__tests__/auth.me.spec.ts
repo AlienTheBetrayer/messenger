@@ -17,7 +17,7 @@ describe("AuthService", () => {
 	describe("happy paths", () => {
 		it("should return a user if jwt token decoded and session found", async () => {
 			// arrange
-			ctx.mockJwtService.verify.mockReturnValue({});
+			ctx.mockAppJwtService.verify.mockReturnValue({});
 			ctx.mockPrismaService.auth_session.count.mockResolvedValue(1);
 
 			// act
@@ -33,7 +33,7 @@ describe("AuthService", () => {
 		it("should throw if jwt token is not verified", async () => {
 			// arrange
 			const error = new Error("invalid");
-			ctx.mockJwtService.verify.mockImplementation(() => {
+			ctx.mockAppJwtService.verify.mockImplementation(() => {
 				throw error;
 			});
 
@@ -47,7 +47,7 @@ describe("AuthService", () => {
 
 		it("should throw if session is not found", async () => {
 			// arrange
-			ctx.mockJwtService.verify.mockReturnValue({});
+			ctx.mockAppJwtService.verify.mockReturnValue({});
 			ctx.mockPrismaService.auth_session.count.mockResolvedValue(0);
 
 			// act

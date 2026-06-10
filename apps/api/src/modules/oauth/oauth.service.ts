@@ -3,7 +3,7 @@ import { Response } from "express";
 
 import { createException } from "../../common";
 import { AuthContextType } from "../auth/auth.decorators";
-import { JwtService } from "../jwt/jwt.service";
+import { AppJwtService } from "../jwt/jwt.service";
 import { PrismaService } from "../prisma/prisma.service";
 import { UserService } from "../user/user.service";
 import { OAuthIdentityType } from "./oauth.decorators";
@@ -12,7 +12,7 @@ import { OAuthIdentityType } from "./oauth.decorators";
 export class OAuthService {
 	constructor(
 		private readonly prismaService: PrismaService,
-		private readonly jwtService: JwtService,
+		private readonly jwtService: AppJwtService,
 		private readonly userService: UserService,
 	) {}
 

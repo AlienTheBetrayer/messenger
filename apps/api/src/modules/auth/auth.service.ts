@@ -1,20 +1,21 @@
 import { AuthSchema, CodeSchema } from "@gravity/shared";
-import { Injectable } from "@nestjs/common";
+import { forwardRef, Inject, Injectable } from "@nestjs/common";
 import bcrypt from "bcryptjs";
 
-import { createException } from "../../common/index.js";
-import { JwtService } from "../jwt/jwt.service.js";
-import { PrismaService } from "../prisma/prisma.service.js";
-import { UserService } from "../user/user.service.js";
-import { VerifyService } from "../verify/verify.service.js";
-import { AuthContextType, RefreshTokenType } from "./auth.decorators.js";
+import { createException } from "../../common";
+import { AppJwtService } from "../jwt/jwt.service";
+import { PrismaService } from "../prisma/prisma.service";
+import { UserService } from "../user/user.service";
+import { VerifyService } from "../verify/verify.service";
+import { AuthContextType, RefreshTokenType } from "./auth.decorators";
 
 @Injectable()
 export class AuthService {
 	constructor(
 		private readonly prismaService: PrismaService,
 		private readonly verifyService: VerifyService,
-		private readonly jwtService: JwtService,
+		// @Inject(forwardRef(() => AppJwtService))
+		private readonly jwtService: AppJwtService,
 		private readonly userService: UserService,
 	) {}
 

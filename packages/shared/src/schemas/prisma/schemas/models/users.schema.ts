@@ -1,0 +1,15 @@
+import * as z from 'zod';
+
+export const usersSchema = z.object({
+  id: z.string(),
+  email: z.string(),
+  username: z.string().nullish(),
+  password: z.string().nullish(),
+  deleted_at: z.date().nullish(),
+  edited_at: z.date().nullish(),
+  created_at: z.date(),
+  color: z.string().nullish(),
+  image_url: z.string().nullish(),
+});
+
+export type usersType = z.infer<typeof usersSchema>;

@@ -14,7 +14,7 @@ import { EnvSchema } from "../config/config.types";
 import { PrismaService } from "../prisma/prisma.service";
 
 @Injectable()
-export class JwtService {
+export class AppJwtService {
 	constructor(
 		private readonly prismaService: PrismaService,
 		private readonly configService: AppConfigService,
@@ -87,8 +87,8 @@ export class JwtService {
 			const decodedToken = jwt.verify(
 				params.token,
 				this.configService.get(params.key),
-      );
-      
+			);
+
 			// parsing token
 			const parsed = ((params.schema ?? tokenPayloadSchema) as T).safeParse(
 				decodedToken,

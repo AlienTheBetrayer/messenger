@@ -3,10 +3,10 @@ import {
 	CodeSchema,
 	generateId,
 	randomString,
+	verification_code_type,
 } from "@gravity/shared";
 import { Injectable } from "@nestjs/common";
 
-import { verification_code_type } from "../../../generated/prisma";
 import { createException } from "../../common";
 import { generateVerificationEmail } from "../mail/lib/constants";
 import { MailService } from "../mail/mail.service";
@@ -25,7 +25,7 @@ export class VerifyService {
 	 * @param type verification code type
 	 * @returns created code
 	 */
-	async issueCode(params: CodeSchema) {
+  async issueCode(params: CodeSchema) {
 		const code = await this.prismaService.verification_codes.create({
 			data: {
 				id: generateId(),

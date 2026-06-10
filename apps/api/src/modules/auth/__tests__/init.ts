@@ -1,7 +1,7 @@
 import { Test } from "@nestjs/testing";
 
 import { MockType } from "../../../common";
-import { JwtService } from "../../jwt/jwt.service";
+import { AppJwtService } from "../../jwt/jwt.service";
 import { PrismaService } from "../../prisma/prisma.service";
 import { UserService } from "../../user/user.service";
 import { VerifyService } from "../../verify/verify.service";
@@ -29,8 +29,8 @@ export const jestInitAuth = async () => {
 		create: jest.fn(),
 	};
 
-	const mockJwtService: MockType<
-		JwtService,
+	const mockAppJwtService: MockType<
+		AppJwtService,
 		"issueAuthData" | "getAuthTokens" | "verify" | "deleteAuthTokens"
 	> = {
 		issueAuthData: jest.fn(),
@@ -51,22 +51,10 @@ export const jestInitAuth = async () => {
 		providers: [
 			AuthService,
 
-			{
-				provide: PrismaService,
-				useValue: mockPrismaService,
-			},
-			{
-				provide: JwtService,
-				useValue: mockJwtService,
-			},
-			{
-				provide: VerifyService,
-				useValue: mockVerifyService,
-			},
-			{
-				provide: UserService,
-				useValue: mockUserService,
-			},
+			{ provide: PrismaService, useValue: mockPrismaService },
+			{ provide: VerifyService, useValue: mockVerifyService },
+			{ provide: AppJwtService, useValue: mockAppJwtService },
+			{ provide: UserService, useValue: mockUserService },
 		],
 	}).compile();
 
@@ -76,7 +64,7 @@ export const jestInitAuth = async () => {
 		authService,
 		mockPrismaService,
 		mockUserService,
-		mockJwtService,
+		mockAppJwtService,
 		mockVerifyService,
 	};
 };

@@ -18,11 +18,11 @@ describe("AuthService", () => {
 				id: "session-123",
 			};
 
-			ctx.mockJwtService.getAuthTokens.mockReturnValue({
+			ctx.mockAppJwtService.getAuthTokens.mockReturnValue({
 				accessToken: "access",
 				refreshToken: "refresh",
 			});
-			ctx.mockJwtService.verify.mockReturnValue({
+			ctx.mockAppJwtService.verify.mockReturnValue({
 				sessionId: session.id,
 			});
 			ctx.mockPrismaService.auth_session.count.mockResolvedValue(1);

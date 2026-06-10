@@ -7,12 +7,12 @@ import {
 import { Request, Response } from "express";
 import { map } from "rxjs/operators";
 
-import { JwtService } from "../jwt/jwt.service";
+import { AppJwtService } from "../jwt/jwt.service";
 import { TokenPayloadSchema } from "./auth.types";
 
 @Injectable()
 export class AuthInterceptor implements NestInterceptor {
-	constructor(private readonly jwtService: JwtService) {}
+	constructor(private readonly jwtService: AppJwtService) {}
 
 	intercept(context: ExecutionContext, next: CallHandler) {
 		const request: Request = context.switchToHttp().getRequest();

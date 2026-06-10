@@ -45,7 +45,7 @@ describe("AuthService", () => {
 
 			// assert
 			expect(result).toBeDefined();
-			expect(ctx.mockJwtService.issueAuthData).toHaveBeenCalled();
+			expect(ctx.mockAppJwtService.issueAuthData).toHaveBeenCalled();
 		});
 	});
 
@@ -61,7 +61,7 @@ describe("AuthService", () => {
 
 			// assert
 			await expect(result).rejects.toThrow();
-			expect(ctx.mockJwtService.issueAuthData).not.toHaveBeenCalled();
+			expect(ctx.mockAppJwtService.issueAuthData).not.toHaveBeenCalled();
 		});
 
 		it("should throw when attempting to login with an invalid email", async () => {
@@ -74,7 +74,7 @@ describe("AuthService", () => {
 
 			// assert
 			await expect(result).rejects.toThrow();
-			expect(ctx.mockJwtService.issueAuthData).not.toHaveBeenCalled();
+			expect(ctx.mockAppJwtService.issueAuthData).not.toHaveBeenCalled();
 		});
 
 		it("should throw when attempting to login with an invalid code", async () => {
@@ -88,7 +88,7 @@ describe("AuthService", () => {
 			// assert
 			await expect(result).rejects.toThrow(error);
 			expect(bcrypt.compare).not.toHaveBeenCalled();
-			expect(ctx.mockJwtService.issueAuthData).not.toHaveBeenCalled();
+			expect(ctx.mockAppJwtService.issueAuthData).not.toHaveBeenCalled();
 		});
 	});
 });

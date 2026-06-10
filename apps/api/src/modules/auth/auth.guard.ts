@@ -3,7 +3,7 @@ import { Request } from "express";
 import z from "zod";
 
 import { createException } from "../../common";
-import { JwtService } from "../jwt/jwt.service";
+import { AppJwtService } from "../jwt/jwt.service";
 import { PrismaService } from "../prisma/prisma.service";
 
 /**
@@ -20,7 +20,7 @@ export type AuthGuardUserType = z.infer<typeof authGuardUserSchema>;
 @Injectable()
 export class AuthGuard implements CanActivate {
 	constructor(
-		private readonly jwtService: JwtService,
+		private readonly jwtService: AppJwtService,
 		private readonly prismaService: PrismaService,
 	) {}
 

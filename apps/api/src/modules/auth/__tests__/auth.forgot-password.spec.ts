@@ -1,6 +1,5 @@
 import bcrypt from "bcryptjs";
 
-import { createException } from "../../../common";
 import { jestInitAuth } from "./init";
 
 describe("AuthService", () => {
@@ -23,7 +22,7 @@ describe("AuthService", () => {
 				code: "code",
 			};
 			ctx.mockVerifyService.validateCode.mockResolvedValue(undefined as never);
-      ctx.mockPrismaService.users.update.mockResolvedValue({});
+			ctx.mockPrismaService.users.update.mockResolvedValue({});
 			jest.spyOn(bcrypt, "hash").mockResolvedValue("hashed-password" as never);
 
 			// act
@@ -50,7 +49,7 @@ describe("AuthService", () => {
 				password: "password",
 				code: "code",
 			};
-      const error = new Error();
+			const error = new Error();
 			ctx.mockVerifyService.validateCode.mockRejectedValue(error);
 
 			// act
