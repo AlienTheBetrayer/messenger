@@ -12,7 +12,7 @@ export const AuthButtons = ({
 	auth: Awaited<ReturnType<typeof getAuth>>;
 }) => {
 	// logged in
-	if ("user" in auth) {
+	if (auth.status) {
 		return (
 			<ul className="flex gap-1">
 				<li>

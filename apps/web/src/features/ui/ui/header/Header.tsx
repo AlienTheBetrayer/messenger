@@ -9,7 +9,6 @@ import { Separator } from "@/shared";
 export const Header = async () => {
 	// server fetching
   const auth = await getAuth();
-  console.log(auth);
 
 	// jsx
 	return (
