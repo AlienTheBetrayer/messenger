@@ -2,7 +2,7 @@ import { generateId, notification_type } from "@gravity/shared";
 import { useCallback, useMemo } from "react";
 import { toast } from "sonner";
 
-import { useAuth } from "@/features/auth/hooks/useAuthWatcher";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 import {
 	useNotificationPushMutation,
 	useNotificationUpdateMutation,
@@ -14,9 +14,9 @@ import { NotificationExtra } from "@/features/notifications/model/notifications.
  * @returns dispatcn helper functions
  */
 export const useNotificationDispatch = () => {
-	// auth
+	// auth`
 	const auth = useAuth();
-  const userId = auth.data?.user?.id;
+	const userId = auth.data?.user?.id;
 
 	// redux
 	const [push] = useNotificationPushMutation();

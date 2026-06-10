@@ -2,6 +2,8 @@ import "@/shared/styles/globals.css";
 
 import { Inter } from "next/font/google";
 
+import { AuthHydrator } from "@/features/auth/server/AuthHydrator";
+import { getAuth } from "@/features/auth/server/routes";
 import { NotificationSonner } from "@/features/notifications/ui/NotificationSonner";
 import { ThemesProvider } from "@/features/ui/providers/ThemesProvider";
 import { Header } from "@/features/ui/ui/header/Header";
@@ -19,19 +21,25 @@ const inter = Inter({
 	subsets: ["latin"],
 });
 
-export default function RootLayout({
+export default async function RootLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
+	// hydration
+	const auth = await getAuth();
+
+	// jsx
 	return (
 		<html
 			lang="en"
 			className={`${inter.variable} antialiased`}
 			suppressHydrationWarning
 		>
-			<body className="min-h-[200vh] flex flex-col">
+			<body className="min-h-[144vh] flex flex-col">
 				<ReduxProvider>
+					<AuthHydrator auth={auth} />
+
 					<ThemesProvider>
 						<Header />
 						<NotificationSonner />

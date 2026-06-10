@@ -1,12 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { createSelector } from "@reduxjs/toolkit";
 import { QueryStatus } from "@reduxjs/toolkit/query";
 import { useSelector } from "react-redux";
 
 import {
-	RootState,
-	RTKEndpointName,
-	RTKQueryEntry,
+  RootState,
+  RTKEndpointName,
+  RTKQueryEntry,
 } from "@/shared/model/redux.types";
 
 /**

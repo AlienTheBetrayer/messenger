@@ -2,8 +2,8 @@
 
 import { Provider } from "react-redux";
 
-import { store } from "@/shared/model/redux.store";
+import { ReduxStore } from "./redux.store";
 
 export const ReduxProvider = ({ children }: { children: React.ReactNode }) => {
-	return <Provider store={store}>{children}</Provider>;
+	return <Provider store={ReduxStore}>{children}</Provider>;
 };

@@ -3,13 +3,13 @@
 import { CircleUserRound } from "lucide-react";
 import Link from "next/link";
 
-import { getUser } from "@/features/auth/server/routes";
+import { getAuth } from "@/features/auth/server/routes";
 import { Button } from "@/shared";
 
 export const AuthButtons = ({
 	auth,
 }: {
-	auth: Awaited<ReturnType<typeof getUser>>;
+	auth: Awaited<ReturnType<typeof getAuth>>;
 }) => {
 	// logged in
 	if ("id" in auth) {

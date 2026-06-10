@@ -1,6 +1,6 @@
 "use server";
 
-import { getUser } from "@/features/auth/server/routes";
+import { getAuth } from "@/features/auth/server/routes";
 import { AuthButtons } from "@/features/ui/ui/header/AuthButtons";
 import { Navigation } from "@/features/ui/ui/header/Navigation";
 import { ThemeButton } from "@/features/ui/ui/header/ThemeButton";
@@ -8,7 +8,7 @@ import { Separator } from "@/shared";
 
 export const Header = async () => {
 	// server fetching
-	const auth = await getUser();
+	const auth = await getAuth();
 
 	// jsx
 	return (

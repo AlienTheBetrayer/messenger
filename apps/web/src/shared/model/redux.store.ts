@@ -15,7 +15,7 @@ export const baseApi = createApi({
 /**
  * global app store
  */
-export const store = configureStore({
+export const ReduxStore = configureStore({
 	reducer: {
 		[baseApi.reducerPath]: baseApi.reducer,
 	},
