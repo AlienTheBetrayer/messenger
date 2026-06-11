@@ -31,8 +31,6 @@
 		".next/types/**/*.ts",
 		".next/dev/types/**/*.ts",
 		"**/*.mts",
-		"../../packages/shared/src"
 	],
-  "references": [{ "path": "../../packages/shared" }],
 	"exclude": ["node_modules"]
 }

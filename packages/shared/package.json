@@ -1,26 +1,16 @@
 {
-	"name": "@gravity/shared",
-	"version": "1.0.0",
-	"type": "module",
-	"main": "./src/index.ts",
-	"types": "./src/index.ts",
-	"exports": {
-		".": {
-			"types": "./dist/index.d.ts",
-			"import": "./dist/index.js",
-			"require": "./dist/index.js",
-			"default": "./dist/index.js"
-		}
-	},
-	"scripts": {
-		"build": "tsc -b",
-		"dev": "tsc --watch"
-	},
-	"dependencies": {
-		"nestjs-zod": "^5.4.0",
-		"zod": "^4.4.3"
-	},
-	"devDependencies": {
-		"@types/node": "^25.9.1"
-	}
+  "name": "@gravity/shared",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -b",
+    "dev": "tsc --watch"
+  }
 }

@@ -1,4 +1,12 @@
-import { randomInt } from "crypto";
+/**
+ * generates a random number within a specified range
+ * @param min start value of the range
+ * @param max end value of the range
+ * @returns random number within that range
+ */
+export const randomRange = (min: number, max: number) => {
+	return Math.floor(Math.random() * (max - min + 1)) + min;
+};
 
 /**
  * generates a random string
@@ -11,7 +19,7 @@ export const randomString = (length: number, characters?: string) => {
 		characters ??
 		"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-	return Array.from({ length }, () => randomInt(0, chars.length)).join("");
+	return Array.from({ length }, () => randomRange(0, chars.length)).join("");
 };
 
 /**

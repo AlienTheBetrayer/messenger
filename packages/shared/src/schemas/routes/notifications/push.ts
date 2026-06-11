@@ -1,4 +1,3 @@
-import { createZodDto } from "nestjs-zod";
 import z from "zod";
 
 import { notification_promise_statusSchema } from "../../prisma/schemas/enums/notification_promise_status.schema.js";
@@ -21,13 +20,6 @@ export const notificationsPushSchema = z.object({
  * type
  */
 export type NotificationsPushSchema = z.infer<typeof notificationsPushSchema>;
-
-/**
- * dto
- */
-export class NotificationsPushDto extends createZodDto(
-	notificationsPushSchema,
-) { }
 
 /**
  * return

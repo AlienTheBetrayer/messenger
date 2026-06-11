@@ -1,12 +1,14 @@
 import {
-	NotificationsPushDto,
 	NotificationsPushReturn,
-	NotificationsUpdateDto,
 	NotificationsUpdateReturn,
 } from "@gravity/shared";
 import { Body, Controller, Patch, Post, UseGuards } from "@nestjs/common";
 
 import { AuthGuard } from "../auth/auth.guard";
+import {
+	NotificationsPushDto,
+	NotificationsUpdateDto,
+} from "./notifications.dto";
 import { NotificationsGuard } from "./notifications.guard";
 import { NotificationsService } from "./notifications.service";
 

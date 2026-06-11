@@ -1,4 +1,3 @@
-import { createZodDto } from "nestjs-zod";
 import z from "zod";
 
 import { verification_code_typeSchema } from "../../prisma/schemas/enums/verification_code_type.schema.js";
@@ -17,11 +16,6 @@ export const codeSchema = z.object({
 export type AuthCodeSchema = z.infer<typeof codeSchema>;
 
 /**
- * dto
- */
-export class AuthCodeDto extends createZodDto(codeSchema) {}
-
-/**
- *
+ * return values
  */
 export type AuthCodeReturn = true;

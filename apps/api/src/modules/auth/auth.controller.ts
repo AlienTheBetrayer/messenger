@@ -1,7 +1,5 @@
 import {
-	AuthCodeDto,
 	AuthCodeReturn,
-	AuthDto,
 	AuthForgotPasswordReturn,
 	AuthLoginReturn,
 	AuthLogoutReturn,
@@ -29,6 +27,7 @@ import {
 	RefreshToken,
 	RefreshTokenType,
 } from "./auth.decorators";
+import { AuthCodeDto, AuthDto } from "./auth.dto";
 import { AuthGuard } from "./auth.guard";
 import { AuthService } from "./auth.service";
 
