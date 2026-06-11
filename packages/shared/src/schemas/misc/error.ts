@@ -1,6 +1,6 @@
 import z from "zod";
 
-import { ExceptionCodes, HttpStatusCodes } from "../../lib/exceptions.js";
+import { ExceptionCodes, HttpStatusCodes } from "../../lib/exceptions";
 
 /**
  * shared api retrieved error object

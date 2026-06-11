@@ -1,8 +1,6 @@
 generator client {
   provider               = "prisma-client-js"
   generatedFileExtension = "ts"
-  importFileExtension    = "js"
-  moduleFormat           = "esm"
 }
 
 generator zod {

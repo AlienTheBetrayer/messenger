@@ -1,7 +1,7 @@
 import z from "zod";
 
-import { notification_promise_statusSchema } from "../../prisma/schemas/enums/notification_promise_status.schema.js";
-import { notificationsType } from "../../prisma/schemas/models/notifications.schema.js";
+import { notification_promise_statusSchema } from "../../prisma/schemas/enums/notification_promise_status.schema";
+import { notificationsType } from "../../prisma/schemas/models/notifications.schema";
 
 /**
  * schema

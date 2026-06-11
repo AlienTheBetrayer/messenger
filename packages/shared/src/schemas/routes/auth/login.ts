@@ -1,5 +1,5 @@
-import { auth_sessionType } from "../../prisma/schemas/models/auth_session.schema.js";
-import { usersType } from "../../prisma/schemas/models/users.schema.js";
+import { auth_sessionType } from "../../prisma/schemas/models/auth_session.schema";
+import { usersType } from "../../prisma/schemas/models/users.schema";
 
 /**
  * return

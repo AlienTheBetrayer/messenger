@@ -1,22 +1,22 @@
 {
 	"compilerOptions": {
-		"module": "NodeNext",
-		"moduleResolution": "NodeNext",
 		"target": "ES2023",
 		"strict": true,
+		"module": "ESNext",
+		"moduleResolution": "Bundler",
 		"skipLibCheck": true,
 		"esModuleInterop": true,
 		"allowSyntheticDefaultImports": true,
-    "resolveJsonModule": true,
+		"resolveJsonModule": true,
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,
 		"sourceMap": true,
 		"incremental": false,
 		"rootDir": ".",
 		"outDir": "./dist",
-    "types": ["node", "jest"]
+		"types": ["node", "jest"]
 	},
-  
+
 	"include": ["src", "jest.config.ts"],
 	"exclude": ["node_modules", "dist"]
 }

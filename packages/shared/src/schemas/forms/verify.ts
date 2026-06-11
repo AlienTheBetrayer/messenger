@@ -1,6 +1,6 @@
 import z from "zod";
 
-import { AuthConfig } from "../../config/auth.js";
+import { AuthConfig } from "../../config/auth";
 
 /**
  * verification form

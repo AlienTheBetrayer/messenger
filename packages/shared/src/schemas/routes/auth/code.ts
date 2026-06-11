@@ -1,6 +1,6 @@
 import z from "zod";
 
-import { verification_code_typeSchema } from "../../prisma/schemas/enums/verification_code_type.schema.js";
+import { verification_code_typeSchema } from "../../prisma/schemas/enums/verification_code_type.schema";
 
 /**
  * schema

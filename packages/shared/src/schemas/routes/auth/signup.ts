@@ -1,4 +1,4 @@
-import { usersType } from "../../prisma/schemas/models/users.schema.js";
+import { usersType } from "../../prisma/schemas/models/users.schema";
 
 /**
  * return
