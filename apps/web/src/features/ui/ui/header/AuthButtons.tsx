@@ -4,13 +4,14 @@ import { CircleUserRound } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { getAuth } from "@/features/auth/server/routes";
+import { useLogoutMutation } from "@/features/auth/model/auth.slice";
+import { serverGetAuth, serverLogout } from "@/features/auth/server/routes";
 import { Button } from "@/shared";
 
 export const AuthButtons = ({
 	auth,
 }: {
-	auth: Awaited<ReturnType<typeof getAuth>>;
+	auth: Awaited<ReturnType<typeof serverGetAuth>>;
 }) => {
 	// logged in
 	if (auth.status) {
@@ -42,7 +43,13 @@ export const AuthButtons = ({
 						</Link>
 					</Button>
 
-					<Button>Log out</Button>
+					<Button
+						onClick={() => {
+							serverLogout();
+						}}
+					>
+						Log out
+					</Button>
 				</li>
 			</ul>
 		);

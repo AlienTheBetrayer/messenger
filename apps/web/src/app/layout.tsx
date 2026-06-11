@@ -3,7 +3,7 @@ import "@/shared/styles/globals.css";
 import { Inter } from "next/font/google";
 
 import { AuthHydrator } from "@/features/auth/server/AuthHydrator";
-import { getAuth } from "@/features/auth/server/routes";
+import { serverGetAuth } from "@/features/auth/server/routes";
 import { NotificationSonner } from "@/features/notifications/ui/NotificationSonner";
 import { ThemesProvider } from "@/features/ui/providers/ThemesProvider";
 import { Header } from "@/features/ui/ui/header/Header";
@@ -27,7 +27,7 @@ export default async function RootLayout({
 	children: React.ReactNode;
 }>) {
 	// hydration
-	const auth = await getAuth();
+	const auth = await serverGetAuth();
 
 	// jsx
 	return (
@@ -38,7 +38,7 @@ export default async function RootLayout({
 		>
 			<body className="min-h-[144vh] flex flex-col">
 				<ReduxProvider>
-					<AuthHydrator auth={auth} />
+					{/* <AuthHydrator auth={auth} /> */}
 
 					<ThemesProvider>
 						<Header />

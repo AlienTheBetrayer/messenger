@@ -61,7 +61,8 @@ export default defineConfig([
 			"@typescript-eslint/no-unsafe-assignment": "error",
 			"@typescript-eslint/no-invalid-void-type": "off",
 			"@typescript-eslint/no-unnecessary-condition": "off",
-      "@typescript-eslint/no-unsafe-call": "error",
+			"@typescript-eslint/no-unsafe-call": "error",
+			"@typescript-eslint/require-await": "off",
 
 			// ✅ IMPORTANT: removes your “6 is annoying” problem
 			"@typescript-eslint/no-inferrable-types": "off",
