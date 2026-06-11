@@ -1,3 +1,5 @@
+"use client";
+
 import { Button, CardFooter, Spinner } from "@/shared";
 import { useIsLoading } from "@/shared/model/redux.selectors";
 

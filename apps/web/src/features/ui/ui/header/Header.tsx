@@ -7,10 +7,6 @@ import { ThemeButton } from "@/features/ui/ui/header/ThemeButton";
 import { Separator } from "@/shared";
 
 export const Header = async () => {
-	// server fetching
-	const auth = await serverGetAuth();
-
-	// jsx
 	return (
 		<header className="sticky! top-0 w-full z-2 mx-auto flex items-center justify-center backdrop-blur-xl p-4">
 			<nav className="w-full max-w-400 flex gap-2 items-center">
@@ -36,7 +32,7 @@ export const Header = async () => {
 					</li>
 
 					<li className="flex">
-						<AuthButtons auth={auth} />
+						<AuthButtons />
 					</li>
 				</ul>
 			</nav>

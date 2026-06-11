@@ -1,14 +1,16 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 
 import { AuthFormVariants } from "@/features/auth/lib/variants";
 import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
 import {
-	Button,
-	CardFooter,
-	queryStateHooks,
-	Separator,
-	Spinner,
+  Button,
+  CardFooter,
+  queryStateHooks,
+  Separator,
+  Spinner,
 } from "@/shared";
 import { useIsLoading } from "@/shared/model/redux.selectors";
 

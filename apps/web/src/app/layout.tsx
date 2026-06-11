@@ -38,7 +38,7 @@ export default async function RootLayout({
 		>
 			<body className="min-h-[144vh] flex flex-col">
 				<ReduxProvider>
-					{/* <AuthHydrator auth={auth} /> */}
+					<AuthHydrator auth={auth} />
 
 					<ThemesProvider>
 						<Header />

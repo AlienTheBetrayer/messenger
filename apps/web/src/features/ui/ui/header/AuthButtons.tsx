@@ -4,17 +4,15 @@ import { CircleUserRound } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { useLogoutMutation } from "@/features/auth/model/auth.slice";
-import { serverGetAuth, serverLogout } from "@/features/auth/server/routes";
+import { useMeQuery } from "@/features/auth/model/auth.slice";
 import { Button } from "@/shared";
 
-export const AuthButtons = ({
-	auth,
-}: {
-	auth: Awaited<ReturnType<typeof serverGetAuth>>;
-}) => {
+export const AuthButtons = () => {
+	// auth
+	const auth = useMeQuery();
+
 	// logged in
-	if (auth.status) {
+	if (auth.data?.user) {
 		return (
 			<ul className="flex gap-1 items-center">
 				<li className="flex">
@@ -41,14 +39,6 @@ export const AuthButtons = ({
 
 							<span>Profile</span>
 						</Link>
-					</Button>
-
-					<Button
-						onClick={() => {
-							serverLogout();
-						}}
-					>
-						Log out
 					</Button>
 				</li>
 			</ul>

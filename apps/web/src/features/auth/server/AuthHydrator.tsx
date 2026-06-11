@@ -1,7 +1,6 @@
-/* eslint-disable react-hooks/refs */
 "use client";
 
-import { useRef } from "react";
+import { useMemo } from "react";
 
 import { authApi } from "@/features/auth/model/auth.slice";
 import { serverGetAuth } from "@/features/auth/server/routes";
@@ -15,14 +14,14 @@ export const AuthHydrator = ({
 	// states
 	const dispatch = useAppDispatch();
 
-	// refs
-	const hasHydrated = useRef<boolean>(false);
-
 	// hydrating
-	if (!hasHydrated.current) {
+	useMemo(() => {
+		if (!auth.status) {
+			return;
+		}
+
 		dispatch(authApi.util.upsertQueryData("me", undefined, auth.data));
-		hasHydrated.current = true;
-	}
+	}, [auth, dispatch]);
 
 	return null;
 };

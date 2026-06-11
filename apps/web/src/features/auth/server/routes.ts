@@ -17,8 +17,3 @@ export const serverGetAuth = async () => {
 		data: AuthMeReturn;
 	}>;
 };
-
-export const serverLogout = async () => {
-  await sfetch("/auth/logout", { method: "DELETE" });
-	updateTag("me");
-};
