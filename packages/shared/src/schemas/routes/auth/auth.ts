@@ -1,6 +1,6 @@
 import z from "zod";
 
-import { AuthConfig } from "../../../config/auth";
+import { AuthConfig } from "../../../config/auth.js";
 
 /**
  * schema

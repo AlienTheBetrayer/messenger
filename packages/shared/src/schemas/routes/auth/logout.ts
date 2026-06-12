@@ -1,4 +1,4 @@
-import { auth_sessionType } from "../../prisma/schemas/models/auth_session.schema";
+import { auth_sessionType } from "../../prisma/schemas/models/auth_session.schema.js";
 
 /**
  * schema

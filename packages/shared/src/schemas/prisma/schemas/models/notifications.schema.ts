@@ -1,6 +1,6 @@
 import * as z from 'zod';
-import { notification_promise_statusSchema } from '../enums/notification_promise_status.schema';
-import { notification_typeSchema } from '../enums/notification_type.schema';
+import { notification_promise_statusSchema } from '../enums/notification_promise_status.schema.js';
+import { notification_typeSchema } from '../enums/notification_type.schema.js';
 
 export const notificationsSchema = z.object({
   id: z.string(),

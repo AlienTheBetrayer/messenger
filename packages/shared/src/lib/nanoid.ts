@@ -1,6 +1,6 @@
 import { nanoid } from "nanoid";
 
-import { GlobalConfig } from "../config/global";
+import { GlobalConfig } from "../config/global.js";
 
 /**
  * generates a URL-friendly id using nanoid.
