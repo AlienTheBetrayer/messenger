@@ -22,9 +22,11 @@ const inter = Inter({
 });
 
 export default async function RootLayout({
-	children,
+  children,
+  modal,
 }: Readonly<{
-	children: React.ReactNode;
+  children: React.ReactNode;
+  modal: React.ReactNode;
 }>) {
 	// hydration
 	const auth = await serverGetAuth();
@@ -44,7 +46,8 @@ export default async function RootLayout({
 						<Header />
 						<NotificationSonner />
 
-						{children}
+            {children}
+            {modal}
 					</ThemesProvider>
 				</ReduxProvider>
 			</body>
