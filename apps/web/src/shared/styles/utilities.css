@@ -40,6 +40,7 @@
 
 	.skeleton {
 		position: relative;
+    opacity: 0.5;
 		background: linear-gradient(
 			90deg,
 			var(--card) 25%,
@@ -48,7 +49,7 @@
 		);
 		background-size: 200% 100%;
 		overflow: hidden;
-		animation: 4s skeletonAnimation ease-in-out infinite alternate;
+		animation: 3s skeletonAnimation ease-in-out infinite alternate;
 	}
 
 	.dotted {

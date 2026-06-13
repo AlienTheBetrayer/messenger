@@ -22,7 +22,6 @@ async function bootstrap(): Promise<void> {
 	// setting up
 	app.enableCors();
 	app.useGlobalPipes(new ZodValidationPipe());
-	app.useGlobalInterceptors(new ResponseInterceptor());
 	app.set("trust proxy", true);
 	app.use(cookieParser());
 

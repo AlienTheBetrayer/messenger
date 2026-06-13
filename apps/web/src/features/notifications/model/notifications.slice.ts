@@ -1,6 +1,8 @@
 import {
+	NotificationsPushReturn,
 	NotificationsPushSchema,
 	notificationsType,
+	NotificationsUpdateReturn,
 	NotificationsUpdateSchema,
 } from "@gravity/shared";
 import { createEntityAdapter } from "@reduxjs/toolkit";
@@ -23,7 +25,7 @@ export const notificationsApi = baseApi.injectEndpoints({
 		/**
 		 * /notifications/push
 		 */
-		push: builder.mutation<notificationsType, NotificationsPushSchema>({
+		push: builder.mutation<NotificationsPushReturn, NotificationsPushSchema>({
 			query: (body) => ({
 				url: "/notifications/push",
 				method: "POST",
@@ -34,7 +36,10 @@ export const notificationsApi = baseApi.injectEndpoints({
 		/**
 		 * /notifications/update
 		 */
-		update: builder.mutation<notificationsType, NotificationsUpdateSchema>({
+		update: builder.mutation<
+			NotificationsUpdateReturn,
+			NotificationsUpdateSchema
+		>({
 			query: (body) => ({
 				url: "/notifications/update",
 				method: "PATCH",

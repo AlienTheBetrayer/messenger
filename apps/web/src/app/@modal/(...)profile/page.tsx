@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
+import { useNotificationDispatch } from "@/features";
 import {
 	Button,
 	Dialog,
@@ -21,7 +22,10 @@ export default function ProfileModal() {
 	// routing
 	const router = useRouter();
 
-	// jsx`
+	// notification
+	const { promise } = useNotificationDispatch();
+
+	// jsx
 	return (
 		<Dialog
 			onOpenChange={(state) => {
@@ -64,6 +68,39 @@ export default function ProfileModal() {
 						<DialogClose asChild>
 							<Button variant="outline">Cancel</Button>
 						</DialogClose>
+						<Button
+							type="button"
+							onClick={() => {
+								promise<boolean>(
+									() =>
+										new Promise((res) => {
+											setTimeout(() => {
+												res(true);
+											}, 1000);
+										}),
+									{
+										success: (ret) => ({
+											node: (
+												<div>
+													{ret} <Button>why?</Button>
+												</div>
+											),
+											text: "Profile updated successfully!",
+										}),
+										error: (ret) => ({
+											node: (
+												<div>
+													<span>error:</span> <Button>why?</Button>
+												</div>
+											),
+											text: "Something went wrong",
+										}),
+									},
+								);
+							}}
+						>
+							hi
+						</Button>
 						<Button type="submit">Save changes</Button>
 					</DialogFooter>
 				</DialogContent>

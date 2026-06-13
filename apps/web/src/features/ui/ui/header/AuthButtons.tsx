@@ -4,15 +4,15 @@ import { CircleUserRound } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { useMeQuery } from "@/features/auth/model/auth.slice";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 import { Button } from "@/shared";
 
 export const AuthButtons = () => {
 	// auth
-	const auth = useMeQuery();
+	const { data: auth } = useAuth();
 
 	// logged in
-	if (auth.data?.user) {
+	if (auth?.user.id) {
 		return (
 			<ul className="flex gap-1 items-center">
 				<li className="flex">
@@ -25,10 +25,10 @@ export const AuthButtons = () => {
 							href="/profile"
 							className="flex items-center justify-center"
 						>
-							{auth.data.user?.image_url ? (
+							{auth.user.image_url ? (
 								<Image
 									alt="pfp"
-									src={auth.data.user?.image_url}
+									src={auth.user.image_url}
 									width={16}
 									height={16}
 									className="grayscale-100"

@@ -2,8 +2,6 @@ import "@/shared/styles/globals.css";
 
 import { Inter } from "next/font/google";
 
-import { AuthHydrator } from "@/features/auth/server/AuthHydrator";
-import { serverGetAuth } from "@/features/auth/server/routes";
 import { NotificationSonner } from "@/features/notifications/ui/NotificationSonner";
 import { ThemesProvider } from "@/features/ui/providers/ThemesProvider";
 import { Header } from "@/features/ui/ui/header/Header";
@@ -22,16 +20,12 @@ const inter = Inter({
 });
 
 export default async function RootLayout({
-  children,
-  modal,
+	children,
+	modal,
 }: Readonly<{
-  children: React.ReactNode;
-  modal: React.ReactNode;
+	children: React.ReactNode;
+	modal: React.ReactNode;
 }>) {
-	// hydration
-	const auth = await serverGetAuth();
-
-	// jsx
 	return (
 		<html
 			lang="en"
@@ -40,14 +34,12 @@ export default async function RootLayout({
 		>
 			<body className="min-h-[144vh] flex flex-col">
 				<ReduxProvider>
-					<AuthHydrator auth={auth} />
-
 					<ThemesProvider>
 						<Header />
 						<NotificationSonner />
 
-            {children}
-            {modal}
+						{children}
+						{modal}
 					</ThemesProvider>
 				</ReduxProvider>
 			</body>

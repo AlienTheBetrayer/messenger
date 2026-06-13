@@ -1,6 +1,3 @@
-"use server";
-
-import { serverGetAuth } from "@/features/auth/server/routes";
 import { AuthButtons } from "@/features/ui/ui/header/AuthButtons";
 import { Navigation } from "@/features/ui/ui/header/Navigation";
 import { ThemeButton } from "@/features/ui/ui/header/ThemeButton";

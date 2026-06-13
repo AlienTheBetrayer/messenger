@@ -9,5 +9,5 @@ export type AuthMeSchema = void;
  * return
  */
 export type AuthMeReturn = {
-	user: usersType | null;
+  user: usersType;
 };

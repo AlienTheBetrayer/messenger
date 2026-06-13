@@ -15,8 +15,8 @@ import { NotificationExtra } from "@/features/notifications/model/notifications.
  */
 export const useNotificationDispatch = () => {
 	// auth`
-	const auth = useAuth();
-	const userId = auth.data?.user?.id;
+	const { data: auth } = useAuth();
+  const userId = auth?.user.id;
 
 	// redux
 	const [push] = useNotificationPushMutation();
@@ -84,7 +84,7 @@ export const useNotificationDispatch = () => {
 				...(params.extra ?? {}),
 			});
 
-			if (!userId) {
+      if (!userId) {
 				return;
 			}
 

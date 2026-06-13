@@ -15,9 +15,13 @@ export const baseApi = createApi({
 /**
  * global app store
  */
-export const ReduxStore = configureStore({
-	reducer: {
-		[baseApi.reducerPath]: baseApi.reducer,
-	},
-	middleware: (gDM) => gDM().concat(baseApi.middleware),
-});
+export const createReduxStore = () => {
+	const store = configureStore({
+		reducer: {
+			[baseApi.reducerPath]: baseApi.reducer,
+		},
+		middleware: (gDM) => gDM().concat(baseApi.middleware),
+	});
+
+	return store;
+};
