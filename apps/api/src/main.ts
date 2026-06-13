@@ -5,7 +5,6 @@ import { NestExpressApplication } from "@nestjs/platform-express";
 import cookieParser from "cookie-parser";
 import { ZodValidationPipe } from "nestjs-zod";
 
-import { ResponseInterceptor } from "./app.interceptor";
 import { AppModule } from "./app.module";
 import { AppConfigService } from "./modules/config/config.service";
 
