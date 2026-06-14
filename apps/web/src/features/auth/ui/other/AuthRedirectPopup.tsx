@@ -1,3 +1,5 @@
+"use client";
+
 import { RedirectPopupVariants } from "@/features/auth/lib/variants";
 import {
 	Button,
@@ -20,8 +22,8 @@ export const AuthRedirectPopup = () => {
 	const variant =
 		errorCode && errorCode in RedirectPopupVariants
 			? RedirectPopupVariants[errorCode as keyof typeof RedirectPopupVariants]
-      : null;
-  
+			: null;
+
 	// jsx
 	return (
 		<Dialog

@@ -16,7 +16,7 @@ export const AuthHeader = () => {
 	const { type } = useAuthFormProvider();
 
 	// ui states
-	const variant = AuthFormVariants[type];
+  const variant = AuthFormVariants[type];
 	const headerLink = variant.elements.headerLink;
 
 	// jsx

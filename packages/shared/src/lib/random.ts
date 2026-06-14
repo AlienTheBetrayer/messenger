@@ -19,7 +19,9 @@ export const randomString = (length: number, characters?: string) => {
 		characters ??
 		"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-	return Array.from({ length }, () => randomRange(0, chars.length)).join("");
+	return Array.from({ length }, () => randomRange(0, chars.length - 1)).join(
+		"",
+	);
 };
 
 /**

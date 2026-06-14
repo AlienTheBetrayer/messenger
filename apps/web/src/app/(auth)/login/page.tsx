@@ -1,16 +1,25 @@
-"use client";
+import { verification_code_type } from "@gravity/shared";
 
-import { Auth, VerifyOrchestrator } from "@/features";
+import { Auth, AuthFormProvider, VerifyOrchestrator } from "@/features";
+import { AuthRedirectPopup } from "@/features/auth/ui/other/AuthRedirectPopup";
 import { Card } from "@/shared";
 
-export default function LoginPage() {
+export function AuthPage({ type }: { type: verification_code_type }) {
 	return (
-		<div className="flex flex-col gap-2 w-full max-w-sm *:w-full">
-			<Card className="z-1 shadowed">
-				<Auth />
-			</Card>
+		<AuthFormProvider type={type}>
+			<div className="flex flex-col gap-2 w-full max-w-sm *:w-full">
+				<Card className="z-1 shadowed">
+					<Auth />
+				</Card>
 
-			<VerifyOrchestrator />
-		</div>
+				<VerifyOrchestrator />
+				<AuthRedirectPopup />
+			</div>
+		</AuthFormProvider>
 	);
 }
+
+export default function LoginPage() {
+  return <AuthPage type="login" />;
+}
+

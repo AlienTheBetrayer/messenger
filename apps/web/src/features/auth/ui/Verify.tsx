@@ -1,6 +1,9 @@
-import { VerificationFormSchema } from "@gravity/shared";
+"use client";
+
+import { usersType, VerificationFormSchema } from "@gravity/shared";
 import { useCallback } from "react";
 
+import { useAuthNotifications } from "@/features/auth/hooks/useAuthNotifications";
 import {
 	useForgotPasswordMutation,
 	useLoginMutation,
@@ -22,60 +25,82 @@ export const Verify = () => {
 	const { type, verifyForm, authForm } = useAuthFormProvider();
 	const [, setVerify] = queryStateHooks.useVerify();
 
+	// notifications
+	const notifications = useAuthNotifications();
+
 	// verify fn
 	const onSubmit = useCallback(
 		async (data: VerificationFormSchema) => {
 			// triggering the auth form and getting values
 			const isValid = await authForm.trigger();
-			if (!isValid) return;
+
+			if (!isValid) {
+				return;
+			}
 
 			const values = authForm.getValues();
 
 			// api requests
-			try {
-				switch (type) {
-					case "login": {
-						await login({
-							email: values.email,
-							password: values.password,
-							code: data.code,
-						}).unwrap();
+			const fn = async () => {
+				try {
+					let user: usersType | null = null;
 
-						break;
-					}
-					case "signup": {
-						await signup({
-							email: values.email,
-							password: values.password,
-							code: data.code,
-						}).unwrap();
-						break;
+					switch (type) {
+						case "login": {
+							const ret = await login({
+								email: values.email,
+								password: values.password,
+								code: data.code,
+							}).unwrap();
+
+							user = ret.user;
+							break;
+						}
+						case "signup": {
+							const ret = await signup({
+								email: values.email,
+								password: values.password,
+								code: data.code,
+							}).unwrap();
+
+							user = ret.user;
+							break;
+						}
+
+						case "forgot_password": {
+							const ret = await forgotPassword({
+								email: values.email,
+								password: values.password,
+								code: data.code,
+							}).unwrap();
+
+							user = ret.user;
+							break;
+						}
 					}
 
-					case "forgot_password": {
-						await forgotPassword({
-							email: values.email,
-							password: values.password,
-							code: data.code,
-						}).unwrap();
-						break;
-					}
-					default: {
-						verifyForm.setError("code", { message: "Invalid URL state." });
-						return;
-					}
+					setVerify("success");
+					return user;
+				} catch (e) {
+					// error handling
+					const message = normalizeError(e);
+					verifyForm.setError("code", { message });
+					throw new Error(message);
 				}
+			};
 
-				setVerify("success");
-			} catch (e) {
-				// error handling
-				const message = normalizeError(e);
-				verifyForm.setError("code", { message });
-			} finally {
-				verifyForm.reset();
-			}
+			notifications.verify(fn);
 		},
-		[verifyForm, authForm, type, setVerify, login, signup, forgotPassword],
+		[
+			verifyForm,
+			authForm,
+			type,
+			notifications,
+			setVerify,
+			login,
+			signup,
+			forgotPassword,
+		],
 	);
 
 	// jsx

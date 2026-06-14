@@ -1,14 +1,24 @@
+import { Separator } from "@/shared";
+
 export const NotificationLayout = ({
 	text,
 	action,
 }: {
 	text: React.ReactNode;
-	action: React.ReactNode;
+	action?: React.ReactNode;
 }) => {
 	return (
-		<div className="flex justify-between items-center w-full">
+		<div className="flex items-center w-full">
 			<span>{text}</span>
-			{action}
+			{action && (
+				<>
+					<Separator
+						className="ml-auto!"
+						orientation="vertical"
+					/>
+					{action}
+				</>
+			)}
 		</div>
 	);
 };

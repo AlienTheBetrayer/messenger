@@ -25,8 +25,7 @@ export const VerifyContent = () => {
 					<Field data-invalid={fieldState.error}>
 						<FieldLabel htmlFor="code">Code</FieldLabel>
 						<FieldDescription>
-							This code will expire in {AuthConfig.code.expiryMs / (60 * 1000)}{" "}
-							minutes.
+              Will expire in {AuthConfig.code.expiryMs / (60 * 1000)} minutes.
 						</FieldDescription>
 						<Input
 							{...field}

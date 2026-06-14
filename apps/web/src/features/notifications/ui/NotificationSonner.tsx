@@ -17,7 +17,7 @@ export const NotificationSonner = () => {
 			visibleToasts={3}
 			position="top-center"
 			closeButton
-			duration={8000}
+			duration={5000}
 			icons={{
 				loading: <Spinner />,
 			}}

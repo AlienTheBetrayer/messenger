@@ -10,7 +10,7 @@ import { HttpException } from "@nestjs/common";
 export const createException = (
 	httpCode: keyof typeof HttpStatusCodes,
 	exceptionCode: ExceptionCode,
-	message?: string,
+	message: string,
 ) => {
 	// vars
 	const statusCode = HttpStatusCodes[httpCode];
