@@ -3,9 +3,9 @@ import { QueryStatus } from "@reduxjs/toolkit/query";
 import { useSelector } from "react-redux";
 
 import {
-  RootState,
-  RTKEndpointName,
-  RTKQueryEntry,
+	RootState,
+	RTKEndpointName,
+	RTKQueryEntry,
 } from "@/shared/model/redux.types";
 
 /**

@@ -1,12 +1,12 @@
 import { QueryStatus } from "@reduxjs/toolkit/query";
 
 import { authApi } from "@/features/auth/model/auth.slice";
-import { ReduxStore } from "@/shared/model/redux.store";
+import { createReduxStore } from "@/shared/model/redux.store";
 
 /**
  * global app types
  */
-export type AppStore = typeof ReduxStore;
+export type AppStore = ReturnType<typeof createReduxStore>;
 export type RootState = ReturnType<AppStore["getState"]>;
 export type AppDispatch = AppStore["dispatch"];
 
