@@ -4,7 +4,7 @@ import {
 } from "@gravity/shared";
 import { Body, Controller, Patch, Post, UseGuards } from "@nestjs/common";
 
-import { AuthGuard } from "../auth/auth.guard";
+import { AuthenticatedGuard } from "../auth-core/guards/authenticated.guard";
 import {
 	NotificationsPushDto,
 	NotificationsUpdateDto,
@@ -16,7 +16,7 @@ import { NotificationsService } from "./notifications.service";
 export class NotificationsController {
 	constructor(private readonly notificationsService: NotificationsService) {}
 
-	@UseGuards(AuthGuard, NotificationsGuard)
+	@UseGuards(AuthenticatedGuard, NotificationsGuard)
 	@Post("push")
 	async push(
 		@Body() dto: NotificationsPushDto,
@@ -24,7 +24,7 @@ export class NotificationsController {
 		return await this.notificationsService.push(dto);
 	}
 
-	@UseGuards(AuthGuard, NotificationsGuard)
+	@UseGuards(AuthenticatedGuard, NotificationsGuard)
 	@Patch("update")
 	async update(
 		@Body() dto: NotificationsUpdateDto,

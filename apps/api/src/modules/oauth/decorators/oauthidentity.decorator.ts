@@ -2,12 +2,7 @@ import { createParamDecorator, ExecutionContext } from "@nestjs/common";
 import { Request } from "express";
 import z from "zod";
 
-import { oAuthIdentitySchema } from "./oauth.types";
-
-/**
- * oauth identity retrieved from services
- */
-export type OAuthIdentityType = z.infer<typeof oAuthIdentitySchema> | undefined;
+import { oAuthIdentitySchema } from "../oauth.types";
 
 /**
  * decorator for getting the oauth identity
@@ -19,3 +14,8 @@ export const OAuthIdentity = createParamDecorator(
 		return parsed.data;
 	},
 );
+
+/**
+ * oauth identity retrieved from services
+ */
+export type OAuthIdentityType = z.infer<typeof oAuthIdentitySchema> | undefined;

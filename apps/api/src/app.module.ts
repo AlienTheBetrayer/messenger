@@ -1,8 +1,12 @@
 import { Module } from "@nestjs/common";
 import { APP_INTERCEPTOR } from "@nestjs/core";
 
-import { AuthInterceptor } from "./modules/auth/auth.interceptor";
 import { AuthModule } from "./modules/auth/auth.module";
+import { AuthCoreModule } from "./modules/auth-core/auth.module";
+import {
+  AuthInterceptor,
+  RedirectExceptionInterceptor,
+} from "./modules/auth-core/interceptors";
 import { AppJwtModule } from "./modules/jwt/jwt.module";
 import { MailModule } from "./modules/mail/mail.module";
 import { NotificationsModule } from "./modules/notifications/notifications.module";
@@ -25,6 +29,7 @@ const imports = [
 	VerifyModule,
 	AppJwtModule,
 	NotificationsModule,
+	AuthCoreModule,
 ];
 
 /**
@@ -36,6 +41,10 @@ const imports = [
 		{
 			provide: APP_INTERCEPTOR,
 			useClass: AuthInterceptor,
+		},
+		{
+			provide: APP_INTERCEPTOR,
+			useClass: RedirectExceptionInterceptor,
 		},
 	],
 })

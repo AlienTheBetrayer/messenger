@@ -11,13 +11,19 @@ export const createException = (
 	httpCode: keyof typeof HttpStatusCodes,
 	exceptionCode: ExceptionCode,
 	message: string,
+	meta?: { redirectURL?: string },
 ) => {
 	// vars
 	const statusCode = HttpStatusCodes[httpCode];
 
 	// exception
 	const exception = new HttpException(
-		{ statusCode, code: exceptionCode, ...(message && { message }) },
+		{
+			statusCode,
+			code: exceptionCode,
+			message,
+			redirectURL: meta?.redirectURL,
+		},
 		statusCode,
 	);
 

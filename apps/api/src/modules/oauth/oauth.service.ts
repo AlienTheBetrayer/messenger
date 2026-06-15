@@ -2,11 +2,12 @@ import { Injectable } from "@nestjs/common";
 import { Response } from "express";
 
 import { createException } from "../../common";
-import { AuthContextType } from "../auth/auth.decorators";
+import { AuthContextType } from "../auth-core/decorators";
 import { AppJwtService } from "../jwt/jwt.service";
 import { PrismaService } from "../prisma/prisma.service";
 import { UserService } from "../user/user.service";
-import { OAuthIdentityType } from "./oauth.decorators";
+import { OAuthIdentityType } from "./decorators";
+import { redirectErrorURL } from "./oauth.types";
 
 @Injectable()
 export class OAuthService {
@@ -29,9 +30,7 @@ export class OAuthService {
 	) {
 		// handling error
 		if (identity?.error) {
-			response.redirect(
-				`http://localhost:3000/login?error=${identity.error.toLowerCase()}`,
-			);
+			response.redirect(redirectErrorURL(identity.error));
 		}
 
 		// login upon success

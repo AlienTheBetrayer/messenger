@@ -27,7 +27,8 @@ export const ExceptionCodes = [
 	"INVALID_VERIFICATION_CODE",
 	"UNAUTHENTICATED",
 	"EMAIL_NOT_FOUND",
-	"INVALID_BODY",
+  "INVALID_BODY",
+  "AUTHENTICATED"
 ] as const;
 
 /**
@@ -40,7 +41,8 @@ export const ExceptionCodeTransformations = {
 	INVALID_VERIFICATION_CODE: "Invalid verification code.",
 	UNAUTHENTICATED: "Unauthenticated.",
 	EMAIL_NOT_FOUND: "Email not found.",
-	INVALID_BODY: "Invalid body.",
+  INVALID_BODY: "Invalid body.",
+  AUTHENTICATED: "Already authenticated."
 } as const satisfies Record<ApiErrorSchema["code"], string>;
 
 /**

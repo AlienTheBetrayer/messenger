@@ -1,4 +1,4 @@
-import { ExceptionCodes } from "@gravity/shared";
+import { ExceptionCode, ExceptionCodes } from "@gravity/shared";
 import { z } from "zod";
 
 /**
@@ -21,4 +21,11 @@ export type GithubUserEmails = {
 	primary: boolean;
 	verified: boolean;
 	visibility: "public" | "private";
+};
+
+/**
+ * error redirect url
+ */
+export const redirectErrorURL = (code: ExceptionCode) => {
+	return `http://localhost:3000/login?error=${code}`;
 };

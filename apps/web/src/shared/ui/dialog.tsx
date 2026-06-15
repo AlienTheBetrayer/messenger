@@ -44,7 +44,8 @@ function DialogClose({
 	...props
 }: React.ComponentProps<typeof DialogPrimitive.Close>) {
 	return (
-		<DialogPrimitive.Close
+    <DialogPrimitive.Close
+      
 			data-slot="dialog-close"
 			{...props}
 		/>

@@ -7,9 +7,13 @@ import {
 import { Request, Response } from "express";
 import { map } from "rxjs/operators";
 
-import { AppJwtService } from "../jwt/jwt.service";
-import { TokenPayloadSchema } from "./auth.types";
+import { TokenPayloadSchema } from "../../auth/auth.types";
+import { AppJwtService } from "../../jwt/jwt.service";
 
+/**
+ * interceptor to new attach token if refresh is valid ensuring seamless authentication. (no need to refresh on FE)
+ * @returns request with a new safe access token
+ */
 @Injectable()
 export class AuthInterceptor implements NestInterceptor {
 	constructor(private readonly jwtService: AppJwtService) {}

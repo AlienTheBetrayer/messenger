@@ -19,6 +19,8 @@ import { Response } from "express";
 
 import { createException } from "../../common";
 import { AppJwtService } from "../jwt/jwt.service";
+import { AuthCodeDto, AuthDto } from "./auth.dto";
+import { AuthService } from "./auth.service";
 import {
 	AuthContext,
 	AuthContextType,
@@ -26,10 +28,8 @@ import {
 	AuthenticatedUserType,
 	RefreshToken,
 	RefreshTokenType,
-} from "./auth.decorators";
-import { AuthCodeDto, AuthDto } from "./auth.dto";
-import { AuthGuard } from "./auth.guard";
-import { AuthService } from "./auth.service";
+} from "../auth-core/decorators";
+import { AuthenticatedGuard, NotAuthenticatedGuard } from "../auth-core/guards";
 
 @Controller("auth")
 export class AuthController {
@@ -50,12 +50,13 @@ export class AuthController {
 	}
 
 	/**
-	 * signs the user up
+	 * signs the user up. (throws if already authenticated)
 	 * @param email email address
 	 * @param password secure password
 	 * @param code code that was sent to email (use /code/)
 	 * @returns user object
 	 */
+	@UseGuards(NotAuthenticatedGuard)
 	@Post("signup")
 	async signup(@Body() body: AuthDto): Promise<AuthSignupReturn> {
 		const user = await this.authService.signup(body);
@@ -63,12 +64,13 @@ export class AuthController {
 	}
 
 	/**
-	 * authenticates the user.
+	 * authenticates the user. (throws if already authenticated)
 	 * @param email email address
 	 * @param password secure password
 	 * @param code code that was sent to email (use /code/)
 	 * @returns authentication tokens, user and a session
 	 */
+	@UseGuards(NotAuthenticatedGuard)
 	@Post("login")
 	async login(
 		@Body() body: AuthDto,
@@ -105,17 +107,18 @@ export class AuthController {
 	 * @param refreshToken refresh token
 	 * @returns user object
 	 */
-	@UseGuards(AuthGuard)
+	@UseGuards(AuthenticatedGuard)
 	@Get("me")
 	me(@AuthenticatedUser() user: AuthenticatedUserType): AuthMeReturn {
 		return { user };
 	}
 
 	/**
-	 * logs out currently logged in session
+	 * logs out currently logged in session. (throws if not authenticated)
 	 * @param refreshToken current logged in refresh token
 	 * @returns succesful log out should return a session
 	 */
+	@UseGuards(AuthenticatedGuard)
 	@Delete("logout")
 	async logout(
 		@RefreshToken() refreshToken: RefreshTokenType,

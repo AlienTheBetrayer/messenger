@@ -33,7 +33,7 @@ export const useNotificationDispatch = () => {
 			type: Exclude<notification_type, "promise">;
 			extra?: Partial<NotificationExtra>;
 		}) => {
-			toast[params.type](params.text, params.extra);
+      toast[params.type](params.text, params.extra);
 
 			if (!userId) {
 				return;
@@ -89,13 +89,13 @@ export const useNotificationDispatch = () => {
 			}
 
 			// loading dispatch
-			push({
-				id,
-				userId,
-				type: "promise",
-				promiseStatus: "pending",
-				text: params.loading ? params.loading({ id }).text : `loading ${id}`,
-			});
+      push({
+        id,
+        userId,
+        type: "promise",
+        promiseStatus: "pending",
+        text: params.loading ? params.loading({ id }).text : `loading ${id}`,
+      });
 
 			// success & error dispatch
 			promise

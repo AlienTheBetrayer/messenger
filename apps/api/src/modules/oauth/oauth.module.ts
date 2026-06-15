@@ -2,8 +2,7 @@ import { Module } from "@nestjs/common";
 
 import { AppJwtModule } from "../jwt/jwt.module";
 import { UserModule } from "../user/user.module";
-import { GithubStrategy } from "./external/github.service";
-import { GoogleStrategy } from "./external/google.service";
+import { GithubStrategy, GoogleStrategy } from "./external";
 import { OAuthController } from "./oauth.controller";
 import { OAuthService } from "./oauth.service";
 

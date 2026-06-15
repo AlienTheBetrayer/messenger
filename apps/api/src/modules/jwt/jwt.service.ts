@@ -7,8 +7,8 @@ import { UAParser } from "ua-parser-js";
 import z from "zod";
 
 import { createException } from "../../common";
-import { AuthContextType } from "../auth/auth.decorators";
 import { TokenPayloadSchema, tokenPayloadSchema } from "../auth/auth.types";
+import { AuthContextType } from "../auth-core/decorators";
 import { AppConfigService } from "../config/config.service";
 import { EnvSchema } from "../config/config.types";
 import { PrismaService } from "../prisma/prisma.service";
@@ -87,15 +87,17 @@ export class AppJwtService {
 			const decodedToken = jwt.verify(
 				params.token,
 				this.configService.get(params.key),
-      );
-      
+			);
+
 			// parsing token
 			const parsed = ((params.schema ?? tokenPayloadSchema) as T).safeParse(
 				decodedToken,
 			);
 
 			if (!parsed.success) {
-				throw new Error(`jwt token is verified but not parsed. ${parsed.error.message}`);
+				throw new Error(
+					`jwt token is verified but not parsed. ${parsed.error.message}`,
+				);
 			}
 
 			return parsed.data;

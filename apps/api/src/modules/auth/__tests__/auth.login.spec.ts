@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 
-import { AuthContextType } from "../auth.decorators";
+import { AuthContextType } from "../../auth-core/decorators";
 import { jestInitAuth } from "./init";
 
 jest.mock("bcryptjs", () => ({

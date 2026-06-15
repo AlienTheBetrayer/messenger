@@ -3,7 +3,7 @@ import { PassportStrategy } from "@nestjs/passport";
 import { Profile, Strategy } from "passport-github2";
 
 import { AppConfigService } from "../../config/config.service";
-import { OAuthIdentityType } from "../oauth.decorators";
+import { OAuthIdentityType } from "../decorators";
 import { GithubUserEmails } from "../oauth.types";
 
 @Injectable()

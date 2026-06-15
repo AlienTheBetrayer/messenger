@@ -3,11 +3,11 @@ import { Injectable } from "@nestjs/common";
 import bcrypt from "bcryptjs";
 
 import { createException } from "../../common";
+import { AuthContextType } from "../auth-core/decorators";
 import { AppJwtService } from "../jwt/jwt.service";
 import { PrismaService } from "../prisma/prisma.service";
 import { UserService } from "../user/user.service";
 import { VerifyService } from "../verify/verify.service";
-import { AuthContextType, RefreshTokenType } from "./auth.decorators";
 
 @Injectable()
 export class AuthService {

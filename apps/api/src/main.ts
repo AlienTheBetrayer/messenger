@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import { ZodValidationPipe } from "nestjs-zod";
 
 import { AppModule } from "./app.module";
+import { RedirectExceptionFilter } from "./modules/auth-core/filters";
 import { AppConfigService } from "./modules/config/config.service";
 
 async function bootstrap(): Promise<void> {
@@ -21,6 +22,7 @@ async function bootstrap(): Promise<void> {
 	// setting up
 	app.enableCors();
 	app.useGlobalPipes(new ZodValidationPipe());
+	app.useGlobalFilters(new RedirectExceptionFilter());
 	app.set("trust proxy", true);
 	app.use(cookieParser());
 
