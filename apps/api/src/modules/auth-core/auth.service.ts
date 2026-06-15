@@ -26,25 +26,29 @@ export class AuthCoreService {
 			throw new Error("no token found.");
 		}
 
-		// verifying the refresh token
-		const verified = this.jwtService.verify({
-			token: request.cookies["refreshToken"] as string,
-			key: "REFRESH_TOKEN_SECRET",
-		});
+		try {
+			// verifying the refresh token
+			const verified = this.jwtService.verify({
+				token: request.cookies["refreshToken"] as string,
+				key: "REFRESH_TOKEN_SECRET",
+			});
 
-		// verifying the session
-		const found = await this.prismaService.auth_session.findFirst({
-			where: { id: verified.sessionId, user_id: verified.userId },
-			include: { users: true },
-		});
+			// verifying the session
+			const found = await this.prismaService.auth_session.findFirst({
+				where: { id: verified.sessionId, user_id: verified.userId },
+				include: { users: true },
+			});
 
-		if (!found) {
-			throw new Error("session not found in the database.");
+			if (!found) {
+				throw new Error("session not found in the database.");
+			}
+
+			// setting user
+			request.user ??= found.users satisfies usersType;
+
+			return true;
+		} catch (e) {
+			throw new Error("jwt token is not verified.");
 		}
-
-		// setting user
-		request.user ??= found.users satisfies usersType;
-
-		return true;
 	}
 }
