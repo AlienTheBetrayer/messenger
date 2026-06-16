@@ -24,7 +24,7 @@ export const HeaderContext = createContext<HeaderProviderType | null>(null);
  */
 export const HeaderProvider = ({ children }: { children: React.ReactNode }) => {
 	// data
-	const auth = useAuth();
+  const auth = useAuth();
 
 	// jsx
 	return (

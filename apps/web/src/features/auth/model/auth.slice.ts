@@ -66,7 +66,7 @@ export const authApi = baseApi.injectEndpoints({
 		/**
 		 * /auth/me
 		 */
-		me: builder.query<AuthMeReturn, AuthMeSchema>({
+		me: builder.query<AuthMeReturn | undefined, AuthMeSchema>({
 			query: () => ({
 				url: "/auth/me",
 				method: "GET",
@@ -83,8 +83,9 @@ export const authApi = baseApi.injectEndpoints({
 				url: "/auth/logout",
 				method: "DELETE",
 			}),
-			onQueryStarted(args, { dispatch }) {
-				dispatch(authApi.util.resetApiState());
+			async onQueryStarted(args, { dispatch, queryFulfilled }) {
+        await queryFulfilled;
+        dispatch(authApi.util.resetApiState());
 			},
 		}),
 	}),
