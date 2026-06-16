@@ -28,7 +28,7 @@ export const AuthFooter = () => {
 		<CardFooter className="flex flex-col gap-2">
 			{variant.elements.submitButton.enabled && (
 				<Button
-					disabled={!!verify}
+					disabled={!!verify || isLoading}
 					type="submit"
 					className="w-full"
 					form="auth-form"

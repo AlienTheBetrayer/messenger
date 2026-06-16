@@ -1,35 +1,35 @@
 import {
-	AuthCodeReturn,
-	AuthForgotPasswordReturn,
-	AuthLoginReturn,
-	AuthLogoutReturn,
-	AuthMeReturn,
-	AuthSignupReturn,
+  AuthCodeReturn,
+  AuthForgotPasswordReturn,
+  AuthLoginReturn,
+  AuthLogoutReturn,
+  AuthMeReturn,
+  AuthSignupReturn,
 } from "@gravity/shared";
 import {
-	Body,
-	Controller,
-	Delete,
-	Get,
-	Post,
-	Res,
-	UseGuards,
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Post,
+  Res,
+  UseGuards,
 } from "@nestjs/common";
 import { Response } from "express";
 
 import { createException } from "../../common";
+import {
+  AuthContext,
+  AuthContextType,
+  AuthenticatedUser,
+  AuthenticatedUserType,
+  RefreshToken,
+  RefreshTokenType,
+} from "../auth-core/decorators";
+import { AuthenticatedGuard, NotAuthenticatedGuard } from "../auth-core/guards";
 import { AppJwtService } from "../jwt/jwt.service";
 import { AuthCodeDto, AuthDto } from "./auth.dto";
 import { AuthService } from "./auth.service";
-import {
-	AuthContext,
-	AuthContextType,
-	AuthenticatedUser,
-	AuthenticatedUserType,
-	RefreshToken,
-	RefreshTokenType,
-} from "../auth-core/decorators";
-import { AuthenticatedGuard, NotAuthenticatedGuard } from "../auth-core/guards";
 
 @Controller("auth")
 export class AuthController {
@@ -43,6 +43,7 @@ export class AuthController {
 	 * @param email email to issue the code to
 	 * @returns true if the code was generated
 	 */
+	@UseGuards(NotAuthenticatedGuard)
 	@Post("code")
 	async code(@Body() body: AuthCodeDto): Promise<AuthCodeReturn> {
 		await this.authService.code(body);
@@ -94,6 +95,7 @@ export class AuthController {
 	 * @param code (optional, used to verify)
 	 * @returns new user object
 	 */
+	@UseGuards(NotAuthenticatedGuard)
 	@Post("forgot-password")
 	async forgotPassword(
 		@Body() body: AuthDto,

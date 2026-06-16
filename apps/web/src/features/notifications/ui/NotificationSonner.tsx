@@ -16,6 +16,7 @@ export const NotificationSonner = () => {
 			expand={false}
 			visibleToasts={3}
 			position="top-center"
+			className="**:data-content:w-full"
 			closeButton
 			duration={5000}
 			icons={{

@@ -11,6 +11,7 @@ export const VerifyFooter = () => {
 	return (
 		<CardFooter className="flex flex-col gap-2">
 			<Button
+				disabled={isLoading}
 				type="submit"
 				variant="secondary"
 				className="w-full"

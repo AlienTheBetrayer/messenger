@@ -4,9 +4,9 @@ import { usersType, VerificationFormSchema } from "@gravity/shared";
 
 import { useAuthNotifications } from "@/features/auth/hooks/useAuthNotifications";
 import {
-	useForgotPasswordMutation,
-	useLoginMutation,
-	useSignupMutation,
+  useForgotPasswordMutation,
+  useLoginMutation,
+  useSignupMutation,
 } from "@/features/auth/model/auth.slice";
 import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
 import { VerifyContent } from "@/features/auth/ui/verify/VerifyContent";
