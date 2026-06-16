@@ -1,8 +1,8 @@
 "use client";
 
-import { Eclipse } from "lucide-react";
 import { useTheme } from "next-themes";
 
+import { Icons } from "@/features/ui/lib";
 import {
 	Button,
 	Combobox,
@@ -28,7 +28,7 @@ export const ThemeButton = () => {
 					variant="ghost"
 					className="aspect-square"
 				>
-					<Eclipse />
+					{Icons.theme}
 				</Button>
 			</PopoverTrigger>
 

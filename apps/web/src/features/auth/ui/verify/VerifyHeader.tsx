@@ -1,5 +1,4 @@
-import { X } from "lucide-react";
-
+import { Icons } from "@/features/ui/lib";
 import {
 	Button,
 	CardAction,
@@ -29,7 +28,7 @@ export const VerifyHeader = () => {
 						setVerify(null);
 					}}
 				>
-					<X />
+					{Icons.close}
 				</Button>
 			</CardAction>
 		</CardHeader>

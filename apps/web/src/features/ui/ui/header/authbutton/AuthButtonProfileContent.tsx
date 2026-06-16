@@ -1,9 +1,9 @@
 "use client";
 
-import { CircleUserRound, LogOut } from "lucide-react";
 import Link from "next/link";
 
 import { useLogoutMutation } from "@/features/auth/model/auth.slice";
+import { Icons } from "@/features/ui/lib";
 import { useAuthButtonNotifications } from "@/features/ui/ui/header/authbutton/useAuthButtonNotifications";
 import {
 	Button,
@@ -21,7 +21,7 @@ export const AuthButtonProfileContent = () => {
 	// jsx
 	return (
 		<PopoverContent
-			className="w-screen max-w-64"
+			className="w-screen max-w-48"
 			align="end"
 		>
 			<ul className="flex flex-col gap-2 *:flex">
@@ -32,8 +32,34 @@ export const AuthButtonProfileContent = () => {
 						variant="ghost"
 					>
 						<Link href="/profile">
-							<CircleUserRound />
+							{Icons.profile}
 							Profile
+						</Link>
+					</Button>
+				</li>
+
+				<li>
+					<Button
+						asChild
+						className="w-full justify-start"
+						variant="ghost"
+					>
+						<Link href="/profile">
+							{Icons.profile}
+							Profile
+						</Link>
+					</Button>
+				</li>
+
+				<li>
+					<Button
+						asChild
+						className="w-full justify-start"
+						variant="ghost"
+					>
+						<Link href="/settings">
+							{Icons.settings}
+							Settings
 						</Link>
 					</Button>
 				</li>
@@ -60,7 +86,7 @@ export const AuthButtonProfileContent = () => {
 						}}
 					>
 						{isLoading && <Spinner />}
-						<LogOut />
+						{Icons.logout}
 						Log out
 					</Button>
 				</li>

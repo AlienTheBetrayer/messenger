@@ -1,8 +1,8 @@
 "use client";
 
-import { CircleUserRound } from "lucide-react";
 import Image from "next/image";
 
+import { Icons } from "@/features/ui/lib";
 import { useHeaderProvider } from "@/features/ui/providers/HeaderProvider";
 import { Button, PopoverTrigger } from "@/shared";
 
@@ -14,7 +14,7 @@ export const AuthButtonProfileTrigger = () => {
 		return null;
 	}
 
-  // jsx
+	// jsx
 	return (
 		<PopoverTrigger asChild>
 			<Button
@@ -30,7 +30,7 @@ export const AuthButtonProfileTrigger = () => {
 						className="grayscale-100 group-hover:grayscale-0"
 					/>
 				) : (
-					<CircleUserRound />
+					Icons.profile
 				)}
 				Profile
 			</Button>

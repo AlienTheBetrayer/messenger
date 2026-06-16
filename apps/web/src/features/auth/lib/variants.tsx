@@ -1,5 +1,6 @@
 import { ExceptionCode, verification_codesType } from "@gravity/shared";
-import { CircleUser, KeyRound } from "lucide-react";
+
+import { Icons } from "@/features/ui/lib";
 
 type VerifySuccessVariant = {
 	title: string;
@@ -164,7 +165,7 @@ export const VerifySuccessVariants = {
 		description: "Your password has been updated successfully.",
 		elements: {
 			redirectButton: {
-				img: <KeyRound />,
+				img: Icons.key,
 				text: "Sign In",
 				href: "/login",
 			},
@@ -176,7 +177,7 @@ export const VerifySuccessVariants = {
 		description: "Your login was verified successfully.",
 		elements: {
 			redirectButton: {
-				img: <CircleUser />,
+				img: Icons.profile,
 				text: "Profile",
 				href: "/profile",
 			},
@@ -189,7 +190,7 @@ export const VerifySuccessVariants = {
 			"Your account has been created successfully. You can now sign in.",
 		elements: {
 			redirectButton: {
-				img: <KeyRound />,
+				img: Icons.key,
 				text: "Sign In",
 				href: "/login",
 			},

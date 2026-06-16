@@ -1,10 +1,10 @@
-import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { Controller } from "react-hook-form";
 
 import { AuthFormVariants } from "@/features/auth/lib/variants";
 import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
+import { Icons } from "@/features/ui/lib";
 import {
 	Button,
 	CardContent,
@@ -109,7 +109,7 @@ export const AuthContent = () => {
 										}}
 									>
 										<span className="*:size-4!">
-											{passwordVisible ? <Eye /> : <EyeOff />}
+											{passwordVisible ? Icons.eyeShown : Icons.eyeHidden}
 										</span>
 									</Button>
 								</div>

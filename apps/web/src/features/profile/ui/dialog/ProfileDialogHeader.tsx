@@ -1,5 +1,4 @@
-import { X } from "lucide-react";
-
+import { Icons } from "@/features/ui/lib";
 import {
 	Button,
 	DialogClose,
@@ -28,7 +27,7 @@ export const ProfileDialogHeader = () => {
 							className="aspect-square absolute! top-2 right-2"
 							size="icon-sm"
 						>
-							<X />
+							{Icons.close}
 						</Button>
 					</DialogClose>
 				</TooltipTrigger>
