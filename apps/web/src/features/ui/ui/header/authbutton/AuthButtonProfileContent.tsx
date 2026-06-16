@@ -2,22 +2,12 @@
 
 import Link from "next/link";
 
-import { useLogoutMutation } from "@/features/auth/model/auth.slice";
 import { Icons } from "@/features/ui/lib";
-import { useAuthButtonNotifications } from "@/features/ui/ui/header/authbutton/useAuthButtonNotifications";
-import {
-	Button,
-	normalizeError,
-	PopoverContent,
-	Separator,
-	Spinner,
-} from "@/shared";
+import { ThemeButton } from "@/features/ui/ui/header/ThemeButton";
+import { LogoutMessageBox } from "@/features/ui/ui/messageboxes/LogoutMessageBox";
+import { Button, PopoverContent, Separator } from "@/shared";
 
 export const AuthButtonProfileContent = () => {
-	// redux
-	const [logout, { isLoading }] = useLogoutMutation();
-	const notifications = useAuthButtonNotifications();
-
 	// jsx
 	return (
 		<PopoverContent
@@ -26,42 +16,58 @@ export const AuthButtonProfileContent = () => {
 		>
 			<ul className="flex flex-col gap-2 *:flex">
 				<li>
-					<Button
-						asChild
-						className="w-full justify-start"
-						variant="ghost"
-					>
-						<Link href="/profile">
-							{Icons.profile}
-							Profile
-						</Link>
-					</Button>
-				</li>
+					<ul className="flex flex-col w-full">
+						<li>
+							<Button
+								asChild
+								className="w-full justify-start"
+								variant="ghost"
+							>
+								<Link href="/profile">
+									{Icons.profile}
+									Profile
+								</Link>
+							</Button>
+						</li>
 
-				<li>
-					<Button
-						asChild
-						className="w-full justify-start"
-						variant="ghost"
-					>
-						<Link href="/profile">
-							{Icons.profile}
-							Profile
-						</Link>
-					</Button>
-				</li>
+						<li>
+							<Button
+								asChild
+								className="w-full justify-start"
+								variant="ghost"
+							>
+								<Link href="/profile">
+									{Icons.profile}
+									Profile
+								</Link>
+							</Button>
+						</li>
 
-				<li>
-					<Button
-						asChild
-						className="w-full justify-start"
-						variant="ghost"
-					>
-						<Link href="/settings">
-							{Icons.settings}
-							Settings
-						</Link>
-					</Button>
+						<li>
+							<Button
+								asChild
+								className="w-full justify-start"
+								variant="ghost"
+							>
+								<Link href="/settings">
+									{Icons.settings}
+									Settings
+								</Link>
+							</Button>
+						</li>
+
+						<li>
+							<ThemeButton>
+								<Button
+									className="w-full justify-start"
+									variant="ghost"
+								>
+									{Icons.theme}
+									Theme
+								</Button>
+							</ThemeButton>
+						</li>
+					</ul>
 				</li>
 
 				<li>
@@ -69,26 +75,11 @@ export const AuthButtonProfileContent = () => {
 				</li>
 
 				<li>
-					<Button
-						disabled={isLoading}
-						variant="destructive"
-						className="w-full"
-						onClick={() => {
-							notifications.logout(async () => {
-								const { data, error } = await logout();
-
-								if (error) {
-									throw new Error(normalizeError(error));
-								}
-
-								return data;
-							});
-						}}
-					>
-						{isLoading && <Spinner />}
-						{Icons.logout}
-						Log out
-					</Button>
+					<ul className="flex flex-col w-full">
+						<li>
+							<LogoutMessageBox />
+						</li>
+					</ul>
 				</li>
 			</ul>
 		</PopoverContent>

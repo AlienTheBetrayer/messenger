@@ -16,7 +16,7 @@ import {
 	PopoverTrigger,
 } from "@/shared";
 
-export const ThemeButton = () => {
+export const ThemeButton = ({ children }: { children?: React.ReactNode }) => {
 	// logic
 	const { theme, setTheme, themes } = useTheme();
 
@@ -24,20 +24,24 @@ export const ThemeButton = () => {
 	return (
 		<Popover>
 			<PopoverTrigger asChild>
-				<Button
-					variant="ghost"
-					className="aspect-square"
-				>
-					{Icons.theme}
-				</Button>
+				{children ?? (
+					<Button
+						variant="ghost"
+						className="aspect-square"
+					>
+						{Icons.theme}
+					</Button>
+				)}
 			</PopoverTrigger>
 
-			<PopoverContent className="w-80">
+			<PopoverContent className="w-64">
 				<div className="grid gap-4">
 					<div className="space-y-2">
-						<h4 className="leading-none font-medium">Avaialble themes</h4>
+						<h4 className="leading-none font-medium">
+							Available themes
+						</h4>
 						<p className="text-sm text-muted-foreground">
-							Select a theme from the list
+							Select a theme from the list.
 						</p>
 					</div>
 

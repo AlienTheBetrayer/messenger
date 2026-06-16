@@ -1,11 +1,12 @@
 import {
 	CircleUser,
-	Eclipse,
 	Eye,
 	EyeOff,
 	KeyRound,
 	LogOut,
+	Moon,
 	Settings,
+	Trash2,
 	X,
 } from "lucide-react";
 
@@ -18,7 +19,8 @@ export const Icons = {
 	eyeShown: <Eye />,
 	eyeHidden: <EyeOff />,
 	close: <X />,
-	theme: <Eclipse />,
+	theme: <Moon />,
 	logout: <LogOut />,
-	settings: <Settings />,
+  settings: <Settings />,
+  trash: <Trash2/>,
 } as const satisfies Record<string, React.ReactNode>;
