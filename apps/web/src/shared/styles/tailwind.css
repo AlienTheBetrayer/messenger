@@ -51,7 +51,21 @@
 	--text-8: var(--font-8);
 	--text-9: var(--font-9);
 
-	--color-blue: var(--blue);
-	--color-red: var(--red);
-	--color-green: var(--green);
+	--color-blue-primary: var(--blue-primary);
+	--color-blue-secondary: var(--blue-secondary);
+	--color-blue-muted: var(--blue-muted);
+	--color-blue-dark: var(--blue-dark);
+	--color-blue-cold: var(--blue-cold);
+
+	--color-red-primary: var(--red-primary);
+	--color-red-secondary: var(--red-secondary);
+	--color-red-muted: var(--red-muted);
+	--color-red-dark: var(--red-dark);
+	--color-red-cold: var(--red-cold);
+
+	--color-green-primary: var(--green-primary);
+	--color-green-secondary: var(--green-secondary);
+	--color-green-muted: var(--green-muted);
+	--color-green-dark: var(--green-dark);
+	--color-green-cold: var(--green-cold);
 }

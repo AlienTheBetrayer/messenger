@@ -6,25 +6,30 @@ export const SettingsNavigationInfoButton = ({
 	image,
 	title,
 	description,
-	color,
+  color,
+  className,
 }: {
 	image: React.ReactNode;
 	title: string;
 	description: string;
 	color?: string;
-  }) => {
-  const values = {
-    color: color ?? "var(--muted-foreground)",
-  }
+    className?: string;
+}) => {
+	const values = {
+		color: color ?? "var(--muted-foreground)",
+	};
 
 	return (
-		<Button variant="ghost" className="flex gap-2 py-7 w-full">
+		<Button
+      variant="ghost"
+      className={`flex gap-2 w-full h-full ${className ?? ""}`}
+		>
 			<div
-				className="flex items-center justify-center rounded-sm p-2 outline-1"
+				className="flex items-center justify-center rounded-sm w-8 h-8 border"
 				style={{
-          outlineColor: values.color,
-          color: values.color,
-          background: `color-mix(in srgb, ${values.color} 20%, var(--background))`
+					borderColor: `color-mix(in srgb, ${values.color} 60%, var(--background))`,
+					color: values.color,
+					background: `color-mix(in srgb, ${values.color} 20%, var(--background))`,
 				}}
 			>
 				{image}

@@ -8,6 +8,24 @@
 	--font-7: 0.75rem;
 	--font-8: 0.7rem;
 	--font-9: 0.65rem;
+
+	--blue-primary: rgb(22, 107, 244);
+	--blue-secondary: rgb(95, 153, 247);
+	--blue-muted: rgb(147, 197, 253);
+	--blue-dark: rgb(29, 78, 216);
+  --blue-cold: rgb(104, 131, 173);
+
+	--red-primary: rgb(244, 22, 22);
+	--red-secondary: rgb(251, 96, 96);
+	--red-muted: rgb(252, 165, 165);
+	--red-dark: rgb(185, 28, 28);
+  --red-cold: rgb(164, 112, 112);
+
+	--green-primary: rgb(22, 244, 59);
+	--green-secondary: rgb(58, 224, 119);
+	--green-muted: rgb(134, 239, 172);
+	--green-dark: rgb(21, 128, 61);
+  --green-cold: rgb(102, 156, 117);
 }
 
 @import "./themes/light.css";

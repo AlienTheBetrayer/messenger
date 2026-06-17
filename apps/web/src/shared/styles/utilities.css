@@ -55,6 +55,7 @@
 		background-size: 200% 100%;
 		overflow: hidden;
 		animation: 3s skeletonAnimation ease-in-out infinite alternate;
+    border-radius: 8px;
 	}
 
 	.dotted {
