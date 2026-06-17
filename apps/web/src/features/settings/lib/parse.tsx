@@ -29,16 +29,20 @@ export const renderTree = (
 			type="single"
 			collapsible
 			style={{
-				paddingLeft: `${depth}rem`,
+				paddingLeft: `${depth * 0.75}rem`,
 			}}
 		>
-      {Object.entries(items).map(([key, item]) => {
-        // elements
+			{Object.entries(items).map(([key, item]) => {
+				// elements
 				const Text = (
-					<span className={item.highlighted ? "" : "text-muted-foreground"}>
+					<span
+						className={`${item.highlighted ? "" : "text-muted-foreground"} group-hover:text-foreground`}
+					>
 						{item.text}
 					</span>
 				);
+				const RowClass =
+					"flex items-center justify-start pl-0 py-1.5 min-h-8 leading-none group no-underline!";
 
 				// no children - show link
 				if (!item.children) {
@@ -47,9 +51,9 @@ export const renderTree = (
 							asChild
 							variant="link"
 							key={item.href}
-							className="justify-start pl-0"
+							className={RowClass}
 						>
-              <Link href={item.href}>{Text}</Link>
+							<Link href={item.href}>{Text}</Link>
 						</Button>
 					);
 				}
@@ -59,18 +63,25 @@ export const renderTree = (
 					<AccordionItem
 						value={item.href}
 						key={item.href}
+						className="border-b-0!"
 					>
 						<AccordionTrigger
+							className={RowClass}
 							onClick={() => {
 								params?.onSelect(item);
 							}}
 						>
-              {Text}
+							{Text}
 						</AccordionTrigger>
 
 						{item.children && (
 							<AccordionContent>
-								{renderTree(params, item.children, depth + 1)}
+								<div className="flex">
+									<div className="bg-secondary grow w-px rounded-2xl mx-2" />
+									<div className="flex flex-col w-full">
+										{renderTree(params, item.children, depth + 1)}
+									</div>
+								</div>
 							</AccordionContent>
 						)}
 					</AccordionItem>

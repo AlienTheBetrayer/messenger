@@ -22,7 +22,8 @@ export const SettingsNavigationTree = {
       title: {
         text: "Title",
         href: "/settings/profile/title",
-      }
+      },
+      
     }
 	},
 	account: {
