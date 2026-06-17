@@ -8,7 +8,7 @@ export const Header = async () => {
 	return (
 		<HeaderProvider>
 			<header className="sticky! top-0 w-full z-2 mx-auto flex items-center justify-center backdrop-blur-xl p-4">
-				<nav className="w-full max-w-400 flex gap-2 items-center">
+				<nav className="w-full max-width flex gap-2 items-center">
 					<Navigation />
 
 					<ul className="flex gap-1 ml-auto">

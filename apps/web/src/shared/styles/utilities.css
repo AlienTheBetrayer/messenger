@@ -16,6 +16,11 @@
 		z-index: -1;
 	}
 
+  /* sizes */
+  .max-width {
+    max-width: 1400px;
+  }
+
 	/* shell container */
 	.shell {
 		display: flex;
