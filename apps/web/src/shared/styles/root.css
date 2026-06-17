@@ -4,7 +4,10 @@
 	--font-3: clamp(1.25rem, 3vw, 1.5rem);
 	--font-4: clamp(1.125rem, 2.5vw, 1.25rem);
 	--font-5: 1rem;
-	--font-6: 0.875rem;
+	--font-6: 0.85rem;
+	--font-7: 0.75rem;
+	--font-8: 0.7rem;
+	--font-9: 0.65rem;
 }
 
 @import "./themes/light.css";

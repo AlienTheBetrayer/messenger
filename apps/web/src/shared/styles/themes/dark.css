@@ -1,5 +1,5 @@
 :root {
-	--d-background: oklch(0.145 0 0);
+	--d-background: rgb(12, 12, 12);
 	--d-foreground: oklch(0.985 0 0);
 	--d-card: oklch(0.205 0 0);
 	--d-card-foreground: oklch(0.985 0 0);
@@ -31,6 +31,10 @@
 	--d-sidebar-accent-foreground: oklch(0.985 0 0);
 	--d-sidebar-border: oklch(1 0 0 / 10%);
 	--d-sidebar-ring: oklch(0.556 0 0);
+
+	--d-blue: rgb(22, 107, 244);
+	--d-red: rgb(244, 22, 22);
+	--d-green: rgb(22, 244, 59);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -66,9 +70,12 @@
 		--sidebar-accent-foreground: var(--d-sidebar-accent-foreground);
 		--sidebar-border: var(--d-sidebar-border);
 		--sidebar-ring: var(--d-sidebar-ring);
-    --dotted: var(--input);
+		--dotted: var(--input);
 
 		--scheme: dark;
+		--blue: var(--d-blue);
+		--red: var(--d-red);
+		--green: var(--d-green);
 	}
 }
 
@@ -104,7 +111,10 @@
 	--sidebar-accent-foreground: var(--d-sidebar-accent-foreground);
 	--sidebar-border: var(--d-sidebar-border);
 	--sidebar-ring: var(--d-sidebar-ring);
-  --dotted: var(--input);
-    
+	--dotted: var(--input);
+
 	--scheme: dark;
+	--blue: var(--d-blue);
+	--red: var(--d-red);
+	--green: var(--d-green);
 }

@@ -47,4 +47,11 @@
 	--text-4: var(--font-4);
 	--text-5: var(--font-5);
 	--text-6: var(--font-6);
+	--text-7: var(--font-7);
+	--text-8: var(--font-8);
+	--text-9: var(--font-9);
+
+	--color-blue: var(--blue);
+	--color-red: var(--red);
+	--color-green: var(--green);
 }

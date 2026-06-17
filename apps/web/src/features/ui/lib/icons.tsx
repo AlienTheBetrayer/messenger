@@ -1,4 +1,5 @@
 import {
+	Box,
 	CircleUser,
 	Eye,
 	EyeOff,
@@ -21,6 +22,12 @@ export const Icons = {
 	close: <X />,
 	theme: <Moon />,
 	logout: <LogOut />,
-  settings: <Settings />,
-  trash: <Trash2/>,
+	settings: <Settings />,
+	trash: <Trash2 />,
+	box: <Box />,
 } as const satisfies Record<string, React.ReactNode>;
+
+/**
+ * all icons union literal
+ */
+export type IconsLiteral = keyof typeof Icons;

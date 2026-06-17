@@ -36,7 +36,7 @@ export const renderTree = (
 				// elements
 				const Text = (
 					<span
-						className={`${item.highlighted ? "" : "text-muted-foreground"} group-hover:text-foreground`}
+						className={`${item.highlighted ? "text-foreground" : "text-muted-foreground"} group-hover:text-foreground`}
 					>
 						{item.text}
 					</span>
@@ -77,7 +77,7 @@ export const renderTree = (
 						{item.children && (
 							<AccordionContent>
 								<div className="flex">
-									<div className="bg-secondary grow w-px rounded-2xl mx-2" />
+									<div className="border-1 grow w-px rounded-2xl mx-2" />
 									<div className="flex flex-col w-full">
 										{renderTree(params, item.children, depth + 1)}
 									</div>

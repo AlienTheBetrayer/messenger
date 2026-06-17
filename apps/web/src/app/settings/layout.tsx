@@ -8,11 +8,9 @@ export default function SettingsLayout({
 	sections: React.ReactNode;
 }) {
 	return (
-		<main className="grid grid-cols-[1fr_3fr_1fr] w-screen max-width mx-auto">
+		<main className="grid grid-cols-[1fr_3.5fr] gap-4 w-screen max-width mx-auto mt-16">
 			<SettingsNavigation />
-
 			<section>{children}</section>
-			<nav>{sections}</nav>
 		</main>
 	);
 }

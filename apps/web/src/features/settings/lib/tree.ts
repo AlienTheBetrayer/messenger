@@ -1,13 +1,12 @@
 import { RecursiveKeys } from "@/shared/types/utils";
 
-
 /**
  * type for the navigation tree
  */
 export type SettingsNavigationItem = {
 	text: string;
-  href: string;
-  highlighted?: boolean;
+	href: string;
+	highlighted?: boolean;
 	children?: Record<string, SettingsNavigationItem>;
 };
 
@@ -18,13 +17,12 @@ export const SettingsNavigationTree = {
 	profile: {
 		text: "Profile",
 		href: "/settings/profile",
-    children: {
-      title: {
-        text: "Title",
-        href: "/settings/profile/title",
-      },
-      
-    }
+		children: {
+			title: {
+				text: "Title",
+				href: "/settings/profile/title",
+			},
+		},
 	},
 	account: {
 		text: "Account",
