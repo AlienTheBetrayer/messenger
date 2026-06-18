@@ -5,7 +5,7 @@ import { InfoCube } from "@/features/settings/ui/navigation/infobutton/InfoCube"
 import { NavigationInfoButtonText } from "@/features/settings/ui/navigation/infobutton/NavigationInfoButtonText";
 import { SettingsNavigationInfoAuthButton } from "@/features/settings/ui/navigation/infobutton/SettingsNavigationInfoAuthButton";
 import { Icons } from "@/features/ui/lib";
-import { Button } from "@/shared";
+import { Button, Separator } from "@/shared";
 
 export const SettingsNavigation = () => {
 	// hooks
@@ -13,7 +13,7 @@ export const SettingsNavigation = () => {
 
 	// jsx
 	return (
-		<nav className="flex flex-col gap-8">
+		<nav className="flex flex-col gap-4">
 			<ul className="flex flex-col">
 				<li className="h-15">
 					<SettingsNavigationInfoAuthButton />
@@ -27,7 +27,6 @@ export const SettingsNavigation = () => {
 						<InfoCube
 							image={Icons.box}
 							color="var(--blue-primary)"
-							animation="bounce"
 						/>
 
 						<NavigationInfoButtonText
@@ -37,6 +36,8 @@ export const SettingsNavigation = () => {
 					</Button>
 				</li>
 			</ul>
+
+			<Separator />
 
 			<div className="ml-6">{jsx}</div>
 		</nav>

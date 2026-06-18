@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 
+import { Icons } from "@/features/ui/lib";
 import { Button } from "@/shared";
 
 export const Navigation = () => {
@@ -12,7 +13,10 @@ export const Navigation = () => {
 					asChild
 					variant="ghost"
 				>
-					<Link href="/">Home</Link>
+					<Link href="/">
+						<div className="*:size-4!">{Icons.box}</div>
+						<span className="tracking-tight font-semibold">outwave</span>
+					</Link>
 				</Button>
 			</li>
 		</ul>

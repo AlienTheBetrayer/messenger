@@ -54,7 +54,13 @@ export const LogoutMessageBox = ({
 						<span>
 							This will log you out of your account on this device. View
 						</span>{" "}
-						<Link href="/settings">Settings</Link>{" "}
+						<AlertDialogCancel
+							asChild
+							variant="link"
+							className="p-0! not-hover:text-muted-foreground"
+						>
+							<Link href="/settings">Settings</Link>
+						</AlertDialogCancel>{" "}
 						<span>to change any privacy and security settings.</span>
 					</AlertDialogDescription>
 				</AlertDialogHeader>

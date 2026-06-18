@@ -14,6 +14,7 @@ export const InfoCube = ({
 	// defaults
 	const values = {
 		color: color ?? "var(--muted-foreground)",
+		animation: animation ?? "bounce",
 	};
 
 	// jsx
@@ -26,21 +27,26 @@ export const InfoCube = ({
 				background: `color-mix(in srgb, ${values.color} 20%, var(--background))`,
 			}}
 		>
-			{typeof image === "string" ? (
-				<Image
-					src={image}
-					width={14}
-					height={14}
-					alt="pfp"
-					className={
-						animation
-							? `motion-safe:animate-[${animation}_1.5s_ease-in-out_infinite]`
-							: ""
-					}
-				/>
-			) : (
-				image
-			)}
+			<div
+				style={
+					animation
+						? {
+								animation: `bounce 1.25s ease-in-out infinite`,
+							}
+						: undefined
+				}
+			>
+				{typeof image === "string" ? (
+					<Image
+						src={image}
+						width={14}
+						height={14}
+						alt="pfp"
+					/>
+				) : (
+					image
+				)}
+			</div>
 		</div>
 	);
 };
