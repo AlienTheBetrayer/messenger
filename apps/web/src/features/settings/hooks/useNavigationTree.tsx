@@ -5,20 +5,46 @@ import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
 
 import {
-  SettingsNavigationItem,
-  SettingsNavigationTree,
+	SettingsNavigationItem,
+	SettingsNavigationTree,
 } from "@/features/settings/lib/tree";
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
+	Accordion,
+	AccordionContent,
+	AccordionItem,
+	AccordionTrigger,
 } from "@/shared";
 
 export const useNavigationTree = () => {
 	// setup
 	const router = useRouter();
 	const pathname = usePathname();
+
+  /**
+   * determines colors for navigation item styles
+   * @param item navigation item
+   * @returns regular color and hover color
+   */
+  const determineColors = useCallback((item: SettingsNavigationItem) => {
+							if (item.href === pathname) {
+								return {
+									color: "var(--blue-secondary)",
+									hover: "var(--blue-muted)",
+								};
+							}
+
+							if (item.highlighted) {
+								return {
+									color: "var(--foreground)",
+									hover: "var(--foreground)",
+								};
+							} else {
+								return {
+									color: "var(--muted-foreground)",
+									hover: "var(--foreground)",
+								};
+							}
+  }, [pathname]);
 
 	/**
 	 *
@@ -41,24 +67,16 @@ export const useNavigationTree = () => {
 						paddingLeft: `${depth * 0.75}rem`,
 					}}
 				>
-					{Object.entries(items).map(([key, item]) => {
+					{Object.entries(items).map(([_key, item]) => {
 						// elements
-						const color = (() => {
-							if (item.href === pathname) {
-								return "var(--blue-secondary)";
-							}
-
-							if (item.highlighted) {
-								return "var(--foreground)";
-							} else {
-								return "var(--muted-foreground)";
-							}
-						})();
+            const { color, hover } = determineColors(item);
 
 						const Text = (
 							<span
-								className="group-hover:text-foreground"
-								style={{ color }}
+								style={
+									{ "--color": color, "--hover": hover } as React.CSSProperties
+								}
+								className="text-(--color) group-hover:text-(--hover)"
 							>
 								{item.text}
 							</span>
@@ -111,7 +129,7 @@ export const useNavigationTree = () => {
 				</Accordion>
 			);
 		},
-		[pathname],
+		[determineColors],
 	);
 
 	/**

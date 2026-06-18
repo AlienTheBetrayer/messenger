@@ -1,49 +1,40 @@
 "use client";
 
-import Image from "next/image";
-
-import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useNavigationTree } from "@/features/settings/hooks/useNavigationTree";
-import { SettingsNavigationInfoButton } from "@/features/settings/ui/navigation/SettingsNavigationInfoButton";
+import { InfoCube } from "@/features/settings/ui/navigation/infobutton/InfoCube";
+import { NavigationInfoButtonText } from "@/features/settings/ui/navigation/infobutton/NavigationInfoButtonText";
+import { SettingsNavigationInfoAuthButton } from "@/features/settings/ui/navigation/infobutton/SettingsNavigationInfoAuthButton";
 import { Icons } from "@/features/ui/lib";
+import { Button } from "@/shared";
 
 export const SettingsNavigation = () => {
 	// hooks
 	const { jsx } = useNavigationTree();
-	const { data: auth } = useAuth();
 
 	// jsx
 	return (
 		<nav className="flex flex-col gap-8">
 			<ul className="flex flex-col">
 				<li className="h-15">
-					{auth ? (
-						<SettingsNavigationInfoButton
-							title={auth.user.username}
-							description="Changing current settings..."
-							color={auth.user.color}
-							image={
-								<Image
-									src={auth.user.image_url}
-									width={14}
-									height={14}
-									alt="pfp"
-									className="motion-safe:animate-[bounce_1.5s_ease-in-out_infinite] "
-								/>
-							}
-						/>
-					) : (
-						<div className="w-full h-full skeleton" />
-					)}
+					<SettingsNavigationInfoAuthButton />
 				</li>
 
 				<li className="h-15">
-					<SettingsNavigationInfoButton
-						title="Your profile"
-						description="Changing current settings..."
-						image={Icons.box}
-						color="var(--blue-primary)"
-					/>
+					<Button
+						variant="ghost"
+						className="flex gap-2 w-full h-full"
+					>
+						<InfoCube
+							image={Icons.box}
+							color="var(--blue-primary)"
+							animation="bounce"
+						/>
+
+						<NavigationInfoButtonText
+							title="Something important here"
+							description="it will be here"
+						/>
+					</Button>
 				</li>
 			</ul>
 

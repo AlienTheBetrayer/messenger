@@ -10,6 +10,8 @@ export const usersSchema = z.object({
   created_at: z.date(),
   color: z.string(),
   image_url: z.string(),
+  emoji: z.string().nullish(),
+  status: z.string().nullish(),
 });
 
 export type usersType = z.infer<typeof usersSchema>;

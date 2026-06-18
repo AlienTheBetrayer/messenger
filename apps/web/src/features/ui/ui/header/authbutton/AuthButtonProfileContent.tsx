@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 
+import { SettingsNavigationInfoAuthButton } from "@/features/settings/ui/navigation/infobutton/SettingsNavigationInfoAuthButton";
 import { Icons } from "@/features/ui/lib";
 import { ThemeButton } from "@/features/ui/ui/header/ThemeButton";
 import { LogoutMessageBox } from "@/features/ui/ui/messageboxes/LogoutMessageBox";
@@ -10,11 +11,16 @@ import { Button, PopoverContent, Separator } from "@/shared";
 export const AuthButtonProfileContent = () => {
 	// jsx
 	return (
-		<PopoverContent
-			className="w-screen max-w-48"
-			align="end"
-		>
+		<PopoverContent className="w-screen max-w-54">
 			<ul className="flex flex-col gap-2 *:flex">
+				<li className="h-15">
+					<SettingsNavigationInfoAuthButton />
+				</li>
+
+				<li>
+					<Separator />
+				</li>
+
 				<li>
 					<ul className="flex flex-col w-full">
 						<li>
