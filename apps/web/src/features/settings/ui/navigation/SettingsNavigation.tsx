@@ -19,7 +19,7 @@ export const SettingsNavigation = () => {
 				<li className="h-15">
 					{auth ? (
 						<SettingsNavigationInfoButton
-							title="generated username"
+							title={auth.user.username}
 							description="Changing current settings..."
 							color={auth.user.color}
 							image={
@@ -28,6 +28,7 @@ export const SettingsNavigation = () => {
 									width={14}
 									height={14}
 									alt="pfp"
+									className="motion-safe:animate-[bounce_1.5s_ease-in-out_infinite] "
 								/>
 							}
 						/>

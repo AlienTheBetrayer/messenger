@@ -3,14 +3,62 @@ import definition from "@dicebear/styles/identicon.json";
 import { generateId, randomHex } from "@gravity/shared";
 import { Injectable } from "@nestjs/common";
 import bcrypt from "bcryptjs";
+import { nanoid } from "nanoid";
 
 import { createException } from "../../common";
+import { normalizeString } from "../../common/lib/normalize";
 import { PrismaService } from "../prisma/prisma.service";
 import { UserSchema } from "./user.dto";
 
 @Injectable()
 export class UserService {
 	constructor(private readonly prismaService: PrismaService) {}
+
+	/**
+	 * generates a safe username out of email that hasn't been taken
+	 * @param body email
+	 * @returns generated username
+	 */
+	async generateUsername(body: UserSchema["email"]) {
+		// normalizing
+		const username = body.split("@")[0];
+		const normalizedUsername = normalizeString(username);
+
+		// not eixsting - return generated
+		if (
+			!(await this.prismaService.users.count({
+				where: { username: normalizedUsername },
+			}))
+		) {
+			return normalizedUsername;
+		}
+
+		// eixsting - find all
+		const existing = await this.prismaService.users.findMany({
+			where: {
+				username: {
+					startsWith: normalizedUsername,
+				},
+			},
+			select: {
+				username: true,
+			},
+		});
+
+		// 64 attempts to generate a new username
+		const taken = new Set(existing.map(({ username }) => username));
+
+		for (let i = 0; i < 64; ++i) {
+			const candidate = `${normalizedUsername}${nanoid(2)}`;
+
+			if (!taken.has(candidate)) {
+				return candidate;
+			}
+		}
+
+		// rare fallback
+		return `${normalizedUsername}${Date.now()}`;
+	}
 
 	/**`
 	 * creates a new user (hashes the password)
@@ -50,10 +98,14 @@ export class UserService {
 			rowColor: color,
 		});
 
+		// username
+		const username = await this.generateUsername(body.email);
+
 		// creating the user
 		const user = await this.prismaService.users.create({
 			data: {
 				id: generateId(),
+				username,
 				email: body.email,
 				password,
 				color,

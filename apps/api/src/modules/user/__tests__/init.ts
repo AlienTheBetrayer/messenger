@@ -11,7 +11,8 @@ export const jestInitUser = async () => {
 	const mockPrismaService = {
 		users: {
 			count: jest.fn(),
-			findFirst: jest.fn(),
+      findFirst: jest.fn(),
+      findMany: jest.fn(),
 			update: jest.fn(),
 			create: jest.fn(),
 		},

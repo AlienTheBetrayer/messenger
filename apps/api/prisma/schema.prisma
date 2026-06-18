@@ -19,7 +19,7 @@ datasource db {
 model users {
   id            String          @id
   email         String          @unique
-  username      String?         @unique
+  username      String          @unique
   password      String?
   deleted_at    DateTime?       @db.Timestamptz(6)
   edited_at     DateTime?       @db.Timestamptz(6)
