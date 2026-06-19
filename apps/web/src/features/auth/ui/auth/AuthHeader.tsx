@@ -8,7 +8,6 @@ import {
 	CardDescription,
 	CardHeader,
 	CardTitle,
-	queryStateHooks,
 } from "@/shared";
 
 export const AuthHeader = () => {
@@ -16,25 +15,32 @@ export const AuthHeader = () => {
 	const { type } = useAuthFormProvider();
 
 	// ui states
-  const variant = AuthFormVariants[type];
-	const headerLink = variant.elements.headerLink;
+	const variant = AuthFormVariants[type];
 
 	// jsx
 	return (
-		<CardHeader>
-			<CardTitle>{variant.title}</CardTitle>
-			<CardDescription>{variant.description}</CardDescription>
+		<CardHeader className="pt-8 pb-4 px-6 border-b border-border/40 bg-muted/10">
+			<div className="flex flex-col gap-1.5">
+				<CardTitle className="text-4xl md:text-5xl font-extrabold tracking-tighter bg-gradient-to-b from-foreground via-foreground to-foreground/80 bg-clip-text text-transparent">
+					{variant.title}
+				</CardTitle>
+				<CardDescription className="text-sm tracking-tight text-muted-foreground max-w-sm">
+					{variant.description}
+				</CardDescription>
+			</div>
 
-			{headerLink.enabled && (
-				<CardAction>
-					<Button
-						variant="link"
-						asChild
-					>
-						<Link href={headerLink.href}>{headerLink.text}</Link>
-					</Button>
-				</CardAction>
-			)}
+			<CardAction className="absolute top-8 right-6">
+				<Button
+					variant="ghost"
+					size="sm"
+					asChild
+					className="h-7 text-xs px-2 text-primary font-medium hover:bg-primary/5 transition-colors"
+				>
+					<Link href={type === "login" ? "/signup" : "/login"}>
+						{type === "login" ? "Sign up" : "Log in"}
+					</Link>
+				</Button>
+			</CardAction>
 		</CardHeader>
 	);
 };

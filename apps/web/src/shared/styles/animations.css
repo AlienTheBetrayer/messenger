@@ -1,0 +1,15 @@
+@layer utilities {
+  @keyframes sub-bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-4px); 
+    }
+  }
+
+  .animate-sub-bounce {
+    animation: sub-bounce 1.25s ease-in-out infinite;
+    will-change: transform; 
+  }
+}

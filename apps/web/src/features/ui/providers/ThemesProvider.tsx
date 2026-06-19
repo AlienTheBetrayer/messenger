@@ -1,6 +1,6 @@
 import { ThemeProvider } from "next-themes";
 
-import { themes } from "@/features/ui/lib/themes";
+import { AvailableThemes } from "@/features/ui/lib/themes";
 
 type Props = {
 	children: React.ReactNode;
@@ -11,7 +11,7 @@ export const ThemesProvider = ({ children }: Props) => {
 		<ThemeProvider
 			attribute="data-theme"
 			defaultTheme="system"
-			themes={themes}
+			themes={AvailableThemes}
 		>
 			{children}
 		</ThemeProvider>

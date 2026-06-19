@@ -1,14 +1,4 @@
 :root {
-	--font-1: clamp(1.875rem, 4vw, 2.25rem);
-	--font-2: clamp(1.5rem, 3.5vw, 1.875rem);
-	--font-3: clamp(1.25rem, 3vw, 1.5rem);
-	--font-4: clamp(1.125rem, 2.5vw, 1.25rem);
-	--font-5: 1rem;
-	--font-6: 0.85rem;
-	--font-7: 0.75rem;
-	--font-8: 0.7rem;
-	--font-9: 0.65rem;
-
 	--blue-primary: rgb(22, 107, 244);
 	--blue-secondary: rgb(95, 153, 247);
 	--blue-muted: rgb(147, 197, 253);
@@ -29,6 +19,8 @@
 }
 
 @import "./themes/light.css";
+@import "./themes/dark-cold.css";
+@import "./themes/dark-warm.css";
 @import "./themes/amoled.css";
 @import "./themes/dark.css";
 @import "./themes/high-contrast.css";

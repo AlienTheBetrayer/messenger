@@ -1,89 +1,57 @@
+import { LogOut } from "lucide-react";
 import Link from "next/link";
 
 import { useLogoutMutation } from "@/features/auth/model/auth.slice";
 import { Icons } from "@/features/ui/lib";
 import { useAuthButtonNotifications } from "@/features/ui/ui/header/authbutton/useAuthButtonNotifications";
 import { normalizeError } from "@/shared";
-import {
-	AlertDialog,
-	AlertDialogAction,
-	AlertDialogCancel,
-	AlertDialogContent,
-	AlertDialogDescription,
-	AlertDialogFooter,
-	AlertDialogHeader,
-	AlertDialogMedia,
-	AlertDialogTitle,
-	AlertDialogTrigger,
-	Button,
-	Spinner,
-} from "@/shared/ui";
+import { Button, Spinner } from "@/shared/ui";
+import { MessageBox } from "@/shared/ui/custom/MessageBox";
 
-export const LogoutMessageBox = ({
-	children,
-}: {
-	children?: React.ReactNode;
-}) => {
-	// logic
+export const LogoutMessageBox = () => {
+	// states
 	const [logout, { isLoading }] = useLogoutMutation();
 	const notifications = useAuthButtonNotifications();
 
 	// jsx
 	return (
-		<AlertDialog>
-			<AlertDialogTrigger asChild>
-				{children ?? (
-					<Button
-						disabled={isLoading}
-						variant="destructive"
-						className="w-full"
+		<MessageBox
+			title="Log out?"
+			variant="destructive"
+			actionText="Log out"
+			icon={Icons.logout}
+			onConfirm={() => {
+				notifications.logout(async () => {
+					const { data, error } = await logout();
+					if (error) throw new Error(normalizeError(error));
+					return data;
+				});
+			}}
+			description={
+				<>
+					This will log you out of your account on this device. View{" "}
+					<Link
+						href="/settings"
+						className="text-link hover:underline font-medium"
 					>
-						{isLoading && <Spinner />}
-						{Icons.logout}
-						Log out
-					</Button>
+						Settings
+					</Link>{" "}
+					to change security setups.
+				</>
+			}
+		>
+			<Button
+				disabled={isLoading}
+				variant="destructive"
+				className="w-full text-xs gap-1.5"
+			>
+				{isLoading ? (
+					<Spinner className="size-3.5" />
+				) : (
+					<LogOut className="size-3.5" />
 				)}
-			</AlertDialogTrigger>
-			<AlertDialogContent size="sm">
-				<AlertDialogHeader>
-					<AlertDialogMedia className="bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive">
-						{Icons.logout}
-					</AlertDialogMedia>
-					<AlertDialogTitle>Log out?</AlertDialogTitle>
-					<AlertDialogDescription>
-						<span>
-							This will log you out of your account on this device. View
-						</span>{" "}
-						<AlertDialogCancel
-							asChild
-							variant="link"
-							className="p-0! not-hover:text-muted-foreground"
-						>
-							<Link href="/settings">Settings</Link>
-						</AlertDialogCancel>{" "}
-						<span>to change any privacy and security settings.</span>
-					</AlertDialogDescription>
-				</AlertDialogHeader>
-				<AlertDialogFooter>
-					<AlertDialogCancel variant="secondary">Cancel</AlertDialogCancel>
-					<AlertDialogAction
-						variant="destructive"
-						onClick={() => {
-							notifications.logout(async () => {
-								const { data, error } = await logout();
-
-								if (error) {
-									throw new Error(normalizeError(error));
-								}
-
-								return data;
-							});
-						}}
-					>
-						Log out
-					</AlertDialogAction>
-				</AlertDialogFooter>
-			</AlertDialogContent>
-		</AlertDialog>
+				<span>{isLoading ? "Logging out..." : "Log out"}</span>
+			</Button>
+		</MessageBox>
 	);
 };

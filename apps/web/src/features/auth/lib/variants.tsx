@@ -24,29 +24,10 @@ type AuthFormVariant = {
 
 	elements: {
 		email: {
-			enabled: boolean;
-			placeholder: string;
 			description: string;
 		};
 		password: {
-			enabled: boolean;
-			placeholder: string;
 			description: string;
-		};
-		forgotButtons: {
-			enabled: boolean;
-		};
-		serviceButtons: {
-			enabled: boolean;
-		};
-		headerLink: {
-			enabled: boolean;
-			href: string;
-			text: string;
-		};
-		submitButton: {
-			enabled: boolean;
-			text: string;
 		};
 	};
 };
@@ -61,30 +42,11 @@ export const AuthFormVariants = {
 
 		elements: {
 			email: {
-				enabled: true,
-				placeholder: "m@example.com",
-				description: "",
+        description: ""
 			},
 			password: {
-				enabled: true,
-				placeholder: "",
 				description:
-					"Your account password. Incorrect entry will require restarting the verification process.",
-			},
-			forgotButtons: {
-				enabled: true,
-			},
-			serviceButtons: {
-				enabled: true,
-			},
-			headerLink: {
-				enabled: true,
-				href: "/signup",
-				text: "Sign up",
-			},
-			submitButton: {
-				enabled: true,
-				text: "Log in",
+					"Incorrect entry will require restarting the verification process.",
 			},
 		},
 	},
@@ -94,29 +56,10 @@ export const AuthFormVariants = {
 
 		elements: {
 			email: {
-				enabled: true,
-				placeholder: "m@example.com",
-				description: "",
+        description: ""
 			},
 			password: {
-				enabled: true,
-				placeholder: "",
-				description: "",
-			},
-			forgotButtons: {
-				enabled: false,
-			},
-			serviceButtons: {
-				enabled: true,
-			},
-			headerLink: {
-				enabled: true,
-				href: "/login",
-				text: "Login",
-			},
-			submitButton: {
-				enabled: true,
-				text: "Sign up",
+        description: ""
 			},
 		},
 	},
@@ -126,29 +69,10 @@ export const AuthFormVariants = {
 
 		elements: {
 			email: {
-				enabled: true,
-				placeholder: "m@example.com",
-				description: "",
+        description: "",
 			},
 			password: {
-				enabled: true,
-				placeholder: "",
-				description: "Choose a new secure password for your account.",
-			},
-			forgotButtons: {
-				enabled: false,
-			},
-			serviceButtons: {
-				enabled: false,
-			},
-			headerLink: {
-				enabled: true,
-				href: "/login",
-				text: "Back",
-			},
-			submitButton: {
-				enabled: true,
-				text: "Recover",
+        description: "",
 			},
 		},
 	},

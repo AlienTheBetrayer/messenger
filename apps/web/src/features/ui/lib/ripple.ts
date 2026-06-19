@@ -29,7 +29,7 @@ export const rippleEnable = <T extends HTMLElement>(
 			{ transform: "translate(-50%, -50%) scale(1)", opacity: 1 },
 		],
 		{
-			duration: Math.max(500, Math.min(size, 500)) * 10,
+			duration: Math.max(125, Math.min(size, 350)) * 10,
 			easing: "cubic-bezier(0.05, 0.7, 0.1, 1)",
 			fill: "forwards",
 		},

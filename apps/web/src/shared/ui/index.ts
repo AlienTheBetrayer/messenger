@@ -1,5 +1,6 @@
 export * from "./accordion.js";
 export * from "./alert-dialog.js";
+export * from "./badge.js";
 export * from "./button.js";
 export * from "./card.js";
 export * from "./carousel.js";
@@ -7,6 +8,7 @@ export * from "./chart.js";
 export * from "./checkbox.js";
 export * from "./combobox.js";
 export * from "./context-menu.js";
+export * from "./custom/MessageBox.js";
 export * from "./dialog.js";
 export * from "./dropdown-menu.js";
 export * from "./field.js";

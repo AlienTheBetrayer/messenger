@@ -8,10 +8,8 @@ import { AuthButtonProfileTrigger } from "@/features/ui/ui/header/authbutton/Aut
 import { Button, Popover } from "@/shared";
 
 export const AuthButtons = () => {
-	// auth
 	const { auth } = useHeaderProvider();
 
-	// logged in
 	if (auth?.user.id) {
 		return (
 			<Popover>
@@ -21,13 +19,14 @@ export const AuthButtons = () => {
 		);
 	}
 
-	// not logged in
 	return (
-		<ul className="flex gap-1">
+		<ul className="flex items-center gap-1.5">
 			<li>
 				<Button
 					asChild
 					variant="ghost"
+					size="sm"
+					className="h-8 text-xs font-medium text-muted-foreground hover:text-foreground"
 				>
 					<Link href="/login">Log in</Link>
 				</Button>
@@ -36,7 +35,8 @@ export const AuthButtons = () => {
 			<li>
 				<Button
 					asChild
-					variant="default"
+					size="sm"
+					className="h-8 text-xs font-medium shadow-sm"
 				>
 					<Link href="/signup">Sign up</Link>
 				</Button>

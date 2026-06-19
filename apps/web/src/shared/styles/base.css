@@ -42,7 +42,8 @@
 	input,
 	button,
 	ul,
-	div[role="list"] {
+	div[role="list"],
+	div[role="dialog"] {
 		color-scheme: var(--scheme);
 		scrollbar-width: thin;
 	}

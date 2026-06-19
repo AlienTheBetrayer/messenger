@@ -29,97 +29,121 @@ export const AuthContent = () => {
 
 	// jsx
 	return (
-		<CardContent>
-			<FieldGroup>
-				{variant.elements.email.enabled && (
-					<Controller
-						name="email"
-						disabled={verify === "pending"}
-						control={authForm.control}
-						render={({ field, fieldState }) => (
-							<Field data-invalid={fieldState.invalid}>
-								<div className="flex items-center justify-between w-full">
-									<FieldLabel htmlFor="email">Email</FieldLabel>
-								</div>
+		<CardContent className="p-0">
+			<FieldGroup className="gap-5 w-full">
+				<Controller
+					name="email"
+					disabled={verify === "pending"}
+					control={authForm.control}
+					render={({ field, fieldState }) => (
+						<Field data-invalid={fieldState.invalid}>
+							<div className="flex flex-col gap-2">
+								<FieldLabel
+									htmlFor="email"
+									className="text-xs font-semibold text-foreground/90 tracking-tight"
+								>
+									Email address
+								</FieldLabel>
 
 								{variant.elements.email.description && (
-									<FieldDescription>
+									<FieldDescription className="text-[11px] text-foreground/50 px-1.5 py-0.5  rounded">
 										{variant.elements.email.description}
 									</FieldDescription>
 								)}
+							</div>
 
+							<div className="relative">
 								<Input
 									{...field}
 									id="email"
 									type="email"
 									autoComplete="email"
 									aria-invalid={fieldState.invalid}
-									placeholder={variant.elements.email.placeholder}
+									placeholder="m@email.com"
+									className="h-10 text-sm border-border/50 bg-background focus-visible:ring-primary/20"
 								/>
+
 								{fieldState.invalid && (
-									<FieldError errors={[fieldState.error]} />
+									<FieldError
+										errors={[fieldState.error]}
+										className="mt-1.5 text-xs text-destructive"
+									/>
 								)}
-							</Field>
-						)}
-					/>
-				)}
+							</div>
+						</Field>
+					)}
+				/>
 
-				{variant.elements.password.enabled && (
-					<Controller
-						name="password"
-						control={authForm.control}
-						render={({ field, fieldState }) => (
-							<Field data-invalid={fieldState.invalid}>
-								<div className="flex items-center justify-between w-full">
-									<FieldLabel htmlFor="password">Password</FieldLabel>
+				<Controller
+					name="password"
+					control={authForm.control}
+					render={({ field, fieldState }) => (
+						<Field data-invalid={fieldState.invalid}>
+							<div className="flex items-center justify-between w-full">
+								<div className="flex flex-col gap-2">
+									<FieldLabel
+										htmlFor="password"
+										className="text-xs font-semibold text-foreground/90 tracking-tight"
+									>
+										Account password
+									</FieldLabel>
 
-									{variant.elements.forgotButtons.enabled && (
-										<Button
-											variant="link"
-											type="button"
-											asChild
-										>
-											<Link href="/forgot-password">Forgot password?</Link>
-										</Button>
+									{variant.elements.password.description && (
+										<FieldDescription className="text-[11px] text-foreground/50 px-1.5 py-0.5  rounded">
+											{variant.elements.password.description}
+										</FieldDescription>
 									)}
 								</div>
 
-								{variant.elements.password.description && (
-									<FieldDescription>
-										{variant.elements.password.description}
-									</FieldDescription>
+								{type !== "forgot_password" && (
+									<Button
+										variant="link"
+										type="button"
+										asChild
+										className="px-0 text-xs font-medium text-muted-foreground hover:text-primary transition-colors"
+									>
+										<Link href="/forgot-password">Recover</Link>
+									</Button>
 								)}
+							</div>
 
-								<div className="relative flex items-center justify-between w-full">
+							<div>
+								<div className="relative">
 									<Input
 										{...field}
 										id="password"
 										autoComplete="current-password"
 										type={passwordInputType}
 										aria-invalid={fieldState.invalid}
-										placeholder={variant.elements.password.placeholder}
+										placeholder="••••••"
+										className="h-10 text-sm border-border/50 bg-background focus-visible:ring-primary/20 pr-10"
 									/>
 
 									<Button
 										type="button"
 										variant="ghost"
-										className="w-6 h-6 p-0! absolute! right-2 top-1/2 -translate-y-1/2!"
+										size="icon"
+										className="size-7 p-0 absolute right-1.5 top-1/2 -translate-y-1/2! text-muted-foreground/60 hover:text-foreground hover:bg-muted"
 										onClick={() => {
 											setPasswordVisible((prev) => !prev);
 										}}
 									>
-										<span className="*:size-4!">
+										<span className="*:size-3.5 flex items-center justify-center">
 											{passwordVisible ? Icons.eyeShown : Icons.eyeHidden}
 										</span>
 									</Button>
 								</div>
+
 								{fieldState.invalid && (
-									<FieldError errors={[fieldState.error]} />
+									<FieldError
+										errors={[fieldState.error]}
+										className="mt-1.5 text-xs text-destructive"
+									/>
 								)}
-							</Field>
-						)}
-					/>
-				)}
+							</div>
+						</Field>
+					)}
+				/>
 			</FieldGroup>
 		</CardContent>
 	);

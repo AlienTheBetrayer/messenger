@@ -27,7 +27,7 @@ export const AuthButtonProfileTrigger = () => {
 					height={16}
 					className="grayscale-100 group-hover:grayscale-0"
 				/>
-				Profile
+				<span className="text-xs max-w-16 truncate">{auth.user.username}</span>
 			</Button>
 		</PopoverTrigger>
 	);

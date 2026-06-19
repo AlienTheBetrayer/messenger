@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 
 import { NotificationSonner } from "@/features/notifications/ui/NotificationSonner";
 import { GlobalProvider } from "@/features/ui/providers/GlobalProvider";
+import { Footer } from "@/features/ui/ui/footer/Footer";
 import { Header } from "@/features/ui/ui/header/Header";
 
 export const metadata = {
@@ -31,13 +32,16 @@ export default async function RootLayout({
 			className={`${inter.variable} antialiased`}
 			suppressHydrationWarning
 		>
-			<body className="min-h-[144vh] flex flex-col">
+			<body className="min-h-[125vh] flex flex-col">
 				<GlobalProvider>
 					<Header />
 					<NotificationSonner />
 
-					{children}
+					<div className="flex-grow flex flex-col">{children}</div>
 					{modal}
+
+          <div className="mb-16"/>
+					<Footer />
 				</GlobalProvider>
 			</body>
 		</html>

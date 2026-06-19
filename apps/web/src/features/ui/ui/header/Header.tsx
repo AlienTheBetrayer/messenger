@@ -7,30 +7,30 @@ import { Separator } from "@/shared";
 export const Header = async () => {
 	return (
 		<HeaderProvider>
-			<header className="sticky! top-0 w-full z-2 mx-auto flex items-center justify-center backdrop-blur-xl p-4 border-b border-b-border">
-				<nav className="w-full max-width flex gap-2 items-center">
+			<header className="sticky top-0 w-full z-50 bg-background/80 backdrop-blur-md border-b border-border/60 p-3 flex items-center justify-center">
+				<nav className="w-full max-w-7xl mx-auto flex items-center justify-between">
 					<Navigation />
 
-					<ul className="flex gap-1 ml-auto">
-						<li className="flex">
+					<ul className="flex items-center gap-1.5 ml-auto">
+						<li className="flex items-center">
 							<Separator
 								orientation="vertical"
-								className="h-4 my-auto"
+								className="h-4 bg-border/60 my-auto"
 							/>
 						</li>
 
-						<li>
+						<li className="flex items-center">
 							<ThemeButton />
 						</li>
 
-						<li className="flex">
+						<li className="flex items-center">
 							<Separator
 								orientation="vertical"
-								className="h-4 my-auto"
+								className="h-4 bg-border/60 my-auto"
 							/>
 						</li>
 
-						<li className="flex">
+						<li className="flex items-center">
 							<AuthButtons />
 						</li>
 					</ul>

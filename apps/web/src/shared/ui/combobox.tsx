@@ -1,8 +1,10 @@
 "use client";
 
-import * as React from "react";
 import { Combobox as ComboboxPrimitive } from "@base-ui/react";
+import { CheckIcon, ChevronDownIcon, XIcon } from "lucide-react";
+import * as React from "react";
 
+import { rippleEnable } from "@/features/ui/lib/ripple";
 import { cn } from "@/features/ui/lib/tailwind";
 import { Button } from "@/shared/ui/button";
 import {
@@ -11,8 +13,6 @@ import {
 	InputGroupButton,
 	InputGroupInput,
 } from "@/shared/ui/input-group";
-import { ChevronDownIcon, XIcon, CheckIcon } from "lucide-react";
-import { rippleEnable } from "@/features/ui/lib/ripple";
 
 const Combobox = ComboboxPrimitive.Root;
 
@@ -28,12 +28,20 @@ function ComboboxValue({ ...props }: ComboboxPrimitive.Value.Props) {
 function ComboboxTrigger({
 	className,
 	children,
+	onPointerDown,
 	...props
 }: ComboboxPrimitive.Trigger.Props) {
 	return (
 		<ComboboxPrimitive.Trigger
+			onPointerDown={(e) => {
+				onPointerDown?.(e);
+				rippleEnable(e);
+			}}
 			data-slot="combobox-trigger"
-			className={cn("[&_svg:not([class*='size-'])]:size-4", className)}
+			className={cn(
+				"[&_svg:not([class*='size-'])]:size-4 ripple relative",
+				className,
+			)}
 			{...props}
 		>
 			{children}
@@ -150,16 +158,17 @@ function ComboboxList({ className, ...props }: ComboboxPrimitive.List.Props) {
 function ComboboxItem({
 	className,
 	children,
-  onPointerDown,
+	onPointerDown,
+	indicator,
 	...props
-}: ComboboxPrimitive.Item.Props) {
+}: ComboboxPrimitive.Item.Props & { indicator?: boolean }) {
 	return (
 		<ComboboxPrimitive.Item
-      data-slot="combobox-item"
-      onPointerDown={(e) => {
-        rippleEnable(e);
-        onPointerDown?.(e);
-      }}
+			data-slot="combobox-item"
+			onPointerDown={(e) => {
+				rippleEnable(e);
+				onPointerDown?.(e);
+			}}
 			className={cn(
 				"relative ripple flex w-full cursor-default items-center gap-2 rounded-md py-1 pr-8 pl-1.5 text-sm outline-hidden select-none data-highlighted:bg-accent data-highlighted:text-accent-foreground not-data-[variant=destructive]:data-highlighted:**:text-accent-foreground data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
 				className,
@@ -167,13 +176,16 @@ function ComboboxItem({
 			{...props}
 		>
 			{children}
-			<ComboboxPrimitive.ItemIndicator
-				render={
-					<span className="pointer-events-none absolute right-2 flex size-4 items-center justify-center" />
-				}
-			>
-				<CheckIcon className="pointer-events-none" />
-			</ComboboxPrimitive.ItemIndicator>
+
+			{indicator && (
+				<ComboboxPrimitive.ItemIndicator
+					render={
+						<span className="pointer-events-none absolute right-2 flex size-4 items-center justify-center" />
+					}
+				>
+					<CheckIcon className="pointer-events-none" />
+				</ComboboxPrimitive.ItemIndicator>
+			)}
 		</ComboboxPrimitive.Item>
 	);
 }
@@ -308,18 +320,18 @@ function useComboboxAnchor() {
 
 export {
 	Combobox,
-	ComboboxInput,
-	ComboboxContent,
-	ComboboxList,
-	ComboboxItem,
-	ComboboxGroup,
-	ComboboxLabel,
-	ComboboxCollection,
-	ComboboxEmpty,
-	ComboboxSeparator,
-	ComboboxChips,
 	ComboboxChip,
+	ComboboxChips,
 	ComboboxChipsInput,
+	ComboboxCollection,
+	ComboboxContent,
+	ComboboxEmpty,
+	ComboboxGroup,
+	ComboboxInput,
+	ComboboxItem,
+	ComboboxLabel,
+	ComboboxList,
+	ComboboxSeparator,
 	ComboboxTrigger,
 	ComboboxValue,
 	useComboboxAnchor,

@@ -1,3 +1,3 @@
-export default function SettingsProfilePageArgs() {
-	return <div>Profile with args</div>;
-}
+import SettingsProfilePage from "@/app/settings/profile/page";
+
+export default SettingsProfilePage;
