@@ -1,5 +1,6 @@
 import { usersType } from "@gravity/shared";
 import { Injectable } from "@nestjs/common";
+import bcrypt from "bcryptjs";
 import { Request } from "express";
 
 import { AppJwtService } from "../jwt/jwt.service";
@@ -13,42 +14,62 @@ export class AuthCoreService {
 	) {}
 
 	/**
-	 * verifies the authentication session from the request
+	 * verifies the authentication session from the request.
+	 * allows if access is valid or access is invalid but refresh is valid
 	 * @param request  request object
 	 * @returns true if verified, otherwise throws.
 	 */
 	async verify(request: Request) {
-		// no refresh token found
+		// no token found whatsoever
 		if (
-			!("refreshToken" in request.cookies) ||
-			!request.cookies["refreshToken"]
+			(!("refreshToken" in request.cookies) ||
+				!request.cookies["refreshToken"]) &&
+			(!("accessToken" in request.headers) || !request.headers["accessToken"])
 		) {
 			throw new Error("no token found.");
 		}
 
-		try {
-			// verifying the refresh token
-			const verified = this.jwtService.verify({
-				token: request.cookies["refreshToken"] as string,
-				key: "REFRESH_TOKEN_SECRET",
-			});
+		const fn = async (type: "access" | "refresh") => {
+			try {
+				const token = request.cookies[
+					type === "access" ? "accessToken" : "refreshToken"
+				] as string;
 
-			// verifying the session
-			const found = await this.prismaService.auth_session.findFirst({
-				where: { id: verified.sessionId, user_id: verified.userId },
-				include: { users: true },
-			});
+				// verifying the refresh token
+				const verified = this.jwtService.verify({
+					token,
+					key:
+						type === "access" ? "ACCESS_TOKEN_SECRET" : "REFRESH_TOKEN_SECRET",
+				});
 
-			if (!found) {
-				throw new Error("session not found in the database.");
+				// verifying the session
+				const found = await this.prismaService.auth_session.findFirst({
+					where: { id: verified.sessionId, user_id: verified.userId },
+					include: { users: true },
+				});
+
+				if (!found) {
+					throw new Error("session not found in the database.");
+				}
+
+				// verifying the hash
+				if (!(await bcrypt.compare(token, found.refresh_token_hash))) {
+					throw new Error("jwt hash is not verified.");
+				}
+
+				// setting user
+				request.user ??= found.users satisfies usersType;
+
+				return true;
+			} catch (e) {
+				throw new Error("jwt token is not verified.");
 			}
+		};
 
-			// setting user
-			request.user ??= found.users satisfies usersType;
-
-			return true;
-		} catch (e) {
-			throw new Error("jwt token is not verified.");
+		try {
+			return await fn("access");
+		} catch {
+			return await fn("refresh");
 		}
 	}
 }
