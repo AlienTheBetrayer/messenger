@@ -24,7 +24,7 @@ export class AuthCoreService {
 		if (
 			(!("refreshToken" in request.cookies) ||
 				!request.cookies["refreshToken"]) &&
-			(!("accessToken" in request.headers) || !request.headers["accessToken"])
+			(!("accessToken" in request.cookies) || !request.cookies["accessToken"])
 		) {
 			throw new Error("no token found.");
 		}
@@ -53,7 +53,10 @@ export class AuthCoreService {
 				}
 
 				// verifying the hash
-				if (!(await bcrypt.compare(token, found.refresh_token_hash))) {
+				if (
+					type === "refresh" &&
+					!(await bcrypt.compare(token, found.refresh_token_hash))
+				) {
 					throw new Error("jwt hash is not verified.");
 				}
 
