@@ -1,9 +1,5 @@
-import { UiSliceVisibilityKey } from "@/features/ui/model/ui.lib";
 import { RootState } from "@/shared";
 
-export const selectVisibility = (
-	state: RootState,
-	key: UiSliceVisibilityKey,
-) => {
-	return state.ui.visibility[key];
+export const selectConnectionGroupId = (state: RootState) => {
+	return state.ui.connectSessionPopup.groupId;
 };

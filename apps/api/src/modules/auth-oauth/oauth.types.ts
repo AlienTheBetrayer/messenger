@@ -12,7 +12,8 @@ export const oAuthIdentitySchema = z.object({
 	profileUrl: z.string().optional(),
 	error: z.enum(ExceptionCodes).optional(),
 	metadata: z.object({
-		action: z.enum(["login", "connect"]).optional(),
+    action: z.enum(["login", "connect"]).optional(),
+    groupId: z.nanoid().optional()
 	}),
 });
 

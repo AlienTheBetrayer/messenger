@@ -1,6 +1,4 @@
-import { authSessionOauthInit } from "@gravity/shared";
+import { authSessionAdd } from "@gravity/shared";
 import { createZodDto } from "nestjs-zod";
 
-export class AuthSessionOauthInitDto extends createZodDto(
-	authSessionOauthInit,
-) {}
+export class AuthSessionAddDto extends createZodDto(authSessionAdd) {}

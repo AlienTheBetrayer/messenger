@@ -10,13 +10,6 @@ import { LogoutMessageBox } from "@/features/ui/ui/messageboxes/LogoutMessageBox
 import { Button, PopoverContent, Separator, useAppDispatch } from "@/shared";
 
 export const AuthButtonProfileContent = () => {
-	// redux
-	const dispatch = useAppDispatch();
-
-	const onExit = useCallback(() => {
-		dispatch(toggleVisibility("visibility"));
-	}, [dispatch]);
-
 	return (
 		<PopoverContent
 			className="w-64 p-1.5 shadow-xl border-border/60 rounded-xl"

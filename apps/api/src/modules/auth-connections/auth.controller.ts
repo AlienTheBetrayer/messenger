@@ -1,11 +1,11 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Post, UseGuards } from "@nestjs/common";
 
 import {
 	AuthenticatedUser,
 	AuthenticatedUserType,
 } from "../auth-core/decorators";
 import { AuthenticatedGuard } from "../auth-core/guards";
-import { AuthSessionOauthInitDto } from "./auth.dto";
+import { AuthSessionAddDto } from "./auth.dto";
 import { AuthConnectionsService } from "./auth.service";
 
 @Controller("auth-connections")
@@ -29,19 +29,8 @@ export class AuthConnectionsController {
 	 */
 	@UseGuards(AuthenticatedGuard)
 	@Post("session/add")
-	async sessionAdd() {
-		return await this.authConnectionService.login();
-	}
-
-	/**
-	 *
-	 * @returns
-	 */
-	@UseGuards(AuthenticatedGuard)
-	@Post("session/oauth-init")
-  async sessionOauthAdd(@Query() query: AuthSessionOauthInitDto) {
-    console.log(query.service);
-		return await this.authConnectionService.login();
+	async sessionAdd(@Body() body: AuthSessionAddDto) {
+		return await this.authConnectionService.add(body);
 	}
 
 	/**

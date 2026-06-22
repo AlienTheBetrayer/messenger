@@ -13,7 +13,7 @@ import { OAuthService } from "./oauth.service";
 const services = [GoogleStrategy, GithubStrategy];
 
 @Module({
-	imports: [AppJwtModule, UserModule, AuthConnectionsModule],
+	imports: [AppJwtModule, UserModule],
 	controllers: [OAuthController],
 	providers: [OAuthService, ...services],
 })

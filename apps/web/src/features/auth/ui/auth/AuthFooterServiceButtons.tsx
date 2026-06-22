@@ -4,17 +4,15 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
-import { selectVisibility } from "@/features/ui";
+import { selectConnectionGroupId } from "@/features/ui";
 import { Button, Separator, useAppSelector } from "@/shared";
 
 export const AuthFooterServiceButtons = () => {
 	// redux
-	const isSessionPopupVisible = useAppSelector((state) =>
-		selectVisibility(state, "visibility"),
-	);
+	const groupId = useAppSelector((state) => selectConnectionGroupId(state));
 
 	// states
-	const urlExtension = isSessionPopupVisible ? "?type=connect" : "";
+	const urlExtension = groupId ? `?type=connect?groupId=${groupId}` : "";
 	const { type } = useAuthFormProvider();
 
 	// forgot password has no service buttons

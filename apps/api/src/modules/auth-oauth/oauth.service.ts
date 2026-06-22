@@ -2,13 +2,13 @@ import { Injectable } from "@nestjs/common";
 import { Response } from "express";
 
 import { createException } from "../../common";
+import { AuthConnectionsService } from "../auth-connections/auth.service";
 import { AuthContextType } from "../auth-core/decorators";
 import { AppJwtService } from "../jwt/jwt.service";
 import { PrismaService } from "../prisma/prisma.service";
 import { UserService } from "../user/user.service";
 import { OAuthIdentityType } from "./decorators";
 import { redirectErrorURL } from "./oauth.types";
-import { AuthConnectionsService } from "../auth-connections/auth.service";
 
 @Injectable()
 export class OAuthService {
@@ -37,14 +37,13 @@ export class OAuthService {
 
 		// login upon success
 		if (identity) {
-			const { user, accessToken, refreshToken, session } = await this.login(
-				identity,
-				ctx,
-				response,
-			);
+			const { session } = await this.login(identity, ctx, response);
 
-      if (identity.metadata.action === "connect") {
-        this.authConnectionsService.add()
+			if (identity.metadata.action === "connect" && identity.metadata.groupId) {
+				this.authConnectionsService.add({
+					session,
+					groupId: identity.metadata.groupId,
+				});
 			}
 		}
 

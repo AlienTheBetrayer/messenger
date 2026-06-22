@@ -1,3 +1,4 @@
+import { AuthSessionAdd } from "@gravity/shared";
 import { Injectable } from "@nestjs/common";
 
 import { PrismaService } from "../prisma/prisma.service";
@@ -37,11 +38,11 @@ export class AuthConnectionsService {
 		);
 
 		return sessions;
-  }
-  
-  async add() {
-    
-  }
+	}
+
+	async add(body: AuthSessionAdd) {
+		return true;
+	}
 
 	async login() {
 		return true;

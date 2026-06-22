@@ -4,7 +4,11 @@ import { LucideUserRoundPlus } from "lucide-react";
 import { useCallback, useRef } from "react";
 import Draggable from "react-draggable";
 
-import { Icons, selectVisibility, setVisibility } from "@/features/ui";
+import {
+	Icons,
+	selectConnectionGroupId,
+	setConnectionGroupId,
+} from "@/features/ui";
 import {
 	Button,
 	Dialog,
@@ -18,12 +22,10 @@ import {
 
 export const AuthSessionAddPopup = () => {
 	// redux
-	const isVisible = useAppSelector((state) =>
-		selectVisibility(state, "visibility"),
-	);
+	const isVisible = !!useAppSelector((state) => selectConnectionGroupId(state));
 	const dispatch = useAppDispatch();
 	const onExit = useCallback(() => {
-		dispatch(setVisibility({ key: "visibility", value: false }));
+		dispatch(setConnectionGroupId(undefined));
 	}, [dispatch]);
 
 	// refs

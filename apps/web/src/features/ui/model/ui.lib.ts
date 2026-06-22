@@ -1,10 +1,14 @@
 /**
  * initial + types
  */
-export const UiSliceInitial = {
-	visibility: {
-		sessionAddPopup: false,
-	} as Record<string, boolean>,
+export type UiSliceInitialType = {
+	connectSessionPopup: {
+		groupId: string | undefined;
+	};
 };
 
-export type UiSliceVisibilityKey = keyof (typeof UiSliceInitial)["visibility"];
+export const UiSliceInitial = {
+	connectSessionPopup: {
+		groupId: undefined,
+	},
+} as UiSliceInitialType;

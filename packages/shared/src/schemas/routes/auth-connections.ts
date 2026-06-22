@@ -1,9 +1,12 @@
 import z from "zod";
 
+import { auth_sessionSchema } from "../prisma/schemas/models/auth_session.schema.js";
+
 /**
  * session/add-oauth
  */
-export const authSessionOauthInit = z.object({
-	service: z.enum(["google", "github"] as const),
+export const authSessionAdd = z.object({
+  groupId: z.nanoid(),
+	session: auth_sessionSchema
 });
-export type AuthSessionOauthInit = z.infer<typeof authSessionOauthInit>;
+export type AuthSessionAdd = z.infer<typeof authSessionAdd>;
