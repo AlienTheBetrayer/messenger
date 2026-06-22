@@ -37,7 +37,11 @@ export class AuthConnectionsService {
 		);
 
 		return sessions;
-	}
+  }
+  
+  async add() {
+    
+  }
 
 	async login() {
 		return true;

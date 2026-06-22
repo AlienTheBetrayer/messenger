@@ -130,8 +130,8 @@ export class AuthService {
 		}
 
 		return {
-			...(await this.jwtService.issueAuthData({ userId: user.id, ctx })),
 			user,
+			...(await this.jwtService.issueAuthData({ userId: user.id, ctx })),
 		};
 	}
 

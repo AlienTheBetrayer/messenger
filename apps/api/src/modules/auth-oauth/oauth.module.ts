@@ -1,5 +1,6 @@
 import { Module } from "@nestjs/common";
 
+import { AuthConnectionsModule } from "../auth-connections/auth.module";
 import { AppJwtModule } from "../jwt/jwt.module";
 import { UserModule } from "../user/user.module";
 import { GithubStrategy, GoogleStrategy } from "./external";
@@ -12,7 +13,7 @@ import { OAuthService } from "./oauth.service";
 const services = [GoogleStrategy, GithubStrategy];
 
 @Module({
-	imports: [AppJwtModule, UserModule],
+	imports: [AppJwtModule, UserModule, AuthConnectionsModule],
 	controllers: [OAuthController],
 	providers: [OAuthService, ...services],
 })

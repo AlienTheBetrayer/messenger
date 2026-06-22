@@ -8,6 +8,7 @@ import { PrismaService } from "../prisma/prisma.service";
 import { UserService } from "../user/user.service";
 import { OAuthIdentityType } from "./decorators";
 import { redirectErrorURL } from "./oauth.types";
+import { AuthConnectionsService } from "../auth-connections/auth.service";
 
 @Injectable()
 export class OAuthService {
@@ -15,6 +16,7 @@ export class OAuthService {
 		private readonly prismaService: PrismaService,
 		private readonly jwtService: AppJwtService,
 		private readonly userService: UserService,
+		private readonly authConnectionsService: AuthConnectionsService,
 	) {}
 
 	/**
@@ -35,7 +37,15 @@ export class OAuthService {
 
 		// login upon success
 		if (identity) {
-			await this.login(identity, ctx, response);
+			const { user, accessToken, refreshToken, session } = await this.login(
+				identity,
+				ctx,
+				response,
+			);
+
+      if (identity.metadata.action === "connect") {
+        this.authConnectionsService.add()
+			}
 		}
 
 		response.redirect("http://localhost:3000/login");
@@ -82,8 +92,10 @@ export class OAuthService {
 			ctx,
 		});
 
-		// cookies
-		this.jwtService.setAuthHttpCookies({ ...tokens, response });
+		// cookies (connect mode disables it)
+		if (identity.metadata.action !== "connect") {
+			this.jwtService.setAuthHttpCookies({ ...tokens, response });
+		}
 
 		return { user, ...tokens };
 	}
