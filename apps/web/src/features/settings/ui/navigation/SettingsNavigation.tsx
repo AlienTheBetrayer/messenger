@@ -2,11 +2,10 @@
 
 import { useNavigationTree } from "@/features/settings/hooks/useNavigationTree";
 import { InfoCube } from "@/features/settings/ui/navigation/infobutton/InfoCube";
-import { NavigationInfoButton } from "@/features/settings/ui/navigation/infobutton/NavigationInfoButton";
 import { NavigationInfoButtonText } from "@/features/settings/ui/navigation/infobutton/NavigationInfoButtonText";
 import { SettingsNavigationInfoAuthButton } from "@/features/settings/ui/navigation/infobutton/SettingsNavigationInfoAuthButton";
 import { Icons } from "@/features/ui/lib";
-import { Separator } from "@/shared";
+import { Button, Separator } from "@/shared";
 
 export const SettingsNavigation = () => {
 	// hooks
@@ -21,7 +20,10 @@ export const SettingsNavigation = () => {
 				</li>
 
 				<li className="h-15">
-					<NavigationInfoButton asChild={false}>
+					<Button
+						variant="ghost"
+						className="flex gap-2 w-full h-full"
+					>
 						<InfoCube
 							image={Icons.box}
 							color="var(--blue-primary)"
@@ -31,13 +33,13 @@ export const SettingsNavigation = () => {
 							title="Something important here"
 							description="it will be here"
 						/>
-					</NavigationInfoButton>
+					</Button>
 				</li>
 			</ul>
 
 			<Separator />
 
-			<div>{jsx}</div>
+			<div className="ml-6">{jsx}</div>
 		</nav>
 	);
 };

@@ -1,4 +1,5 @@
 import { ExceptionCode, verification_codesType } from "@gravity/shared";
+import { Variants } from "motion";
 
 import { Icons } from "@/features/ui/lib";
 
@@ -42,7 +43,7 @@ export const AuthFormVariants = {
 
 		elements: {
 			email: {
-        description: ""
+				description: "",
 			},
 			password: {
 				description:
@@ -56,10 +57,10 @@ export const AuthFormVariants = {
 
 		elements: {
 			email: {
-        description: ""
+				description: "",
 			},
 			password: {
-        description: ""
+				description: "",
 			},
 		},
 	},
@@ -69,10 +70,10 @@ export const AuthFormVariants = {
 
 		elements: {
 			email: {
-        description: "",
+				description: "",
 			},
 			password: {
-        description: "",
+				description: "",
 			},
 		},
 	},
@@ -146,3 +147,33 @@ export const RedirectPopupVariants = {
 		content: "Log out first in order to log in or sign up using OAuth.",
 	},
 } as const satisfies Partial<Record<ExceptionCode, RedirectPopupVariant>>;
+
+/**
+ * for VerifyOrchestrator
+ */
+export const VerifyOrchestratorVariants: Variants = {
+	initial: {
+		opacity: 0,
+		scale: 0.8,
+		y: -100,
+	},
+	animate: {
+		opacity: 1,
+		scale: 1,
+		y: 0,
+
+		transition: {
+			duration: 0.3,
+			ease: [0.25, 0.1, 0.25, 1.0],
+		},
+	},
+	exit: {
+		opacity: 0,
+		scale: 0.8,
+		y: -100,
+		transition: {
+			duration: 0.3,
+			ease: [0.25, 0.1, 0.25, 1.0],
+		},
+	},
+};

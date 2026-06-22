@@ -18,7 +18,7 @@ import { normalizeError, queryStateHooks } from "@/shared";
 export const useAuthLogic = () => {
 	// states
 	const { authForm, verifyForm, type } = useAuthFormProvider();
-	const [, setAuthType] = queryStateHooks.useAuthType();
+	const [, setVerify] = queryStateHooks.useVerify();
 	const notifications = useAuthNotifications();
 
 	// redux
@@ -33,7 +33,7 @@ export const useAuthLogic = () => {
 			const fn = async () => {
 				try {
 					const res = await getCode({ email: data.email, type }).unwrap();
-					setAuthType("verify-pending");
+					setVerify("pending");
 					return res;
 				} catch (e) {
 					const message = normalizeError(e);
@@ -44,7 +44,7 @@ export const useAuthLogic = () => {
 
 			notifications.auth(fn);
 		},
-		[authForm, getCode, notifications, setAuthType, type],
+		[authForm, getCode, notifications, setVerify, type],
 	);
 
 	// verify
@@ -97,7 +97,7 @@ export const useAuthLogic = () => {
 						}
 					}
 
-					setAuthType("verify-success");
+					setVerify("success");
 					return user;
 				} catch (e) {
 					// error handling
@@ -115,7 +115,7 @@ export const useAuthLogic = () => {
 			forgotPassword,
 			login,
 			notifications,
-			setAuthType,
+			setVerify,
 			signup,
 			type,
 			verifyForm,

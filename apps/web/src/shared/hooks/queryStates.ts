@@ -10,13 +10,8 @@ const useError = () => {
 	);
 };
 
-export const AuthTypes = [
-	"verify-pending",
-	"verify-success",
-] as const;
-
-const useAuthType = () => {
-	return useQueryState("type", AuthTypes);
+const useVerify = () => {
+	return useQueryState("verify", ["pending", "success"] as const);
 };
 
 /**
@@ -24,6 +19,6 @@ const useAuthType = () => {
  * @returns hook functions
  */
 export const queryStateHooks = {
-	useAuthType,
+	useVerify,
 	useError,
 };

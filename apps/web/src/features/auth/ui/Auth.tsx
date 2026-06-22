@@ -8,21 +8,19 @@ import { AuthHeader } from "@/features/auth/ui/auth/AuthHeader";
 
 export const Auth = () => {
 	// states
-	const { authForm } = useAuthFormProvider();
 	const { auth } = useAuthLogic();
+	const { authForm } = useAuthFormProvider();
 
 	// jsx
 	return (
 		<form
 			noValidate
 			id="auth-form"
-			className="flex flex-col gap-6 relative"
+			className="flex flex-col gap-5 transition-all duration-300"
 			onSubmit={authForm.handleSubmit(auth)}
 		>
 			<AuthHeader />
-			<div className="flex flex-col gap-5 px-6">
-				<AuthContent />
-			</div>
+			<AuthContent />
 			<AuthFooter />
 		</form>
 	);

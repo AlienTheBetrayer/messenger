@@ -10,6 +10,7 @@ import { Button, Popover } from "@/shared";
 export const AuthButtons = () => {
 	const { auth } = useHeaderProvider();
 
+  // if logged in
 	if (auth?.user.id) {
 		return (
 			<Popover>
@@ -19,6 +20,7 @@ export const AuthButtons = () => {
 		);
 	}
 
+  // not logged in
 	return (
 		<ul className="flex items-center gap-1.5">
 			<li>

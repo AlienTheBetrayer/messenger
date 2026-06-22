@@ -1,45 +1,47 @@
 import Image from "next/image";
 
-import { cn } from "@/features/ui";
-
 export const InfoCube = ({
 	image,
 	color,
 	className,
-	bouncing,
+	animation,
 }: {
 	image: string | React.ReactNode;
 	color?: string;
 	className?: string;
-	bouncing?: boolean;
+	animation?: string;
 }) => {
-	const resolvedColor = color ?? "var(--muted-foreground)";
+	// defaults
+	const values = {
+		color: color ?? "var(--muted-foreground)",
+		animation: animation ?? "bounce",
+	};
 
+	// jsx
 	return (
 		<div
-			className={cn(
-				"grid shrink-0 rounded-md w-9 h-9 border shadow-sm overflow-hidden transition-colors duration-200",
-				className,
-			)}
+			className={`flex shrink-0 items-center justify-center rounded-sm w-8 h-8 border ${className ?? ""}`}
 			style={{
-				borderColor: `color-mix(in srgb, ${resolvedColor} 40%, var(--border))`,
-				color: resolvedColor,
-				background: `color-mix(in srgb, ${resolvedColor} 12%, var(--background))`,
+				borderColor: `color-mix(in srgb, ${values.color} 60%, var(--background))`,
+				color: values.color,
+				background: `color-mix(in srgb, ${values.color} 20%, var(--background))`,
 			}}
 		>
 			<div
-				className={cn(
-					"flex items-center justify-center",
-					bouncing && "animate-sub-bounce",
-				)}
+				style={
+					animation
+						? {
+								animation: `bounce 1.25s ease-in-out infinite`,
+							}
+						: undefined
+				}
 			>
 				{typeof image === "string" ? (
 					<Image
 						src={image}
-						width={16}
-						height={16}
+						width={14}
+						height={14}
 						alt="pfp"
-						className="object-cover rounded-sm"
 					/>
 				) : (
 					image

@@ -159,7 +159,6 @@ function ComboboxItem({
 	className,
 	children,
 	onPointerDown,
-	indicator,
 	...props
 }: ComboboxPrimitive.Item.Props & { indicator?: boolean }) {
 	return (
@@ -177,15 +176,13 @@ function ComboboxItem({
 		>
 			{children}
 
-			{indicator && (
-				<ComboboxPrimitive.ItemIndicator
-					render={
-						<span className="pointer-events-none absolute right-2 flex size-4 items-center justify-center" />
-					}
-				>
-					<CheckIcon className="pointer-events-none" />
-				</ComboboxPrimitive.ItemIndicator>
-			)}
+			<ComboboxPrimitive.ItemIndicator
+				render={
+					<span className="pointer-events-none absolute right-2 flex size-4 items-center justify-center" />
+				}
+			>
+				<CheckIcon className="pointer-events-none" />
+			</ComboboxPrimitive.ItemIndicator>
 		</ComboboxPrimitive.Item>
 	);
 }

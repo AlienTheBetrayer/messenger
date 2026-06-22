@@ -1,28 +1,58 @@
 "use client";
 
-import { FileText, Folder } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
 
 import {
-  SettingsNavigationItem,
-  SettingsNavigationTree,
+	SettingsNavigationItem,
+	SettingsNavigationTree,
 } from "@/features/settings/lib/tree";
-import { cn } from "@/features/ui";
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
+	Accordion,
+	AccordionContent,
+	AccordionItem,
+	AccordionTrigger,
 } from "@/shared";
 
 export const useNavigationTree = () => {
+	// setup
 	const router = useRouter();
 	const pathname = usePathname();
 
 	/**
-	 * rcursively renders the tree elements using Radix primitives with enhanced styling
+	 * determines colors for navigation item styles
+	 * @param item navigation item
+	 * @returns regular color and hover color
+	 */
+	const determineColors = useCallback(
+		(item: SettingsNavigationItem) => {
+			if (item.href === pathname) {
+				return {
+					color: "var(--blue-secondary)",
+					hover: "var(--blue-muted)",
+				};
+			}
+
+			if (item.highlighted) {
+				return {
+					color: "var(--foreground)",
+					hover: "var(--foreground)",
+				};
+			} else {
+				return {
+					color: "var(--muted-foreground)",
+					hover: "var(--foreground)",
+				};
+			}
+		},
+		[pathname],
+	);
+
+	/**
+	 *
+	 * @param items tree to render
+	 * @returns
 	 */
 	const renderTree = useCallback(
 		function render(
@@ -36,59 +66,41 @@ export const useNavigationTree = () => {
 				<Accordion
 					type="single"
 					collapsible
-					className="w-full space-y-1"
+					style={{
+						paddingLeft: `${depth * 0.75}rem`,
+					}}
 				>
 					{Object.entries(items).map(([_key, item]) => {
-						const isActive = item.href === pathname;
-						const hasChildren = !!item.children;
+						// elements
+						const { color, hover } = determineColors(item);
 
-						// Resolve dynamic styling classes
-						const baseRowClass = cn(
-							"flex items-center justify-between w-full px-3 py-2 text-sm font-medium rounded-md transition-all group no-underline!",
-							isActive
-								? "bg-secondary text-secondary-foreground"
-								: item.highlighted
-									? "text-foreground hover:bg-muted/80"
-									: "text-muted-foreground hover:text-foreground hover:bg-muted/50",
+						const Text = (
+							<span
+								style={
+									{ "--color": color, "--hover": hover } as React.CSSProperties
+								}
+								className="text-(--color) group-hover:text-(--hover)"
+							>
+								{item.text}
+							</span>
 						);
+						const RowClass =
+							"flex items-center justify-start pl-0 py-1.5 min-h-8 leading-none group no-underline!";
 
-						// Inner Content Wrapper
-						const NodeContent = (
-							<div className="flex items-center gap-2.5 min-w-0">
-								{/* Dynamically fallback to standard icons if item doesn't provide one */}
-								{hasChildren ? (
-									<Folder
-										className={cn(
-											"h-4 w-4 shrink-0 opacity-70 transition-transform group-data-[state=open]:scale-105",
-											isActive ? "text-primary" : "",
-										)}
-									/>
-								) : (
-									<FileText
-										className={cn(
-											"h-4 w-4 shrink-0 opacity-60",
-											isActive ? "text-primary" : "",
-										)}
-									/>
-								)}
-								<span className="truncate">{item.text}</span>
-							</div>
-						);
-
-						// Leaf Node (No Children) -> Pure Link
-						if (!hasChildren) {
+						// no children - show link
+						if (!item.children) {
 							return (
 								<Link
 									href={item.href}
 									key={item.href}
-									className={baseRowClass}
+									className={RowClass}
 								>
-									{NodeContent}
+									{Text}
 								</Link>
 							);
 						}
 
-						// Expandable Node (With Children) -> Accordion Structure
+						// children - render tree
 						return (
 							<AccordionItem
 								value={item.href}
@@ -96,37 +108,36 @@ export const useNavigationTree = () => {
 								className="border-b-0!"
 							>
 								<AccordionTrigger
-									className={cn(
-										baseRowClass,
-										"justify-between [&[data-state=open]>svg.chevron]:rotate-90",
-									)}
-									onClick={(e) => {
-										// Prevent trigger from running if path selection handles navigation directly
+									className={RowClass}
+									onClick={() => {
 										params?.onSelect(item);
 									}}
 								>
-									{NodeContent}
+									{Text}
 								</AccordionTrigger>
 
-								<AccordionContent className="pb-0 pt-1">
-									<div className="flex relative pl-3">
-										{/* Clean, minimalist vertical nesting guide wire */}
-										<div className="absolute left-3.75 top-0 bottom-1 w-px bg-border/60 rounded" />
-
-										<div className="flex flex-col w-full pl-4">
-											{render(params, item.children, depth + 1)}
+								{item.children && (
+									<AccordionContent>
+										<div className="flex">
+											<div className="border grow w-px rounded-2xl mx-2" />
+											<div className="flex flex-col w-full">
+												{render(params, item.children, depth + 1)}
+											</div>
 										</div>
-									</div>
-								</AccordionContent>
+									</AccordionContent>
+								)}
 							</AccordionItem>
 						);
 					})}
 				</Accordion>
 			);
 		},
-		[pathname],
+		[determineColors],
 	);
 
+	/**
+	 * generated jsx
+	 */
 	const jsx = useMemo(() => {
 		return renderTree({
 			onSelect: (item) => {

@@ -5,22 +5,24 @@ import { useTheme } from "next-themes";
 
 import { AvailableTheme, AvailableThemesList } from "@/features/ui/lib";
 import {
-	Combobox,
-	ComboboxCollection,
-	ComboboxContent,
-	ComboboxGroup,
-	ComboboxItem,
-	ComboboxLabel,
-	ComboboxList,
-	ComboboxSeparator,
-	ComboboxTrigger,
-	useMounted,
+  Combobox,
+  ComboboxCollection,
+  ComboboxContent,
+  ComboboxGroup,
+  ComboboxItem,
+  ComboboxLabel,
+  ComboboxList,
+  ComboboxSeparator,
+  ComboboxTrigger,
+  useMounted,
 } from "@/shared";
 
 export const ThemeButton = () => {
 	// states
 	const { theme: _theme, setTheme } = useTheme();
 	const theme = _theme ?? "system";
+
+	// fallback
 	const mounted = useMounted();
 
 	if (!mounted) {
@@ -53,7 +55,7 @@ export const ThemeButton = () => {
 				}
 			}}
 		>
-			<ComboboxTrigger className="h-9 min-w-16 flex items-center justify-between gap-2 px-3 bg-background border border-border/50 hover:bg-muted/20 transition-all text-xs font-medium capitalize tracking-tight rounded-md select-none">
+			<ComboboxTrigger className="h-9 min-w-16 flex items-center justify-between gap-2 px-3 bg-secondary/15 border hover:bg-muted/20 transition-all text-xs font-medium capitalize tracking-tight rounded-md select-none">
 				<div className="flex items-center gap-2">
 					{getThemeIcon(theme)}
 					<span suppressHydrationWarning>{theme.replace("-", " ")}</span>
@@ -62,9 +64,9 @@ export const ThemeButton = () => {
 
 			<ComboboxContent
 				align="center"
-				className="w-48 p-1 bg-popover rounded-xl mt-1 z-50 max-h-64 "
+				className="w-48 p-1 bg-popover rounded-xl  z-50 max-h-64 "
 			>
-				<ComboboxList className="shadow-xl [mask-image:linear-gradient(to_bottom,black_calc(100%-40px),transparent_100%)] ">
+				<ComboboxList className="[mask-image:linear-gradient(to_bottom,black_calc(100%-40px),transparent_100%)] ">
 					{(group: (typeof AvailableThemesList)[number], index: number) => (
 						<ComboboxGroup
 							key={group.value}
@@ -79,7 +81,6 @@ export const ThemeButton = () => {
 									const isActive = theme === item;
 									return (
 										<ComboboxItem
-											indicator={false}
 											key={item}
 											value={item}
 											className={`flex items-center justify-between text-xs font-medium tracking-tight px-2.5 py-1.5 cursor-pointer rounded-md transition-colors capitalize data-[highlighted]:bg-muted data-[highlighted]:text-foreground ${
@@ -92,12 +93,6 @@ export const ThemeButton = () => {
 												{getThemeIcon(item)}
 												<span>{item.replace("-", " ")}</span>
 											</div>
-
-											{isActive && (
-												<span className="text-[9px] font-mono font-bold text-emerald-500 bg-emerald-500/5 border border-emerald-500/10 px-1 py-0.5 rounded-sm scale-90 select-none tracking-tight">
-													Selected
-												</span>
-											)}
 										</ComboboxItem>
 									);
 								}}

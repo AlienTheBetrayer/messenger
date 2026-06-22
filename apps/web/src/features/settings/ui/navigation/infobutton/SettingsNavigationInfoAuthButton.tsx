@@ -2,8 +2,8 @@ import Link from "next/link";
 
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { InfoCube } from "@/features/settings/ui/navigation/infobutton/InfoCube";
-import { NavigationInfoButton } from "@/features/settings/ui/navigation/infobutton/NavigationInfoButton";
 import { NavigationInfoButtonText } from "@/features/settings/ui/navigation/infobutton/NavigationInfoButtonText";
+import { Button } from "@/shared";
 
 export const SettingsNavigationInfoAuthButton = ({
 	className,
@@ -13,22 +13,26 @@ export const SettingsNavigationInfoAuthButton = ({
 	// auth
 	const { data: auth } = useAuth();
 
-	// fallback
+	// no auth fallback
 	if (!auth) {
-		return <div className="w-full h-12 rounded-lg skeleton" />;
+		return <div className="w-full h-full skeleton" />;
 	}
 
 	// jsx
 	return (
-		<NavigationInfoButton className={className}>
+		<Button
+			variant="ghost"
+			className={`flex gap-2 w-full h-full ${className ?? ""}`}
+			asChild
+		>
 			<Link
+				className="flex gap-2 w-full h-full"
 				href="/profile"
-				className="flex items-center gap-3 w-full"
 			>
 				<InfoCube
 					image={auth.user.image_url}
-          color={auth.user.color}
-          bouncing
+					color={auth.user.color}
+					animation="bounce"
 				/>
 
 				<NavigationInfoButtonText
@@ -36,6 +40,6 @@ export const SettingsNavigationInfoAuthButton = ({
 					description={auth.user.status ?? "No status"}
 				/>
 			</Link>
-		</NavigationInfoButton>
+		</Button>
 	);
 };
