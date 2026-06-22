@@ -1,13 +1,22 @@
 "use client";
 
 import Link from "next/link";
+import { useCallback } from "react";
 
 import { SettingsNavigationInfoAuthButton } from "@/features/settings/ui/navigation/infobutton/SettingsNavigationInfoAuthButton";
 import { Icons } from "@/features/ui/lib";
+import { toggleVisibility } from "@/features/ui/model/ui.slice";
 import { LogoutMessageBox } from "@/features/ui/ui/messageboxes/LogoutMessageBox";
-import { Button, PopoverContent, Separator } from "@/shared";
+import { Button, PopoverContent, Separator, useAppDispatch } from "@/shared";
 
 export const AuthButtonProfileContent = () => {
+	// redux
+	const dispatch = useAppDispatch();
+
+	const onExit = useCallback(() => {
+		dispatch(toggleVisibility("visibility"));
+	}, [dispatch]);
+
 	return (
 		<PopoverContent
 			className="w-64 p-1.5 shadow-xl border-border/60 rounded-xl"
@@ -15,7 +24,6 @@ export const AuthButtonProfileContent = () => {
 			sideOffset={6}
 		>
 			<ul className="flex flex-col gap-1 w-full">
-				{/* 1. Header Account Profile Details Container */}
 				<li className="h-14 w-full px-1 flex items-center">
 					<SettingsNavigationInfoAuthButton />
 				</li>
@@ -24,7 +32,6 @@ export const AuthButtonProfileContent = () => {
 					<Separator className="opacity-60" />
 				</li>
 
-				{/* 2. Core Navigation Menu Options */}
 				<li>
 					<ul className="flex flex-col w-full gap-0.5">
 						<li>
@@ -56,6 +63,22 @@ export const AuthButtonProfileContent = () => {
 								</Link>
 							</Button>
 						</li>
+
+						<li>
+							<Button
+								className="w-full justify-start gap-2 h-8 text-xs px-2.5 text-muted-foreground hover:text-foreground hover:bg-muted/60 font-medium group"
+								variant="ghost"
+								onClick={onExit}
+								asChild
+							>
+								<Link href="/login">
+									<span className="w-4 h-4 shrink-0 flex items-center justify-center text-muted-foreground/70 transition-colors group-hover:text-primary">
+										{Icons.key}
+									</span>
+									Add a connection
+								</Link>
+							</Button>
+						</li>
 					</ul>
 				</li>
 
@@ -63,7 +86,6 @@ export const AuthButtonProfileContent = () => {
 					<Separator className="opacity-60" />
 				</li>
 
-				{/* 3. NEW: System Performance & Operational Workspace Telemetry */}
 				<li>
 					<ul className="flex flex-col w-full gap-1 px-2.5 py-1.5 text-[11px] font-medium text-muted-foreground/80">
 						<li className="flex items-center justify-between">
@@ -92,7 +114,6 @@ export const AuthButtonProfileContent = () => {
 					<Separator className="opacity-60" />
 				</li>
 
-				{/* 4. Action Exit Area */}
 				<li>
 					<ul className="flex flex-col w-full">
 						<li className="flex w-full">

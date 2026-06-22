@@ -1,6 +1,8 @@
 import type React from "react";
 
-export default function AuthLayout({
+import { AuthSessionAddPopup } from "@/features/auth/ui/other/AuthSessionAddPopup";
+
+export default async function AuthLayout({
 	children,
 }: {
 	children: React.ReactNode;
@@ -13,6 +15,8 @@ export default function AuthLayout({
 			<div className="relative z-10 w-full flex items-center justify-center animate-in fade-in zoom-in-99 duration-300 ease-out">
 				{children}
 			</div>
+
+			<AuthSessionAddPopup />
 		</main>
 	);
 }

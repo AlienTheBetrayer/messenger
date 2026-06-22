@@ -11,7 +11,7 @@ import { AuthCoreService } from "../auth.service";
  */
 export const jestInitAuthCore = async () => {
 	const mockPrismaService = {
-		auth_session: {
+		auth_sessions: {
 			findFirst: jest.fn(),
 		},
 	};

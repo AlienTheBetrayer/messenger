@@ -7,7 +7,6 @@ import { VerifySuccess } from "@/features/auth/ui/verify/VerifySuccess";
 import { Card, queryStateHooks } from "@/shared";
 import { useMounted } from "@/shared/hooks/useMounted";
 
-// High-end workspace bezier curve transitions (Fast, snappy, zero drag feel)
 const orchestratorVariants: Variants = {
 	initial: {
 		opacity: 0,
@@ -20,7 +19,7 @@ const orchestratorVariants: Variants = {
 		scale: 1,
 		transition: {
 			duration: 0.25,
-			ease: [0.16, 1, 0.3, 1], // Ultra premium custom cubic-bezier
+			ease: [0.16, 1, 0.3, 1],
 		},
 	},
 	exit: {
@@ -35,27 +34,25 @@ const orchestratorVariants: Variants = {
 };
 
 export const VerifyOrchestrator = () => {
-	const [verify] = queryStateHooks.useVerify();
+	// states
+	const [authType] = queryStateHooks.useAuthType();
 	const mounted = useMounted();
 
 	if (!mounted) {
 		return null;
 	}
 
-	// Active validation state checklist flag
-	const isActive = verify === "pending" || verify === "success";
+	// ui states
+	const isActive =
+		authType === "verify-pending" || authType === "verify-success";
 
+	// jsx
 	return (
-		/* 
-      We apply an automatic margin block offset ONLY when active.
-      By allowing the container to render natively inline without absolute positioning,
-      the parent retains its physical layout height, safely pushing your global page footer down!
-    */
 		<div
 			className={`w-full transition-all duration-300 ${isActive ? "mt-4" : "mt-0"}`}
 		>
 			<AnimatePresence mode="wait">
-				{verify === "pending" && (
+				{authType === "verify-pending" && (
 					<motion.div
 						key="pending-form"
 						variants={orchestratorVariants}
@@ -71,7 +68,7 @@ export const VerifyOrchestrator = () => {
 					</motion.div>
 				)}
 
-				{verify === "success" && (
+				{authType === "verify-success" && (
 					<motion.div
 						key="success-form"
 						variants={orchestratorVariants}

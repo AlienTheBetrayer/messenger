@@ -165,7 +165,7 @@ export class AppJwtService {
 	 */
 	async issueAuthData(params: { userId: string; ctx: AuthContextType }) {
 		// session
-		const session = await this.prismaService.auth_session.create({
+		const session = await this.prismaService.auth_sessions.create({
 			data: {
 				id: generateId(),
 				user_id: params.userId,
@@ -201,7 +201,7 @@ export class AppJwtService {
 		).withClientHints();
 
 		// updating the session
-		const updatedSession = await this.prismaService.auth_session.update({
+		const updatedSession = await this.prismaService.auth_sessions.update({
 			where: {
 				id: session.id,
 			},

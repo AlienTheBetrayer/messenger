@@ -174,7 +174,7 @@ export class AuthService {
 	 */
 	async logout(sessionId: string) {
 		// check if it exists at all
-		const isFound = await this.prismaService.auth_session.count({
+		const isFound = await this.prismaService.auth_sessions.count({
 			where: { id: sessionId },
 		});
 
@@ -187,7 +187,7 @@ export class AuthService {
 		}
 
 		// deleting the session
-		const session = await this.prismaService.auth_session.delete({
+		const session = await this.prismaService.auth_sessions.delete({
 			where: { id: sessionId },
 		});
 

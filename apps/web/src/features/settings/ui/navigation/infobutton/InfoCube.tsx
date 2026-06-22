@@ -18,7 +18,7 @@ export const InfoCube = ({
 	return (
 		<div
 			className={cn(
-				"flex shrink-0 items-center justify-center rounded-md w-9 h-9 border shadow-sm overflow-hidden transition-colors duration-200",
+				"grid shrink-0 rounded-md w-9 h-9 border shadow-sm overflow-hidden transition-colors duration-200",
 				className,
 			)}
 			style={{
@@ -29,7 +29,7 @@ export const InfoCube = ({
 		>
 			<div
 				className={cn(
-					"flex items-center justify-center w-full h-full",
+					"flex items-center justify-center",
 					bouncing && "animate-sub-bounce",
 				)}
 			>

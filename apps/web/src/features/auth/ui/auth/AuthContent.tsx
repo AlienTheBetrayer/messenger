@@ -20,7 +20,7 @@ import {
 export const AuthContent = () => {
 	// states
 	const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
-	const [verify] = queryStateHooks.useVerify();
+	const [authType] = queryStateHooks.useAuthType();
 	const { type, authForm } = useAuthFormProvider();
 
 	// ui states
@@ -33,7 +33,7 @@ export const AuthContent = () => {
 			<FieldGroup className="gap-5 w-full">
 				<Controller
 					name="email"
-					disabled={verify === "pending"}
+					disabled={authType === "verify-pending"}
 					control={authForm.control}
 					render={({ field, fieldState }) => (
 						<Field data-invalid={fieldState.invalid}>

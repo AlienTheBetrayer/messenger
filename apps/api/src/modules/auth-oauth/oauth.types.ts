@@ -11,7 +11,14 @@ export const oAuthIdentitySchema = z.object({
 	name: z.string(),
 	profileUrl: z.string().optional(),
 	error: z.enum(ExceptionCodes).optional(),
+	metadata: z.object({
+		action: z.enum(["login", "connect"]).optional(),
+	}),
 });
+
+export type oAuthIdentityMetadata = z.infer<
+	typeof oAuthIdentitySchema.shape.metadata
+>;
 
 /**
  * github api

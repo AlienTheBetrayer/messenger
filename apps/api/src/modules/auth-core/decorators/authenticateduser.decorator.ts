@@ -1,6 +1,19 @@
-import { usersSchema, usersType } from "@gravity/shared";
+import { auth_sessionSchema, usersSchema } from "@gravity/shared";
 import { createParamDecorator, ExecutionContext } from "@nestjs/common";
 import { Request } from "express";
+import z from "zod";
+
+/**
+ * schema representation of the authenticated user
+ */
+const authenticatedUserSchema = usersSchema.extend({
+	session: auth_sessionSchema,
+});
+
+/**
+ * type
+ */
+export type AuthenticatedUserType = z.infer<typeof authenticatedUserSchema>;
 
 /**
  * decorator for getting the authenticated user. (works only if auth guard is set)
@@ -18,7 +31,7 @@ export const AuthenticatedUser = createParamDecorator(
 		}
 
 		// parsing
-		const parsed = usersSchema.safeParse(user);
+		const parsed = authenticatedUserSchema.safeParse(user);
 
 		if (!parsed.success) {
 			return null;
@@ -27,8 +40,3 @@ export const AuthenticatedUser = createParamDecorator(
 		return parsed.data;
 	},
 );
-
-/**
- * type
- */
-export type AuthenticatedUserType = usersType;

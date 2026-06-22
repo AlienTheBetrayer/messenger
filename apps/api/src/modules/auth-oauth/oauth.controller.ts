@@ -1,5 +1,4 @@
 import { Controller, Get, Res, UseGuards } from "@nestjs/common";
-import { AuthGuard } from "@nestjs/passport";
 import { Response } from "express";
 
 import { AuthContext, AuthContextType } from "../auth-core/decorators";
@@ -9,6 +8,7 @@ import {
 	OAuthIdentity,
 	OAuthIdentityType,
 } from "./decorators/oauthidentity.decorator";
+import { GithubGuard, GoogleGuard } from "./guards";
 import { OAuthService } from "./oauth.service";
 import { redirectErrorURL } from "./oauth.types";
 
@@ -21,7 +21,7 @@ export class OAuthController {
 	 */
 	@Get("google")
 	@AuthenticationFailureRedirect(redirectErrorURL("AUTHENTICATED"))
-	@UseGuards(AuthGuard("google"), NotAuthenticatedGuard)
+	@UseGuards(GoogleGuard, NotAuthenticatedGuard)
 	googleAuth() {}
 
 	/**
@@ -32,7 +32,7 @@ export class OAuthController {
 	 */
 	@AuthenticationFailureRedirect(redirectErrorURL("AUTHENTICATED"))
 	@Get("google/callback")
-	@UseGuards(AuthGuard("google"), NotAuthenticatedGuard)
+	@UseGuards(GoogleGuard, NotAuthenticatedGuard)
 	async googleCallback(
 		@OAuthIdentity() identity: OAuthIdentityType,
 		@AuthContext() ctx: AuthContextType,
@@ -46,7 +46,7 @@ export class OAuthController {
 	 */
 	@AuthenticationFailureRedirect(redirectErrorURL("AUTHENTICATED"))
 	@Get("github")
-	@UseGuards(AuthGuard("github"), NotAuthenticatedGuard)
+	@UseGuards(GithubGuard, NotAuthenticatedGuard)
 	githubAuth() {}
 
 	/**
@@ -57,7 +57,7 @@ export class OAuthController {
 	 */
 	@AuthenticationFailureRedirect(redirectErrorURL("AUTHENTICATED"))
 	@Get("github/callback")
-	@UseGuards(AuthGuard("github"), NotAuthenticatedGuard)
+	@UseGuards(GithubGuard, NotAuthenticatedGuard)
 	async githubCallback(
 		@OAuthIdentity() identity: OAuthIdentityType,
 		@AuthContext() ctx: AuthContextType,

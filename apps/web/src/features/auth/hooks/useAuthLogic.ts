@@ -1,16 +1,16 @@
 import {
-  AuthFormSchema,
-  usersType,
-  VerificationFormSchema,
+	AuthFormSchema,
+	usersType,
+	VerificationFormSchema,
 } from "@gravity/shared";
 import { useCallback, useMemo } from "react";
 
 import { useAuthNotifications } from "@/features/auth/hooks/useAuthNotifications";
 import {
-  useForgotPasswordMutation,
-  useGetCodeMutation,
-  useLoginMutation,
-  useSignupMutation,
+	useForgotPasswordMutation,
+	useGetCodeMutation,
+	useLoginMutation,
+	useSignupMutation,
 } from "@/features/auth/model/auth.slice";
 import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
 import { normalizeError, queryStateHooks } from "@/shared";
@@ -18,7 +18,7 @@ import { normalizeError, queryStateHooks } from "@/shared";
 export const useAuthLogic = () => {
 	// states
 	const { authForm, verifyForm, type } = useAuthFormProvider();
-	const [, setVerify] = queryStateHooks.useVerify();
+	const [, setAuthType] = queryStateHooks.useAuthType();
 	const notifications = useAuthNotifications();
 
 	// redux
@@ -33,7 +33,7 @@ export const useAuthLogic = () => {
 			const fn = async () => {
 				try {
 					const res = await getCode({ email: data.email, type }).unwrap();
-					setVerify("pending");
+					setAuthType("verify-pending");
 					return res;
 				} catch (e) {
 					const message = normalizeError(e);
@@ -44,7 +44,7 @@ export const useAuthLogic = () => {
 
 			notifications.auth(fn);
 		},
-		[authForm, getCode, notifications, setVerify, type],
+		[authForm, getCode, notifications, setAuthType, type],
 	);
 
 	// verify
@@ -97,7 +97,7 @@ export const useAuthLogic = () => {
 						}
 					}
 
-					setVerify("success");
+					setAuthType("verify-success");
 					return user;
 				} catch (e) {
 					// error handling
@@ -115,7 +115,7 @@ export const useAuthLogic = () => {
 			forgotPassword,
 			login,
 			notifications,
-			setVerify,
+			setAuthType,
 			signup,
 			type,
 			verifyForm,
@@ -124,8 +124,8 @@ export const useAuthLogic = () => {
 
 	return useMemo(() => {
 		return {
-      auth,
-      verify,
+			auth,
+			verify,
 		};
 	}, [auth, verify]);
 };

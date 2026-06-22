@@ -2,7 +2,6 @@
 
 import { Monitor, Moon, Sun, Terminal } from "lucide-react";
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
 
 import { AvailableTheme, AvailableThemesList } from "@/features/ui/lib";
 import {
@@ -15,19 +14,14 @@ import {
 	ComboboxList,
 	ComboboxSeparator,
 	ComboboxTrigger,
+	useMounted,
 } from "@/shared";
 
 export const ThemeButton = () => {
 	// states
 	const { theme: _theme, setTheme } = useTheme();
 	const theme = _theme ?? "system";
-	const [mounted, setMounted] = useState<boolean>(false);
-
-	useEffect(() => {
-		requestAnimationFrame(() => {
-			setMounted(true);
-		});
-	}, []);
+	const mounted = useMounted();
 
 	if (!mounted) {
 		return <div className="h-9 w-24 skeleton" />;

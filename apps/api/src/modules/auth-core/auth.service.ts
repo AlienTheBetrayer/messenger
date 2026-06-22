@@ -43,7 +43,7 @@ export class AuthCoreService {
 				});
 
 				// verifying the session
-				const found = await this.prismaService.auth_session.findFirst({
+				const found = await this.prismaService.auth_sessions.findFirst({
 					where: { id: verified.sessionId, user_id: verified.userId },
 					include: { users: true },
 				});
@@ -60,12 +60,16 @@ export class AuthCoreService {
 					throw new Error("jwt hash is not verified.");
 				}
 
+				const { users, ...session } = found;
+
 				// setting user
-				request.user ??= found.users satisfies usersType;
+				request.user ??= { ...(users satisfies usersType), session };
 
 				return true;
 			} catch (e) {
-				throw new Error("jwt token is not verified.");
+				throw new Error(
+					e instanceof Error ? e.message : "jwt token is not verified.",
+				);
 			}
 		};
 

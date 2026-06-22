@@ -19,7 +19,7 @@ export const jestInitAuth = async () => {
 			update: jest.fn(),
 			create: jest.fn(),
 		},
-		auth_session: {
+		auth_sessions: {
 			delete: jest.fn(),
 			count: jest.fn(),
 		},
@@ -54,8 +54,8 @@ export const jestInitAuth = async () => {
 			{ provide: PrismaService, useValue: mockPrismaService },
 			{ provide: VerifyService, useValue: mockVerifyService },
 			{ provide: AppJwtService, useValue: mockAppJwtService },
-			{ provide: UserService, useValue: mockUserService },
-		],
+      { provide: UserService, useValue: mockUserService },
+    ],
 	}).compile();
 
 	const authService = moduleRef.get<AuthService>(AuthService);

@@ -25,26 +25,26 @@ describe("AuthService", () => {
 			ctx.mockAppJwtService.verify.mockReturnValue({
 				sessionId: session.id,
 			});
-			ctx.mockPrismaService.auth_session.count.mockResolvedValue(1);
+			ctx.mockPrismaService.auth_sessions.count.mockResolvedValue(1);
 
 			// act
 			const result = await ctx.authService.logout(session.id);
 
 			// assert
-			expect(ctx.mockPrismaService.auth_session.delete).toHaveBeenCalled();
+			expect(ctx.mockPrismaService.auth_sessions.delete).toHaveBeenCalled();
 		});
 	});
 
 	describe("sad paths", () => {
 		it("should not log the user out if session is not found", async () => {
 			// arrange
-			ctx.mockPrismaService.auth_session.count.mockResolvedValue(0);
+			ctx.mockPrismaService.auth_sessions.count.mockResolvedValue(0);
 
 			// act
 			const result = ctx.authService.logout("session-id");
 
 			// assert
-      expect(ctx.mockPrismaService.auth_session.delete).not.toHaveBeenCalled();
+      expect(ctx.mockPrismaService.auth_sessions.delete).not.toHaveBeenCalled();
       await expect(result).rejects.toThrow();
 		});
 	});

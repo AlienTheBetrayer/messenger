@@ -21,10 +21,8 @@ const inter = Inter({
 
 export default async function RootLayout({
 	children,
-	modal,
 }: Readonly<{
 	children: React.ReactNode;
-	modal: React.ReactNode;
 }>) {
 	return (
 		<html
@@ -38,7 +36,6 @@ export default async function RootLayout({
 					<NotificationSonner />
 
 					<div className="flex-grow flex flex-col">{children}</div>
-					{modal}
 
           <div className="mb-16"/>
 					<Footer />

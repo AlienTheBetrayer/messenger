@@ -16,45 +16,41 @@ datasource db {
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model users {
-  id            String          @id
-  email         String          @unique
-  username      String          @unique
-  password      String?
-  deleted_at    DateTime?       @db.Timestamptz(6)
-  edited_at     DateTime?       @db.Timestamptz(6)
-  created_at    DateTime        @default(now()) @db.Timestamptz(6)
-  color         String
-  image_url     String
-  emoji         String?
-  status        String?
-  auth_session  auth_session[]
-  notifications notifications[]
-}
-
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model verification_codes {
-  id         String                 @id(map: "confirmation-codes_pkey")
-  email      String
-  code       String
-  expiry_at  DateTime               @db.Timestamptz(6)
-  created_at DateTime               @default(now()) @db.Timestamptz(6)
-  type       verification_code_type
-}
-
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model auth_session {
-  id                 String    @id
+model auth_sessions {
+  id                 String               @id(map: "auth_session_pkey")
   user_id            String
   refresh_token_hash String
-  last_seen_at       DateTime? @default(now()) @db.Timestamptz(6)
-  created_at         DateTime  @default(now()) @db.Timestamptz(6)
+  last_seen_at       DateTime?            @default(now()) @db.Timestamptz(6)
+  created_at         DateTime             @default(now()) @db.Timestamptz(6)
   browser            Json?
   os                 Json?
   device             Json?
   cpu                Json?
   ip                 String?
-  users              users     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  users              users                @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "auth_session_user_id_fkey")
+  connected_sessions connected_sessions[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model connected_sessions {
+  id                       String                   @id
+  session_id               String
+  created_at               DateTime                 @default(now()) @db.Timestamptz(6)
+  group_id                 String
+  connected_sessions_group connected_sessions_group @relation(fields: [group_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  auth_sessions            auth_sessions            @relation(fields: [session_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model connected_sessions_group {
+  id                 String               @id
+  title              String?
+  emoji              String?
+  edited_at          DateTime?            @db.Timestamptz(6)
+  created_at         DateTime             @default(now()) @db.Timestamptz(6)
+  connected_sessions connected_sessions[]
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
@@ -69,11 +65,31 @@ model notifications {
   users          users                        @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
-/// This enum is commented in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-enum verification_code_type {
-  login
-  signup
-  forgot_password
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model users {
+  id            String          @id
+  email         String          @unique
+  username      String          @unique
+  password      String?
+  deleted_at    DateTime?       @db.Timestamptz(6)
+  edited_at     DateTime?       @db.Timestamptz(6)
+  created_at    DateTime        @default(now()) @db.Timestamptz(6)
+  color         String
+  image_url     String
+  emoji         String?
+  status        String?
+  auth_sessions auth_sessions[]
+  notifications notifications[]
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model verification_codes {
+  id         String                 @id(map: "confirmation-codes_pkey")
+  email      String
+  code       String
+  expiry_at  DateTime               @db.Timestamptz(6)
+  created_at DateTime               @default(now()) @db.Timestamptz(6)
+  type       verification_code_type
 }
 
 /// This enum is commented in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
@@ -90,4 +106,11 @@ enum notification_type {
   warning
   info
   promise
+}
+
+/// This enum is commented in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+enum verification_code_type {
+  login
+  signup
+  forgot_password
 }

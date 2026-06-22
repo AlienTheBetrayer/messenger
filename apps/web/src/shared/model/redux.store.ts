@@ -1,6 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+import { uiSlice } from "@/features/ui/model/ui.slice";
+
 /**
  * global api slice
  * has to be injected later into
@@ -19,6 +21,7 @@ export const createReduxStore = () => {
 	const store = configureStore({
 		reducer: {
 			[baseApi.reducerPath]: baseApi.reducer,
+			[uiSlice.name]: uiSlice.reducer,
 		},
 		middleware: (gDM) => gDM().concat(baseApi.middleware),
 	});

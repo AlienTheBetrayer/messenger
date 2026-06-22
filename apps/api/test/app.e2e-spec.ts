@@ -1,11 +1,10 @@
+import type { INestApplication } from "@nestjs/common";
 import { Test, type TestingModule } from "@nestjs/testing";
 import request from "supertest";
-
-import { AppModule } from "./../src/app.module";
+import type { App } from "supertest/types";
 
 import type { RootService } from "../src/modules/root/root.service";
-import type { INestApplication } from "@nestjs/common";
-import type { App } from "supertest/types";
+import { AppModule } from "./../src/app.module";
 
 describe("AppController (e2e)", () => {
 	let app: INestApplication<App>;
@@ -24,9 +23,9 @@ describe("AppController (e2e)", () => {
 			.get("/")
 			.expect(200)
 			.expect((res) => {
-				expect(
-					(res.body as ReturnType<RootService["getApiHealth"]>).status,
-				).toBe("ok");
+				expect((res.body as ReturnType<RootService["health"]>).status).toBe(
+					"ok",
+				);
 			});
 	});
 

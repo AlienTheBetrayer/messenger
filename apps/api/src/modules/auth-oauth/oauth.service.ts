@@ -45,7 +45,7 @@ export class OAuthService {
 	 * oauth-specific login
 	 * @param response response object
 	 * @param ouser user object retrieved from oauth
-	 * @returns user object
+	 * @returns user object and tokens + session
 	 */
 	async login(
 		identity: OAuthIdentityType,
@@ -85,6 +85,6 @@ export class OAuthService {
 		// cookies
 		this.jwtService.setAuthHttpCookies({ ...tokens, response });
 
-		return user;
+		return { user, ...tokens };
 	}
 }

@@ -9,7 +9,7 @@ import {
 } from "@/shared";
 
 export const VerifyHeader = () => {
-	const [, setVerify] = queryStateHooks.useVerify();
+	const [, setAuthType] = queryStateHooks.useAuthType();
 
 	return (
 		<CardHeader className="pt-4 pb-2 px-6 border-b border-border/40 bg-muted/10 relative">
@@ -28,7 +28,7 @@ export const VerifyHeader = () => {
 					variant="ghost"
 					type="button"
 					onClick={() => {
-						setVerify(null);
+						setAuthType(null);
 					}}
 				>
 					<span className="*:size-3.5 flex items-center justify-center">

@@ -3,11 +3,11 @@ import Link from "next/link";
 import { AuthFormVariants } from "@/features/auth/lib/variants";
 import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
 import {
-	Button,
-	CardAction,
-	CardDescription,
-	CardHeader,
-	CardTitle,
+  Button,
+  CardAction,
+  CardDescription,
+  CardHeader,
+  CardTitle,
 } from "@/shared";
 
 export const AuthHeader = () => {
@@ -21,7 +21,8 @@ export const AuthHeader = () => {
 	return (
 		<CardHeader className="pt-8 pb-4 px-6 border-b border-border/40 bg-muted/10">
 			<div className="flex flex-col gap-1.5">
-				<CardTitle className="text-4xl md:text-5xl font-extrabold tracking-tighter bg-gradient-to-b from-foreground via-foreground to-foreground/80 bg-clip-text text-transparent">
+        <CardTitle className="text-5xl font-extrabold tracking-tighter bg-gradient-to-b from-foreground via-foreground to-foreground/80 bg-clip-text text-transparent pb-1">
+
 					{variant.title}
 				</CardTitle>
 				<CardDescription className="text-sm tracking-tight text-muted-foreground max-w-sm">

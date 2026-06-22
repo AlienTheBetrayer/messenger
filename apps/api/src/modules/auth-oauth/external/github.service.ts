@@ -1,10 +1,11 @@
 import { Injectable } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
+import { Request } from "express";
 import { Profile, Strategy } from "passport-github2";
 
 import { AppConfigService } from "../../config/config.service";
 import { OAuthIdentityType } from "../decorators";
-import { GithubUserEmails } from "../oauth.types";
+import { GithubUserEmails, oAuthIdentityMetadata } from "../oauth.types";
 
 @Injectable()
 export class GithubStrategy extends PassportStrategy(Strategy, "github") {
@@ -14,20 +15,28 @@ export class GithubStrategy extends PassportStrategy(Strategy, "github") {
 			clientSecret: configService.get("GITHUB_CLIENT_SECRET"),
 			callbackURL: "http://localhost:3001/oauth/github/callback",
 			scope: ["user:email"],
+			passReqToCallback: true,
 		});
 	}
 
 	async validate(
+		req: Request,
 		_accessToken: string,
 		_refreshToken: string,
 		profile: Profile,
-	) {
+  ) {
+		// metadata
+		const metadata = JSON.parse(
+      (req.query.state as string) ?? "{}",
+		) as oAuthIdentityMetadata;
+
 		const data: OAuthIdentityType = {
 			provider: "github",
 			providerId: profile.id,
 			email: profile.emails?.[0]?.value,
 			name: profile.displayName || profile.username || "Unnamed",
-			profileUrl: profile.profileUrl,
+      profileUrl: profile.profileUrl,
+      metadata
 		};
 
 		if (data.email) {
