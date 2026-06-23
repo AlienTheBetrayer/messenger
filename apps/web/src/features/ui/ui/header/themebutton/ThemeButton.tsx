@@ -1,46 +1,31 @@
 "use client";
 
-import { Monitor, Moon, Sun, Terminal } from "lucide-react";
 import { useTheme } from "next-themes";
 
 import { AvailableTheme, AvailableThemesList } from "@/features/ui/lib";
+import { getThemeIcon } from "@/features/ui/ui/header/themebutton/getThemeIcon";
 import {
-  Combobox,
-  ComboboxCollection,
-  ComboboxContent,
-  ComboboxGroup,
-  ComboboxItem,
-  ComboboxLabel,
-  ComboboxList,
-  ComboboxSeparator,
-  ComboboxTrigger,
-  useMounted,
+	Combobox,
+	ComboboxCollection,
+	ComboboxContent,
+	ComboboxGroup,
+	ComboboxItem,
+	ComboboxLabel,
+	ComboboxList,
+	ComboboxSeparator,
+	ComboboxTrigger,
+	useMounted,
 } from "@/shared";
 
 export const ThemeButton = () => {
 	// states
 	const { theme: _theme, setTheme } = useTheme();
-	const theme = _theme ?? "system";
+	const theme = (_theme ?? "system") as AvailableTheme;
 
 	// fallback
-	const mounted = useMounted();
-
-	if (!mounted) {
-		return <div className="h-9 w-24 skeleton" />;
+	if (!useMounted()) {
+		return <div className="w-20 h-9 skeleton" />;
 	}
-
-	// ui states
-	const getThemeIcon = (name: string) => {
-		const fallback = (name || "system").toLowerCase();
-		if (fallback.includes("light"))
-			return <Sun className="size-3.5 text-muted-foreground" />;
-		if (fallback.includes("system"))
-			return <Monitor className="size-3.5 text-muted-foreground" />;
-		if (fallback.includes("amoled") || fallback.includes("contrast")) {
-			return <Terminal className="size-3.5 text-muted-foreground" />;
-		}
-		return <Moon className="size-3.5 text-muted-foreground" />;
-	};
 
 	// jsx
 	return (
@@ -58,7 +43,7 @@ export const ThemeButton = () => {
 			<ComboboxTrigger className="h-9 min-w-16 flex items-center justify-between gap-2 px-3 bg-secondary/15 border hover:bg-muted/20 transition-all text-xs font-medium capitalize tracking-tight rounded-md select-none">
 				<div className="flex items-center gap-2">
 					{getThemeIcon(theme)}
-					<span suppressHydrationWarning>{theme.replace("-", " ")}</span>
+					<span>{theme.replace("-", " ")}</span>
 				</div>
 			</ComboboxTrigger>
 
@@ -66,7 +51,7 @@ export const ThemeButton = () => {
 				align="center"
 				className="w-48 p-1 bg-popover rounded-xl  z-50 max-h-64 "
 			>
-				<ComboboxList className="[mask-image:linear-gradient(to_bottom,black_calc(100%-40px),transparent_100%)] ">
+				<ComboboxList className="fade-bottom">
 					{(group: (typeof AvailableThemesList)[number], index: number) => (
 						<ComboboxGroup
 							key={group.value}

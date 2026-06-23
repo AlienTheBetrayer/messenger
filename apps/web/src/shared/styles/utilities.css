@@ -16,10 +16,10 @@
 		z-index: -1;
 	}
 
-  /* sizes */
-  .max-width {
-    max-width: 1425px;
-  }
+	/* sizes */
+	.max-width {
+		max-width: 1425px;
+	}
 
 	/* shell container */
 	.shell {
@@ -45,7 +45,7 @@
 
 	.skeleton {
 		position: relative;
-    opacity: 0.5;
+		opacity: 0.5;
 		background: linear-gradient(
 			90deg,
 			var(--card) 25%,
@@ -55,7 +55,7 @@
 		background-size: 200% 100%;
 		overflow: hidden;
 		animation: 3s skeletonAnimation ease-in-out infinite alternate;
-    border-radius: 8px;
+		border-radius: 8px;
 	}
 
 	.dotted {
@@ -79,6 +79,33 @@
 			0 1px 1px rgb(0 0 0 / 0.04),
 			0 4px 8px rgb(0 0 0 / 0.08),
 			0 12px 24px rgb(0 0 0 / 0.08);
+	}
+
+	/* fade outs */
+	.fade-bottom {
+		-webkit-mask-image: linear-gradient(
+			to bottom,
+			black calc(100% - 40px),
+			transparent 100%
+		);
+		mask-image: linear-gradient(
+			to bottom,
+			black calc(100% - 40px),
+			transparent 100%
+		);
+	}
+
+	.fade-top {
+		-webkit-mask-image: linear-gradient(
+			to top,
+			black calc(100% - 40px),
+			transparent 100%
+		);
+		mask-image: linear-gradient(
+			to top,
+			black calc(100% - 40px),
+			transparent 100%
+		);
 	}
 
 	/* Radix entry/exit transitions */

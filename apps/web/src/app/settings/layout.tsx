@@ -1,5 +1,9 @@
 import { SettingsNavigation } from "@/features/settings/ui/navigation/SettingsNavigation";
 
+export const metadata = {
+	title: "Settings",
+};
+
 export default function SettingsLayout({
 	children,
 }: {

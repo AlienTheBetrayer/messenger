@@ -1,5 +1,9 @@
 import type React from "react";
 
+export const metadata = {
+	title: "Authentication",
+};
+
 export default async function AuthLayout({
 	children,
 }: {

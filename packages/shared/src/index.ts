@@ -28,6 +28,6 @@ export * from "./schemas/prisma/schemas/models/connected_sessions_group.schema.j
 export * from "./schemas/prisma/schemas/models/notifications.schema.js";
 export * from "./schemas/prisma/schemas/models/users.schema.js";
 export * from "./schemas/prisma/schemas/models/verification_codes.schema.js";
-export * from "./schemas/routes/auth-connections.js";
+export * from "./schemas/routes/sessions.js";
 export * from "./schemas/routes/auth.js";
 export * from "./schemas/routes/notifications.js";

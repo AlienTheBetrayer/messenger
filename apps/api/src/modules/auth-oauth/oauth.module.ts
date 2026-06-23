@@ -1,6 +1,5 @@
 import { Module } from "@nestjs/common";
 
-import { AuthConnectionsModule } from "../auth-connections/auth.module";
 import { AppJwtModule } from "../jwt/jwt.module";
 import { UserModule } from "../user/user.module";
 import { GithubStrategy, GoogleStrategy } from "./external";

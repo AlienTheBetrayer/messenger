@@ -1,3 +1,4 @@
+import { SessionsReturn } from "@gravity/shared";
 import { Body, Controller, Get, Post, UseGuards } from "@nestjs/common";
 
 import {
@@ -5,12 +6,12 @@ import {
 	AuthenticatedUserType,
 } from "../auth-core/decorators";
 import { AuthenticatedGuard } from "../auth-core/guards";
-import { AuthSessionAddDto } from "./auth.dto";
-import { AuthConnectionsService } from "./auth.service";
+import { SessionAddDto } from "./sessions.dto";
+import { SessionsService } from "./sessions.service";
 
-@Controller("auth-connections")
-export class AuthConnectionsController {
-	constructor(private readonly authConnectionService: AuthConnectionsService) {}
+@Controller("sessions")
+export class SessionsController {
+	constructor(private readonly sessionsService: SessionsService) {}
 
 	/**
 	 * gets all the currently connected auth sessions in groups
@@ -18,8 +19,10 @@ export class AuthConnectionsController {
 	 */
 	@UseGuards(AuthenticatedGuard)
 	@Get()
-	async sessions(@AuthenticatedUser() user: AuthenticatedUserType) {
-		const sessions = await this.authConnectionService.sessions(user.session.id);
+	async sessions(
+		@AuthenticatedUser() user: AuthenticatedUserType,
+	): Promise<SessionsReturn> {
+		const sessions = await this.sessionsService.sessions(user.session.id);
 		return { sessions };
 	}
 
@@ -29,8 +32,8 @@ export class AuthConnectionsController {
 	 */
 	@UseGuards(AuthenticatedGuard)
 	@Post("session/add")
-	async sessionAdd(@Body() body: AuthSessionAddDto) {
-		return await this.authConnectionService.add(body);
+	async sessionAdd(@Body() body: SessionAddDto) {
+		return await this.sessionsService.add(body);
 	}
 
 	/**
@@ -40,7 +43,7 @@ export class AuthConnectionsController {
 	@UseGuards(AuthenticatedGuard)
 	@Post("session/remove")
 	async sessionRemove() {
-		return await this.authConnectionService.login();
+		return await this.sessionsService.login();
 	}
 
 	/**
@@ -50,7 +53,7 @@ export class AuthConnectionsController {
 	@UseGuards(AuthenticatedGuard)
 	@Post("session/remove-all")
 	async sessionRemoveAll() {
-		return await this.authConnectionService.login();
+		return await this.sessionsService.login();
 	}
 
 	/**
@@ -60,7 +63,7 @@ export class AuthConnectionsController {
 	@UseGuards(AuthenticatedGuard)
 	@Post("group/add")
 	async groupAdd() {
-		return await this.authConnectionService.login();
+		return await this.sessionsService.login();
 	}
 
 	/**
@@ -70,7 +73,7 @@ export class AuthConnectionsController {
 	@UseGuards(AuthenticatedGuard)
 	@Post("group/edit")
 	async groupEdit() {
-		return await this.authConnectionService.login();
+		return await this.sessionsService.login();
 	}
 
 	/**
@@ -80,6 +83,6 @@ export class AuthConnectionsController {
 	@UseGuards(AuthenticatedGuard)
 	@Post("group/delete")
 	async groupDelete() {
-		return await this.authConnectionService.login();
+		return await this.sessionsService.login();
 	}
 }

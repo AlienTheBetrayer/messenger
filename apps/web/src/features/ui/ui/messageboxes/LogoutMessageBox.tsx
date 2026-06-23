@@ -1,7 +1,7 @@
 import { LogOut } from "lucide-react";
 import Link from "next/link";
 
-import { useLogoutMutation } from "@/features/auth/model/auth.slice";
+import { useLogoutMutation } from "@/features/auth/model/auth.api";
 import { Icons } from "@/features/ui/lib";
 import { useAuthButtonNotifications } from "@/features/ui/ui/header/authbutton/useAuthButtonNotifications";
 import { normalizeError } from "@/shared";

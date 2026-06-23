@@ -170,6 +170,7 @@ export class AppJwtService {
 				id: generateId(),
 				user_id: params.userId,
 				refresh_token_hash: "",
+				expiry_at: new Date(Date.now() + AuthConfig.tokens.refresh.expiryMs),
 			},
 		});
 
@@ -225,6 +226,20 @@ export class AppJwtService {
 				os: {
 					name: os.name,
 					version: os.version,
+				},
+			},
+		});
+
+		// creating the connected group session
+		await this.prismaService.connected_sessions_group.create({
+			data: {
+				id: generateId(),
+				title: "Default",
+				connected_sessions: {
+					create: {
+						id: generateId(),
+						session_id: updatedSession.id,
+					},
 				},
 			},
 		});

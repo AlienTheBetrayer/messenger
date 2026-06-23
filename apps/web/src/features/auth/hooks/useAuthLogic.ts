@@ -11,7 +11,7 @@ import {
 	useGetCodeMutation,
 	useLoginMutation,
 	useSignupMutation,
-} from "@/features/auth/model/auth.slice";
+} from "@/features/auth/model/auth.api";
 import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
 import { normalizeError, queryStateHooks } from "@/shared";
 

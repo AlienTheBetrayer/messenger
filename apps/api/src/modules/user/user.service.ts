@@ -111,7 +111,7 @@ export class UserService {
 				color,
 				image_url: avatar.toDataUri(),
 			},
-		});
+    });
 
 		return user;
 	}

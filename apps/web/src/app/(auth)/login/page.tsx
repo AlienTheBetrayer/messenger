@@ -4,6 +4,10 @@ import { Auth, AuthFormProvider, VerifyOrchestrator } from "@/features";
 import { AuthRedirectPopup } from "@/features/auth/ui/other/AuthRedirectPopup";
 import { Card } from "@/shared";
 
+export const metadata = {
+  title: "Logging in",
+};
+
 export function AuthPage({ type }: { type: verification_code_type }) {
 	return (
 		<AuthFormProvider type={type}>

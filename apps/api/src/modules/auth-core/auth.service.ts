@@ -25,7 +25,7 @@ export class AuthCoreService {
 			(!("refreshToken" in request.cookies) ||
 				!request.cookies["refreshToken"]) &&
 			(!("accessToken" in request.cookies) || !request.cookies["accessToken"])
-		) {
+    ) {
 			throw new Error("no token found.");
 		}
 
