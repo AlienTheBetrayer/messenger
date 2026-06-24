@@ -6,7 +6,6 @@ export * from "./lib/themes.js";
 export * from "./model/ui.lib.js";
 export * from "./model/ui.selectors.js";
 export * from "./model/ui.slice.js";
-export * from "./providers/GlobalProvider.js";
 export * from "./providers/HeaderProvider.js";
 export * from "./providers/ThemesProvider.js";
 export * from "./ui/footer/Footer.js";

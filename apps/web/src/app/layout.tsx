@@ -3,9 +3,9 @@ import "@/shared/styles/globals.css";
 import { ApiErrorSchema, AuthMeReturn } from "@gravity/shared";
 
 import { NotificationSonner } from "@/features/notifications/ui/NotificationSonner";
-import { GlobalProvider } from "@/features/ui/providers/GlobalProvider";
+import { ThemesProvider } from "@/features/ui";
 import { Header } from "@/features/ui/ui/header/Header";
-import { sfetch } from "@/shared";
+import { ReduxProvider, sfetch, TooltipProvider } from "@/shared";
 
 export const metadata = {
 	title: "Outwave",
@@ -25,12 +25,16 @@ export default async function RootLayout({
 	return (
 		<html suppressHydrationWarning>
 			<body className="min-h-[144vh] flex flex-col">
-				<GlobalProvider auth={auth}>
-					<Header />
-					<NotificationSonner />
+				<ReduxProvider auth={auth}>
+					<ThemesProvider>
+						<TooltipProvider delayDuration={250}>
+							<Header />
+							<NotificationSonner />
 
-					{children}
-				</GlobalProvider>
+							{children}
+						</TooltipProvider>
+					</ThemesProvider>
+				</ReduxProvider>
 			</body>
 		</html>
 	);

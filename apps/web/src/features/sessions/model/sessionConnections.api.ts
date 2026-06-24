@@ -25,7 +25,9 @@ export const sessionConnectionApi = baseApi.injectEndpoints({
 			query: () => ({
 				url: "/sessions",
 				method: "GET",
-			}),
+      }),
+      
+			keepUnusedDataFor: 99999999,
 
 			transformResponse: (response: SessionsReturn) => {
 				const sessions: connected_sessionsType[] = [];

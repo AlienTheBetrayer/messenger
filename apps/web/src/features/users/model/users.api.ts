@@ -21,7 +21,9 @@ export const usersApi = baseApi.injectEndpoints({
 			query: () => ({
 				url: "/users",
 				method: "GET",
-			}),
+      }),
+      
+			keepUnusedDataFor: 99999999,
 		}),
 	}),
 });

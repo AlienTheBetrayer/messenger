@@ -21,7 +21,9 @@ export const sessionApi = baseApi.injectEndpoints({
 			query: () => ({
 				url: "/sessions",
 				method: "GET",
-			}),
+      }),
+      
+			keepUnusedDataFor: 99999999,
 		}),
 	}),
 });

@@ -1,4 +1,5 @@
 import { Monitor, Moon, Sun, Terminal } from "lucide-react";
+import { ComponentPropsWithRef } from "react";
 
 import { AvailableTheme } from "@/features/ui/lib";
 
@@ -7,22 +8,50 @@ import { AvailableTheme } from "@/features/ui/lib";
  * @param name name of the theme
  * @returns icon
  */
-export const getThemeIcon = (name: AvailableTheme) => {
+export const getThemeIcon = (
+	name: AvailableTheme,
+	props?: ComponentPropsWithRef<"svg">,
+) => {
 	switch (true) {
 		case name.includes("light"): {
-			return <Sun className="size-3.5 text-muted-foreground" />;
+			return (
+				<Sun
+					className="size-3.5 text-muted-foreground"
+					{...props}
+				/>
+			);
 		}
 		case name.includes("system"): {
-			return <Monitor className="size-3.5 text-muted-foreground" />;
+			return (
+				<Monitor
+					className="size-3.5 text-muted-foreground"
+					{...props}
+				/>
+			);
 		}
 		case name.includes("amoled") || name.includes("contrast"): {
-			return <Terminal className="size-3.5 text-muted-foreground" />;
+			return (
+				<Terminal
+					className="size-3.5 text-muted-foreground"
+					{...props}
+				/>
+			);
 		}
 		case name.includes("dark"): {
-			return <Moon className="size-3.5 text-muted-foreground" />;
+			return (
+				<Moon
+					className="size-3.5 text-muted-foreground"
+					{...props}
+				/>
+			);
 		}
 		default: {
-			return <Moon className="size-3.5 text-muted-foreground" />;
+			return (
+				<Moon
+					className="size-3.5 text-muted-foreground"
+					{...props}
+				/>
+			);
 		}
 	}
 };
