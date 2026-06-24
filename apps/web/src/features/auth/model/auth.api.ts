@@ -66,11 +66,16 @@ export const authApi = baseApi.injectEndpoints({
 		/**
 		 * /auth/me
 		 */
-		me: builder.query<AuthMeReturn | undefined, AuthMeSchema>({
+		me: builder.query<{ userId?: string }, AuthMeSchema>({
 			query: () => ({
 				url: "/auth/me",
 				method: "GET",
 			}),
+
+			transformResponse: (response: AuthMeReturn) => {
+				return { userId: response.user.id };
+      },
+      
 			providesTags: ["me"],
 			keepUnusedDataFor: 99999999,
 		}),
@@ -84,8 +89,8 @@ export const authApi = baseApi.injectEndpoints({
 				method: "DELETE",
 			}),
 			async onQueryStarted(args, { dispatch, queryFulfilled }) {
-        await queryFulfilled;
-        dispatch(authApi.util.resetApiState());
+				await queryFulfilled;
+				dispatch(authApi.util.resetApiState());
 			},
 		}),
 	}),

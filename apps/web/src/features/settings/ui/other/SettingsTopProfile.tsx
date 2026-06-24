@@ -8,7 +8,7 @@ import { Button } from "@/shared";
 
 export const SettingsTopProfile = () => {
 	// auth
-	const { data: auth } = useAuth();
+	const auth = useAuth();
 
 	// loading skeleton
 	if (!auth) {

@@ -26,8 +26,13 @@ const selectEndpointIndex = createSelector(selectApiState, (api) => {
 		...Object.values(api.queries ?? {}),
 		...Object.values(api.mutations ?? {}),
 	]) {
-		if (!entry?.endpointName) continue;
-		index.getOrInsert(entry.endpointName, []).push(entry);
+		if (!entry?.endpointName) {
+			continue;
+		}
+
+		if ("getOrInsert" in index) {
+			index.getOrInsert(entry.endpointName, []).push(entry);
+		}
 	}
 
 	return index;

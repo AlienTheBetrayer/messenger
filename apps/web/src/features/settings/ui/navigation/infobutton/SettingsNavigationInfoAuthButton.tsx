@@ -11,7 +11,7 @@ export const SettingsNavigationInfoAuthButton = ({
 	className?: string;
 }) => {
 	// auth
-	const { data: auth } = useAuth();
+	const auth = useAuth();
 
 	// no auth fallback
 	if (!auth) {

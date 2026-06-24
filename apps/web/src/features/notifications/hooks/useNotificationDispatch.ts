@@ -15,7 +15,7 @@ import { NotificationExtra } from "@/features/notifications/model/notifications.
  */
 export const useNotificationDispatch = () => {
 	// auth`
-	const { data: auth } = useAuth();
+	const auth = useAuth();
   const userId = auth?.user.id;
 
 	// redux

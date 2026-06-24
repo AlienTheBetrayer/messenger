@@ -28,7 +28,7 @@ export const HeaderProvider = ({ children }: { children: React.ReactNode }) => {
 
 	// jsx
 	return (
-		<HeaderContext.Provider value={{ auth: auth.data }}>
+		<HeaderContext.Provider value={{ auth }}>
 			{children}
 		</HeaderContext.Provider>
 	);
