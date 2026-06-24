@@ -7,6 +7,7 @@ export * from "./lib/time.js";
 export * from "./model/redux.hooks.js";
 export * from "./model/redux.normalizers.js";
 export * from "./model/redux.selectors.js";
+export * from "./model/redux.store.js";
 export * from "./model/redux.types.js";
 export * from "./model/ReduxProvider.js";
 export * from "./server/sfetch.js";

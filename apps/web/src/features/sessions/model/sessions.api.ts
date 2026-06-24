@@ -1,8 +1,7 @@
 import { auth_sessionType } from "@gravity/shared";
 import { createEntityAdapter, EntityState } from "@reduxjs/toolkit";
 
-import { RootState } from "@/shared";
-import { baseApi } from "@/shared/model/redux.store";
+import { baseApi, RootState } from "@/shared";
 
 /**
  * adapter
@@ -22,8 +21,8 @@ export const sessionApi = baseApi.injectEndpoints({
 			query: () => ({
 				url: "/sessions",
 				method: "GET",
-			}),
-
+      }),
+      
 			keepUnusedDataFor: 99999999,
 		}),
 	}),

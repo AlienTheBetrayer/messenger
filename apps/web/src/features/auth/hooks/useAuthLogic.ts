@@ -30,10 +30,10 @@ export const useAuthLogic = () => {
 	// auth
 	const auth = useCallback(
 		async (data: AuthFormSchema) => {
-			setVerify("pending");
-
-			const fn = async () => {
-				try {
+      setVerify("pending");
+      
+      const fn = async () => {
+        try {
 					const res = await getCode({ email: data.email, type }).unwrap();
 					return res;
 				} catch (e) {

@@ -1,5 +1,3 @@
-"use client";
-
 import { Icons } from "@/features/ui/lib";
 import {
 	Button,

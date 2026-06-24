@@ -1,4 +1,4 @@
-import { SettingsNavigation } from "@/features/settings";
+import { SettingsNavigation } from "@/features/settings/ui/navigation/SettingsNavigation";
 
 export const metadata = {
 	title: "Settings",

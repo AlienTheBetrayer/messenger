@@ -6,8 +6,8 @@ import { Store } from "@reduxjs/toolkit";
 import { useRef } from "react";
 import { Provider } from "react-redux";
 
+import { createReduxStore } from "@/shared";
 import { normalizeAuthData } from "@/shared/model/redux.normalizers";
-import { createReduxStore } from "@/shared/model/redux.store";
 
 export const ReduxProvider = ({
 	children,

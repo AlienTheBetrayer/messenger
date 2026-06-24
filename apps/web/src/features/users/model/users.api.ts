@@ -1,8 +1,7 @@
 import { usersType } from "@gravity/shared";
 import { createEntityAdapter, EntityState } from "@reduxjs/toolkit";
 
-import { RootState } from "@/shared";
-import { baseApi } from "@/shared/model/redux.store";
+import { baseApi, RootState } from "@/shared";
 
 /**
  * adapter
@@ -22,8 +21,8 @@ export const usersApi = baseApi.injectEndpoints({
 			query: () => ({
 				url: "/users",
 				method: "GET",
-			}),
-
+      }),
+      
 			keepUnusedDataFor: 99999999,
 		}),
 	}),

@@ -16,8 +16,7 @@ import {
 	sessionApi,
 } from "@/features/sessions/model/sessions.api";
 import { usersAdapter, usersApi } from "@/features/users/model/users.api";
-import { RootState } from "@/shared";
-import { baseApi } from "@/shared/model/redux.store";
+import { baseApi, RootState } from "@/shared";
 
 export type ConnectedSessionGroup = connected_sessions_groupType & {
 	connectedSessionIds: string[];

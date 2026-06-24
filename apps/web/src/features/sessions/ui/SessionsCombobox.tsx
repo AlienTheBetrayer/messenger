@@ -1,16 +1,15 @@
 "use client";
 
-import { Boxes, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 
 import { useGetGroupsQuery } from "@/features/sessions/model/sessionGroup.api";
 import { GroupList } from "@/features/sessions/ui/group/GroupsList";
 import { WipeSessionsMessageBox } from "@/features/ui/ui/messageboxes/WipeSessionsMessageBox";
-import { Button, Card, CardContent, CardFooter, useAppDispatch } from "@/shared";
+import { Button, Card, CardContent, CardFooter } from "@/shared";
 
-export const Sessions = () => {
+export const SessionsCombobox = () => {
 	// redux
-  const { data: sessions, isLoading } = useGetGroupsQuery();
-  const dispatch = useAppDispatch();
+	const { data: sessions, isLoading } = useGetGroupsQuery();
 
 	// fallbacks
 	if (isLoading) {
@@ -38,10 +37,9 @@ export const Sessions = () => {
 			</CardContent>
 
 			<CardFooter className="flex gap-1 items-center justify-end p-1">
-        <Button size="sm" onClick={() => {
-        }}>
-					<Boxes/>
-					Create
+				<Button size="sm">
+					<Plus />
+					Connect
 				</Button>
 				<WipeSessionsMessageBox />
 			</CardFooter>

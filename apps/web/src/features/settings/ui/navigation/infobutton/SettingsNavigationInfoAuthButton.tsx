@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { useAuth } from "@/features/auth";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 import { NavigationInfoButtonText } from "@/features/settings/ui/navigation/infobutton/NavigationInfoButtonText";
 import { InfoCube } from "@/features/users/ui/profile/dialog/InfoCube";
 import { Button } from "@/shared";

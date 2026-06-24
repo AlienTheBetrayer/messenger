@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 
 import { AuthFormVariants } from "@/features/auth/lib/variants";
@@ -27,7 +25,7 @@ export const AuthHeader = () => {
 	return (
 		<CardHeader>
 			<CardTitle>{variant.title}</CardTitle>
-			<CardDescription>{variant.description}</CardDescription>
+			<CardDescription >{variant.description}</CardDescription>
 
 			<CardAction>
 				<Button

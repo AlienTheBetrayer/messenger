@@ -1,10 +1,12 @@
 import { LogOut } from "lucide-react";
 import Link from "next/link";
 
-import { useLogoutMutation } from "@/features/auth";
+import { useLogoutMutation } from "@/features/auth/model/auth.api";
 import { Icons } from "@/features/ui/lib";
 import { useAuthButtonNotifications } from "@/features/ui/ui/header/authbutton/useAuthButtonNotifications";
-import { Button, MessageBox, normalizeError, Spinner } from "@/shared";
+import { normalizeError } from "@/shared";
+import { Button, Spinner } from "@/shared/ui";
+import { MessageBox } from "@/shared/ui/custom/MessageBox";
 
 export const LogoutMessageBox = () => {
 	// states

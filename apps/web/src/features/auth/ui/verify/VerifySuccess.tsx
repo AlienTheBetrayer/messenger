@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -7,11 +5,11 @@ import { useEffect, useRef, useState } from "react";
 import { VerifySuccessVariants } from "@/features/auth/lib/variants";
 import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
 import {
-  Button,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
+	Button,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
 } from "@/shared";
 
 export const VerifySuccess = () => {

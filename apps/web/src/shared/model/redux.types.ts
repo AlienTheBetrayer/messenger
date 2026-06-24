@@ -1,6 +1,6 @@
 import { QueryStatus } from "@reduxjs/toolkit/query";
 
-import { authApi } from "@/features/auth";
+import { authApi } from "@/features/auth/model/auth.api";
 import { createReduxStore } from "@/shared/model/redux.store";
 
 /**
