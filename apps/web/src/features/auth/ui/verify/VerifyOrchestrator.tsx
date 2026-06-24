@@ -5,8 +5,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { VerifyOrchestratorVariants } from "@/features/auth/lib/variants";
 import { Verify } from "@/features/auth/ui/Verify";
 import { VerifySuccess } from "@/features/auth/ui/verify/VerifySuccess";
-import { Card, queryStateHooks } from "@/shared";
-import { useMounted } from "@/shared/hooks/useMounted";
+import { Card, queryStateHooks, useMounted } from "@/shared";
 
 export const VerifyOrchestrator = () => {
 	// states

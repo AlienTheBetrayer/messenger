@@ -15,5 +15,8 @@ export * from "./ui/header/authbutton/useAuthButtonNotifications.js";
 export * from "./ui/header/AuthButtons.js";
 export * from "./ui/header/Header.js";
 export * from "./ui/header/Navigation.js";
+export * from "./ui/header/themebutton/getThemeIcon.js";
 export * from "./ui/header/themebutton/ThemeButton.js";
+export * from "./ui/header/themebutton/ThemeButtonContent.js";
 export * from "./ui/messageboxes/LogoutMessageBox.js";
+export * from "./ui/messageboxes/WipeSessionsMessageBox.js";

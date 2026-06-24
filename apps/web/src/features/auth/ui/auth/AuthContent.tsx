@@ -1,10 +1,12 @@
+"use client";
+
 import Link from "next/link";
 import { useState } from "react";
 import { Controller } from "react-hook-form";
 
 import { AuthFormVariants } from "@/features/auth/lib/variants";
 import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
-import { Icons } from "@/features/ui/lib";
+import { Icons } from "@/features/ui";
 import {
 	Button,
 	CardContent,

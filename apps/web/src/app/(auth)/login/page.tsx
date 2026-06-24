@@ -1,11 +1,15 @@
 import { verification_code_type } from "@gravity/shared";
 
-import { Auth, AuthFormProvider, VerifyOrchestrator } from "@/features";
-import { AuthRedirectPopup } from "@/features/auth/ui/other/AuthRedirectPopup";
+import {
+	Auth,
+	AuthFormProvider,
+	AuthRedirectPopup,
+	VerifyOrchestrator,
+} from "@/features/auth";
 import { Card } from "@/shared";
 
 export const metadata = {
-  title: "Logging in",
+	title: "Logging in",
 };
 
 export function AuthPage({ type }: { type: verification_code_type }) {
@@ -24,6 +28,5 @@ export function AuthPage({ type }: { type: verification_code_type }) {
 }
 
 export default function LoginPage() {
-  return <AuthPage type="login" />;
+	return <AuthPage type="login" />;
 }
-

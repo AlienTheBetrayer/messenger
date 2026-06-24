@@ -10,8 +10,8 @@ import {
 	queryStateHooks,
 	Separator,
 	Spinner,
+	useIsLoading,
 } from "@/shared";
-import { useIsLoading } from "@/shared/model/redux.selectors";
 
 export const AuthFooter = () => {
 	// states

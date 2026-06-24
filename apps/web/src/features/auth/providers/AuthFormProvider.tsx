@@ -17,7 +17,7 @@ type AuthFormData = {
 	authForm: UseFormReturn<AuthFormSchema>;
 	verifyForm: UseFormReturn<VerificationFormSchema>;
 	type: verification_codesType["type"];
-};
+} | null;
 
 export const AuthFormContext = createContext<AuthFormData | null>(null);
 

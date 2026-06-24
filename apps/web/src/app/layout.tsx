@@ -2,9 +2,8 @@ import "@/shared/styles/globals.css";
 
 import { ApiErrorSchema, AuthMeReturn } from "@gravity/shared";
 
-import { NotificationSonner } from "@/features/notifications/ui/NotificationSonner";
-import { ThemesProvider } from "@/features/ui";
-import { Header } from "@/features/ui/ui/header/Header";
+import { NotificationSonner } from "@/features/notifications";
+import { Header, ThemesProvider } from "@/features/ui";
 import { ReduxProvider, sfetch, TooltipProvider } from "@/shared";
 
 export const metadata = {

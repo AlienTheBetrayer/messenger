@@ -1,7 +1,7 @@
 {
   "version": "1.0",
   "generatorVersion": "0.0.0",
-  "generatedAt": "2026-06-23T21:53:59.717Z",
+  "generatedAt": "2026-06-24T21:14:20.294Z",
   "outputPath": "C:\\Users\\user\\Documents\\GitHub\\messenger\\packages\\shared\\src\\schemas\\prisma",
   "files": [
     "schemas\\enums\\TransactionIsolationLevel.schema.ts",

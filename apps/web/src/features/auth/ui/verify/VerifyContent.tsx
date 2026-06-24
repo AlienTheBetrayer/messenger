@@ -1,3 +1,5 @@
+"use client";
+
 import { AuthConfig } from "@gravity/shared";
 import { Controller } from "react-hook-form";
 

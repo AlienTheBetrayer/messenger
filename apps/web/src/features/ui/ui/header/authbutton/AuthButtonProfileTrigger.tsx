@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-import { groupApi } from "@/features/sessions/model/sessionGroup.api";
+import { groupApi } from "@/features/sessions";
 import { useHeaderProvider } from "@/features/ui/providers/HeaderProvider";
 import { Button, PopoverTrigger } from "@/shared";
 

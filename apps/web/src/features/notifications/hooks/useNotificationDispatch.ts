@@ -2,7 +2,7 @@ import { generateId, notification_type } from "@gravity/shared";
 import { useCallback, useMemo } from "react";
 import { toast } from "sonner";
 
-import { useAuth } from "@/features/auth/hooks/useAuth";
+import { useAuth } from "@/features/auth";
 import {
 	useNotificationPushMutation,
 	useNotificationUpdateMutation,
@@ -16,7 +16,7 @@ import { NotificationExtra } from "@/features/notifications/model/notifications.
 export const useNotificationDispatch = () => {
 	// auth`
 	const auth = useAuth();
-  const userId = auth?.user.id;
+	const userId = auth?.user.id;
 
 	// redux
 	const [push] = useNotificationPushMutation();
@@ -33,7 +33,7 @@ export const useNotificationDispatch = () => {
 			type: Exclude<notification_type, "promise">;
 			extra?: Partial<NotificationExtra>;
 		}) => {
-      toast[params.type](params.text, params.extra);
+			toast[params.type](params.text, params.extra);
 
 			if (!userId) {
 				return;
@@ -84,18 +84,18 @@ export const useNotificationDispatch = () => {
 				...(params.extra ?? {}),
 			});
 
-      if (!userId) {
+			if (!userId) {
 				return;
 			}
 
 			// loading dispatch
-      push({
-        id,
-        userId,
-        type: "promise",
-        promiseStatus: "pending",
-        text: params.loading ? params.loading({ id }).text : `loading ${id}`,
-      });
+			push({
+				id,
+				userId,
+				type: "promise",
+				promiseStatus: "pending",
+				text: params.loading ? params.loading({ id }).text : `loading ${id}`,
+			});
 
 			// success & error dispatch
 			promise

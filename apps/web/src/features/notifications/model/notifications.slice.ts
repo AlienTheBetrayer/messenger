@@ -7,7 +7,7 @@ import {
 } from "@gravity/shared";
 import { createEntityAdapter } from "@reduxjs/toolkit";
 
-import { baseApi } from "@/shared";
+import { baseApi } from "@/shared/model/redux.store";
 
 /**
  * adapter

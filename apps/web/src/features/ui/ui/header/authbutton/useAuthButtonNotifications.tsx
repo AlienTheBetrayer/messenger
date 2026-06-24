@@ -1,8 +1,10 @@
 import { AuthLogoutReturn } from "@gravity/shared";
 import { useCallback, useMemo } from "react";
 
-import { useNotificationDispatch } from "@/features/notifications/hooks/useNotificationDispatch";
-import { NotificationLayout } from "@/features/notifications/ui/layout/NotificationLayout";
+import {
+	NotificationLayout,
+	useNotificationDispatch,
+} from "@/features/notifications";
 
 export const useAuthButtonNotifications = () => {
 	const { promise } = useNotificationDispatch();

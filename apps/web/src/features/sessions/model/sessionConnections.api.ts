@@ -1,7 +1,8 @@
 import { connected_sessionsType, SessionsReturn } from "@gravity/shared";
 import { createEntityAdapter, EntityState } from "@reduxjs/toolkit";
 
-import { baseApi, RootState } from "@/shared";
+import { RootState } from "@/shared";
+import { baseApi } from "@/shared/model/redux.store";
 
 /**
  * adapter
@@ -25,8 +26,8 @@ export const sessionConnectionApi = baseApi.injectEndpoints({
 			query: () => ({
 				url: "/sessions",
 				method: "GET",
-      }),
-      
+			}),
+
 			keepUnusedDataFor: 99999999,
 
 			transformResponse: (response: SessionsReturn) => {
@@ -59,6 +60,5 @@ const selectGetConnectedSessionsResult =
 const selectConnectedSessionsData = (state: RootState) =>
 	selectGetConnectedSessionsResult(state).data ?? initialState;
 
-export const sessionConnectionsSelectors = sessionConnectionAdapter.getSelectors(
-	selectConnectedSessionsData,
-);
+export const sessionConnectionsSelectors =
+	sessionConnectionAdapter.getSelectors(selectConnectedSessionsData);

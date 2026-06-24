@@ -1,13 +1,8 @@
-import { RedirectPopupVariants } from "@/features/auth/lib/variants";
+import { RedirectPopupVariants } from "@/features/auth";
 import { useQueryState } from "@/shared/hooks/useQueryState";
 
 const useError = () => {
-	return useQueryState(
-		"error",
-		Object.keys(
-			RedirectPopupVariants,
-		) as (keyof typeof RedirectPopupVariants)[],
-	);
+	return useQueryState("error", Object.keys(RedirectPopupVariants));
 };
 
 const useVerify = () => {

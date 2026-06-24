@@ -12,7 +12,7 @@ import {
 } from "@gravity/shared";
 
 import { usersAdapter, usersApi } from "@/features/users/model/users.api";
-import { baseApi } from "@/shared";
+import { baseApi } from "@/shared/model/redux.store";
 
 /**
  * auth slice (no verification code yet)

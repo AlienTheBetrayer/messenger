@@ -1,9 +1,7 @@
-import { AuthMeReturn } from "@gravity/shared";
 import { configureStore } from "@reduxjs/toolkit";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-import { authApi } from "@/features/auth/model/auth.api";
-import { uiSlice } from "@/features/ui/model/ui.slice";
+import { uiSlice } from "@/features/ui";
 
 /**
  * global api slice
@@ -24,8 +22,8 @@ export const createReduxStore = (preloadedState?: unknown) => {
 		reducer: {
 			[baseApi.reducerPath]: baseApi.reducer,
 			[uiSlice.name]: uiSlice.reducer,
-    },
-    preloadedState,
+		},
+		preloadedState,
 		middleware: (gDM) => gDM().concat(baseApi.middleware),
 	});
 
