@@ -79,7 +79,7 @@ export const groupApi = baseApi.injectEndpoints({
 					);
 				}
 
-				// group dispatch
+				// dispatching the group
 				dispatch(
 					groupApi.util.upsertQueryData(
 						"getGroups",
@@ -91,7 +91,7 @@ export const groupApi = baseApi.injectEndpoints({
 					),
 				);
 
-				// connected session dispatch
+				// dispatching the connected session
 				dispatch(
 					sessionConnectionApi.util.upsertQueryData(
 						"getConnectedSessions",
@@ -103,7 +103,7 @@ export const groupApi = baseApi.injectEndpoints({
 					),
 				);
 
-				// session dispatch
+				// dispatching the session
 				dispatch(
 					sessionApi.util.upsertQueryData(
 						"getSessions",

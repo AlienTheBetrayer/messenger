@@ -11,6 +11,7 @@ import {
 	AuthSignupReturn,
 } from "@gravity/shared";
 
+import { usersAdapter, usersApi } from "@/features/users/model/users.api";
 import { baseApi } from "@/shared";
 
 /**
@@ -38,7 +39,26 @@ export const authApi = baseApi.injectEndpoints({
 				method: "POST",
 				body,
 			}),
-			invalidatesTags: ["me"],
+
+			async onQueryStarted(args, { dispatch, queryFulfilled }) {
+				const { data } = await queryFulfilled;
+
+				// dispatching the user id
+				dispatch(
+					authApi.util.upsertQueryData("me", undefined, {
+						userId: data.user.id,
+					}),
+				);
+
+				// dispatching the actual user
+				dispatch(
+					usersApi.util.upsertQueryData(
+						"getUsers",
+						undefined,
+						usersAdapter.setOne(usersAdapter.getInitialState(), data.user),
+					),
+				);
+			},
 		}),
 
 		/**
@@ -74,9 +94,8 @@ export const authApi = baseApi.injectEndpoints({
 
 			transformResponse: (response: AuthMeReturn) => {
 				return { userId: response.user.id };
-      },
-      
-			providesTags: ["me"],
+			},
+
 			keepUnusedDataFor: 99999999,
 		}),
 
@@ -88,9 +107,14 @@ export const authApi = baseApi.injectEndpoints({
 				url: "/auth/logout",
 				method: "DELETE",
 			}),
-			async onQueryStarted(args, { dispatch, queryFulfilled }) {
-				await queryFulfilled;
-				dispatch(authApi.util.resetApiState());
+
+			async onQueryStarted(args, { dispatch }) {
+				// optimistic instant update
+				dispatch(
+					authApi.util.updateQueryData("me", undefined, () => ({
+						userId: undefined,
+					})),
+				);
 			},
 		}),
 	}),
