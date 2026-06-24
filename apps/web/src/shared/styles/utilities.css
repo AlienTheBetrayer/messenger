@@ -73,12 +73,36 @@
 		backdrop-filter: blur(12px);
 	}
 
+	.shadowed-xs {
+		box-shadow:
+			0 0 0 1px var(--border),
+			0 1px 1px rgb(0 0 0 / 0.01),
+			0 4px 8px rgb(0 0 0 / 0.02),
+			0 12px 24px rgb(0 0 0 / 0.02);
+	}
+
+	.shadowed-sm {
+		box-shadow:
+			0 0 0 1px var(--border),
+			0 1px 1px rgb(0 0 0 / 0.02),
+			0 4px 8px rgb(0 0 0 / 0.04),
+			0 12px 24px rgb(0 0 0 / 0.04);
+	}
+
 	.shadowed {
 		box-shadow:
 			0 0 0 1px var(--border),
 			0 1px 1px rgb(0 0 0 / 0.04),
 			0 4px 8px rgb(0 0 0 / 0.08),
 			0 12px 24px rgb(0 0 0 / 0.08);
+	}
+
+	.shadowed-xl {
+		box-shadow:
+			0 0 0 1px var(--border),
+			0 20px 40px rgb(0 0 0 / 0.2),
+			0 50px 100px rgb(0 0 0 / 0.2),
+			0 0 800px rgb(0 0 0 / 0.4);
 	}
 
 	/* fade outs */

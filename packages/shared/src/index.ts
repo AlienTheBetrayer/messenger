@@ -4,6 +4,7 @@ export * from "./lib/exceptions.js";
 export * from "./lib/nanoid.js";
 export * from "./lib/random.js";
 export * from "./schemas/forms/auth.js";
+export * from "./schemas/forms/group.js";
 export * from "./schemas/forms/verify.js";
 export * from "./schemas/misc/error.js";
 export * from "./schemas/prisma/schemas/enums/AuthSessionsScalarFieldEnum.schema.js";
@@ -28,6 +29,6 @@ export * from "./schemas/prisma/schemas/models/connected_sessions_group.schema.j
 export * from "./schemas/prisma/schemas/models/notifications.schema.js";
 export * from "./schemas/prisma/schemas/models/users.schema.js";
 export * from "./schemas/prisma/schemas/models/verification_codes.schema.js";
-export * from "./schemas/routes/sessions.js";
 export * from "./schemas/routes/auth.js";
 export * from "./schemas/routes/notifications.js";
+export * from "./schemas/routes/sessions.js";
