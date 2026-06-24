@@ -1,7 +1,7 @@
 "use client";
 
 import { useNavigationTree } from "@/features/settings/hooks/useNavigationTree";
-import { InfoCube } from "@/features/settings/ui/navigation/infobutton/InfoCube";
+import { InfoCube } from "@/features/users/ui/profile/dialog/InfoCube";
 import { NavigationInfoButtonText } from "@/features/settings/ui/navigation/infobutton/NavigationInfoButtonText";
 import { SettingsNavigationInfoAuthButton } from "@/features/settings/ui/navigation/infobutton/SettingsNavigationInfoAuthButton";
 import { Icons } from "@/features/ui/lib";

@@ -1,18 +1,25 @@
 import {
+	auth_sessionType,
 	connected_sessions_groupType,
 	connected_sessionsType,
 	SessionsReturn,
+	usersType,
 } from "@gravity/shared";
 import { createEntityAdapter, EntityState } from "@reduxjs/toolkit";
 
 import {
+	sessionConnectionAdapter,
+	sessionConnectionApi,
+} from "@/features/sessions/model/sessionConnections.api";
+import {
 	sessionAdapter,
 	sessionApi,
-} from "@/features/sessions/model/session.api";
+} from "@/features/sessions/model/sessions.api";
+import { usersAdapter, usersApi } from "@/features/users/model/users.api";
 import { baseApi, RootState } from "@/shared";
 
 export type ConnectedSessionGroup = connected_sessions_groupType & {
-	sessionIds: string[];
+	connectedSessionIds: string[];
 };
 
 /**
@@ -44,21 +51,35 @@ export const groupApi = baseApi.injectEndpoints({
 				}
 
 				// normalizing
-				const flatSessions: connected_sessionsType[] = [];
 				const normalizedGroups: ConnectedSessionGroup[] = [];
+				const flatConnectedSessions: connected_sessionsType[] = [];
+				const flatSessions: auth_sessionType[] = [];
+				const users: usersType[] = [];
 
 				for (const group of data.sessions) {
-					const sessionIds = group.connected_sessions.map((s) => s.id);
+					const connectedSessionIds = group.connected_sessions.map((s) => s.id);
 
+					const { connected_sessions, ...groupNoSessions } = group;
 					normalizedGroups.push({
-						...group,
-						sessionIds,
+						...groupNoSessions,
+						connectedSessionIds,
 					});
 
-					flatSessions.push(...group.connected_sessions);
+					for (const connectedSession of connected_sessions) {
+						const { users: user, ...session } = connectedSession.auth_sessions;
+						flatSessions.push(session);
+
+						users.push(user);
+					}
+
+					flatConnectedSessions.push(
+						...group.connected_sessions.map(
+							({ auth_sessions, ...rest }) => rest,
+						),
+					);
 				}
 
-				// dispatching
+				// group dispatch
 				dispatch(
 					groupApi.util.upsertQueryData(
 						"getGroups",
@@ -70,6 +91,19 @@ export const groupApi = baseApi.injectEndpoints({
 					),
 				);
 
+				// connected session dispatch
+				dispatch(
+					sessionConnectionApi.util.upsertQueryData(
+						"getConnectedSessions",
+						undefined,
+						sessionConnectionAdapter.setAll(
+							sessionConnectionAdapter.getInitialState(),
+							flatConnectedSessions,
+						),
+					),
+				);
+
+				// session dispatch
 				dispatch(
 					sessionApi.util.upsertQueryData(
 						"getSessions",
@@ -78,6 +112,15 @@ export const groupApi = baseApi.injectEndpoints({
 							sessionAdapter.getInitialState(),
 							flatSessions,
 						),
+					),
+				);
+
+				// user dispatch
+				dispatch(
+					usersApi.util.upsertQueryData(
+						"getUsers",
+						undefined,
+						usersAdapter.setAll(usersAdapter.getInitialState(), users),
 					),
 				);
 			},

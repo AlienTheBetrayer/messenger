@@ -1,14 +1,12 @@
-import { LogOut } from "lucide-react";
+import { Trash2Icon } from "lucide-react";
 import Link from "next/link";
 
 import { useLogoutMutation } from "@/features/auth/model/auth.api";
 import { Icons } from "@/features/ui/lib";
 import { useAuthButtonNotifications } from "@/features/ui/ui/header/authbutton/useAuthButtonNotifications";
-import { normalizeError } from "@/shared";
-import { Button, Spinner } from "@/shared/ui";
-import { MessageBox } from "@/shared/ui/custom/MessageBox";
+import { Button, MessageBox, normalizeError, Spinner } from "@/shared";
 
-export const LogoutMessageBox = () => {
+export const WipeSessionsMessageBox = () => {
 	// states
 	const [logout, { isLoading }] = useLogoutMutation();
 	const notifications = useAuthButtonNotifications();
@@ -16,10 +14,10 @@ export const LogoutMessageBox = () => {
 	// jsx
 	return (
 		<MessageBox
-			title="Log out?"
+			title="Wipe sessions?"
 			variant="destructive"
-			actionText="Log out"
-			icon={Icons.logout}
+			actionText="Wipe"
+			icon={Icons.trash}
 			onConfirm={() => {
 				notifications.logout(async () => {
 					const { data, error } = await logout();
@@ -29,7 +27,7 @@ export const LogoutMessageBox = () => {
 			}}
 			description={
 				<>
-					This will log you out of your account on this device. View{" "}
+					This will clear all sessions inside of this group
 					<Link
 						href="/settings"
 						className="text-link hover:underline font-medium"
@@ -44,15 +42,12 @@ export const LogoutMessageBox = () => {
 				disabled={isLoading}
 				variant="destructive"
 				size="sm"
-				className="w-full gap-1.5"
+				className="gap-1.5 aspect-square"
 			>
 				{isLoading ? (
 					<Spinner className="size-3.5" />
 				) : (
-					<>
-						<LogOut className="size-3.5" />
-						<span>Log out</span>
-					</>
+					<Trash2Icon className="size-3.5" />
 				)}
 			</Button>
 		</MessageBox>

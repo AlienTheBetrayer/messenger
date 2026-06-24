@@ -1,4 +1,4 @@
-import { ProfileProvider } from "@/features/profile/providers/ProfileProvider";
+import { ProfileProvider } from "@/features/users/providers/ProfileProvider";
 import { ProfileEdit } from "@/features/profile/ui/editing/ProfileEdit";
 
 export default function ProfilePage() {

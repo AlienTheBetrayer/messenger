@@ -32,11 +32,19 @@ export class SessionsService {
 					},
 				},
 				include: {
-					connected_sessions: true,
+					connected_sessions: {
+						include: {
+							auth_sessions: {
+								include: {
+									users: true,
+								},
+							},
+						},
+					},
 				},
 			},
-    );
-    
+		);
+
 		return sessions;
 	}
 

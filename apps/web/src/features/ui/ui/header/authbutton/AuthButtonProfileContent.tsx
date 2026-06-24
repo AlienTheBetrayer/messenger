@@ -36,9 +36,9 @@ export const AuthButtonProfileContent = () => {
 						variant="ghost"
 						className="w-full justify-start text-muted-foreground"
 					>
-						<Link href="/settings">
+						<Link href="/profile">
 							<UserRound />
-							Settings
+							Profile
 						</Link>
 					</Button>
 				</li>

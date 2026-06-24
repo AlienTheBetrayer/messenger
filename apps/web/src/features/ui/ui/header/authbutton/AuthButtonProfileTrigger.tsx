@@ -2,10 +2,14 @@
 
 import Image from "next/image";
 
+import { groupApi } from "@/features/sessions/model/sessionGroup.api";
 import { useHeaderProvider } from "@/features/ui/providers/HeaderProvider";
 import { Button, PopoverTrigger } from "@/shared";
 
 export const AuthButtonProfileTrigger = () => {
+	// redux
+	const prefetch = groupApi.usePrefetch("getGroups");
+
 	// auth
 	const { auth } = useHeaderProvider();
 
@@ -19,6 +23,9 @@ export const AuthButtonProfileTrigger = () => {
 			<Button
 				variant="ghost"
 				className="group"
+				onPointerEnter={() => {
+					prefetch();
+				}}
 			>
 				<Image
 					alt="pfp"

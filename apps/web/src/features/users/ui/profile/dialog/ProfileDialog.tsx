@@ -2,9 +2,9 @@
 
 import { useRouter } from "next/navigation";
 
-import { ProfileDialogContent } from "@/features/profile/ui/dialog/ProfileDialogContent";
-import { ProfileDialogFooter } from "@/features/profile/ui/dialog/ProfileDialogFooter";
-import { ProfileDialogHeader } from "@/features/profile/ui/dialog/ProfileDialogHeader";
+import { ProfileDialogContent } from "@/features/users/ui/profile/dialog/ProfileDialogContent";
+import { ProfileDialogFooter } from "@/features/users/ui/profile/dialog/ProfileDialogFooter";
+import { ProfileDialogHeader } from "@/features/users/ui/profile/dialog/ProfileDialogHeader";
 import { Dialog, DialogContent } from "@/shared";
 
 export const ProfileDialog = () => {
