@@ -1,4 +1,4 @@
-import { Pencil, Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
 
 import { useGroupActions } from "@/features/sessions/hooks/useGroupActions";
@@ -78,17 +78,7 @@ export const Group = ({ groupId }: { groupId: string }) => {
 							size="xs"
 							variant="ghost"
 						>
-							<Plus className="size-4" />
-						</Button>
-					</li>
-
-					<li>
-						<Button
-							className="ml-auto! aspect-square"
-							size="xs"
-							variant="ghost"
-						>
-							<Pencil />
+							<Plus />
 						</Button>
 					</li>
 

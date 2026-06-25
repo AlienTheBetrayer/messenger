@@ -14,8 +14,8 @@ import {
 	CurrentGroups,
 	CurrentGroupsType,
 } from "./decorators/currentgroups.decorator";
-import { GroupMemberGuard } from "./guards";
-import { GroupCreateDto, GroupEditDto } from "./sessions.dto";
+import { GroupOwnerGuard } from "./guards";
+import { GroupCreateDto, GroupDeleteDto, GroupEditDto } from "./sessions.dto";
 import { SessionsService } from "./sessions.service";
 
 @Controller("sessions")
@@ -82,12 +82,13 @@ export class SessionsController {
 	}
 
 	/**
-	 * edits the group (can only be a member of that group)
+	 * edits the group (works only if you're the owner)
+	 * @param groupId id of the group
 	 * @param title title
 	 * @param emoji emoji
 	 * @returns updated group
 	 */
-	@UseGuards(AuthenticatedGuard, GroupMemberGuard)
+	@UseGuards(AuthenticatedGuard, GroupOwnerGuard)
 	@Post("group/edit")
 	async groupEdit(
 		@Body() body: GroupEditDto,
@@ -97,13 +98,14 @@ export class SessionsController {
 		return { group: ret };
 	}
 
-	// /**
-	//  *
-	//  * @returns
-	//  */
-	// @UseGuards(AuthenticatedGuard)
-	// @Post("group/delete")
-	// async groupDelete() {
-	// 	return await this.sessionsService.login();
-	// }
+	/**
+	 * deletes a group (works only if you're the owner)
+	 * @param groupId id of the group
+	 * @returns deleted group
+	 */
+	@UseGuards(AuthenticatedGuard, GroupOwnerGuard)
+	@Post("group/delete")
+	async groupDelete(@Body() body: GroupDeleteDto) {
+		return await this.sessionsService.groupDelete(body);
+	}
 }

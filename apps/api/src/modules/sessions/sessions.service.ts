@@ -1,6 +1,7 @@
 import {
 	generateId,
 	GroupCreateSchema,
+	GroupDeleteSchema,
 	GroupEditSchema,
 	SessionAdd,
 } from "@gravity/shared";
@@ -73,6 +74,7 @@ export class SessionsService {
 		const group = await this.prismaService.connected_sessions_group.create({
 			data: {
 				id: body.groupId ?? generateId(),
+				owner_user_id: user.id,
 				title: body.title,
 				emoji: body.emoji,
 			},
@@ -91,7 +93,8 @@ export class SessionsService {
 	}
 
 	/**
-	 * edits the group (can only be a member of that group)
+	 * edits the group (works only if you're the owner)
+	 * @param groupId id of the group
 	 * @param title title
 	 * @param emoji emoji
 	 * @returns updated group
@@ -104,6 +107,21 @@ export class SessionsService {
 			data: {
 				title: body.title,
 				emoji: body.emoji,
+			},
+		});
+
+		return group;
+	}
+
+	/**
+	 * deletes a group (works only if you're the owner)
+	 * @param groupId id of the group
+	 * @returns deleted group
+	 */
+	async groupDelete(body: GroupDeleteSchema) {
+		const group = await this.prismaService.connected_sessions_group.delete({
+			where: {
+				id: body.groupId,
 			},
 		});
 

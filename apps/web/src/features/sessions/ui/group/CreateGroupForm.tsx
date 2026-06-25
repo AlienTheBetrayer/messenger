@@ -127,7 +127,7 @@ export const CreateGroupForm = ({ onSuccess }: { onSuccess: () => void }) => {
 					type="submit"
 					size="sm"
 				>
-					<Plus />
+          <Plus />
 					Create
 				</Button>
 			</CardFooter>

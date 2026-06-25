@@ -35,3 +35,16 @@ export const groupEditSchema = z.object({
 });
 
 export type GroupEditSchema = z.infer<typeof groupEditSchema>;
+
+/**
+ * delete
+ */
+export type GroupDeleteReturn = {
+	group: connected_sessions_groupType;
+};
+
+export const groupDeleteSchema = z.object({
+	groupId: z.nanoid(),
+});
+
+export type GroupDeleteSchema = z.infer<typeof groupDeleteSchema>;

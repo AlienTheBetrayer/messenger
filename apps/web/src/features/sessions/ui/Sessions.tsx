@@ -24,16 +24,15 @@ export const Sessions = () => {
 const SessionsDisplay = () => {
 	// redux
 	const { data: sessions, isLoading } = useGetGroupsQuery();
-	const dispatch = useAppDispatch();
 
 	// fallbacks
 	if (isLoading) {
 		return (
 			<div className="flex flex-col gap-0.5! p-2!">
-				{Array.from({ length: 5 }, (_, i) => (
+				{Array.from({ length: 4 }, (_, i) => (
 					<div
 						key={i}
-						className="h-5 w-full skeleton rounded-sm!"
+						className="h-8 w-full skeleton rounded-sm!"
 					/>
 				))}
 			</div>
@@ -55,10 +54,9 @@ const SessionsDisplay = () => {
 				<CreateGroupPopover>
 					<Button
 						size="sm"
-						onClick={() => {}}
 					>
 						<Boxes />
-						Create
+						Create a group
 					</Button>
 				</CreateGroupPopover>
 			</CardFooter>

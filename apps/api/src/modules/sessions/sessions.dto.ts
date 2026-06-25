@@ -1,5 +1,6 @@
 import {
 	groupCreateSchema,
+	groupDeleteSchema,
 	groupEditSchema,
 	sessionAdd,
 } from "@gravity/shared";
@@ -15,3 +16,4 @@ export class SessionAddDto extends createZodDto(sessionAdd) {}
  */
 export class GroupCreateDto extends createZodDto(groupCreateSchema) {}
 export class GroupEditDto extends createZodDto(groupEditSchema) {}
+export class GroupDeleteDto extends createZodDto(groupDeleteSchema) {}
