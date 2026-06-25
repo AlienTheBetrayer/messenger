@@ -1,3 +1,4 @@
+import { GroupCreateReturn, GroupEditReturn } from "@gravity/shared";
 import { useCallback, useMemo } from "react";
 
 import { useNotificationDispatch } from "@/features/notifications/hooks/useNotificationDispatch";
@@ -10,7 +11,7 @@ export const useSessionNotifications = () => {
 
 	// group-create promise
 	const groupCreate = useCallback(
-		(fn: () => Promise<unknown>) => {
+		(fn: () => Promise<GroupCreateReturn>) => {
 			promise(fn, {
 				loading: () => ({
 					node: <NotificationLayout text="Creating the group..." />,
@@ -31,13 +32,53 @@ export const useSessionNotifications = () => {
 							}
 						/>
 					),
-					text: "error",
+					text: "Group creation failed.",
 				}),
-				success: () => ({
+				success: ({ group }) => ({
 					node: (
-						<NotificationLayout text="Group has been successfully created!" />
+						<NotificationLayout
+							text={`Group ${group.title} has been successfully created!`}
+						/>
 					),
-					text: "Group has been successfully created!",
+					text: `Group ${group.title} has been successfully created!`,
+				}),
+			});
+		},
+		[promise],
+	);
+
+	// group-edit promise
+	const groupEdit = useCallback(
+		(fn: () => Promise<GroupEditReturn>) => {
+			promise(fn, {
+				loading: () => ({
+					node: <NotificationLayout text="Editing the group..." />,
+					text: "Editing the group...",
+				}),
+				error: () => ({
+					node: (
+						<NotificationLayout
+							text="Group edit failed."
+							action={
+								<Button
+									onClick={() => {
+										fn();
+									}}
+								>
+									Retry
+								</Button>
+							}
+						/>
+					),
+					text: "Group edit failed.",
+				}),
+				success: ({ group }) => ({
+					node: (
+						<NotificationLayout
+							text={`Group ${group.title} has been successfully edited!`}
+						/>
+					),
+					text: `Group ${group.title} has been successfully edited!`,
 				}),
 			});
 		},
@@ -47,7 +88,8 @@ export const useSessionNotifications = () => {
 	return useMemo(
 		() => ({
 			groupCreate,
+			groupEdit,
 		}),
-		[groupCreate],
+		[groupCreate, groupEdit],
 	);
 };

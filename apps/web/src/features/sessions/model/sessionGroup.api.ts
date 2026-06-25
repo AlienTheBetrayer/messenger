@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/unbound-method */
 import {
 	auth_sessionsType,
 	connected_sessions_groupType,
@@ -5,6 +6,8 @@ import {
 	generateId,
 	GroupCreateReturn,
 	GroupCreateSchema,
+	GroupEditReturn,
+	GroupEditSchema,
 	PickRequired,
 	SessionsReturn,
 	usersType,
@@ -132,10 +135,36 @@ export const groupApi = baseApi.injectEndpoints({
 					),
 				);
 			},
+    }),
+    
+		/**
+     * edits a group with an optimistic update
+		 * @param groupId required id of the group
+		 * @param title optional title
+		 * @param emoji optional emoji
+		 * @returns edited group
+		 */
+		editGroup: build.mutation<GroupEditReturn, GroupEditSchema>({
+			query: (body) => ({
+				url: "/sessions/group/edit",
+				method: "POST",
+				body,
+			}),
+
+			onQueryStarted: async (args, { dispatch, getState }) => {
+				// dispatching the group updates
+				dispatch(
+					groupApi.util.updateQueryData("getGroups", undefined, (draft) => {
+						groupAdapter.updateOne(draft, { id: args.groupId, changes: args });
+					}),
+				);
+			},
 		}),
 
 		/**
-		 * @param id optional id (required for optimistic updates)
+     * creates a new group with an optimistic update
+		 * @param connectionId required id of the connection 
+		 * @param groupId required id of the group
 		 * @param title required title
 		 * @param emoji optional emoji
 		 * @returns created group
@@ -150,7 +179,6 @@ export const groupApi = baseApi.injectEndpoints({
 				body,
 			}),
 
-			// eslint-disable-next-line @typescript-eslint/unbound-method
 			onQueryStarted: async (args, { dispatch, getState }) => {
 				const authSelection =
 					authApi.endpoints.me.select(undefined)(getState());
@@ -196,7 +224,11 @@ export const groupApi = baseApi.injectEndpoints({
 	}),
 });
 
-export const { useGetGroupsQuery, useCreateGroupMutation } = groupApi;
+export const {
+	useGetGroupsQuery,
+	useCreateGroupMutation,
+	useEditGroupMutation,
+} = groupApi;
 
 /**
  * selectors

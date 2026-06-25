@@ -1,4 +1,8 @@
-import { GroupCreateReturn, SessionsReturn } from "@gravity/shared";
+import {
+	GroupCreateReturn,
+	GroupEditReturn,
+	SessionsReturn,
+} from "@gravity/shared";
 import { Body, Controller, Get, Post, UseGuards } from "@nestjs/common";
 
 import {
@@ -6,7 +10,8 @@ import {
 	AuthenticatedUserType,
 } from "../auth-core/decorators";
 import { AuthenticatedGuard } from "../auth-core/guards";
-import { GroupCreateDto, SessionAddDto } from "./sessions.dto";
+import { GroupMemberGuard } from "./guards";
+import { GroupCreateDto, GroupEditDto } from "./sessions.dto";
 import { SessionsService } from "./sessions.service";
 
 @Controller("sessions")
@@ -26,35 +31,35 @@ export class SessionsController {
 		return { sessions };
 	}
 
-	/**
-	 *
-	 * @returns
-	 */
-	@UseGuards(AuthenticatedGuard)
-	@Post("session/add")
-	async sessionAdd(@Body() body: SessionAddDto) {
-		return await this.sessionsService.add(body);
-	}
+	// /**
+	//  *
+	//  * @returns
+	//  */
+	// @UseGuards(AuthenticatedGuard)
+	// @Post("session/add")
+	// async sessionAdd(@Body() body: SessionAddDto) {
+	// 	return await this.sessionsService.add(body);
+	// }
 
-	/**
-	 *
-	 * @returns
-	 */
-	@UseGuards(AuthenticatedGuard)
-	@Post("session/remove")
-	async sessionRemove() {
-		return await this.sessionsService.login();
-	}
+	// /**
+	//  *
+	//  * @returns
+	//  */
+	// @UseGuards(AuthenticatedGuard)
+	// @Post("session/remove")
+	// async sessionRemove() {
+	// 	return await this.sessionsService.login();
+	// }
 
-	/**
-	 *
-	 * @returns
-	 */
-	@UseGuards(AuthenticatedGuard)
-	@Post("session/remove-all")
-	async sessionRemoveAll() {
-		return await this.sessionsService.login();
-	}
+	// /**
+	//  *
+	//  * @returns
+	//  */
+	// @UseGuards(AuthenticatedGuard)
+	// @Post("session/remove-all")
+	// async sessionRemoveAll() {
+	// 	return await this.sessionsService.login();
+	// }
 
 	/**
 	 * creates a group that can link multiple sessions
@@ -73,22 +78,25 @@ export class SessionsController {
 	}
 
 	/**
-	 *
-	 * @returns
+	 * edits the group (can only be a member of that group)
+	 * @param title title
+	 * @param emoji emoji
+	 * @returns updated group
 	 */
-	@UseGuards(AuthenticatedGuard)
+	@UseGuards(AuthenticatedGuard, GroupMemberGuard)
 	@Post("group/edit")
-	async groupEdit() {
-		return await this.sessionsService.login();
+	async groupEdit(@Body() body: GroupEditDto): Promise<GroupEditReturn> {
+		const ret = await this.sessionsService.groupEdit(body);
+		return { group: ret };
 	}
 
-	/**
-	 *
-	 * @returns
-	 */
-	@UseGuards(AuthenticatedGuard)
-	@Post("group/delete")
-	async groupDelete() {
-		return await this.sessionsService.login();
-	}
+	// /**
+	//  *
+	//  * @returns
+	//  */
+	// @UseGuards(AuthenticatedGuard)
+	// @Post("group/delete")
+	// async groupDelete() {
+	// 	return await this.sessionsService.login();
+	// }
 }

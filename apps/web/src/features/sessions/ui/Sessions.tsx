@@ -5,7 +5,6 @@ import { Boxes } from "lucide-react";
 import { useGetGroupsQuery } from "@/features/sessions/model/sessionGroup.api";
 import { CreateGroupPopover } from "@/features/sessions/ui/group/CreateGroupFormPopover";
 import { GroupList } from "@/features/sessions/ui/group/GroupsList";
-import { WipeSessionsMessageBox } from "@/features/ui/ui/messageboxes/WipeSessionsMessageBox";
 import {
 	Button,
 	Card,
@@ -48,7 +47,7 @@ const SessionsDisplay = () => {
 	// jsx
 	return (
 		<>
-			<CardContent className="p-4 fade-bottom">
+			<CardContent className="fade-bottom p-0!">
 				<GroupList />
 			</CardContent>
 
@@ -62,7 +61,6 @@ const SessionsDisplay = () => {
 						Create
 					</Button>
 				</CreateGroupPopover>
-				<WipeSessionsMessageBox />
 			</CardFooter>
 		</>
 	);

@@ -2,7 +2,7 @@ import { Plus } from "lucide-react";
 import { useState } from "react";
 import { Controller } from "react-hook-form";
 
-import { useGroupLogic } from "@/features/sessions/hooks/useGroupLogic";
+import { useGroupActions } from "@/features/sessions/hooks/useGroupActions";
 import { useGroupFormProvider } from "@/features/sessions/providers/GroupFormProvider";
 import {
   Button,
@@ -28,7 +28,7 @@ import {
 export const CreateGroupForm = ({ onSuccess }: { onSuccess: () => void }) => {
 	// states
 	const { groupForm } = useGroupFormProvider();
-	const { createGroup } = useGroupLogic();
+	const { createGroup } = useGroupActions();
 	const [open, setOpen] = useState<boolean>(false);
 
 	// jsx

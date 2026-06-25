@@ -5,16 +5,13 @@ import { connected_sessionsType } from "../prisma/schemas/models/connected_sessi
 import { connected_sessions_groupType } from "../prisma/schemas/models/connected_sessions_group.schema.js";
 
 /**
- * return value
+ * create
  */
 export type GroupCreateReturn = {
 	group: connected_sessions_groupType;
 	connection: connected_sessionsType;
 };
 
-/**
- * dto
- */
 export const groupCreateSchema = z.object({
 	groupId: z.nanoid().optional(),
 	connectionId: z.nanoid().optional(),
@@ -23,3 +20,18 @@ export const groupCreateSchema = z.object({
 });
 
 export type GroupCreateSchema = z.infer<typeof groupCreateSchema>;
+
+/**
+ * edit
+ */
+export type GroupEditReturn = {
+	group: connected_sessions_groupType;
+};
+
+export const groupEditSchema = z.object({
+	groupId: z.nanoid(),
+	title: groupFormSchema.shape.title.optional(),
+	emoji: groupFormSchema.shape.emoji.optional(),
+});
+
+export type GroupEditSchema = z.infer<typeof groupEditSchema>;

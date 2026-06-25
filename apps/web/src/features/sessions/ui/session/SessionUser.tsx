@@ -1,6 +1,13 @@
 import { usersSelectors } from "@/features/users/model/users.api";
 import { InfoCube } from "@/features/users/ui/profile/dialog/InfoCube";
-import { useAppSelector } from "@/shared";
+import {
+	Item,
+	ItemContent,
+	ItemDescription,
+	ItemMedia,
+	ItemTitle,
+	useAppSelector,
+} from "@/shared";
 
 export const SessionUser = ({ userId }: { userId: string }) => {
 	// redux
@@ -14,5 +21,16 @@ export const SessionUser = ({ userId }: { userId: string }) => {
 	}
 
 	// jsx
-	return <InfoCube image={user.image_url} />;
+	return (
+		<Item variant="muted">
+			<ItemMedia>
+        <InfoCube image={user.image_url} color={user.color} />
+			</ItemMedia>
+
+			<ItemContent className="truncate">
+				<ItemTitle>{user.username}</ItemTitle>
+				<ItemDescription>{user.color}</ItemDescription>
+			</ItemContent>
+		</Item>
+	);
 };

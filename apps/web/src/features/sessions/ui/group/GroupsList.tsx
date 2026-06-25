@@ -11,7 +11,7 @@ export const GroupList = () => {
 		<ul className="w-full flex flex-col max-h-64 overflow-y-auto">
 			{groupIds.map((groupId) => (
 				<li key={groupId}>
-					<Group groupId={groupId} />
+          <Group groupId={groupId} />
 				</li>
 			))}
 		</ul>

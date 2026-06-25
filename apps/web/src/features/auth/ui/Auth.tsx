@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuthLogic } from "@/features/auth/hooks/useAuthLogic";
+import { useAuthActions } from "@/features/auth/hooks/useAuthActions";
 import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
 import { AuthContent } from "@/features/auth/ui/auth/AuthContent";
 import { AuthFooter } from "@/features/auth/ui/auth/AuthFooter";
@@ -8,7 +8,7 @@ import { AuthHeader } from "@/features/auth/ui/auth/AuthHeader";
 
 export const Auth = () => {
 	// states
-	const { auth } = useAuthLogic();
+	const { auth } = useAuthActions();
 	const { authForm } = useAuthFormProvider();
 
 	// jsx

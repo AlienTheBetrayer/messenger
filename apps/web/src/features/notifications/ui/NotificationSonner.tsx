@@ -18,7 +18,7 @@ export const NotificationSonner = () => {
 			position="top-center"
 			className="**:data-content:w-full"
 			closeButton
-			duration={5000}
+			duration={4000}
 			icons={{
 				loading: <Spinner />,
 			}}

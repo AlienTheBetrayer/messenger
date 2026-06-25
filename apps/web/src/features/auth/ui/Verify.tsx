@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuthLogic } from "@/features/auth/hooks/useAuthLogic";
+import { useAuthActions } from "@/features/auth/hooks/useAuthActions";
 import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
 import { VerifyContent } from "@/features/auth/ui/verify/VerifyContent";
 import { VerifyFooter } from "@/features/auth/ui/verify/VerifyFooter";
@@ -8,7 +8,7 @@ import { VerifyHeader } from "@/features/auth/ui/verify/VerifyHeader";
 
 export const Verify = () => {
 	// states
-	const { verify } = useAuthLogic();
+	const { verify } = useAuthActions();
 	const { verifyForm } = useAuthFormProvider();
 
 	// jsx

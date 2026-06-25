@@ -1,8 +1,8 @@
-import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { Slot } from "radix-ui";
+import * as React from "react";
 
-import { cn } from "@/features/ui/lib/tailwind";
+import { cn } from "@/features/ui";
 import { Separator } from "@/shared/ui/separator";
 
 function ItemGroup({ className, ...props }: React.ComponentProps<"div">) {
@@ -184,13 +184,13 @@ function ItemFooter({ className, ...props }: React.ComponentProps<"div">) {
 
 export {
 	Item,
-	ItemMedia,
-	ItemContent,
 	ItemActions,
+	ItemContent,
+	ItemDescription,
+	ItemFooter,
 	ItemGroup,
+	ItemHeader,
+	ItemMedia,
 	ItemSeparator,
 	ItemTitle,
-	ItemDescription,
-	ItemHeader,
-	ItemFooter,
 };

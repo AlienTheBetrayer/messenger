@@ -1,4 +1,9 @@
-import { generateId, GroupCreateSchema, SessionAdd } from "@gravity/shared";
+import {
+	generateId,
+	GroupCreateSchema,
+	GroupEditSchema,
+	SessionAdd,
+} from "@gravity/shared";
 import { Injectable } from "@nestjs/common";
 
 import { AuthenticatedUserType } from "../auth-core/decorators";
@@ -57,6 +62,12 @@ export class SessionsService {
 		return true;
 	}
 
+	/**
+	 * creates a group that can link multiple sessions
+	 * @param title required title
+	 * @param emoji optional emoji
+	 * @returns group
+	 */
 	async groupAdd(body: GroupCreateSchema, user: AuthenticatedUserType) {
 		// group
 		const group = await this.prismaService.connected_sessions_group.create({
@@ -77,5 +88,25 @@ export class SessionsService {
 		});
 
 		return { group, connection };
+	}
+
+	/**
+	 * edits the group (can only be a member of that group)
+	 * @param title title
+	 * @param emoji emoji
+	 * @returns updated group
+	 */
+	async groupEdit(body: GroupEditSchema) {
+		const group = await this.prismaService.connected_sessions_group.update({
+			where: {
+				id: body.groupId,
+			},
+			data: {
+				title: body.title,
+				emoji: body.emoji,
+			},
+		});
+
+		return group;
 	}
 }

@@ -1,21 +1,21 @@
 import {
-  AuthFormSchema,
-  usersType,
-  VerificationFormSchema,
+	AuthFormSchema,
+	usersType,
+	VerificationFormSchema,
 } from "@gravity/shared";
 import { useCallback, useMemo } from "react";
 
 import { useAuthNotifications } from "@/features/auth/hooks/useAuthNotifications";
 import {
-  useForgotPasswordMutation,
-  useGetCodeMutation,
-  useLoginMutation,
-  useSignupMutation,
+	useForgotPasswordMutation,
+	useGetCodeMutation,
+	useLoginMutation,
+	useSignupMutation,
 } from "@/features/auth/model/auth.api";
 import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
 import { normalizeError, queryStateHooks } from "@/shared";
 
-export const useAuthLogic = () => {
+export const useAuthActions = () => {
 	// states
 	const { authForm, verifyForm, type } = useAuthFormProvider();
 	const [, setVerify] = queryStateHooks.useVerify();
@@ -30,10 +30,10 @@ export const useAuthLogic = () => {
 	// auth
 	const auth = useCallback(
 		async (data: AuthFormSchema) => {
-      setVerify("pending");
-      
-      const fn = async () => {
-        try {
+			setVerify("pending");
+
+			const fn = async () => {
+				try {
 					const res = await getCode({ email: data.email, type }).unwrap();
 					return res;
 				} catch (e) {

@@ -6,7 +6,7 @@ import z from "zod";
 /**
  * schema representation of the authenticated user
  */
-const authenticatedUserSchema = usersSchema.extend({
+export const authenticatedUserSchema = usersSchema.extend({
 	session: auth_sessionsSchema,
 });
 
