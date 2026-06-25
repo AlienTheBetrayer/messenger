@@ -36,7 +36,7 @@ export const useAuthNotifications = () => {
 							}
 						/>
 					),
-					text: "error",
+					text: "Code generation failed.",
 				}),
 				success: () => ({
 					node: <NotificationLayout text="Code has been successfully sent!" />,

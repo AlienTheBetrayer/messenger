@@ -1,6 +1,7 @@
-import { SessionAdd } from "@gravity/shared";
+import { generateId, GroupCreateSchema, SessionAdd } from "@gravity/shared";
 import { Injectable } from "@nestjs/common";
 
+import { AuthenticatedUserType } from "../auth-core/decorators";
 import { PrismaService } from "../prisma/prisma.service";
 
 @Injectable()
@@ -54,5 +55,27 @@ export class SessionsService {
 
 	async login() {
 		return true;
+	}
+
+	async groupAdd(body: GroupCreateSchema, user: AuthenticatedUserType) {
+		// group
+		const group = await this.prismaService.connected_sessions_group.create({
+			data: {
+				id: body.groupId ?? generateId(),
+				title: body.title,
+				emoji: body.emoji,
+			},
+		});
+
+		// connection
+		const connection = await this.prismaService.connected_sessions.create({
+			data: {
+				id: body.connectionId ?? generateId(),
+				session_id: user.session.id,
+				group_id: group.id,
+			},
+		});
+
+		return { group, connection };
 	}
 }

@@ -6,5 +6,6 @@
 		"input": { "enabled": false },
 		"result": { "enabled": false }
 	},
+
 	"emit": { "objects": false, "crud": false, "variants": false }
 }

@@ -1,4 +1,4 @@
-import { SessionsReturn } from "@gravity/shared";
+import { GroupCreateReturn, SessionsReturn } from "@gravity/shared";
 import { Body, Controller, Get, Post, UseGuards } from "@nestjs/common";
 
 import {
@@ -6,7 +6,7 @@ import {
 	AuthenticatedUserType,
 } from "../auth-core/decorators";
 import { AuthenticatedGuard } from "../auth-core/guards";
-import { SessionAddDto } from "./sessions.dto";
+import { GroupCreateDto, SessionAddDto } from "./sessions.dto";
 import { SessionsService } from "./sessions.service";
 
 @Controller("sessions")
@@ -57,13 +57,19 @@ export class SessionsController {
 	}
 
 	/**
-	 *
-	 * @returns
+	 * creates a group that can link multiple sessions
+	 * @param title required title
+	 * @param emoji optional emoji
+	 * @returns group
 	 */
 	@UseGuards(AuthenticatedGuard)
 	@Post("group/add")
-	async groupAdd() {
-		return await this.sessionsService.login();
+	async groupAdd(
+		@Body() body: GroupCreateDto,
+		@AuthenticatedUser() user: AuthenticatedUserType,
+	): Promise<GroupCreateReturn> {
+		const ret = await this.sessionsService.groupAdd(body, user);
+		return ret;
 	}
 
 	/**

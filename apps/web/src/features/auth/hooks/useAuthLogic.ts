@@ -1,16 +1,16 @@
 import {
-	AuthFormSchema,
-	usersType,
-	VerificationFormSchema,
+  AuthFormSchema,
+  usersType,
+  VerificationFormSchema,
 } from "@gravity/shared";
 import { useCallback, useMemo } from "react";
 
 import { useAuthNotifications } from "@/features/auth/hooks/useAuthNotifications";
 import {
-	useForgotPasswordMutation,
-	useGetCodeMutation,
-	useLoginMutation,
-	useSignupMutation,
+  useForgotPasswordMutation,
+  useGetCodeMutation,
+  useLoginMutation,
+  useSignupMutation,
 } from "@/features/auth/model/auth.api";
 import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
 import { normalizeError, queryStateHooks } from "@/shared";

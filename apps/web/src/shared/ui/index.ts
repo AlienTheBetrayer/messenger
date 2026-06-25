@@ -11,6 +11,7 @@ export * from "./context-menu.js";
 export * from "./custom/MessageBox.js";
 export * from "./dialog.js";
 export * from "./dropdown-menu.js";
+export * from "./emoji-picker.js";
 export * from "./field.js";
 export * from "./input-group.js";
 export * from "./input.js";

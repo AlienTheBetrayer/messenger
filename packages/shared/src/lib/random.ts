@@ -36,3 +36,12 @@ export const randomHex = () => {
 			.padStart(6, "0")
 	);
 };
+
+/**
+ * returns a random element in the array
+ * @param array array to get an element from
+ * @returns a random element
+ */
+export const randomElement = <T>(array: T[]): T => {
+	return array[randomRange(0, array.length - 1)];
+};

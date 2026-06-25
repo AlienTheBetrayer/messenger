@@ -2,7 +2,7 @@ import z from "zod";
 
 import { AuthConfig } from "../../config/auth.js";
 import { verification_code_typeSchema } from "../prisma/schemas/enums/verification_code_type.schema.js";
-import { auth_sessionType } from "../prisma/schemas/models/auth_session.schema.js";
+import { auth_sessionsType } from "../prisma/schemas/models/auth_sessions.schema.js";
 import { usersType } from "../prisma/schemas/models/users.schema.js";
 
 /**
@@ -43,7 +43,7 @@ export type AuthForgotPasswordReturn = {
 export type AuthLoginReturn = {
 	accessToken: string;
 	refreshToken: string;
-	session: auth_sessionType;
+	session: auth_sessionsType;
 	user: usersType;
 };
 
@@ -52,7 +52,7 @@ export type AuthLoginReturn = {
  */
 export type AuthLogoutSchema = void;
 export type AuthLogoutReturn = {
-	session: auth_sessionType | null;
+	session: auth_sessionsType | null;
 };
 
 /**
@@ -61,6 +61,7 @@ export type AuthLogoutReturn = {
 export type AuthMeSchema = void;
 export type AuthMeReturn = {
 	user: usersType;
+	session: auth_sessionsType;
 };
 
 /**
@@ -69,4 +70,3 @@ export type AuthMeReturn = {
 export type AuthSignupReturn = {
 	user: usersType;
 };
-

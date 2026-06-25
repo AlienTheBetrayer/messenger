@@ -111,8 +111,9 @@ export class AuthController {
 	 */
 	@UseGuards(AuthenticatedGuard)
 	@Get("me")
-	me(@AuthenticatedUser() user: AuthenticatedUserType): AuthMeReturn {
-		return { user };
+  me(@AuthenticatedUser() user: AuthenticatedUserType): AuthMeReturn {
+    const { session, ...userObject } = user;
+		return { session, user: userObject };
 	}
 
 	/**

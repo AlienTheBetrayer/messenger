@@ -86,14 +86,14 @@ export const authApi = baseApi.injectEndpoints({
 		/**
 		 * /auth/me
 		 */
-		me: builder.query<{ userId?: string }, AuthMeSchema>({
+		me: builder.query<{ userId?: string, sessionId?: string }, AuthMeSchema>({
 			query: () => ({
 				url: "/auth/me",
 				method: "GET",
 			}),
 
 			transformResponse: (response: AuthMeReturn) => {
-				return { userId: response.user.id };
+				return { userId: response.user.id, sessionId: response.session.id };
 			},
 
 			keepUnusedDataFor: 99999999,

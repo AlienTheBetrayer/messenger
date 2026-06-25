@@ -1,4 +1,4 @@
-import { auth_sessionSchema, usersSchema } from "@gravity/shared";
+import { auth_sessionsSchema, usersSchema } from "@gravity/shared";
 import { createParamDecorator, ExecutionContext } from "@nestjs/common";
 import { Request } from "express";
 import z from "zod";
@@ -7,7 +7,7 @@ import z from "zod";
  * schema representation of the authenticated user
  */
 const authenticatedUserSchema = usersSchema.extend({
-	session: auth_sessionSchema,
+	session: auth_sessionsSchema,
 });
 
 /**

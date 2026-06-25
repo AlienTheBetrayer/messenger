@@ -1,4 +1,4 @@
-import { auth_sessionType } from "@gravity/shared";
+import { auth_sessionsType } from "@gravity/shared";
 import { createEntityAdapter, EntityState } from "@reduxjs/toolkit";
 
 import { baseApi, RootState } from "@/shared";
@@ -6,7 +6,7 @@ import { baseApi, RootState } from "@/shared";
 /**
  * adapter
  */
-export const sessionAdapter = createEntityAdapter<auth_sessionType>({
+export const sessionAdapter = createEntityAdapter<auth_sessionsType>({
 	sortComparer: (a, b) => a.id.localeCompare(b.id),
 });
 
@@ -17,7 +17,7 @@ const initialState = sessionAdapter.getInitialState();
  */
 export const sessionApi = baseApi.injectEndpoints({
 	endpoints: (build) => ({
-		getSessions: build.query<EntityState<auth_sessionType, string>, void>({
+		getSessions: build.query<EntityState<auth_sessionsType, string>, void>({
 			query: () => ({
 				url: "/sessions",
 				method: "GET",

@@ -3,7 +3,6 @@
 import { Boxes } from "lucide-react";
 
 import { useGetGroupsQuery } from "@/features/sessions/model/sessionGroup.api";
-import { GroupFormProvider } from "@/features/sessions/providers/GroupFormProvider";
 import { CreateGroupPopover } from "@/features/sessions/ui/group/CreateGroupFormPopover";
 import { GroupList } from "@/features/sessions/ui/group/GroupsList";
 import { WipeSessionsMessageBox } from "@/features/ui/ui/messageboxes/WipeSessionsMessageBox";
@@ -17,11 +16,9 @@ import {
 
 export const Sessions = () => {
 	return (
-		<GroupFormProvider>
-			<Card className="p-0">
-				<SessionsDisplay />
-			</Card>
-		</GroupFormProvider>
+		<Card className="p-0">
+			<SessionsDisplay />
+		</Card>
 	);
 };
 
@@ -45,7 +42,7 @@ const SessionsDisplay = () => {
 	}
 
 	if (!sessions) {
-    return null;
+		return null;
 	}
 
 	// jsx

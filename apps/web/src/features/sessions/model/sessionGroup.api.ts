@@ -1,12 +1,17 @@
 import {
-	auth_sessionType,
+	auth_sessionsType,
 	connected_sessions_groupType,
 	connected_sessionsType,
+	generateId,
+	GroupCreateReturn,
+	GroupCreateSchema,
+	PickRequired,
 	SessionsReturn,
 	usersType,
 } from "@gravity/shared";
 import { createEntityAdapter, EntityState } from "@reduxjs/toolkit";
 
+import { authApi } from "@/features/auth/model/auth.api";
 import {
 	sessionConnectionAdapter,
 	sessionConnectionApi,
@@ -36,6 +41,9 @@ const initialState = groupAdapter.getInitialState();
  */
 export const groupApi = baseApi.injectEndpoints({
 	endpoints: (build) => ({
+		/**
+		 * gets all the groups, connected sessions, sessions, and normalizes all of it.
+		 */
 		getGroups: build.query<EntityState<ConnectedSessionGroup, string>, void>({
 			query: () => ({
 				url: "/sessions",
@@ -53,7 +61,7 @@ export const groupApi = baseApi.injectEndpoints({
 				// normalizing
 				const normalizedGroups: ConnectedSessionGroup[] = [];
 				const flatConnectedSessions: connected_sessionsType[] = [];
-				const flatSessions: auth_sessionType[] = [];
+				const flatSessions: auth_sessionsType[] = [];
 				const users: usersType[] = [];
 
 				for (const group of data.sessions) {
@@ -125,10 +133,70 @@ export const groupApi = baseApi.injectEndpoints({
 				);
 			},
 		}),
+
+		/**
+		 * @param id optional id (required for optimistic updates)
+		 * @param title required title
+		 * @param emoji optional emoji
+		 * @returns created group
+		 */
+		createGroup: build.mutation<
+			GroupCreateReturn,
+			PickRequired<GroupCreateSchema, "groupId" | "connectionId">
+		>({
+			query: (body) => ({
+				url: "/sessions/group/add",
+				method: "POST",
+				body,
+			}),
+
+			// eslint-disable-next-line @typescript-eslint/unbound-method
+			onQueryStarted: async (args, { dispatch, getState }) => {
+				const authSelection =
+					authApi.endpoints.me.select(undefined)(getState());
+
+				// ids
+				const groupId = args.groupId ?? generateId();
+				const connectionId = args.connectionId ?? generateId();
+				const sessionId = authSelection.data?.sessionId;
+
+				if (!sessionId) {
+					return;
+				}
+
+				// dispatching the created group
+				dispatch(
+					groupApi.util.updateQueryData("getGroups", undefined, (draft) => {
+						groupAdapter.addOne(draft, {
+							...args,
+							created_at: new Date().toISOString() as unknown as Date,
+							id: groupId,
+							connectedSessionIds: [connectionId],
+						});
+					}),
+				);
+
+				// dispatching the connection (connected to the group above)
+				dispatch(
+					sessionConnectionApi.util.updateQueryData(
+						"getConnectedSessions",
+						undefined,
+						(draft) => {
+							sessionConnectionAdapter.addOne(draft, {
+								id: connectionId,
+								group_id: groupId,
+								session_id: sessionId,
+								created_at: new Date().toISOString() as unknown as Date,
+							});
+						},
+					),
+				);
+			},
+		}),
 	}),
 });
 
-export const { useGetGroupsQuery } = groupApi;
+export const { useGetGroupsQuery, useCreateGroupMutation } = groupApi;
 
 /**
  * selectors

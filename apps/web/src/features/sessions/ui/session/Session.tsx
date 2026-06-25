@@ -6,13 +6,13 @@ export const Session = ({ sessionId }: { sessionId: string }) => {
 	// redux
 	const session = useAppSelector((state) =>
 		sessionSelectors.selectById(state, sessionId),
-	);
-
+  );
+  
 	// fallback
 	if (!session) {
 		return null;
-	}
-
+  }
+  
 	// jsx
 	return (
 		<div className="flex flex-col items-center">

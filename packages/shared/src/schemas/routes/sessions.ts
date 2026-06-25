@@ -1,9 +1,6 @@
 import z from "zod";
 
-import {
-  auth_sessionSchema,
-  auth_sessionType,
-} from "../prisma/schemas/models/auth_session.schema.js";
+import { auth_sessionsSchema, auth_sessionsType } from "../prisma/schemas/models/auth_sessions.schema.js";
 import { connected_sessionsType } from "../prisma/schemas/models/connected_sessions.schema.js";
 import { connected_sessions_groupType } from "../prisma/schemas/models/connected_sessions_group.schema.js";
 import { usersType } from "../prisma/schemas/models/users.schema.js";
@@ -14,7 +11,7 @@ import { usersType } from "../prisma/schemas/models/users.schema.js";
 export type SessionsReturn = {
 	sessions: (connected_sessions_groupType & {
 		connected_sessions: (connected_sessionsType & {
-			auth_sessions: auth_sessionType & { users: usersType };
+			auth_sessions: auth_sessionsType & { users: usersType };
 		})[];
 	})[];
 };
@@ -24,6 +21,6 @@ export type SessionsReturn = {
  */
 export const sessionAdd = z.object({
 	groupId: z.nanoid(),
-	session: auth_sessionSchema,
+	session: auth_sessionsSchema,
 });
 export type SessionAdd = z.infer<typeof sessionAdd>;
