@@ -1,5 +1,6 @@
 import {
 	GroupCreateReturn,
+	GroupDeleteReturn,
 	GroupEditReturn,
 	SessionsReturn,
 } from "@gravity/shared";
@@ -10,10 +11,6 @@ import {
 	AuthenticatedUserType,
 } from "../auth-core/decorators";
 import { AuthenticatedGuard } from "../auth-core/guards";
-import {
-	CurrentGroups,
-	CurrentGroupsType,
-} from "./decorators/currentgroups.decorator";
 import { GroupOwnerGuard } from "./guards";
 import { GroupCreateDto, GroupDeleteDto, GroupEditDto } from "./sessions.dto";
 import { SessionsService } from "./sessions.service";
@@ -77,8 +74,8 @@ export class SessionsController {
 		@Body() body: GroupCreateDto,
 		@AuthenticatedUser() user: AuthenticatedUserType,
 	): Promise<GroupCreateReturn> {
-		const ret = await this.sessionsService.groupAdd(body, user);
-		return ret;
+		const data = await this.sessionsService.groupAdd(body, user);
+		return data;
 	}
 
 	/**
@@ -90,12 +87,9 @@ export class SessionsController {
 	 */
 	@UseGuards(AuthenticatedGuard, GroupOwnerGuard)
 	@Post("group/edit")
-	async groupEdit(
-		@Body() body: GroupEditDto,
-		@CurrentGroups() groups: CurrentGroupsType,
-	): Promise<GroupEditReturn> {
-		const ret = await this.sessionsService.groupEdit(body);
-		return { group: ret };
+	async groupEdit(@Body() body: GroupEditDto): Promise<GroupEditReturn> {
+		const group = await this.sessionsService.groupEdit(body);
+		return { group };
 	}
 
 	/**
@@ -105,7 +99,8 @@ export class SessionsController {
 	 */
 	@UseGuards(AuthenticatedGuard, GroupOwnerGuard)
 	@Post("group/delete")
-	async groupDelete(@Body() body: GroupDeleteDto) {
-		return await this.sessionsService.groupDelete(body);
+	async groupDelete(@Body() body: GroupDeleteDto): Promise<GroupDeleteReturn> {
+		const group = await this.sessionsService.groupDelete(body);
+		return { group };
 	}
 }

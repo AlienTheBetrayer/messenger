@@ -4,6 +4,7 @@ import { useCallback, useMemo } from "react";
 import { useSessionNotifications } from "@/features/sessions/hooks/useSessionNotifications";
 import {
 	useCreateGroupMutation,
+	useDeleteGroupMutation,
 	useEditGroupMutation,
 } from "@/features/sessions/model/sessionGroup.api";
 import { normalizeError } from "@/shared";
@@ -12,6 +13,7 @@ export const useGroupActions = () => {
 	// redux
 	const [groupCreate] = useCreateGroupMutation();
 	const [groupEdit] = useEditGroupMutation();
+	const [groupDelete] = useDeleteGroupMutation();
 	const notifications = useSessionNotifications();
 
 	// functions
@@ -53,11 +55,29 @@ export const useGroupActions = () => {
 		[groupEdit, notifications],
 	);
 
+	const deleteGroup = useCallback(
+		async (data: { groupId: string }) => {
+			const fn = async () => {
+				try {
+					const res = await groupDelete(data).unwrap();
+					return res;
+				} catch (e) {
+					const message = normalizeError(e);
+					throw new Error(message);
+				}
+			};
+
+			notifications.groupDelete(fn);
+		},
+		[groupDelete, notifications],
+	);
+
 	return useMemo(
 		() => ({
 			createGroup,
 			editGroup,
+			deleteGroup,
 		}),
-		[createGroup, editGroup],
+		[createGroup, editGroup, deleteGroup],
 	);
 };

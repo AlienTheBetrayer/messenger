@@ -107,6 +107,7 @@ export class SessionsService {
 			data: {
 				title: body.title,
 				emoji: body.emoji,
+				edited_at: new Date().toISOString(),
 			},
 		});
 

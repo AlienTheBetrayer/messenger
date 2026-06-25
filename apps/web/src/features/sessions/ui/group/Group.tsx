@@ -25,7 +25,7 @@ export const Group = ({ groupId }: { groupId: string }) => {
 	const group = useAppSelector((state) =>
 		groupSelectors.selectById(state, groupId),
 	);
-	const { editGroup } = useGroupActions();
+	const { editGroup, deleteGroup } = useGroupActions();
 
 	// states
 	const [open, setOpen] = useState<boolean>(false);
@@ -87,6 +87,9 @@ export const Group = ({ groupId }: { groupId: string }) => {
 							className="ml-auto! aspect-square"
 							size="xs"
 							variant="destructive"
+							onClick={() => {
+								deleteGroup({ groupId: group.id });
+							}}
 						>
 							<Trash2 />
 						</Button>

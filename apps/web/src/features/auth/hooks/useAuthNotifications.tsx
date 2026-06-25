@@ -21,23 +21,27 @@ export const useAuthNotifications = () => {
 					node: <NotificationLayout text="Sending the code..." />,
 					text: "Sending the code...",
 				}),
-				error: () => ({
-					node: (
-						<NotificationLayout
-							text="Code generation failed."
-							action={
-								<Button
-									onClick={() => {
-										fn();
-									}}
-								>
-									Retry
-								</Button>
-							}
-						/>
-					),
-					text: "Code generation failed.",
-				}),
+				error: (e: unknown) => {
+					const message = e instanceof Error ? e.message : "";
+
+					return {
+						node: (
+							<NotificationLayout
+								text={`Code generation failed. ${message}`}
+								action={
+									<Button
+										onClick={() => {
+											fn();
+										}}
+									>
+										Retry
+									</Button>
+								}
+							/>
+						),
+						text: `Code generation failed. ${message}`,
+					};
+				},
 				success: () => ({
 					node: <NotificationLayout text="Code has been successfully sent!" />,
 					text: "Code has been successfully sent!",
@@ -58,8 +62,21 @@ export const useAuthNotifications = () => {
 					const message = err instanceof Error ? err.message : "Invalid code.";
 
 					return {
-						node: <NotificationLayout text={message} />,
-						text: message,
+						node: (
+							<NotificationLayout
+								text={`Verification failed. ${message}`}
+								action={
+									<Button
+										onClick={() => {
+											fn();
+										}}
+									>
+										Retry
+									</Button>
+								}
+							/>
+						),
+						text: `Verification failed. ${message}`,
 					};
 				},
 				success: (user) => ({

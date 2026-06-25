@@ -38,8 +38,8 @@ export const CreateGroupForm = ({ onSuccess }: { onSuccess: () => void }) => {
 			id="group-form"
 			className="flex flex-col gap-4"
 			onSubmit={groupForm.handleSubmit((data) => {
-				createGroup(data);
 				onSuccess();
+				createGroup(data);
 			})}
 		>
 			<CardHeader>

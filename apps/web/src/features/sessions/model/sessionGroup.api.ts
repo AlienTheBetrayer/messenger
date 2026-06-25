@@ -1,27 +1,29 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import {
-	auth_sessionsType,
-	connected_sessions_groupType,
-	connected_sessionsType,
-	generateId,
-	GroupCreateReturn,
-	GroupCreateSchema,
-	GroupEditReturn,
-	GroupEditSchema,
-	PickRequired,
-	SessionsReturn,
-	usersType,
+  auth_sessionsType,
+  connected_sessions_groupType,
+  connected_sessionsType,
+  generateId,
+  GroupCreateReturn,
+  GroupCreateSchema,
+  GroupDeleteReturn,
+  GroupDeleteSchema,
+  GroupEditReturn,
+  GroupEditSchema,
+  PickRequired,
+  SessionsReturn,
+  usersType,
 } from "@gravity/shared";
 import { createEntityAdapter, EntityState } from "@reduxjs/toolkit";
 
 import { authApi } from "@/features/auth/model/auth.api";
 import {
-	sessionConnectionAdapter,
-	sessionConnectionApi,
+  sessionConnectionAdapter,
+  sessionConnectionApi,
 } from "@/features/sessions/model/sessionConnections.api";
 import {
-	sessionAdapter,
-	sessionApi,
+  sessionAdapter,
+  sessionApi,
 } from "@/features/sessions/model/sessions.api";
 import { usersAdapter, usersApi } from "@/features/users/model/users.api";
 import { baseApi, RootState } from "@/shared";
@@ -221,13 +223,33 @@ export const groupApi = baseApi.injectEndpoints({
 				);
 			},
 		}),
+
+    /**
+     * deletes a group with an optimistic update
+     * @param groupId required id of the group
+     * @returns deleted group
+     */
+    deleteGroup: build.mutation<GroupDeleteReturn, GroupDeleteSchema>({
+      query: (body) => ({
+        url: "/sessions/group/delete",
+        method: "POST",
+        body,
+      }),
+
+      async onQueryStarted(args, { dispatch }) {
+        dispatch(groupApi.util.updateQueryData("getGroups", undefined, (draft) => {
+          groupAdapter.removeOne(draft, args.groupId);
+        }))
+      }
+    })
 	}),
 });
 
 export const {
 	useGetGroupsQuery,
 	useCreateGroupMutation,
-	useEditGroupMutation,
+  useEditGroupMutation,
+  useDeleteGroupMutation
 } = groupApi;
 
 /**
