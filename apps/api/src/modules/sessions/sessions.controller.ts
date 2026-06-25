@@ -10,6 +10,10 @@ import {
 	AuthenticatedUserType,
 } from "../auth-core/decorators";
 import { AuthenticatedGuard } from "../auth-core/guards";
+import {
+	CurrentGroups,
+	CurrentGroupsType,
+} from "./decorators/currentgroups.decorator";
 import { GroupMemberGuard } from "./guards";
 import { GroupCreateDto, GroupEditDto } from "./sessions.dto";
 import { SessionsService } from "./sessions.service";
@@ -85,7 +89,10 @@ export class SessionsController {
 	 */
 	@UseGuards(AuthenticatedGuard, GroupMemberGuard)
 	@Post("group/edit")
-	async groupEdit(@Body() body: GroupEditDto): Promise<GroupEditReturn> {
+	async groupEdit(
+		@Body() body: GroupEditDto,
+		@CurrentGroups() groups: CurrentGroupsType,
+	): Promise<GroupEditReturn> {
 		const ret = await this.sessionsService.groupEdit(body);
 		return { group: ret };
 	}

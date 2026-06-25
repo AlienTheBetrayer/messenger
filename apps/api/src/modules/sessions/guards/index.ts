@@ -1,1 +1,1 @@
-export * from "./GroupMemberGuard.js";
+export * from "./groupmember.guard.js";

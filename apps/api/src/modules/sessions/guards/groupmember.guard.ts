@@ -40,28 +40,31 @@ export class GroupMemberGuard implements CanActivate {
 			);
 		}
 
-		// getting group membres
-		const members = await this.prismaService.connected_sessions.findMany({
+		// getting connections
+		const connections = await this.prismaService.connected_sessions.findMany({
 			where: {
 				group_id: parsedGroup.data.groupId,
+				auth_sessions: {
+					user_id: parsedUser.data.id,
+				},
 			},
 			include: {
-				auth_sessions: true,
+				connected_sessions_group: true,
 			},
 		});
 
-		// checking membership
-		const isMember = members.some(
-			(member) => member.auth_sessions.user_id === parsedUser.data.id,
-		);
-
-		if (!isMember) {
+		if (!connections.length) {
 			throw createException(
 				"unauthorized",
 				"UNAUTHENTICATED",
 				"you are not a member of this group.",
 			);
 		}
+
+		// setting the group
+		(request.user as typeof parsedUser.data).session.groups = connections.map(
+			({ connected_sessions_group }) => connected_sessions_group,
+		);
 
 		return true;
 	}
