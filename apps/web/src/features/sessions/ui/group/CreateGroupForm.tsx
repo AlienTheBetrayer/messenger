@@ -1,35 +1,65 @@
-import { Plus } from "lucide-react";
-import { useState } from "react";
+import { Pencil, Plus, RotateCcw } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
 
 import { useGroupActions } from "@/features/sessions/hooks/useGroupActions";
+import { randomGroupFormEmoji } from "@/features/sessions/lib/emojis";
+import { groupSelectors } from "@/features/sessions/model/sessionGroup.api";
 import { useGroupFormProvider } from "@/features/sessions/providers/GroupFormProvider";
+import { CreateGroupPopoverParams } from "@/features/sessions/ui/group/CreateGroupFormPopover";
 import {
-  Button,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-  EmojiPicker,
-  EmojiPickerContent,
-  EmojiPickerFooter,
-  EmojiPickerSearch,
-  Field,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-  Input,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
+	Button,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+	EmojiPicker,
+	EmojiPickerContent,
+	EmojiPickerFooter,
+	EmojiPickerSearch,
+	Field,
+	FieldError,
+	FieldGroup,
+	FieldLabel,
+	Input,
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+	useAppSelector,
 } from "@/shared";
 
-export const CreateGroupForm = ({ onSuccess }: { onSuccess: () => void }) => {
+export const CreateGroupForm = ({
+	onSuccess,
+	params,
+}: {
+	onSuccess: () => void;
+	params?: CreateGroupPopoverParams;
+}) => {
 	// states
 	const { groupForm } = useGroupFormProvider();
-	const { createGroup } = useGroupActions();
+	const { createGroup, editGroup } = useGroupActions();
 	const [open, setOpen] = useState<boolean>(false);
+
+	// redux
+	const group = useAppSelector((state) =>
+		groupSelectors.selectById(
+			state,
+			params?.type === "edit" ? params.groupId : "",
+		),
+	);
+
+	// sync the form with the group if the mode is edit
+	useEffect(() => {
+		if (!group) {
+			return;
+		}
+
+		groupForm.setValues({
+			title: group.title,
+			emoji: group.emoji ?? undefined,
+		});
+	}, [group, groupForm]);
 
 	// jsx
 	return (
@@ -39,13 +69,27 @@ export const CreateGroupForm = ({ onSuccess }: { onSuccess: () => void }) => {
 			className="flex flex-col gap-4"
 			onSubmit={groupForm.handleSubmit((data) => {
 				onSuccess();
-				createGroup(data);
+
+				switch (params?.type) {
+					case "edit": {
+						editGroup({ groupId: params.groupId, ...data });
+						break;
+					}
+					default: {
+						createGroup(data);
+						break;
+					}
+				}
 			})}
 		>
 			<CardHeader>
-				<CardTitle className="text-xs">Group creation</CardTitle>
+				<CardTitle className="text-xs">
+					Group {params?.type === "edit" ? "editing" : "creation"}
+				</CardTitle>
 				<CardDescription className="text-xs">
-					This will create a group that can link multiple sessions.
+					{params?.type === "edit"
+						? "This will update the group."
+						: "This will create a group that can link multiple sessions."}
 				</CardDescription>
 			</CardHeader>
 
@@ -98,8 +142,8 @@ export const CreateGroupForm = ({ onSuccess }: { onSuccess: () => void }) => {
 										</Button>
 									</PopoverTrigger>
 									<PopoverContent className="w-fit p-0">
-                    <EmojiPicker
-                      sticky={false}
+										<EmojiPicker
+											sticky={false}
 											className="h-[200px]"
 											onEmojiSelect={({ emoji }) => {
 												field.onChange(emoji);
@@ -122,13 +166,38 @@ export const CreateGroupForm = ({ onSuccess }: { onSuccess: () => void }) => {
 				</FieldGroup>
 			</CardContent>
 
-			<CardFooter className="flex justify-end items-center">
+			<CardFooter className="flex justify-end items-center gap-1">
+				<Button
+					type="button"
+					size="sm"
+					variant="secondary"
+					className="aspect-square"
+					onClick={() => {
+						groupForm.setValues({
+							title: "",
+							emoji: randomGroupFormEmoji(),
+						});
+					}}
+				>
+					<RotateCcw />
+				</Button>
+
 				<Button
 					type="submit"
 					size="sm"
+					className="min-w-1/2"
 				>
-          <Plus />
-					Create
+					{params?.type === "edit" ? (
+						<>
+							<Pencil />
+							<span>Edit</span>
+						</>
+					) : (
+						<>
+							<Plus />
+							<span>Create</span>
+						</>
+					)}
 				</Button>
 			</CardFooter>
 		</form>

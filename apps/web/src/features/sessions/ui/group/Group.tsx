@@ -1,9 +1,11 @@
-import { Plus, Trash2 } from "lucide-react";
+import { Pencil, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
 
+import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useGroupActions } from "@/features/sessions/hooks/useGroupActions";
 import { groupSelectors } from "@/features/sessions/model/sessionGroup.api";
 import { ConnectedSessionList } from "@/features/sessions/ui/connectedsession/ConnectedSessionList";
+import { CreateGroupPopover } from "@/features/sessions/ui/group/CreateGroupFormPopover";
 import {
 	Button,
 	EmojiPicker,
@@ -25,6 +27,7 @@ export const Group = ({ groupId }: { groupId: string }) => {
 	const group = useAppSelector((state) =>
 		groupSelectors.selectById(state, groupId),
 	);
+	const auth = useAuth();
 	const { editGroup, deleteGroup } = useGroupActions();
 
 	// states
@@ -68,33 +71,48 @@ export const Group = ({ groupId }: { groupId: string }) => {
 							</EmojiPicker>
 						</PopoverContent>
 					</Popover>
+
 					<span>{group.title}</span>
 				</ItemTitle>
 
-				<ul className="flex items-center">
-					<li>
-						<Button
-							className="ml-auto! aspect-square"
-							size="xs"
-							variant="ghost"
-						>
-							<Plus />
-						</Button>
-					</li>
+				{group.owner_user_id === auth?.user.id && (
+					<ul className="flex items-center">
+						<li>
+							<Button
+								className="ml-auto! aspect-square"
+								size="xs"
+								variant="ghost"
+							>
+								<Plus className="size-4" />
+							</Button>
+						</li>
 
-					<li>
-						<Button
-							className="ml-auto! aspect-square"
-							size="xs"
-							variant="destructive"
-							onClick={() => {
-								deleteGroup({ groupId: group.id });
-							}}
-						>
-							<Trash2 />
-						</Button>
-					</li>
-				</ul>
+						<li>
+							<CreateGroupPopover params={{ type: "edit", groupId: group.id }}>
+								<Button
+									className="aspect-square"
+									size="xs"
+									variant="ghost"
+								>
+									<Pencil />
+								</Button>
+							</CreateGroupPopover>
+						</li>
+
+						<li>
+							<Button
+								className="aspect-square"
+								size="xs"
+								variant="destructive"
+								onClick={() => {
+									deleteGroup({ groupId: group.id });
+								}}
+							>
+								<Trash2 />
+							</Button>
+						</li>
+					</ul>
+				)}
 			</ItemHeader>
 
 			<ItemContent>

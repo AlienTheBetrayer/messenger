@@ -4,11 +4,23 @@ import { GroupFormProvider } from "@/features/sessions/providers/GroupFormProvid
 import { CreateGroupForm } from "@/features/sessions/ui/group/CreateGroupForm";
 import { Popover, PopoverContent, PopoverTrigger } from "@/shared";
 
+/**
+ * makes the create group form reusable for editing
+ * type: create by default
+ */
+export type CreateGroupPopoverParams = {
+  type?: "create"
+} | {
+  type: "edit";
+  groupId: string;
+}
+
 export const CreateGroupPopover = ({
-	children,
+  children,
+  params,
 }: {
-	children: React.ReactNode;
-}) => {
+  children: React.ReactNode;
+} & { params?: CreateGroupPopoverParams }) => {
 	// states
 	const [open, setOpen] = useState<boolean>(false);
 
@@ -25,7 +37,8 @@ export const CreateGroupPopover = ({
 				className="shadowed p-0! pt-4!"
 			>
 				<GroupFormProvider>
-					<CreateGroupForm
+          <CreateGroupForm
+            params={params}
 						onSuccess={() => {
 							setOpen(false);
 						}}

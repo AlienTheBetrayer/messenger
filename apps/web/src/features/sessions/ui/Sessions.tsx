@@ -5,13 +5,7 @@ import { Boxes } from "lucide-react";
 import { useGetGroupsQuery } from "@/features/sessions/model/sessionGroup.api";
 import { CreateGroupPopover } from "@/features/sessions/ui/group/CreateGroupFormPopover";
 import { GroupList } from "@/features/sessions/ui/group/GroupsList";
-import {
-	Button,
-	Card,
-	CardContent,
-	CardFooter,
-	useAppDispatch,
-} from "@/shared";
+import { Button, Card, CardContent, CardFooter } from "@/shared";
 
 export const Sessions = () => {
 	return (
@@ -52,11 +46,9 @@ const SessionsDisplay = () => {
 
 			<CardFooter className="flex gap-1 items-center justify-end p-1">
 				<CreateGroupPopover>
-					<Button
-						size="sm"
-					>
+					<Button size="sm">
 						<Boxes />
-						Create a group
+						Create
 					</Button>
 				</CreateGroupPopover>
 			</CardFooter>

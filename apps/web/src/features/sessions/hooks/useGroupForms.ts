@@ -1,15 +1,11 @@
 "use client";
 
-import {
-	GroupFormSchema,
-	groupFormSchema,
-	randomElement,
-} from "@gravity/shared";
+import { GroupFormSchema, groupFormSchema } from "@gravity/shared";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 
-import { GROUP_EMOJIS } from "@/features/sessions/lib/emojis";
+import { randomGroupFormEmoji } from "@/features/sessions/lib/emojis";
 
 export const useGroupForms = () => {
 	// forms
@@ -17,7 +13,7 @@ export const useGroupForms = () => {
 		resolver: zodResolver(groupFormSchema),
 		defaultValues: {
 			title: "",
-			emoji: randomElement(GROUP_EMOJIS),
+			emoji: randomGroupFormEmoji(),
 		},
 		shouldUnregister: true,
 	});
