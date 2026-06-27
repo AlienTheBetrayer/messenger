@@ -1,15 +1,17 @@
 import {
+	connectionAddSchema,
+	connectionDeleteSchema,
 	groupCreateSchema,
 	groupDeleteSchema,
 	groupEditSchema,
-	sessionAdd,
 } from "@gravity/shared";
 import { createZodDto } from "nestjs-zod";
 
 /**
- * session
+ * connections
  */
-export class SessionAddDto extends createZodDto(sessionAdd) {}
+export class ConnectionAddDto extends createZodDto(connectionAddSchema) {}
+export class ConnectionDeleteDto extends createZodDto(connectionDeleteSchema) {}
 
 /**
  * group

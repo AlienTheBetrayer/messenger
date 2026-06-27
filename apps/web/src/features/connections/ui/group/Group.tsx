@@ -2,10 +2,11 @@ import { Pencil, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
 
 import { useAuth } from "@/features/auth/hooks/useAuth";
-import { useGroupActions } from "@/features/sessions/hooks/useGroupActions";
-import { groupSelectors } from "@/features/sessions/model/sessionGroup.api";
-import { ConnectedSessionList } from "@/features/sessions/ui/connectedsession/ConnectedSessionList";
-import { CreateGroupPopover } from "@/features/sessions/ui/group/CreateGroupFormPopover";
+import { useGroupActions } from "@/features/connections/hooks/useGroupActions";
+import { groupSelectors } from "@/features/connections/model/sessionGroup.api";
+import { ConnectedSessionList } from "@/features/connections/ui/connectedsession/ConnectedSessionList";
+import { CreateGroupPopover } from "@/features/connections/ui/group/CreateGroupFormPopover";
+import { DeleteConnectionMessageBox } from "@/features/ui/ui/messageboxes/DeleteConnectionMessageBox";
 import {
 	Button,
 	EmojiPicker,
@@ -100,16 +101,20 @@ export const Group = ({ groupId }: { groupId: string }) => {
 						</li>
 
 						<li>
-							<Button
-								className="aspect-square"
-								size="xs"
-								variant="destructive"
-								onClick={() => {
+							<DeleteConnectionMessageBox
+								type="group"
+								onConfirm={() => {
 									deleteGroup({ groupId: group.id });
 								}}
 							>
-								<Trash2 />
-							</Button>
+								<Button
+									className="aspect-square"
+									size="xs"
+									variant="destructive"
+								>
+									<Trash2 />
+								</Button>
+							</DeleteConnectionMessageBox>
 						</li>
 					</ul>
 				)}

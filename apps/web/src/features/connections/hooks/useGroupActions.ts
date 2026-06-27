@@ -1,12 +1,12 @@
 import { generateId, GroupFormSchema } from "@gravity/shared";
 import { useCallback, useMemo } from "react";
 
-import { useSessionNotifications } from "@/features/sessions/hooks/useSessionNotifications";
+import { useSessionNotifications } from "@/features/connections/hooks/useSessionNotifications";
 import {
 	useCreateGroupMutation,
 	useDeleteGroupMutation,
 	useEditGroupMutation,
-} from "@/features/sessions/model/sessionGroup.api";
+} from "@/features/connections/model/sessionGroup.api";
 import { normalizeError } from "@/shared";
 
 export const useGroupActions = () => {

@@ -8,12 +8,12 @@ import {
   RedirectExceptionInterceptor,
 } from "./modules/auth-core/interceptors";
 import { OAuthModule } from "./modules/auth-oauth/oauth.module";
+import { ConnectionsModule } from "./modules/connections/connections.module";
 import { AppJwtModule } from "./modules/jwt/jwt.module";
 import { MailModule } from "./modules/mail/mail.module";
 import { NotificationsModule } from "./modules/notifications/notifications.module";
 import { PrismaModule } from "./modules/prisma/prisma.module";
 import { RootModule } from "./modules/root/root.module";
-import { SessionsModule } from "./modules/sessions/sessions.module";
 import { UserModule } from "./modules/user/user.module";
 import { VerifyModule } from "./modules/verify/verify.module";
 
@@ -31,7 +31,7 @@ const imports = [
 	AppJwtModule,
 	NotificationsModule,
 	AuthCoreModule,
-	SessionsModule,
+	ConnectionsModule,
 ];
 
 /**

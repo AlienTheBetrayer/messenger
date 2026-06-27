@@ -1,9 +1,10 @@
 import {
+	ConnectionAddSchema,
+	ConnectionDeleteSchema,
 	generateId,
 	GroupCreateSchema,
 	GroupDeleteSchema,
 	GroupEditSchema,
-	SessionAdd,
 } from "@gravity/shared";
 import { Injectable } from "@nestjs/common";
 
@@ -11,7 +12,7 @@ import { AuthenticatedUserType } from "../auth-core/decorators";
 import { PrismaService } from "../prisma/prisma.service";
 
 @Injectable()
-export class SessionsService {
+export class ConnectionsService {
 	constructor(private readonly prismaService: PrismaService) {}
 
 	/**
@@ -19,7 +20,7 @@ export class SessionsService {
 	 * @param sessionId id of the "auth_sessions" session
 	 * @returns sessions categorized by its connection (id + title + emoji)
 	 */
-	async sessions(sessionId: string) {
+	async connections(sessionId: string) {
 		// getting the connection ids
 		const groupIds = await this.prismaService.connected_sessions.findMany({
 			where: {
@@ -31,8 +32,8 @@ export class SessionsService {
 		});
 
 		// getting the sessions
-		const sessions = await this.prismaService.connected_sessions_group.findMany(
-			{
+		const connected =
+			await this.prismaService.connected_sessions_group.findMany({
 				where: {
 					id: {
 						in: groupIds.map(({ group_id }) => group_id),
@@ -49,19 +50,24 @@ export class SessionsService {
 						},
 					},
 				},
-			},
-		);
+			});
 
-		return sessions;
+		return connected;
 	}
 
-	async add(body: SessionAdd) {
+	async connectionAdd(body: ConnectionAddSchema) {
 		return true;
 	}
 
-	async login() {
-		return true;
-	}
+  async connectionDelete(body: ConnectionDeleteSchema) {
+    const connected_session = await this.prismaService.connected_sessions.delete({
+      where: {
+        id: body.connectionId
+      }
+    });
+
+    return connected_session;
+  }
 
 	/**
 	 * creates a group that can link multiple sessions

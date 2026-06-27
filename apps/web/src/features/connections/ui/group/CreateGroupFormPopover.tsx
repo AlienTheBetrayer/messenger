@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-import { GroupFormProvider } from "@/features/sessions/providers/GroupFormProvider";
-import { CreateGroupForm } from "@/features/sessions/ui/group/CreateGroupForm";
+import { GroupFormProvider } from "@/features/connections/providers/GroupFormProvider";
+import { CreateGroupForm } from "@/features/connections/ui/group/CreateGroupForm";
 import { Popover, PopoverContent, PopoverTrigger } from "@/shared";
 
 /**

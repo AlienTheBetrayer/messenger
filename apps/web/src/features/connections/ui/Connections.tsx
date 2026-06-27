@@ -4,10 +4,10 @@ import { Boxes, ChevronsUpDown } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 
 import { useAuth } from "@/features/auth/hooks/useAuth";
-import { groupApi } from "@/features/sessions/model/sessionGroup.api";
-import { CreateGroupPopover } from "@/features/sessions/ui/group/CreateGroupFormPopover";
-import { GroupList } from "@/features/sessions/ui/group/GroupsList";
-import { MiniProfileCube } from "@/features/sessions/ui/other/MiniProfileCube";
+import { groupApi } from "@/features/connections/model/sessionGroup.api";
+import { CreateGroupPopover } from "@/features/connections/ui/group/CreateGroupFormPopover";
+import { GroupList } from "@/features/connections/ui/group/GroupsList";
+import { MiniProfileCube } from "@/features/connections/ui/other/MiniProfileCube";
 import { selectConnectSessionsCollapsedMenu } from "@/features/ui/model/local.selectors";
 import { toggleConnectSessionsCollapsedMenu } from "@/features/ui/model/local.slice";
 import {
@@ -19,15 +19,15 @@ import {
 	useAppSelector,
 } from "@/shared";
 
-export const Sessions = () => {
+export const Connections = () => {
 	return (
 		<Card className="p-0 gap-0">
-			<SessionsDisplay />
+			<ConnectionsDisplay />
 		</Card>
 	);
 };
 
-const SessionsDisplay = () => {
+const ConnectionsDisplay = () => {
 	// redux
 	const dispatch = useAppDispatch();
 	const collapsedMenu = useAppSelector(selectConnectSessionsCollapsedMenu);
@@ -91,14 +91,14 @@ const SessionsDisplay = () => {
 					<ChevronsUpDown />
 				</Button>
 
-				<CreateGroupPopover>
-					<AnimatePresence initial={false}>
-						{!collapsedMenu && (
-							<motion.div
-								initial={{ width: 0 }}
-								animate={{ width: "auto" }}
-								exit={{ width: 0 }}
-							>
+				<AnimatePresence initial={false}>
+					{!collapsedMenu && (
+						<motion.div
+							initial={{ width: 0 }}
+							animate={{ width: "auto" }}
+							exit={{ width: 0 }}
+						>
+							<CreateGroupPopover>
 								<Button
 									size="sm"
 									className="ml-1"
@@ -106,10 +106,10 @@ const SessionsDisplay = () => {
 									<Boxes />
 									Create
 								</Button>
-							</motion.div>
-						)}
-					</AnimatePresence>
-				</CreateGroupPopover>
+							</CreateGroupPopover>
+						</motion.div>
+					)}
+				</AnimatePresence>
 			</CardFooter>
 		</>
 	);

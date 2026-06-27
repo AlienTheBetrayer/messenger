@@ -3,6 +3,7 @@ import {
   auth_sessionsType,
   connected_sessions_groupType,
   connected_sessionsType,
+  ConnectionsReturn,
   generateId,
   GroupCreateReturn,
   GroupCreateSchema,
@@ -11,7 +12,6 @@ import {
   GroupEditReturn,
   GroupEditSchema,
   PickRequired,
-  SessionsReturn,
   usersType,
 } from "@gravity/shared";
 import { createEntityAdapter, EntityState } from "@reduxjs/toolkit";
@@ -20,12 +20,12 @@ import { authApi } from "@/features/auth/model/auth.api";
 import {
   sessionConnectionAdapter,
   sessionConnectionApi,
-} from "@/features/sessions/model/sessionConnections.api";
+} from "@/features/connections/model/sessionConnections.api";
 import {
   sessionAdapter,
   sessionApi,
-} from "@/features/sessions/model/sessions.api";
-import { usersAdapter, usersApi } from "@/features/users/model/users.api";
+} from "@/features/connections/model/sessions.api";
+import { usersAdapter, usersApi } from "@/features/users";
 import { baseApi, RootState } from "@/shared";
 
 export type ConnectedSessionGroup = connected_sessions_groupType & {
@@ -51,15 +51,15 @@ export const groupApi = baseApi.injectEndpoints({
 		 */
 		getGroups: build.query<EntityState<ConnectedSessionGroup, string>, void>({
 			query: () => ({
-				url: "/sessions",
+				url: "/connections",
 				method: "GET",
 			}),
 
 			async onQueryStarted(_, { dispatch, queryFulfilled }) {
 				const res = await queryFulfilled;
-				const data = res.data as unknown as SessionsReturn;
+				const data = res.data as unknown as ConnectionsReturn;
 
-				if (!("sessions" in data)) {
+				if (!("connections" in data)) {
 					return;
 				}
 
@@ -69,7 +69,7 @@ export const groupApi = baseApi.injectEndpoints({
 				const flatSessions: auth_sessionsType[] = [];
 				const users: usersType[] = [];
 
-				for (const group of data.sessions) {
+				for (const group of data.connections) {
 					const connectedSessionIds = group.connected_sessions.map((s) => s.id);
 
 					const { connected_sessions, ...groupNoSessions } = group;
@@ -137,10 +137,10 @@ export const groupApi = baseApi.injectEndpoints({
 					),
 				);
 			},
-    }),
-    
+		}),
+
 		/**
-     * edits a group with an optimistic update
+		 * edits a group with an optimistic update
 		 * @param groupId required id of the group
 		 * @param title optional title
 		 * @param emoji optional emoji
@@ -148,7 +148,7 @@ export const groupApi = baseApi.injectEndpoints({
 		 */
 		editGroup: build.mutation<GroupEditReturn, GroupEditSchema>({
 			query: (body) => ({
-				url: "/sessions/group/edit",
+				url: "/connections/group/edit",
 				method: "POST",
 				body,
 			}),
@@ -164,8 +164,8 @@ export const groupApi = baseApi.injectEndpoints({
 		}),
 
 		/**
-     * creates a new group with an optimistic update
-		 * @param connectionId required id of the connection 
+		 * creates a new group with an optimistic update
+		 * @param connectionId required id of the connection
 		 * @param groupId required id of the group
 		 * @param title required title
 		 * @param emoji optional emoji
@@ -176,7 +176,7 @@ export const groupApi = baseApi.injectEndpoints({
 			PickRequired<GroupCreateSchema, "groupId" | "connectionId">
 		>({
 			query: (body) => ({
-				url: "/sessions/group/add",
+				url: "/connections/group/add",
 				method: "POST",
 				body,
 			}),
@@ -189,8 +189,9 @@ export const groupApi = baseApi.injectEndpoints({
 				const groupId = args.groupId ?? generateId();
 				const connectionId = args.connectionId ?? generateId();
 				const sessionId = authSelection.data?.sessionId;
+				const userId = authSelection.data?.userId;
 
-				if (!sessionId) {
+				if (!sessionId || !userId) {
 					return;
 				}
 
@@ -202,6 +203,7 @@ export const groupApi = baseApi.injectEndpoints({
 							created_at: new Date().toISOString() as unknown as Date,
 							id: groupId,
 							connectedSessionIds: [connectionId],
+							owner_user_id: userId,
 						});
 					}),
 				);
@@ -224,32 +226,34 @@ export const groupApi = baseApi.injectEndpoints({
 			},
 		}),
 
-    /**
-     * deletes a group with an optimistic update
-     * @param groupId required id of the group
-     * @returns deleted group
-     */
-    deleteGroup: build.mutation<GroupDeleteReturn, GroupDeleteSchema>({
-      query: (body) => ({
-        url: "/sessions/group/delete",
-        method: "POST",
-        body,
-      }),
+		/**
+		 * deletes a group with an optimistic update
+		 * @param groupId required id of the group
+		 * @returns deleted group
+		 */
+		deleteGroup: build.mutation<GroupDeleteReturn, GroupDeleteSchema>({
+			query: (body) => ({
+				url: "/connections/group/delete",
+				method: "POST",
+				body,
+			}),
 
-      async onQueryStarted(args, { dispatch }) {
-        dispatch(groupApi.util.updateQueryData("getGroups", undefined, (draft) => {
-          groupAdapter.removeOne(draft, args.groupId);
-        }))
-      }
-    })
+			async onQueryStarted(args, { dispatch }) {
+				dispatch(
+					groupApi.util.updateQueryData("getGroups", undefined, (draft) => {
+						groupAdapter.removeOne(draft, args.groupId);
+					}),
+				);
+			},
+		}),
 	}),
 });
 
 export const {
 	useGetGroupsQuery,
 	useCreateGroupMutation,
-  useEditGroupMutation,
-  useDeleteGroupMutation
+	useEditGroupMutation,
+	useDeleteGroupMutation,
 } = groupApi;
 
 /**

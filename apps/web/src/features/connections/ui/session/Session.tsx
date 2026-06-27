@@ -1,5 +1,5 @@
-import { sessionSelectors } from "@/features/sessions/model/sessions.api";
-import { MiniProfileCube } from "@/features/sessions/ui/other/MiniProfileCube";
+import { sessionSelectors } from "@/features/connections/model/sessions.api";
+import { MiniProfileCube } from "@/features/connections/ui/other/MiniProfileCube";
 import { useAppSelector } from "@/shared";
 
 export const Session = ({ sessionId }: { sessionId: string }) => {

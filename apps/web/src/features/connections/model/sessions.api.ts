@@ -19,7 +19,7 @@ export const sessionApi = baseApi.injectEndpoints({
 	endpoints: (build) => ({
 		getSessions: build.query<EntityState<auth_sessionsType, string>, void>({
 			query: () => ({
-				url: "/sessions",
+				url: "/connections",
 				method: "GET",
       }),
       

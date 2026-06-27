@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { CreateGroupForm } from "@/features/sessions/ui/group/CreateGroupForm";
+import { CreateGroupForm } from "@/features/connections/ui/group/CreateGroupForm";
 import { Popover, PopoverContent, PopoverTrigger } from "@/shared";
 
 export const CreateGroupPopover = ({

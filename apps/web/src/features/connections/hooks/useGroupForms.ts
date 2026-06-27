@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 
-import { randomGroupFormEmoji } from "@/features/sessions/lib/emojis";
+import { randomGroupFormEmoji } from "@/features/connections/lib/emojis";
 
 export const useGroupForms = () => {
 	// forms

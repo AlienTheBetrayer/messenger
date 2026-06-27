@@ -1,8 +1,10 @@
 import {
+	ConnectionAddReturn,
+	ConnectionDeleteReturn,
+	ConnectionsReturn,
 	GroupCreateReturn,
 	GroupDeleteReturn,
 	GroupEditReturn,
-	SessionsReturn,
 } from "@gravity/shared";
 import { Body, Controller, Get, Post, UseGuards } from "@nestjs/common";
 
@@ -11,13 +13,19 @@ import {
 	AuthenticatedUserType,
 } from "../auth-core/decorators";
 import { AuthenticatedGuard } from "../auth-core/guards";
+import {
+	ConnectionAddDto,
+	ConnectionDeleteDto,
+	GroupCreateDto,
+	GroupDeleteDto,
+	GroupEditDto,
+} from "./connections.dto";
+import { ConnectionsService } from "./connections.service";
 import { GroupOwnerGuard } from "./guards";
-import { GroupCreateDto, GroupDeleteDto, GroupEditDto } from "./sessions.dto";
-import { SessionsService } from "./sessions.service";
 
-@Controller("sessions")
-export class SessionsController {
-	constructor(private readonly sessionsService: SessionsService) {}
+@Controller("connections")
+export class ConnectionsController {
+	constructor(private readonly connectionsService: ConnectionsService) {}
 
 	/**
 	 * gets all the currently connected auth sessions in groups
@@ -25,11 +33,13 @@ export class SessionsController {
 	 */
 	@UseGuards(AuthenticatedGuard)
 	@Get()
-	async sessions(
+	async connections(
 		@AuthenticatedUser() user: AuthenticatedUserType,
-	): Promise<SessionsReturn> {
-		const sessions = await this.sessionsService.sessions(user.session.id);
-		return { sessions };
+	): Promise<ConnectionsReturn> {
+		const connections = await this.connectionsService.connections(
+			user.session.id,
+		);
+		return { connections };
 	}
 
 	// /**
@@ -38,29 +48,24 @@ export class SessionsController {
 	//  */
 	// @UseGuards(AuthenticatedGuard)
 	// @Post("session/add")
-	// async sessionAdd(@Body() body: SessionAddDto) {
-	// 	return await this.sessionsService.add(body);
+	// async connectiondd(
+	// 	@Body() body: ConnectionAddDto,
+	// ): Promise<ConnectionAddReturn> {
+	// 	return await this.connectionsService.connectionAdd(body);
 	// }
 
-	// /**
-	//  *
-	//  * @returns
-	//  */
-	// @UseGuards(AuthenticatedGuard)
-	// @Post("session/remove")
-	// async sessionRemove() {
-	// 	return await this.sessionsService.login();
-	// }
-
-	// /**
-	//  *
-	//  * @returns
-	//  */
-	// @UseGuards(AuthenticatedGuard)
-	// @Post("session/remove-all")
-	// async sessionRemoveAll() {
-	// 	return await this.sessionsService.login();
-	// }
+	/**
+	 *
+	 * @returns
+	 */
+	@UseGuards(AuthenticatedGuard)
+	@Post("session/delete")
+	async connectionelete(
+		@Body() body: ConnectionDeleteDto,
+	): Promise<ConnectionDeleteReturn> {
+    const connected_session = await this.connectionsService.connectionDelete(body);
+    return { connected_session };
+	}
 
 	/**
 	 * creates a group that can link multiple sessions
@@ -74,7 +79,7 @@ export class SessionsController {
 		@Body() body: GroupCreateDto,
 		@AuthenticatedUser() user: AuthenticatedUserType,
 	): Promise<GroupCreateReturn> {
-		const data = await this.sessionsService.groupAdd(body, user);
+		const data = await this.connectionsService.groupAdd(body, user);
 		return data;
 	}
 
@@ -88,7 +93,7 @@ export class SessionsController {
 	@UseGuards(AuthenticatedGuard, GroupOwnerGuard)
 	@Post("group/edit")
 	async groupEdit(@Body() body: GroupEditDto): Promise<GroupEditReturn> {
-		const group = await this.sessionsService.groupEdit(body);
+		const group = await this.connectionsService.groupEdit(body);
 		return { group };
 	}
 
@@ -100,7 +105,7 @@ export class SessionsController {
 	@UseGuards(AuthenticatedGuard, GroupOwnerGuard)
 	@Post("group/delete")
 	async groupDelete(@Body() body: GroupDeleteDto): Promise<GroupDeleteReturn> {
-		const group = await this.sessionsService.groupDelete(body);
+		const group = await this.connectionsService.groupDelete(body);
 		return { group };
 	}
 }

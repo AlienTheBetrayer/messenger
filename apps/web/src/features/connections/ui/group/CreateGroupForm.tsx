@@ -2,11 +2,11 @@ import { Pencil, Plus, RotateCcw } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
 
-import { useGroupActions } from "@/features/sessions/hooks/useGroupActions";
-import { randomGroupFormEmoji } from "@/features/sessions/lib/emojis";
-import { groupSelectors } from "@/features/sessions/model/sessionGroup.api";
-import { useGroupFormProvider } from "@/features/sessions/providers/GroupFormProvider";
-import { CreateGroupPopoverParams } from "@/features/sessions/ui/group/CreateGroupFormPopover";
+import { useGroupActions } from "@/features/connections/hooks/useGroupActions";
+import { randomGroupFormEmoji } from "@/features/connections/lib/emojis";
+import { groupSelectors } from "@/features/connections/model/sessionGroup.api";
+import { useGroupFormProvider } from "@/features/connections/providers/GroupFormProvider";
+import { CreateGroupPopoverParams } from "@/features/connections/ui/group/CreateGroupFormPopover";
 import {
 	Button,
 	CardContent,

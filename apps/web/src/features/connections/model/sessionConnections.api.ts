@@ -1,4 +1,4 @@
-import { connected_sessionsType, SessionsReturn } from "@gravity/shared";
+import { connected_sessionsType, ConnectionsReturn } from "@gravity/shared";
 import { createEntityAdapter, EntityState } from "@reduxjs/toolkit";
 
 import { baseApi, RootState } from "@/shared";
@@ -23,16 +23,16 @@ export const sessionConnectionApi = baseApi.injectEndpoints({
 			void
 		>({
 			query: () => ({
-				url: "/sessions",
+				url: "/connections",
 				method: "GET",
       }),
       
 			keepUnusedDataFor: 99999999,
 
-			transformResponse: (response: SessionsReturn) => {
+			transformResponse: (response: ConnectionsReturn) => {
 				const sessions: connected_sessionsType[] = [];
 
-				for (const group of response.sessions) {
+				for (const group of response.connections) {
 					if (!group.connected_sessions.length) {
 						continue;
 					}

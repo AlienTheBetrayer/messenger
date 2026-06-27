@@ -1,4 +1,4 @@
-import { ConnectedSession } from "@/features/sessions/ui/connectedsession/ConnectedSession";
+import { ConnectedSession } from "@/features/connections/ui/connectedsession/ConnectedSession";
 
 export const ConnectedSessionList = ({
 	connectedSessionIds,

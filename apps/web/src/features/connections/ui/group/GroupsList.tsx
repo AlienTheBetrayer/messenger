@@ -1,7 +1,7 @@
 import { Fragment } from "react/jsx-runtime";
 
-import { useGetGroupsQuery } from "@/features/sessions/model/sessionGroup.api";
-import { Group } from "@/features/sessions/ui/group/Group";
+import { useGetGroupsQuery } from "@/features/connections/model/sessionGroup.api";
+import { Group } from "@/features/connections/ui/group/Group";
 import { Separator } from "@/shared";
 
 export const GroupList = () => {
@@ -27,7 +27,7 @@ export const GroupList = () => {
 
 	// jsx
 	return (
-		<ul className="w-full flex flex-col max-h-32 scrollbar-none overflow-y-auto pb-4">
+		<ul className="w-full flex flex-col max-h-42 scrollbar-none overflow-y-auto pb-4">
 			{groups.ids.map((groupId, idx) => (
 				<Fragment key={groupId}>
 					<li>

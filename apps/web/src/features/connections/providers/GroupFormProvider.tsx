@@ -2,7 +2,7 @@ import { GroupFormSchema } from "@gravity/shared";
 import { createContext, useContext } from "react";
 import { UseFormReturn } from "react-hook-form";
 
-import { useGroupForms } from "@/features/sessions/hooks/useGroupForms";
+import { useGroupForms } from "@/features/connections/hooks/useGroupForms";
 
 export type GroupFormType = {
 	groupForm: UseFormReturn<GroupFormSchema>;

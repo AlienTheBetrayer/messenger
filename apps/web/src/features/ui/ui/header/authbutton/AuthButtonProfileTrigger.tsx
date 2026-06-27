@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-import { groupApi } from "@/features/sessions/model/sessionGroup.api";
+import { groupApi } from "@/features/connections/model/sessionGroup.api";
 import { selectConnectSessionsCollapsedMenu } from "@/features/ui/model/local.selectors";
 import { useHeaderProvider } from "@/features/ui/providers/HeaderProvider";
 import { Button, PopoverTrigger, useAppSelector } from "@/shared";

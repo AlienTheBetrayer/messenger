@@ -6,7 +6,7 @@ export const connected_sessions_groupSchema = z.object({
   emoji: z.string().nullish(),
   edited_at: z.date().nullish(),
   created_at: z.date(),
-  owner_user_id: z.string().nullish(),
+  owner_user_id: z.string(),
 });
 
 export type connected_sessions_groupType = z.infer<typeof connected_sessions_groupSchema>;
