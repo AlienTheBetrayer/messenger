@@ -1,20 +1,19 @@
-import {
-	NotificationsPushReturn,
-	NotificationsPushSchema,
-	notificationsType,
-	NotificationsUpdateReturn,
-	NotificationsUpdateSchema,
-} from "@gravity/shared";
 import { createEntityAdapter } from "@reduxjs/toolkit";
 
 import { baseApi } from "@/shared";
+import {
+	NotificationsPushReturn__,
+	NotificationsPushSchema__,
+	notificationsType__,
+	NotificationsUpdateReturn__,
+	NotificationsUpdateSchema__,
+} from "@/shared/model/serializable.types";
 
 /**
  * adapter
  */
-const notificationsAdapter = createEntityAdapter<notificationsType>({
-	sortComparer: (a, b) =>
-		b.created_at.toISOString().localeCompare(a.created_at.toISOString()),
+export const notificationsAdapter = createEntityAdapter<notificationsType__>({
+	sortComparer: (a, b) => b.created_at.localeCompare(a.created_at),
 });
 
 /**
@@ -25,7 +24,10 @@ export const notificationsApi = baseApi.injectEndpoints({
 		/**
 		 * /notifications/push
 		 */
-		push: builder.mutation<NotificationsPushReturn, NotificationsPushSchema>({
+		push: builder.mutation<
+			NotificationsPushReturn__,
+			NotificationsPushSchema__
+		>({
 			query: (body) => ({
 				url: "/notifications/push",
 				method: "POST",
@@ -37,8 +39,8 @@ export const notificationsApi = baseApi.injectEndpoints({
 		 * /notifications/update
 		 */
 		update: builder.mutation<
-			NotificationsUpdateReturn,
-			NotificationsUpdateSchema
+			NotificationsUpdateReturn__,
+			NotificationsUpdateSchema__
 		>({
 			query: (body) => ({
 				url: "/notifications/update",

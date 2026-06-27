@@ -1,18 +1,17 @@
-import {
-	AuthCodeReturn,
-	AuthCodeSchema,
-	AuthForgotPasswordReturn,
-	AuthLoginReturn,
-	AuthLogoutReturn,
-	AuthLogoutSchema,
-	AuthMeReturn,
-	AuthMeSchema,
-	AuthSchema,
-	AuthSignupReturn,
-} from "@gravity/shared";
-
 import { usersAdapter, usersApi } from "@/features/users/model/users.api";
 import { baseApi } from "@/shared";
+import {
+	AuthCodeReturn__,
+	AuthCodeSchema__,
+	AuthForgotPasswordReturn__,
+	AuthLoginReturn__,
+	AuthLogoutReturn__,
+	AuthLogoutSchema__,
+	AuthMeReturn__,
+	AuthMeSchema__,
+	AuthSchema__,
+	AuthSignupReturn__,
+} from "@/shared/model/serializable.types";
 
 /**
  * auth slice (no verification code yet)
@@ -22,7 +21,7 @@ export const authApi = baseApi.injectEndpoints({
 		/**
 		 * /auth/code/
 		 */
-		getCode: builder.mutation<AuthCodeReturn, AuthCodeSchema>({
+		getCode: builder.mutation<AuthCodeReturn__, AuthCodeSchema__>({
 			query: (body) => ({
 				url: "/auth/code",
 				method: "POST",
@@ -33,7 +32,7 @@ export const authApi = baseApi.injectEndpoints({
 		/**
 		 * /auth/login
 		 */
-		login: builder.mutation<AuthLoginReturn, AuthSchema>({
+		login: builder.mutation<AuthLoginReturn__, AuthSchema__>({
 			query: (body) => ({
 				url: "/auth/login",
 				method: "POST",
@@ -64,7 +63,7 @@ export const authApi = baseApi.injectEndpoints({
 		/**
 		 * /auth/signup
 		 */
-		signup: builder.mutation<AuthSignupReturn, AuthSchema>({
+		signup: builder.mutation<AuthSignupReturn__, AuthSchema__>({
 			query: (body) => ({
 				url: "/auth/signup",
 				method: "POST",
@@ -75,7 +74,7 @@ export const authApi = baseApi.injectEndpoints({
 		/**
 		 * /auth/forgot-password
 		 */
-		forgotPassword: builder.mutation<AuthForgotPasswordReturn, AuthSchema>({
+		forgotPassword: builder.mutation<AuthForgotPasswordReturn__, AuthSchema__>({
 			query: (body) => ({
 				url: "/auth/forgot-password",
 				method: "POST",
@@ -86,13 +85,13 @@ export const authApi = baseApi.injectEndpoints({
 		/**
 		 * /auth/me
 		 */
-		me: builder.query<{ userId?: string, sessionId?: string }, AuthMeSchema>({
+		me: builder.query<{ userId?: string; sessionId?: string }, AuthMeSchema__>({
 			query: () => ({
 				url: "/auth/me",
 				method: "GET",
 			}),
 
-			transformResponse: (response: AuthMeReturn) => {
+			transformResponse: (response: AuthMeReturn__) => {
 				return { userId: response.user.id, sessionId: response.session.id };
 			},
 
@@ -102,7 +101,7 @@ export const authApi = baseApi.injectEndpoints({
 		/**
 		 * /auth/logout
 		 */
-		logout: builder.mutation<AuthLogoutReturn, AuthLogoutSchema>({
+		logout: builder.mutation<AuthLogoutReturn__, AuthLogoutSchema__>({
 			query: () => ({
 				url: "/auth/logout",
 				method: "DELETE",
@@ -129,5 +128,3 @@ export const {
 	useMeQuery,
 	useLazyMeQuery,
 } = authApi;
-
-

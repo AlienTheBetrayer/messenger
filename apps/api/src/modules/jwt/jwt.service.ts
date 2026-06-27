@@ -241,6 +241,7 @@ export class AppJwtService {
 						session_id: updatedSession.id,
 					},
 				},
+				owner_user_id: params.userId,
 			},
 		});
 

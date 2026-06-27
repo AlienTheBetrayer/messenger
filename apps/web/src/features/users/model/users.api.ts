@@ -1,12 +1,12 @@
-import { usersType } from "@gravity/shared";
 import { createEntityAdapter, EntityState } from "@reduxjs/toolkit";
 
 import { baseApi, RootState } from "@/shared";
+import { usersType__ } from "@/shared/model/serializable.types";
 
 /**
  * adapter
  */
-export const usersAdapter = createEntityAdapter<usersType>({
+export const usersAdapter = createEntityAdapter<usersType__>({
 	sortComparer: (a, b) => a.id.localeCompare(b.id),
 });
 
@@ -17,12 +17,12 @@ export const initialState = usersAdapter.getInitialState();
  */
 export const usersApi = baseApi.injectEndpoints({
 	endpoints: (build) => ({
-		getUsers: build.query<EntityState<usersType, string>, void>({
+		getUsers: build.query<EntityState<usersType__, string>, void>({
 			query: () => ({
 				url: "/users",
 				method: "GET",
-      }),
-      
+			}),
+
 			keepUnusedDataFor: 99999999,
 		}),
 	}),

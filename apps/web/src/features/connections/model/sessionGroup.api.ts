@@ -1,9 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import {
-  auth_sessionsType,
   connected_sessions_groupType,
-  connected_sessionsType,
-  ConnectionsReturn,
   generateId,
   GroupCreateReturn,
   GroupCreateSchema,
@@ -12,7 +9,6 @@ import {
   GroupEditReturn,
   GroupEditSchema,
   PickRequired,
-  usersType,
 } from "@gravity/shared";
 import { createEntityAdapter, EntityState } from "@reduxjs/toolkit";
 
@@ -27,6 +23,13 @@ import {
 } from "@/features/connections/model/sessions.api";
 import { usersAdapter, usersApi } from "@/features/users";
 import { baseApi, RootState } from "@/shared";
+import {
+  auth_sessionsType__,
+  connected_sessionsType__,
+  ConnectedSessionGroup__,
+  ConnectionsReturn__,
+  usersType__,
+} from "@/shared/model/serializable.types";
 
 export type ConnectedSessionGroup = connected_sessions_groupType & {
 	connectedSessionIds: string[];
@@ -35,8 +38,32 @@ export type ConnectedSessionGroup = connected_sessions_groupType & {
 /**
  * adapter
  */
-export const groupAdapter = createEntityAdapter<ConnectedSessionGroup>({
-	sortComparer: (a, b) => a.id.localeCompare(b.id),
+export const groupAdapter = createEntityAdapter<ConnectedSessionGroup__>({
+	sortComparer: (a, b) => {
+		// last connection
+		if (a.last_connected_at !== b.last_connected_at) {
+			if (!a.last_connected_at) return 1;
+			if (!b.last_connected_at) return -1;
+
+			return b.last_connected_at.localeCompare(a.last_connected_at);
+		}
+
+		// edit
+		if (a.edited_at !== b.edited_at) {
+			if (!a.edited_at) return 1;
+      if (!b.edited_at) return -1;
+      
+			return b.edited_at.localeCompare(a.edited_at);
+		}
+
+		// creation
+		if (a.created_at !== b.created_at) {
+			return b.created_at.localeCompare(a.created_at);
+		}
+
+		// fallback
+		return a.id.localeCompare(b.id);
+	},
 });
 
 const initialState = groupAdapter.getInitialState();
@@ -49,7 +76,7 @@ export const groupApi = baseApi.injectEndpoints({
 		/**
 		 * gets all the groups, connected sessions, sessions, and normalizes all of it.
 		 */
-		getGroups: build.query<EntityState<ConnectedSessionGroup, string>, void>({
+		getGroups: build.query<EntityState<ConnectedSessionGroup__, string>, void>({
 			query: () => ({
 				url: "/connections",
 				method: "GET",
@@ -57,17 +84,17 @@ export const groupApi = baseApi.injectEndpoints({
 
 			async onQueryStarted(_, { dispatch, queryFulfilled }) {
 				const res = await queryFulfilled;
-				const data = res.data as unknown as ConnectionsReturn;
+				const data = res.data as unknown as ConnectionsReturn__;
 
 				if (!("connections" in data)) {
 					return;
 				}
 
 				// normalizing
-				const normalizedGroups: ConnectedSessionGroup[] = [];
-				const flatConnectedSessions: connected_sessionsType[] = [];
-				const flatSessions: auth_sessionsType[] = [];
-				const users: usersType[] = [];
+				const normalizedGroups: ConnectedSessionGroup__[] = [];
+				const flatConnectedSessions: connected_sessionsType__[] = [];
+				const flatSessions: auth_sessionsType__[] = [];
+				const users: usersType__[] = [];
 
 				for (const group of data.connections) {
 					const connectedSessionIds = group.connected_sessions.map((s) => s.id);
@@ -200,10 +227,11 @@ export const groupApi = baseApi.injectEndpoints({
 					groupApi.util.updateQueryData("getGroups", undefined, (draft) => {
 						groupAdapter.addOne(draft, {
 							...args,
-							created_at: new Date().toISOString() as unknown as Date,
-							id: groupId,
-							connectedSessionIds: [connectionId],
+							created_at: new Date().toISOString(),
+							last_connected_at: new Date().toISOString(),
 							owner_user_id: userId,
+							connectedSessionIds: [connectionId],
+							id: groupId,
 						});
 					}),
 				);
@@ -218,7 +246,7 @@ export const groupApi = baseApi.injectEndpoints({
 								id: connectionId,
 								group_id: groupId,
 								session_id: sessionId,
-								created_at: new Date().toISOString() as unknown as Date,
+								created_at: new Date().toISOString(),
 							});
 						},
 					),
