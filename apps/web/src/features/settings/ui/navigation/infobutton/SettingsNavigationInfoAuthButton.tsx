@@ -32,7 +32,7 @@ export const SettingsNavigationInfoAuthButton = ({
 				<InfoCube
 					image={auth.user.image_url}
 					color={auth.user.color}
-					animation="bounce"
+					animation="animate-bounce"
 				/>
 
 				<NavigationInfoButtonText

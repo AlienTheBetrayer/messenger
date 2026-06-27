@@ -10,15 +10,14 @@ export const uiSlice = createSlice({
 	initialState: UiSliceInitial,
 	reducers: {
 		/**
-		 * toggle the connection popup groupId (or hides it)
-		 * @param state root state
-		 * @param action nanoid of the group or undefined
+		 * connect sessions
 		 */
-		setConnectionGroupId: (
-			state,
+
+		setConnectSessionsAwaitingGroupId: (
+			draft,
 			action: PayloadAction<string | undefined>,
 		) => {
-			state.connectSessionPopup.groupId = action.payload;
+			draft.connectSessions.awaitingGroupId = action.payload;
 		},
 	},
 });
@@ -26,4 +25,4 @@ export const uiSlice = createSlice({
 /**
  * actions + hooks
  */
-export const { setConnectionGroupId } = uiSlice.actions;
+export const { setConnectSessionsAwaitingGroupId } = uiSlice.actions;

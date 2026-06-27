@@ -40,9 +40,9 @@ export const Group = ({ groupId }: { groupId: string }) => {
 
 	// jsx
 	return (
-		<Item>
+		<Item className="p-2">
 			<ItemHeader>
-				<ItemTitle className="flex flex-row items-center gap-1">
+				<ItemTitle className="flex flex-row items-center gap-0">
 					<Popover
 						open={open}
 						onOpenChange={setOpen}
@@ -50,7 +50,7 @@ export const Group = ({ groupId }: { groupId: string }) => {
 						<PopoverTrigger asChild>
 							<Button
 								variant="ghost"
-								className="not-hover:bg-muted/50 aspect-square"
+								className=" aspect-square"
 								size="xs"
 							>
 								{group.emoji}
@@ -72,7 +72,7 @@ export const Group = ({ groupId }: { groupId: string }) => {
 						</PopoverContent>
 					</Popover>
 
-					<span>{group.title}</span>
+					<span className="text-xs">{group.title}</span>
 				</ItemTitle>
 
 				{group.owner_user_id === auth?.user.id && (

@@ -1,5 +1,6 @@
 import { RootState } from "@/shared";
 
-export const selectConnectionGroupId = (state: RootState) => {
-	return state.ui.connectSessionPopup.groupId;
+export const selectConnectSessionsAwaitingGroupId = (state: RootState) => {
+	return state.ui.connectSessions.awaitingGroupId;
 };
+

@@ -166,7 +166,7 @@ export const CreateGroupForm = ({
 				</FieldGroup>
 			</CardContent>
 
-			<CardFooter className="flex justify-end items-center gap-1">
+			<CardFooter className="flex justify-end items-center gap-2">
 				<Button
 					type="button"
 					size="sm"
@@ -185,7 +185,7 @@ export const CreateGroupForm = ({
 				<Button
 					type="submit"
 					size="sm"
-					className="min-w-1/2"
+					className="min-w-1/3"
 				>
 					{params?.type === "edit" ? (
 						<>

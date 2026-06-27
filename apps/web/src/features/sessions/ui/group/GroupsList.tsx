@@ -1,18 +1,45 @@
-import { groupSelectors } from "@/features/sessions/model/sessionGroup.api";
+import { Fragment } from "react/jsx-runtime";
+
+import { useGetGroupsQuery } from "@/features/sessions/model/sessionGroup.api";
 import { Group } from "@/features/sessions/ui/group/Group";
-import { useAppSelector } from "@/shared";
+import { Separator } from "@/shared";
 
 export const GroupList = () => {
 	// redux
-	const groupIds = useAppSelector(groupSelectors.selectIds);
+	const { data: groups, isLoading } = useGetGroupsQuery();
+
+	if (isLoading) {
+		return (
+			<div className="flex flex-col gap-0.5! p-2!">
+				{Array.from({ length: 4 }, (_, i) => (
+					<div
+						key={i}
+						className="h-8 w-full skeleton rounded-sm!"
+					/>
+				))}
+			</div>
+		);
+	}
+
+	if (!groups?.ids.length) {
+		return null;
+	}
 
 	// jsx
 	return (
-		<ul className="w-full flex flex-col max-h-64 overflow-y-auto">
-			{groupIds.map((groupId) => (
-				<li key={groupId}>
-          <Group groupId={groupId} />
-				</li>
+		<ul className="w-full flex flex-col max-h-32 scrollbar-none overflow-y-auto pb-4">
+			{groups.ids.map((groupId, idx) => (
+				<Fragment key={groupId}>
+					<li>
+						<Group groupId={groupId} />
+					</li>
+
+					{idx !== groups.ids.length - 1 && (
+						<li>
+							<Separator />
+						</li>
+					)}
+				</Fragment>
 			))}
 		</ul>
 	);

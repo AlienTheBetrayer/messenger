@@ -1,9 +1,21 @@
-import { AuthMeReturn } from "@gravity/shared";
 import { configureStore } from "@reduxjs/toolkit";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { persistReducer, persistStore } from "redux-persist";
+import localStorage from "redux-persist/lib/storage";
 
-import { authApi } from "@/features/auth/model/auth.api";
+import { localSlice } from "@/features/ui/model/local.slice";
 import { uiSlice } from "@/features/ui/model/ui.slice";
+
+/**
+ * persistance reducers
+ */
+const persistedLocalReducer = persistReducer(
+	{
+		key: "local",
+		storage: localStorage,
+	},
+	localSlice.reducer,
+);
 
 /**
  * global api slice
@@ -24,10 +36,21 @@ export const createReduxStore = (preloadedState?: unknown) => {
 		reducer: {
 			[baseApi.reducerPath]: baseApi.reducer,
 			[uiSlice.name]: uiSlice.reducer,
-    },
-    preloadedState,
-		middleware: (gDM) => gDM().concat(baseApi.middleware),
+			[localSlice.name]: persistedLocalReducer,
+		},
+		preloadedState,
+		middleware: (gDM) =>
+			gDM({
+				serializableCheck: {
+					ignoredActions: [
+						"persist/PERSIST",
+						"persist/REHYDRATE",
+						"persist/REGISTER",
+					],
+				},
+			}).concat(baseApi.middleware),
 	});
 
-	return store;
+	const persistor = persistStore(store);
+	return { store, persistor };
 };

@@ -1,5 +1,7 @@
 import Image from "next/image";
 
+import { cn } from "@/features/ui";
+
 export const InfoCube = ({
 	image,
 	color,
@@ -20,27 +22,22 @@ export const InfoCube = ({
 	// jsx
 	return (
 		<div
-			className={`flex shrink-0 items-center justify-center rounded-sm w-8 h-8 border ${className ?? ""}`}
+			className={cn(
+				"flex shrink-0 items-center justify-center rounded-md w-8 h-8 border",
+				className,
+			)}
 			style={{
 				borderColor: `color-mix(in srgb, ${values.color} 60%, var(--background))`,
 				color: values.color,
 				background: `color-mix(in srgb, ${values.color} 20%, var(--background))`,
 			}}
 		>
-			<div
-				style={
-					animation
-						? {
-								animation: `bounce 1.25s ease-in-out infinite`,
-							}
-						: undefined
-				}
-			>
+			<div className={cn("w-[55%] h-[55%]", animation)}>
 				{typeof image === "string" ? (
 					<Image
 						src={image}
-						width={14}
-						height={14}
+						width={16}
+						height={16}
 						alt="pfp"
 					/>
 				) : (

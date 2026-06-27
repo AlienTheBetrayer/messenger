@@ -1,5 +1,5 @@
 import { sessionSelectors } from "@/features/sessions/model/sessions.api";
-import { SessionUser } from "@/features/sessions/ui/session/SessionUser";
+import { MiniProfileCube } from "@/features/sessions/ui/other/MiniProfileCube";
 import { useAppSelector } from "@/shared";
 
 export const Session = ({ sessionId }: { sessionId: string }) => {
@@ -14,5 +14,14 @@ export const Session = ({ sessionId }: { sessionId: string }) => {
 	}
 
 	// jsx
-	return <SessionUser userId={session.user_id} />;
+	return (
+		<MiniProfileCube
+			userId={session.user_id}
+			props={{
+				variant: "secondary",
+				size: "lg",
+				className: "not-hover:bg-muted/50 justify-start",
+			}}
+		/>
+	);
 };

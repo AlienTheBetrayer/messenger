@@ -2,13 +2,13 @@
  * initial + types
  */
 export type UiSliceInitialType = {
-	connectSessionPopup: {
-		groupId: string | undefined;
+	connectSessions: {
+		awaitingGroupId: string | undefined;
 	};
 };
 
 export const UiSliceInitial = {
-	connectSessionPopup: {
-		groupId: undefined,
+	connectSessions: {
+		awaitingGroupId: undefined,
 	},
 } as UiSliceInitialType;

@@ -1,15 +1,27 @@
 "use client";
 
-import { Boxes } from "lucide-react";
+import { Boxes, ChevronsUpDown } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 
-import { useGetGroupsQuery } from "@/features/sessions/model/sessionGroup.api";
+import { useAuth } from "@/features/auth/hooks/useAuth";
+import { groupApi } from "@/features/sessions/model/sessionGroup.api";
 import { CreateGroupPopover } from "@/features/sessions/ui/group/CreateGroupFormPopover";
 import { GroupList } from "@/features/sessions/ui/group/GroupsList";
-import { Button, Card, CardContent, CardFooter } from "@/shared";
+import { MiniProfileCube } from "@/features/sessions/ui/other/MiniProfileCube";
+import { selectConnectSessionsCollapsedMenu } from "@/features/ui/model/local.selectors";
+import { toggleConnectSessionsCollapsedMenu } from "@/features/ui/model/local.slice";
+import {
+	Button,
+	Card,
+	CardContent,
+	CardFooter,
+	useAppDispatch,
+	useAppSelector,
+} from "@/shared";
 
 export const Sessions = () => {
 	return (
-		<Card className="p-0">
+		<Card className="p-0 gap-0">
 			<SessionsDisplay />
 		</Card>
 	);
@@ -17,39 +29,86 @@ export const Sessions = () => {
 
 const SessionsDisplay = () => {
 	// redux
-	const { data: sessions, isLoading } = useGetGroupsQuery();
-
-	// fallbacks
-	if (isLoading) {
-		return (
-			<div className="flex flex-col gap-0.5! p-2!">
-				{Array.from({ length: 4 }, (_, i) => (
-					<div
-						key={i}
-						className="h-8 w-full skeleton rounded-sm!"
-					/>
-				))}
-			</div>
-		);
-	}
-
-	if (!sessions) {
-		return null;
-	}
+	const dispatch = useAppDispatch();
+	const collapsedMenu = useAppSelector(selectConnectSessionsCollapsedMenu);
+	const prefetchGroups = groupApi.usePrefetch("getGroups");
+	const auth = useAuth();
 
 	// jsx
 	return (
 		<>
 			<CardContent className="fade-bottom p-0!">
-				<GroupList />
+				<AnimatePresence initial={false}>
+					{!collapsedMenu && (
+						<motion.div
+							initial={{ height: 0 }}
+							animate={{ height: "auto" }}
+							exit={{ height: 0 }}
+						>
+							{<GroupList />}
+						</motion.div>
+					)}
+				</AnimatePresence>
 			</CardContent>
 
-			<CardFooter className="flex gap-1 items-center justify-end p-1">
+			<CardFooter
+				className="flex items-center p-1.5"
+				style={
+					collapsedMenu
+						? {
+								borderRadius: "var(--radius)",
+								borderTop: "0",
+							}
+						: {}
+				}
+			>
+				<AnimatePresence initial={false}>
+					{collapsedMenu && (
+						<motion.div
+							initial={{ width: 0, opacity: 0 }}
+							animate={{ width: "auto", opacity: 1 }}
+							exit={{ width: 0, opacity: 0 }}
+							className="overflow-hidden"
+						>
+							<MiniProfileCube userId={auth?.user.id ?? ""} />
+						</motion.div>
+					)}
+				</AnimatePresence>
+
+				<Button
+					className="aspect-square ml-auto"
+					variant="secondary"
+					size="sm"
+					onPointerDown={() => {
+						if (collapsedMenu) {
+							prefetchGroups();
+						}
+					}}
+					onClick={() => {
+						dispatch(toggleConnectSessionsCollapsedMenu());
+					}}
+				>
+					<ChevronsUpDown />
+				</Button>
+
 				<CreateGroupPopover>
-					<Button size="sm">
-						<Boxes />
-						Create
-					</Button>
+					<AnimatePresence initial={false}>
+						{!collapsedMenu && (
+							<motion.div
+								initial={{ width: 0 }}
+								animate={{ width: "auto" }}
+								exit={{ width: 0 }}
+							>
+								<Button
+									size="sm"
+									className="ml-1"
+								>
+									<Boxes />
+									Create
+								</Button>
+							</motion.div>
+						)}
+					</AnimatePresence>
 				</CreateGroupPopover>
 			</CardFooter>
 		</>

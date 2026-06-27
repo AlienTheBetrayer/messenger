@@ -6,8 +6,8 @@ import Draggable from "react-draggable";
 
 import {
 	Icons,
-	selectConnectionGroupId,
-	setConnectionGroupId,
+	selectConnectSessionsAwaitingGroupId,
+	setConnectSessionsAwaitingGroupId,
 } from "@/features/ui";
 import {
 	Button,
@@ -22,10 +22,12 @@ import {
 
 export const AuthSessionAddPopup = () => {
 	// redux
-	const isVisible = !!useAppSelector((state) => selectConnectionGroupId(state));
+	const isVisible = !!useAppSelector((state) =>
+		selectConnectSessionsAwaitingGroupId(state),
+	);
 	const dispatch = useAppDispatch();
 	const onExit = useCallback(() => {
-		dispatch(setConnectionGroupId(undefined));
+		dispatch(setConnectSessionsAwaitingGroupId(undefined));
 	}, [dispatch]);
 
 	// refs

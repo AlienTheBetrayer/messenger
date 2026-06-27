@@ -45,6 +45,11 @@ const buttonVariants = cva(
 	},
 );
 
+export type ButtonProps = React.ComponentProps<"button"> &
+	VariantProps<typeof buttonVariants> & {
+		asChild?: boolean;
+	};
+
 function Button({
 	className,
 	variant = "default",
@@ -52,10 +57,7 @@ function Button({
 	onPointerDown,
 	asChild = false,
 	...props
-}: React.ComponentProps<"button"> &
-	VariantProps<typeof buttonVariants> & {
-		asChild?: boolean;
-	}) {
+}: ButtonProps) {
 	const Comp = asChild ? Slot.Root : "button";
 
 	return (
@@ -69,7 +71,7 @@ function Button({
 			data-size={size}
 			className={cn(
 				"relative ripple",
-        buttonVariants({ variant, size, className }),
+				buttonVariants({ variant, size, className }),
 			)}
 			{...props}
 		/>

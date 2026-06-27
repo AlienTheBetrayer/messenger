@@ -14,7 +14,10 @@ export const ConnectedSessionList = ({
 	return (
 		<ul className="flex flex-col gap-2">
 			{connectedSessionIds.map((id) => (
-				<li key={id}>
+				<li
+					key={id}
+					className="*:w-full"
+				>
 					<ConnectedSession connectedSessionId={id} />
 				</li>
 			))}

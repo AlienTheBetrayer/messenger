@@ -44,7 +44,8 @@ export const ReduxProvider = ({
 			};
 		}
 
-		storeRef.current = createReduxStore(preloadedState);
+		const { store } = createReduxStore(preloadedState);
+		storeRef.current = store;
 	}
 
 	return <Provider store={storeRef.current}>{children}</Provider>;
