@@ -3,6 +3,7 @@ import { Reflector } from "@nestjs/core";
 import { Request } from "express";
 
 import { createException } from "../../../common";
+import { oAuthIdentitySchema } from "../../auth-oauth/oauth.types";
 import { AuthCoreService } from "../auth.service";
 
 @Injectable()
@@ -31,6 +32,12 @@ export class NotAuthenticatedGuard implements CanActivate {
 	async canActivate(context: ExecutionContext) {
 		// request
 		const request: Request = context.switchToHttp().getRequest();
+		const parsed = await oAuthIdentitySchema.safeParseAsync(request.user);
+
+		// passing if connection mode
+		if (parsed.success && parsed.data.metadata.action === "connect") {
+			return true;
+		}
 
 		try {
 			return await this.verify(request);

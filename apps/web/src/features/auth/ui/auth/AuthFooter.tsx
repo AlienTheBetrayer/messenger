@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 
 import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
-import { selectAwaitingConnectionGroup } from "@/features/ui";
+import { selectAwaitingConnectionGroup } from "@/features/ui/model/ui.selectors";
 import {
 	Button,
 	CardFooter,
@@ -122,7 +122,8 @@ export const AuthFooter = () => {
 							<Button
 								type="button"
 								variant={awaitingGroup ? "outline" : "secondary"}
-								className="w-full"
+								className="w-full opacity-30"
+								inert
 								asChild
 							>
 								<Link

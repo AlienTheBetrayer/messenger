@@ -33,7 +33,7 @@ import {
 	GroupEditDto,
 } from "./connections.dto";
 import { ConnectionsService } from "./connections.service";
-import { GroupMemberGuard, GroupOwnerGuard } from "./guards";
+import { GroupOwnerGuard } from "./guards";
 
 @Controller("connections")
 export class ConnectionsController {
@@ -68,7 +68,7 @@ export class ConnectionsController {
 		return { connected_session };
 	}
 
-	@UseGuards(AuthenticatedGuard, GroupMemberGuard)
+	@UseGuards(AuthenticatedGuard, GroupOwnerGuard)
 	@Get("connection/init")
 	async connectionInit(
 		@Query() query: ConnectionInitDto,
@@ -84,8 +84,10 @@ export class ConnectionsController {
 					);
 				}
 
-        response.redirect(`http://localhost:3001/oauth/${query.service}?groupId=${query.groupId}`);
-        break;
+				response.redirect(
+					`http://localhost:3001/oauth/${query.service}?action=connect&groupId=${query.groupId}`,
+				);
+				break;
 			}
 			case "auth": {
 				break;

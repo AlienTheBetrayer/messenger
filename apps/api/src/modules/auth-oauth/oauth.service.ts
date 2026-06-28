@@ -90,16 +90,40 @@ export class OAuthService {
 		}
 
 		// tokens + hashing + session
-		const tokens = await this.jwtService.issueAuthData({
-			userId: user.id,
-			ctx,
-		});
+		const { accessToken, refreshToken, session } =
+			await this.jwtService.issueAuthData({
+				userId: user.id,
+        ctx,
+        action: identity.metadata.action ?? "login",
+			});
 
-		// cookies (connect mode disables it)
-		if (identity.metadata.action !== "connect") {
-			this.jwtService.setAuthHttpCookies({ ...tokens, response });
+		// authentication process
+		switch (identity.metadata.action) {
+      case "connect": {
+				if (!identity.metadata.groupId) {
+					throw createException(
+						"badrequest",
+						"INVALID_BODY",
+						"groupId is required for the connection mode.",
+					);
+        }
+        
+				await this.connectionsService.connectionAdd({
+					groupId: identity.metadata.groupId,
+					session,
+				});
+				break;
+			}
+			default: {
+				this.jwtService.setAuthHttpCookies({
+					accessToken,
+					refreshToken,
+					response,
+				});
+				break;
+			}
 		}
 
-		return { user, ...tokens };
+		return { user, accessToken, refreshToken, session };
 	}
 }

@@ -13,7 +13,6 @@ export class GroupMemberGuard implements CanActivate {
 	async canActivate(context: ExecutionContext) {
 		const request: Request = context.switchToHttp().getRequest();
 
-    console.log(request.body, request.query);
 		// parsing (ensuring groupId is there)
 		const parsedGroup = z.safeParse(
 			z.looseObject({

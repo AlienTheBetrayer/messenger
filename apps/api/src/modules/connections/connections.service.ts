@@ -56,21 +56,16 @@ export class ConnectionsService {
 		return connected;
 	}
 
-  async connectionInit(body: ConnectionInitSchema) {
-    switch (body.type) {
-      case "auth": {
-
-        break;
-      }
-      case "oauth": {
-        
-        break;
-      }
-    }
-  }
-
 	async connectionAdd(body: ConnectionAddSchema) {
-		return true;
+    const connection = await this.prismaService.connected_sessions.create({
+      data: {
+        id: body.connectionId ?? generateId(),
+        session_id: body.session.id,
+        group_id: body.groupId,
+      },
+    });
+
+    return { connection };
 	}
 
   async connectionDelete(body: ConnectionDeleteSchema) {

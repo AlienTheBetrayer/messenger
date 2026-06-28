@@ -37,49 +37,59 @@ export const SessionContextMenu = ({
 	const isAlone =
 		group.connectedSessionIds.length === 1 &&
 		group.connectedSessionIds[0] === connectionId;
+	const isMyself = connection.session_id === auth?.session.id;
+
+	const ableToKick = !isAlone && isOwner && !isMyself;
+  const ableToJoin = !isMyself;
 
 	// jsx
 	return (
 		<ul className="flex flex-col gap-2 *:w-full">
 			<li>
-				<Button
-					className="w-full justify-start"
-					size="sm"
-				>
-					<LogOut />
-					Log in
-				</Button>
+				<Tooltip open={!ableToJoin ? undefined : false}>
+					<TooltipTrigger asChild>
+						<Button
+							className="w-full justify-start"
+							size="sm"
+							disabled={!ableToJoin}
+						>
+							<LogOut />
+							Log in
+						</Button>
+					</TooltipTrigger>
+					<TooltipContent>
+						<p>You cannot login as this member.</p>
+					</TooltipContent>
+				</Tooltip>
 			</li>
 
-			{isOwner && (
-				<li>
-					<Tooltip open={isAlone ? undefined : false}>
-						<TooltipTrigger asChild>
-							<span className="w-fit inline-block">
-								<DeleteConnectionMessageBox
-									type="connection"
-									onConfirm={() => {
-										deleteConnection({ connectionId });
-									}}
+			<li>
+				<Tooltip open={!ableToKick ? undefined : false}>
+					<TooltipTrigger asChild>
+						<span className="w-fit inline-block">
+							<DeleteConnectionMessageBox
+								type="connection"
+								onConfirm={() => {
+									deleteConnection({ connectionId });
+								}}
+							>
+								<Button
+									size="sm"
+									variant="destructive"
+									className="w-full justify-start"
+									disabled={!ableToKick}
 								>
-									<Button
-										size="sm"
-										variant="destructive"
-										className="w-full justify-start"
-										disabled={isAlone}
-									>
-										<Trash2Icon />
-										Disconnect
-									</Button>
-								</DeleteConnectionMessageBox>
-							</span>
-						</TooltipTrigger>
-						<TooltipContent side="bottom">
-							<p>You are the only member.</p>
-						</TooltipContent>
-					</Tooltip>
-				</li>
-			)}
+									<Trash2Icon />
+									Disconnect
+								</Button>
+							</DeleteConnectionMessageBox>
+						</span>
+					</TooltipTrigger>
+					<TooltipContent side="bottom">
+						<p>You cannot disconnect this member.</p>
+					</TooltipContent>
+				</Tooltip>
+			</li>
 		</ul>
 	);
 };

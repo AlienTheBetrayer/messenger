@@ -1,16 +1,17 @@
+import { uiSlice } from "@/features/ui/model/ui.slice";
 import { usersAdapter, usersApi } from "@/features/users/model/users.api";
 import { baseApi } from "@/shared/model/redux.store";
 import {
-	AuthCodeReturn__,
-	AuthCodeSchema__,
-	AuthForgotPasswordReturn__,
-	AuthLoginReturn__,
-	AuthLogoutReturn__,
-	AuthLogoutSchema__,
-	AuthMeReturn__,
-	AuthMeSchema__,
-	AuthSchema__,
-	AuthSignupReturn__,
+  AuthCodeReturn__,
+  AuthCodeSchema__,
+  AuthForgotPasswordReturn__,
+  AuthLoginReturn__,
+  AuthLogoutReturn__,
+  AuthLogoutSchema__,
+  AuthMeReturn__,
+  AuthMeSchema__,
+  AuthSchema__,
+  AuthSignupReturn__,
 } from "@/shared/model/serializable.types";
 
 /**
@@ -112,6 +113,8 @@ export const authApi = baseApi.injectEndpoints({
 						userId: undefined,
 					})),
 				);
+
+				dispatch(uiSlice.actions.reset());
 			},
 		}),
 	}),

@@ -13,6 +13,8 @@ export const uiSlice = createSlice({
 		 * connect sessions
 		 */
 
+    reset: () => UiSliceInitial,
+
 		setConnectSessionsAwaitingGroupId: (
 			draft,
 			action: PayloadAction<{ groupId: string } | null>,
@@ -37,5 +39,5 @@ export const uiSlice = createSlice({
  */
 export const {
 	setConnectSessionsAwaitingGroupId,
-	toggleConnectSessionsAwaitingGroupId,
+  toggleConnectSessionsAwaitingGroupId,
 } = uiSlice.actions;

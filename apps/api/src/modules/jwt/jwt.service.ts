@@ -9,6 +9,7 @@ import z from "zod";
 import { createException } from "../../common";
 import { TokenPayloadSchema, tokenPayloadSchema } from "../auth/auth.types";
 import { AuthContextType } from "../auth-core/decorators";
+import { oAuthIdentityMetadata } from "../auth-oauth/oauth.types";
 import { AppConfigService } from "../config/config.service";
 import { EnvSchema } from "../config/config.types";
 import { PrismaService } from "../prisma/prisma.service";
@@ -163,7 +164,11 @@ export class AppJwtService {
 	 * @param userId id of the user
 	 * @returns access token, refresh token and session
 	 */
-	async issueAuthData(params: { userId: string; ctx: AuthContextType }) {
+	async issueAuthData(params: {
+		userId: string;
+		ctx: AuthContextType;
+		action?: oAuthIdentityMetadata["action"];
+	}) {
 		// session
 		const session = await this.prismaService.auth_sessions.create({
 			data: {
@@ -230,21 +235,23 @@ export class AppJwtService {
 			},
 		});
 
-		// creating the connected group session
-		await this.prismaService.connected_sessions_group.create({
-			data: {
-				id: generateId(),
-				title: "Default",
-				emoji: randomGroupFormEmoji(),
-				connected_sessions: {
-					create: {
-						id: generateId(),
-						session_id: updatedSession.id,
+		// creating the connected group session if we're logging in
+		if (params.action !== "connect") {
+			await this.prismaService.connected_sessions_group.create({
+				data: {
+					id: generateId(),
+					title: "Default",
+					emoji: randomGroupFormEmoji(),
+					connected_sessions: {
+						create: {
+							id: generateId(),
+							session_id: updatedSession.id,
+						},
 					},
+					owner_user_id: params.userId,
 				},
-				owner_user_id: params.userId,
-			},
-		});
+			});
+		}
 
 		return { accessToken, refreshToken, session: updatedSession };
 	}

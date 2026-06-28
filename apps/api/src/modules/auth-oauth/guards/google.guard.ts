@@ -13,6 +13,7 @@ export const getAuthenticateOptions = async (context: ExecutionContext) => {
 	return {
 		state: JSON.stringify({
 			action: req.query.action ?? "login",
+			groupId: req.query.groupId || undefined,
 		}),
 	};
 };

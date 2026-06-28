@@ -4,12 +4,14 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
-import { selectConnectSessionsAwaitingGroupId } from "@/features/ui";
+import { selectConnectSessionsAwaitingGroupId } from "@/features/ui/model/ui.selectors";
 import { Button, Separator, useAppSelector } from "@/shared";
 
 export const AuthFooterServiceButtons = () => {
 	// redux
-	const groupId = useAppSelector((state) => selectConnectSessionsAwaitingGroupId(state));
+	const groupId = useAppSelector((state) =>
+		selectConnectSessionsAwaitingGroupId(state),
+	);
 
 	// states
 	const urlExtension = groupId ? `?type=connect?groupId=${groupId}` : "";

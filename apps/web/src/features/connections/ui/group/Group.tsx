@@ -7,10 +7,8 @@ import { useGroupActions } from "@/features/connections/hooks/useGroupActions";
 import { groupSelectors } from "@/features/connections/model/sessionGroup.api";
 import { ConnectedSessionList } from "@/features/connections/ui/connectedsession/ConnectedSessionList";
 import { CreateGroupPopover } from "@/features/connections/ui/group/CreateGroupFormPopover";
-import {
-	selectIsConnectSessionsAwaiting,
-	toggleConnectSessionsAwaitingGroupId,
-} from "@/features/ui";
+import { selectIsConnectSessionsAwaiting } from "@/features/ui/model/ui.selectors";
+import { toggleConnectSessionsAwaitingGroupId } from "@/features/ui/model/ui.slice";
 import { DeleteConnectionMessageBox } from "@/features/ui/ui/messageboxes/DeleteConnectionMessageBox";
 import {
 	Button,
@@ -53,12 +51,12 @@ export const Group = ({ groupId }: { groupId: string }) => {
 	// fallback
 	if (!group) {
 		return null;
-	}
-
+  }
+  
 	// jsx
 	return (
 		<Item
-			className="p-2 rounded-none"
+			className="p-2 rounded-none bg-linear-to-r from-card to-background/30"
 			variant={awaitingGroup ? "muted" : "default"}
 		>
 			<ItemHeader>

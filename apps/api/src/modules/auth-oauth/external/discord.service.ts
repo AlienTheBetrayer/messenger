@@ -29,7 +29,6 @@ export class DiscordStrategy extends PassportStrategy(Strategy, "discord") {
 		const metadata = JSON.parse(
 			(req.query.state as string) ?? "{}",
 		) as oAuthIdentityMetadata;
-		console.log(profile);
 
 		const data: OAuthIdentityType = {
 			provider: "discord",

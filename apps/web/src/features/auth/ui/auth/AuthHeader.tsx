@@ -3,10 +3,8 @@ import Link from "next/link";
 
 import { AuthFormVariants } from "@/features/auth/lib/variants";
 import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
-import {
-	selectConnectSessionsAwaitingGroupId,
-	setConnectSessionsAwaitingGroupId,
-} from "@/features/ui";
+import { selectConnectSessionsAwaitingGroupId } from "@/features/ui/model/ui.selectors";
+import { setConnectSessionsAwaitingGroupId } from "@/features/ui/model/ui.slice";
 import {
 	Button,
 	CardAction,
