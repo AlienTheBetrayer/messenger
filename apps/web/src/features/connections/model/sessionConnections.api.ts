@@ -38,8 +38,6 @@ export const sessionConnectionApi = baseApi.injectEndpoints({
 				method: "GET",
 			}),
 
-			keepUnusedDataFor: 99999999,
-
 			transformResponse: (response: ConnectionsReturn__) => {
 				const sessions: connected_sessionsType__[] = [];
 

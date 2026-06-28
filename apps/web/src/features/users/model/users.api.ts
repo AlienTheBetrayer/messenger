@@ -23,8 +23,6 @@ export const usersApi = baseApi.injectEndpoints({
 				url: "/users",
 				method: "GET",
 			}),
-
-			keepUnusedDataFor: 99999999,
 		}),
 	}),
 });

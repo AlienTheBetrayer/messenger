@@ -1,4 +1,5 @@
 import { Pencil, Plus, RotateCcw, Trash2 } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 
 import { useAuth } from "@/features/auth/hooks/useAuth";
@@ -102,7 +103,8 @@ export const Group = ({ groupId }: { groupId: string }) => {
 									<Button
 										className="ml-auto! aspect-square"
 										size="xs"
-										variant="ghost"
+										variant={awaitingGroup ? "destructive" : "ghost"}
+										asChild={!awaitingGroup}
 										onClick={() => {
 											dispatch(
 												toggleConnectSessionsAwaitingGroupId({
@@ -114,7 +116,9 @@ export const Group = ({ groupId }: { groupId: string }) => {
 										{awaitingGroup ? (
 											<RotateCcw />
 										) : (
-											<Plus className="size-4" />
+											<Link href="/login">
+												<Plus className="size-4" />
+											</Link>
 										)}
 									</Button>
 								</TooltipTrigger>

@@ -94,8 +94,6 @@ export const authApi = baseApi.injectEndpoints({
 			transformResponse: (response: AuthMeReturn__) => {
 				return { userId: response.user.id, sessionId: response.session.id };
 			},
-
-			keepUnusedDataFor: 99999999,
 		}),
 
 		/**

@@ -23,8 +23,6 @@ export const sessionApi = baseApi.injectEndpoints({
 				url: "/connections",
 				method: "GET",
 			}),
-
-			keepUnusedDataFor: 99999999,
 		}),
 	}),
 });

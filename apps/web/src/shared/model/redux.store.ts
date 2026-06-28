@@ -23,7 +23,8 @@ const persistedLocalReducer = persistReducer(
  */
 export const baseApi = createApi({
 	tagTypes: ["me"],
-	reducerPath: "api",
+  reducerPath: "api",
+  keepUnusedDataFor: 99999999,
 	baseQuery: fetchBaseQuery({ baseUrl: "/api" }),
 	endpoints: () => ({}),
 });

@@ -47,6 +47,9 @@ export const AuthFooter = () => {
 							type="button"
 							variant="outline"
 							className="w-full"
+              onClick={() => {
+                fetch("/connections/connection/init")
+              }}
 						>
 							<Image
 								alt=""
