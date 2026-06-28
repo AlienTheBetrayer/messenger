@@ -7,6 +7,13 @@ export const selectConnectSessionsAwaitingGroupId = (state: RootState) => {
 	return state.ui.connectSessions.awaiting?.groupId;
 };
 
+export const selectIsConnectSessionsAwaiting = (
+	state: RootState,
+	groupId: string,
+) => {
+	return state.ui.connectSessions.awaiting?.groupId === groupId;
+};
+
 export const selectAwaitingConnectionGroup = createSelector(
 	[
 		(state: RootState) => selectConnectSessionsAwaitingGroupId(state),

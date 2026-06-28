@@ -15,6 +15,9 @@ import {
 	Card,
 	CardContent,
 	CardFooter,
+	Tooltip,
+	TooltipContent,
+	TooltipTrigger,
 	useAppDispatch,
 	useAppSelector,
 } from "@/shared";
@@ -75,21 +78,28 @@ const ConnectionsDisplay = () => {
 					)}
 				</AnimatePresence>
 
-				<Button
-					className="aspect-square ml-auto"
-					variant="secondary"
-					size="sm"
-					onPointerDown={() => {
-						if (collapsedMenu) {
-							prefetchGroups();
-						}
-					}}
-					onClick={() => {
-						dispatch(toggleConnectSessionsCollapsedMenu());
-					}}
-				>
-					<ChevronsUpDown />
-				</Button>
+				<Tooltip>
+					<TooltipTrigger asChild>
+						<Button
+							className="aspect-square ml-auto"
+							variant="secondary"
+							size="sm"
+							onPointerDown={() => {
+								if (collapsedMenu) {
+									prefetchGroups();
+								}
+							}}
+							onClick={() => {
+								dispatch(toggleConnectSessionsCollapsedMenu());
+							}}
+						>
+							<ChevronsUpDown />
+						</Button>
+					</TooltipTrigger>
+					<TooltipContent side="bottom">
+						<span>{collapsedMenu ? "Show" : "Hide"} menu (saves)</span>
+					</TooltipContent>
+				</Tooltip>
 
 				<AnimatePresence initial={false}>
 					{!collapsedMenu && (

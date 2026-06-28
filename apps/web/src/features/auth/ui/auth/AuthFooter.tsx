@@ -54,7 +54,7 @@ export const AuthFooter = () => {
 								width={14}
 								height={14}
 							/>
-							<span>Connect Google with {awaitingGroup.emoji}</span>
+							<span>Connect Google in {awaitingGroup.emoji}</span>
 						</Button>
 					) : (
 						<Button
@@ -87,7 +87,7 @@ export const AuthFooter = () => {
 								width={16}
 								height={16}
 							/>
-							<span>Connect Github with {awaitingGroup.emoji}</span>
+							<span>Connect Github in {awaitingGroup.emoji}</span>
 						</Button>
 					) : (
 						<Button

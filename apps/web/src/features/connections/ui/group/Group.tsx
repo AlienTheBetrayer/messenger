@@ -1,4 +1,4 @@
-import { Pencil, Plus, Trash2 } from "lucide-react";
+import { Pencil, Plus, RotateCcw, Trash2 } from "lucide-react";
 import { useState } from "react";
 
 import { useAuth } from "@/features/auth/hooks/useAuth";
@@ -6,7 +6,10 @@ import { useGroupActions } from "@/features/connections/hooks/useGroupActions";
 import { groupSelectors } from "@/features/connections/model/sessionGroup.api";
 import { ConnectedSessionList } from "@/features/connections/ui/connectedsession/ConnectedSessionList";
 import { CreateGroupPopover } from "@/features/connections/ui/group/CreateGroupFormPopover";
-import { setConnectSessionsAwaitingGroupId } from "@/features/ui";
+import {
+	selectIsConnectSessionsAwaiting,
+	toggleConnectSessionsAwaitingGroupId,
+} from "@/features/ui";
 import { DeleteConnectionMessageBox } from "@/features/ui/ui/messageboxes/DeleteConnectionMessageBox";
 import {
 	Button,
@@ -21,6 +24,9 @@ import {
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
+	Tooltip,
+	TooltipContent,
+	TooltipTrigger,
 	useAppDispatch,
 	useAppSelector,
 } from "@/shared";
@@ -31,6 +37,10 @@ export const Group = ({ groupId }: { groupId: string }) => {
 	const group = useAppSelector((state) =>
 		groupSelectors.selectById(state, groupId),
 	);
+	const awaitingGroup = useAppSelector((state) =>
+		selectIsConnectSessionsAwaiting(state, groupId),
+	);
+
 	const auth = useAuth();
 
 	// actions
@@ -46,7 +56,10 @@ export const Group = ({ groupId }: { groupId: string }) => {
 
 	// jsx
 	return (
-		<Item className="p-2">
+		<Item
+			className="p-2 rounded-none"
+			variant={awaitingGroup ? "muted" : "default"}
+		>
 			<ItemHeader>
 				<ItemTitle className="flex flex-row items-center gap-0">
 					<Popover
@@ -84,18 +97,35 @@ export const Group = ({ groupId }: { groupId: string }) => {
 				{group.owner_user_id === auth?.user.id && (
 					<ul className="flex items-center">
 						<li>
-							<Button
-								className="ml-auto! aspect-square"
-								size="xs"
-								variant="ghost"
-								onClick={() => {
-									dispatch(
-										setConnectSessionsAwaitingGroupId({ groupId: group.id }),
-									);
-								}}
-							>
-								<Plus className="size-4" />
-							</Button>
+							<Tooltip>
+								<TooltipTrigger asChild>
+									<Button
+										className="ml-auto! aspect-square"
+										size="xs"
+										variant="ghost"
+										onClick={() => {
+											dispatch(
+												toggleConnectSessionsAwaitingGroupId({
+													groupId: group.id,
+												}),
+											);
+										}}
+									>
+										{awaitingGroup ? (
+											<RotateCcw />
+										) : (
+											<Plus className="size-4" />
+										)}
+									</Button>
+								</TooltipTrigger>
+								<TooltipContent>
+									<span>
+										{awaitingGroup
+											? "Exit adding a session"
+											: "Enter adding a session mode"}
+									</span>
+								</TooltipContent>
+							</Tooltip>
 						</li>
 
 						<li>
