@@ -56,7 +56,8 @@ export const Group = ({ groupId }: { groupId: string }) => {
 							>
 								{group.emoji}
 							</Button>
-						</PopoverTrigger>
+            </PopoverTrigger>
+            
 						<PopoverContent>
 							<EmojiPicker
 								sticky={false}

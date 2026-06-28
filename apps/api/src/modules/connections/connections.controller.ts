@@ -1,12 +1,19 @@
 import {
-	ConnectionAddReturn,
 	ConnectionDeleteReturn,
 	ConnectionsReturn,
 	GroupCreateReturn,
 	GroupDeleteReturn,
 	GroupEditReturn,
 } from "@gravity/shared";
-import { Body, Controller, Get, Post, UseGuards } from "@nestjs/common";
+import {
+	Body,
+	Controller,
+	Delete,
+	Get,
+	Patch,
+	Post,
+	UseGuards,
+} from "@nestjs/common";
 
 import {
 	AuthenticatedUser,
@@ -14,7 +21,6 @@ import {
 } from "../auth-core/decorators";
 import { AuthenticatedGuard } from "../auth-core/guards";
 import {
-	ConnectionAddDto,
 	ConnectionDeleteDto,
 	GroupCreateDto,
 	GroupDeleteDto,
@@ -42,29 +48,18 @@ export class ConnectionsController {
 		return { connections };
 	}
 
-	// /**
-	//  *
-	//  * @returns
-	//  */
-	// @UseGuards(AuthenticatedGuard)
-	// @Post("session/add")
-	// async connectiondd(
-	// 	@Body() body: ConnectionAddDto,
-	// ): Promise<ConnectionAddReturn> {
-	// 	return await this.connectionsService.connectionAdd(body);
-	// }
-
 	/**
 	 *
 	 * @returns
 	 */
 	@UseGuards(AuthenticatedGuard)
-	@Post("session/delete")
+	@Delete("session/delete")
 	async connectionelete(
 		@Body() body: ConnectionDeleteDto,
 	): Promise<ConnectionDeleteReturn> {
-    const connected_session = await this.connectionsService.connectionDelete(body);
-    return { connected_session };
+		const connected_session =
+			await this.connectionsService.connectionDelete(body);
+		return { connected_session };
 	}
 
 	/**
@@ -91,7 +86,7 @@ export class ConnectionsController {
 	 * @returns updated group
 	 */
 	@UseGuards(AuthenticatedGuard, GroupOwnerGuard)
-	@Post("group/edit")
+	@Patch("group/edit")
 	async groupEdit(@Body() body: GroupEditDto): Promise<GroupEditReturn> {
 		const group = await this.connectionsService.groupEdit(body);
 		return { group };
@@ -103,7 +98,7 @@ export class ConnectionsController {
 	 * @returns deleted group
 	 */
 	@UseGuards(AuthenticatedGuard, GroupOwnerGuard)
-	@Post("group/delete")
+	@Delete("group/delete")
 	async groupDelete(@Body() body: GroupDeleteDto): Promise<GroupDeleteReturn> {
 		const group = await this.connectionsService.groupDelete(body);
 		return { group };

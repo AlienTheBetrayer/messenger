@@ -1,15 +1,16 @@
 import {
-  GroupCreateReturn,
-  GroupDeleteReturn,
-  GroupEditReturn,
+	GroupCreateReturn,
+	GroupDeleteReturn,
+	GroupEditReturn,
 } from "@gravity/shared";
 import { useCallback, useMemo } from "react";
 
 import { useNotificationDispatch } from "@/features/notifications/hooks/useNotificationDispatch";
 import { NotificationLayout } from "@/features/notifications/ui/layout/NotificationLayout";
 import { Button } from "@/shared";
+import { ConnectionDeleteReturn__ } from "@/shared/model/serializable.types";
 
-export const useSessionNotifications = () => {
+export const useConnectionNotifications = () => {
 	// dispatcher
 	const { promise } = useNotificationDispatch();
 
@@ -139,12 +140,51 @@ export const useSessionNotifications = () => {
 		[promise],
 	);
 
+	// group-edit promise
+	const connectionDelete = useCallback(
+		(fn: () => Promise<ConnectionDeleteReturn__>) => {
+			promise(fn, {
+				loading: () => ({
+					node: <NotificationLayout text="Disconnecting the connection..." />,
+					text: "Disconnecting the connection...",
+				}),
+				error: (e: unknown) => {
+					const message = e instanceof Error ? e.message : "";
+
+					return {
+						node: (
+							<NotificationLayout
+								text={`Disconnection failed. ${message}`}
+								action={
+									<Button
+										onClick={() => {
+											fn();
+										}}
+									>
+										Retry
+									</Button>
+								}
+							/>
+						),
+						text: `Disconnection failed. ${message}`,
+					};
+				},
+				success: () => ({
+					node: <NotificationLayout text="Connection has been deleted!" />,
+					text: "Connection has been deleted!",
+				}),
+			});
+		},
+		[promise],
+	);
+
 	return useMemo(
 		() => ({
 			groupCreate,
 			groupEdit,
 			groupDelete,
+			connectionDelete,
 		}),
-		[groupCreate, groupEdit, groupDelete],
+		[groupCreate, groupEdit, groupDelete, connectionDelete],
 	);
 };

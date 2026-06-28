@@ -11,6 +11,8 @@ import {
 	AuthSchema,
 	AuthSignupReturn,
 	connected_sessionsType,
+	ConnectionDeleteReturn,
+	ConnectionDeleteSchema,
 	ConnectionsReturn,
 	DateToString,
 	NotificationsPushReturn,
@@ -48,3 +50,5 @@ export type NotificationsUpdateReturn__ =
 	DateToString<NotificationsUpdateReturn>;
 export type NotificationsUpdateSchema__ =
 	DateToString<NotificationsUpdateSchema>;
+export type ConnectionsDeleteSchema__ = DateToString<ConnectionDeleteSchema>;
+export type ConnectionDeleteReturn__ = DateToString<ConnectionDeleteReturn>;

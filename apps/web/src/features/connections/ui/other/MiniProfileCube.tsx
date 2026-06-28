@@ -25,8 +25,8 @@ export const MiniProfileCube = ({
 	// jsx
 	return (
 		<Button
-			variant={"ghost"}
-      size={"sm"}
+			variant="ghost"
+			size="sm"
 			{...props}
 			asChild
 		>

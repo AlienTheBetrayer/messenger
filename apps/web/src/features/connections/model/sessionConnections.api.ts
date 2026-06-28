@@ -1,8 +1,15 @@
+/* eslint-disable @typescript-eslint/unbound-method */
 import { createEntityAdapter, EntityState } from "@reduxjs/toolkit";
 
+import {
+	groupAdapter,
+	groupApi,
+} from "@/features/connections/model/sessionGroup.api";
 import { baseApi, RootState } from "@/shared";
 import {
 	connected_sessionsType__,
+	ConnectionDeleteReturn__,
+	ConnectionsDeleteSchema__,
 	ConnectionsReturn__,
 } from "@/shared/model/serializable.types";
 
@@ -49,10 +56,65 @@ export const sessionConnectionApi = baseApi.injectEndpoints({
 				);
 			},
 		}),
+
+		/**
+		 * deletes the connection
+		 * @param connectionId id of the connection
+		 * @returns deleted connection
+		 */
+		deleteConnection: build.mutation<
+			ConnectionDeleteReturn__,
+			ConnectionsDeleteSchema__
+		>({
+			query: (body) => ({
+				url: "/connections",
+				method: "DELETE",
+				body,
+			}),
+
+			async onQueryStarted(args, { dispatch, getState }) {
+				// group id selection
+				const connectionsData =
+					sessionConnectionApi.endpoints.getConnectedSessions.select(undefined)(
+						getState(),
+					);
+				const connection = connectionsData.data?.entities[args.connectionId];
+
+				if (!connection) {
+					return;
+				}
+
+				// dispatching the deleted connection
+				dispatch(
+					sessionConnectionApi.util.updateQueryData(
+						"getConnectedSessions",
+						undefined,
+						(draft) => {
+							sessionConnectionAdapter.removeOne(draft, args.connectionId);
+						},
+					),
+				);
+
+				// dispatching the deleted id
+				dispatch(
+					groupApi.util.updateQueryData("getGroups", undefined, (draft) => {
+						groupAdapter.updateOne(draft, {
+							id: connection.group_id,
+							changes: {
+								connectedSessionIds: draft.entities[
+									connection.group_id
+								].connectedSessionIds.filter((id) => id !== args.connectionId),
+							},
+						});
+					}),
+				);
+			},
+		}),
 	}),
 });
 
-export const { useGetConnectedSessionsQuery } = sessionConnectionApi;
+export const { useGetConnectedSessionsQuery, useDeleteConnectionMutation } =
+	sessionConnectionApi;
 
 /**
  * selectors

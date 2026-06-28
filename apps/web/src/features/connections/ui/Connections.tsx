@@ -30,8 +30,8 @@ export const Connections = () => {
 const ConnectionsDisplay = () => {
 	// redux
 	const dispatch = useAppDispatch();
-	const collapsedMenu = useAppSelector(selectConnectSessionsCollapsedMenu);
 	const prefetchGroups = groupApi.usePrefetch("getGroups");
+	const collapsedMenu = useAppSelector(selectConnectSessionsCollapsedMenu);
 	const auth = useAuth();
 
 	// jsx

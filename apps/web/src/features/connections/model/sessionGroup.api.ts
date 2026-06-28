@@ -176,7 +176,7 @@ export const groupApi = baseApi.injectEndpoints({
 		editGroup: build.mutation<GroupEditReturn, GroupEditSchema>({
 			query: (body) => ({
 				url: "/connections/group/edit",
-				method: "POST",
+				method: "PATCH",
 				body,
 			}),
 
@@ -262,7 +262,7 @@ export const groupApi = baseApi.injectEndpoints({
 		deleteGroup: build.mutation<GroupDeleteReturn, GroupDeleteSchema>({
 			query: (body) => ({
 				url: "/connections/group/delete",
-				method: "POST",
+				method: "DELETE",
 				body,
 			}),
 
