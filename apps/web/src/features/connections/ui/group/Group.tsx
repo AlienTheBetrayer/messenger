@@ -6,29 +6,34 @@ import { useGroupActions } from "@/features/connections/hooks/useGroupActions";
 import { groupSelectors } from "@/features/connections/model/sessionGroup.api";
 import { ConnectedSessionList } from "@/features/connections/ui/connectedsession/ConnectedSessionList";
 import { CreateGroupPopover } from "@/features/connections/ui/group/CreateGroupFormPopover";
+import { setConnectSessionsAwaitingGroupId } from "@/features/ui";
 import { DeleteConnectionMessageBox } from "@/features/ui/ui/messageboxes/DeleteConnectionMessageBox";
 import {
-  Button,
-  EmojiPicker,
-  EmojiPickerContent,
-  EmojiPickerFooter,
-  EmojiPickerSearch,
-  Item,
-  ItemContent,
-  ItemHeader,
-  ItemTitle,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-  useAppSelector,
+	Button,
+	EmojiPicker,
+	EmojiPickerContent,
+	EmojiPickerFooter,
+	EmojiPickerSearch,
+	Item,
+	ItemContent,
+	ItemHeader,
+	ItemTitle,
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+	useAppDispatch,
+	useAppSelector,
 } from "@/shared";
 
 export const Group = ({ groupId }: { groupId: string }) => {
 	// redux
+	const dispatch = useAppDispatch();
 	const group = useAppSelector((state) =>
 		groupSelectors.selectById(state, groupId),
 	);
 	const auth = useAuth();
+
+	// actions
 	const { editGroup, deleteGroup } = useGroupActions();
 
 	// states
@@ -55,8 +60,8 @@ export const Group = ({ groupId }: { groupId: string }) => {
 							>
 								{group.emoji}
 							</Button>
-            </PopoverTrigger>
-            
+						</PopoverTrigger>
+
 						<PopoverContent>
 							<EmojiPicker
 								sticky={false}
@@ -83,6 +88,11 @@ export const Group = ({ groupId }: { groupId: string }) => {
 								className="ml-auto! aspect-square"
 								size="xs"
 								variant="ghost"
+								onClick={() => {
+									dispatch(
+										setConnectSessionsAwaitingGroupId({ groupId: group.id }),
+									);
+								}}
 							>
 								<Plus className="size-4" />
 							</Button>

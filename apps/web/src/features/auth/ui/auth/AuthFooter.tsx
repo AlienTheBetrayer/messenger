@@ -4,16 +4,23 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
+import { selectAwaitingConnectionGroup } from "@/features/ui";
 import {
 	Button,
 	CardFooter,
 	queryStateHooks,
 	Separator,
 	Spinner,
+	useAppSelector,
 } from "@/shared";
 import { useIsLoading } from "@/shared/model/redux.selectors";
 
 export const AuthFooter = () => {
+	// redux
+	const awaitingGroup = useAppSelector((state) =>
+		selectAwaitingConnectionGroup(state),
+	);
+
 	// states
 	const { type } = useAuthFormProvider();
 	const isLoading = useIsLoading(["getCode"]);
@@ -35,41 +42,71 @@ export const AuthFooter = () => {
 				<>
 					<Separator />
 
-					<Button
-						type="button"
-						variant="secondary"
-						className="w-full"
-						asChild
-					>
-						{/* redirect to the actual backend url later */}
-						<Link href="http://localhost:3001/oauth/google">
+					{awaitingGroup ? (
+						<Button
+							type="button"
+							variant="outline"
+							className="w-full"
+						>
 							<Image
 								alt=""
 								src="/google.svg"
 								width={14}
 								height={14}
 							/>
-							Continue with Google
-						</Link>
-					</Button>
+							<span>Connect Google with {awaitingGroup.emoji}</span>
+						</Button>
+					) : (
+						<Button
+							type="button"
+							variant="secondary"
+							className="w-full"
+							asChild
+						>
+							<Link href="http://localhost:3001/oauth/google">
+								<Image
+									alt=""
+									src="/google.svg"
+									width={14}
+									height={14}
+								/>
+								<span>Continue with Google</span>
+							</Link>
+						</Button>
+					)}
 
-					<Button
-						type="button"
-						variant="secondary"
-						className="w-full"
-						asChild
-					>
-						{/* redirect to the actual backend url later */}
-						<Link href="http://localhost:3001/oauth/github">
+					{awaitingGroup ? (
+						<Button
+							type="button"
+							variant="outline"
+							className="w-full"
+						>
 							<Image
 								alt=""
 								src="/github.svg"
 								width={16}
 								height={16}
 							/>
-							Continue with Github
-						</Link>
-					</Button>
+							<span>Connect Github with {awaitingGroup.emoji}</span>
+						</Button>
+					) : (
+						<Button
+							type="button"
+							variant="secondary"
+							className="w-full"
+							asChild
+						>
+							<Link href="http://localhost:3001/oauth/github">
+								<Image
+									alt=""
+									src="/github.svg"
+									width={16}
+									height={16}
+								/>
+								<span>Continue with Github</span>
+							</Link>
+						</Button>
+					)}
 				</>
 			)}
 		</CardFooter>

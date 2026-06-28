@@ -5,7 +5,8 @@ import {
 	groupAdapter,
 	groupApi,
 } from "@/features/connections/model/sessionGroup.api";
-import { baseApi, RootState } from "@/shared";
+import { baseApi } from "@/shared/model/redux.store";
+import { RootState } from "@/shared/model/redux.types";
 import {
 	connected_sessionsType__,
 	ConnectionDeleteReturn__,
@@ -67,7 +68,7 @@ export const sessionConnectionApi = baseApi.injectEndpoints({
 			ConnectionsDeleteSchema__
 		>({
 			query: (body) => ({
-				url: "/connections",
+				url: "/connections/connection/delete",
 				method: "DELETE",
 				body,
 			}),

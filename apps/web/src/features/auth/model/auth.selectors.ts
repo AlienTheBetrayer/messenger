@@ -1,7 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 
 import { authApi } from "@/features/auth/model/auth.api";
-import { RootState } from "@/shared";
+import { RootState } from "@/shared/model/redux.types";
 
 export const selectAuthMeResult = authApi.endpoints.me.select();
 export const selectIsAuthenticated = createSelector(

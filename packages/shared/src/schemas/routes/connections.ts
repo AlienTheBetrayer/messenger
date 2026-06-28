@@ -28,8 +28,8 @@ export const connectionAddSchema = z.object({
 });
 export type ConnectionAddSchema = z.infer<typeof connectionAddSchema>;
 export type ConnectionAddReturn = {
-  connected_session: connected_sessionsType;
-}
+	connected_session: connected_sessionsType;
+};
 
 /**
  * connection/delete
@@ -37,5 +37,16 @@ export type ConnectionAddReturn = {
 export const connectionDeleteSchema = z.object({ connectionId: z.nanoid() });
 export type ConnectionDeleteSchema = z.infer<typeof connectionDeleteSchema>;
 export type ConnectionDeleteReturn = {
-  connected_session: connected_sessionsType;
-}
+	connected_session: connected_sessionsType;
+};
+
+/**
+ * connection/init
+ */
+export const connectionInitSchema = z.object({
+  type: z.enum(["oauth", "auth"]),
+  service: z.enum(["github", "google", "discord"]).or(z.null()),
+	groupId: z.nanoid(),
+});
+export type ConnectionInitSchema = z.infer<typeof connectionInitSchema>;
+export type ConnectionInitReturn = void;

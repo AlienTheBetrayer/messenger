@@ -1,5 +1,5 @@
 import { usersAdapter, usersApi } from "@/features/users/model/users.api";
-import { baseApi } from "@/shared";
+import { baseApi } from "@/shared/model/redux.store";
 import {
 	AuthCodeReturn__,
 	AuthCodeSchema__,

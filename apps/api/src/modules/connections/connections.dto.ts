@@ -1,6 +1,7 @@
 import {
 	connectionAddSchema,
 	connectionDeleteSchema,
+	connectionInitSchema,
 	groupCreateSchema,
 	groupDeleteSchema,
 	groupEditSchema,
@@ -12,6 +13,7 @@ import { createZodDto } from "nestjs-zod";
  */
 export class ConnectionAddDto extends createZodDto(connectionAddSchema) {}
 export class ConnectionDeleteDto extends createZodDto(connectionDeleteSchema) {}
+export class ConnectionInitDto extends createZodDto(connectionInitSchema) {}
 
 /**
  * group

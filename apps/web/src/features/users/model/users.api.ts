@@ -1,6 +1,7 @@
 import { createEntityAdapter, EntityState } from "@reduxjs/toolkit";
 
-import { baseApi, RootState } from "@/shared";
+import { baseApi } from "@/shared/model/redux.store";
+import { RootState } from "@/shared/model/redux.types";
 import { usersType__ } from "@/shared/model/serializable.types";
 
 /**

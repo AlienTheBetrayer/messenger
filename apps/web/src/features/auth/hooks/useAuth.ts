@@ -2,7 +2,7 @@
 
 import { useMeQuery } from "@/features/auth/model/auth.api";
 import { sessionSelectors } from "@/features/connections/model/sessions.api";
-import { usersSelectors } from "@/features/users/model/users.api";
+import { usersSelectors } from "@/features/users";
 import { useAppSelector } from "@/shared";
 import {
 	auth_sessionsType__,
@@ -15,11 +15,11 @@ import {
  */
 export const useAuth = ():
 	| { user: usersType__; session: auth_sessionsType__ }
-  | undefined => {
-  // fetching (preloaded)
+	| undefined => {
+	// fetching (preloaded)
 	const data = useMeQuery();
 
-  // selecting
+	// selecting
 	const user = useAppSelector((state) =>
 		usersSelectors.selectById(state, data.data?.userId ?? ""),
 	);
@@ -32,4 +32,6 @@ export const useAuth = ():
 	}
 
 	return { user, session };
+
+	return;
 };

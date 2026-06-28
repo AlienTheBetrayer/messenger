@@ -1,15 +1,15 @@
 "use client";
 
-import { AuthMeReturn } from "@gravity/shared";
 import { createContext, useContext } from "react";
 
 import { useAuth } from "@/features/auth/hooks/useAuth";
+import { AuthMeReturn__ } from "@/shared/model/serializable.types";
 
 /**
  * type
  */
 export type HeaderProviderType = {
-	auth: AuthMeReturn | undefined;
+	auth: AuthMeReturn__ | undefined;
 };
 
 /**
@@ -24,13 +24,11 @@ export const HeaderContext = createContext<HeaderProviderType | null>(null);
  */
 export const HeaderProvider = ({ children }: { children: React.ReactNode }) => {
 	// data
-  const auth = useAuth();
+	const auth = useAuth();
 
 	// jsx
 	return (
-		<HeaderContext.Provider value={{ auth }}>
-			{children}
-		</HeaderContext.Provider>
+		<HeaderContext.Provider value={{ auth }}>{children}</HeaderContext.Provider>
 	);
 };
 

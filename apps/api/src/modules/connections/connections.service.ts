@@ -1,6 +1,7 @@
 import {
 	ConnectionAddSchema,
 	ConnectionDeleteSchema,
+	ConnectionInitSchema,
 	generateId,
 	GroupCreateSchema,
 	GroupDeleteSchema,
@@ -54,6 +55,19 @@ export class ConnectionsService {
 
 		return connected;
 	}
+
+  async connectionInit(body: ConnectionInitSchema) {
+    switch (body.type) {
+      case "auth": {
+
+        break;
+      }
+      case "oauth": {
+        
+        break;
+      }
+    }
+  }
 
 	async connectionAdd(body: ConnectionAddSchema) {
 		return true;

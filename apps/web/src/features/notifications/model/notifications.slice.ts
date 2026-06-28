@@ -1,6 +1,6 @@
 import { createEntityAdapter } from "@reduxjs/toolkit";
 
-import { baseApi } from "@/shared";
+import { baseApi } from "@/shared/model/redux.store";
 import {
 	NotificationsPushReturn__,
 	NotificationsPushSchema__,

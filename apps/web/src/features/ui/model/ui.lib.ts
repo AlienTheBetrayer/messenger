@@ -3,12 +3,12 @@
  */
 export type UiSliceInitialType = {
 	connectSessions: {
-		awaitingGroupId: string | undefined;
+		awaiting: { groupId: string } | null;
 	};
 };
 
 export const UiSliceInitial = {
 	connectSessions: {
-		awaitingGroupId: undefined,
+		awaiting: null,
 	},
 } as UiSliceInitialType;

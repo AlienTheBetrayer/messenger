@@ -1,7 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 
 import { selectIsAuthenticated } from "@/features/auth/model/auth.selectors";
-import { RootState } from "@/shared";
+import { RootState } from "@/shared/model/redux.types";
 
 /**
  * runs only if you're authenticated

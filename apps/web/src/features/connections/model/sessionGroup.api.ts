@@ -1,34 +1,35 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import {
-  connected_sessions_groupType,
-  generateId,
-  GroupCreateReturn,
-  GroupCreateSchema,
-  GroupDeleteReturn,
-  GroupDeleteSchema,
-  GroupEditReturn,
-  GroupEditSchema,
-  PickRequired,
+	connected_sessions_groupType,
+	generateId,
+	GroupCreateReturn,
+	GroupCreateSchema,
+	GroupDeleteReturn,
+	GroupDeleteSchema,
+	GroupEditReturn,
+	GroupEditSchema,
+	PickRequired,
 } from "@gravity/shared";
 import { createEntityAdapter, EntityState } from "@reduxjs/toolkit";
 
 import { authApi } from "@/features/auth/model/auth.api";
 import {
-  sessionConnectionAdapter,
-  sessionConnectionApi,
+	sessionConnectionAdapter,
+	sessionConnectionApi,
 } from "@/features/connections/model/sessionConnections.api";
 import {
-  sessionAdapter,
-  sessionApi,
+	sessionAdapter,
+	sessionApi,
 } from "@/features/connections/model/sessions.api";
 import { usersAdapter, usersApi } from "@/features/users";
-import { baseApi, RootState } from "@/shared";
+import { baseApi } from "@/shared/model/redux.store";
+import { RootState } from "@/shared/model/redux.types";
 import {
-  auth_sessionsType__,
-  connected_sessionsType__,
-  ConnectedSessionGroup__,
-  ConnectionsReturn__,
-  usersType__,
+	auth_sessionsType__,
+	connected_sessionsType__,
+	ConnectedSessionGroup__,
+	ConnectionsReturn__,
+	usersType__,
 } from "@/shared/model/serializable.types";
 
 export type ConnectedSessionGroup = connected_sessions_groupType & {
@@ -51,8 +52,8 @@ export const groupAdapter = createEntityAdapter<ConnectedSessionGroup__>({
 		// edit
 		if (a.edited_at !== b.edited_at) {
 			if (!a.edited_at) return 1;
-      if (!b.edited_at) return -1;
-      
+			if (!b.edited_at) return -1;
+
 			return b.edited_at.localeCompare(a.edited_at);
 		}
 
@@ -287,8 +288,8 @@ export const {
 /**
  * selectors
  */
-const selectGetGroupsResult = groupApi.endpoints.getGroups.select();
-const selectGroupsData = (state: RootState) =>
+export const selectGetGroupsResult = groupApi.endpoints.getGroups.select();
+export const selectGroupsData = (state: RootState) =>
 	selectGetGroupsResult(state).data ?? initialState;
 
 export const groupSelectors = groupAdapter.getSelectors(selectGroupsData);

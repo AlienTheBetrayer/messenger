@@ -1,5 +1,6 @@
 import {
 	ConnectionDeleteReturn,
+	ConnectionInitReturn,
 	ConnectionsReturn,
 	GroupCreateReturn,
 	GroupDeleteReturn,
@@ -12,9 +13,12 @@ import {
 	Get,
 	Patch,
 	Post,
+	Res,
 	UseGuards,
 } from "@nestjs/common";
+import { Response } from "express";
 
+import { createException } from "../../common";
 import {
 	AuthenticatedUser,
 	AuthenticatedUserType,
@@ -22,12 +26,13 @@ import {
 import { AuthenticatedGuard } from "../auth-core/guards";
 import {
 	ConnectionDeleteDto,
+	ConnectionInitDto,
 	GroupCreateDto,
 	GroupDeleteDto,
 	GroupEditDto,
 } from "./connections.dto";
 import { ConnectionsService } from "./connections.service";
-import { GroupOwnerGuard } from "./guards";
+import { GroupMemberGuard, GroupOwnerGuard } from "./guards";
 
 @Controller("connections")
 export class ConnectionsController {
@@ -53,13 +58,38 @@ export class ConnectionsController {
 	 * @returns
 	 */
 	@UseGuards(AuthenticatedGuard)
-	@Delete("session/delete")
+	@Delete("connection/delete")
 	async connectionelete(
 		@Body() body: ConnectionDeleteDto,
 	): Promise<ConnectionDeleteReturn> {
 		const connected_session =
 			await this.connectionsService.connectionDelete(body);
 		return { connected_session };
+	}
+
+	@UseGuards(AuthenticatedGuard, GroupMemberGuard)
+	@Post("connection/init")
+	async connectionInit(
+		@Body() body: ConnectionInitDto,
+		@Res({ passthrough: true }) response: Response,
+	): Promise<ConnectionInitReturn> {
+		switch (body.type) {
+			case "oauth": {
+				if (!body.service) {
+					throw createException(
+						"badrequest",
+						"INVALID_BODY",
+						"service is required for oauth connection.",
+					);
+				}
+
+        response.redirect(`/oauth/${body.service}`);
+        break;
+			}
+			case "auth": {
+				break;
+			}
+		}
 	}
 
 	/**

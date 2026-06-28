@@ -1,3 +1,4 @@
+import { ConnectionInitSchema } from "@gravity/shared";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { UiSliceInitial } from "@/features/ui/model/ui.lib";
@@ -15,9 +16,9 @@ export const uiSlice = createSlice({
 
 		setConnectSessionsAwaitingGroupId: (
 			draft,
-			action: PayloadAction<string | undefined>,
+			action: PayloadAction<{ groupId: string }>,
 		) => {
-			draft.connectSessions.awaitingGroupId = action.payload;
+			draft.connectSessions.awaiting = action.payload;
 		},
 	},
 });
