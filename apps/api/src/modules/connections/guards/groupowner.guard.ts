@@ -18,14 +18,17 @@ export class GroupOwnerGuard implements CanActivate {
 			z.looseObject({
 				groupId: z.nanoid(),
 			}),
-			request.body,
+			{
+				...request.body,
+				...request.query,
+			},
 		);
 
 		if (!parsedGroup.success) {
 			throw createException(
 				"unauthorized",
 				"UNAUTHENTICATED",
-				"groupId is absent in the body.",
+				"groupId is invalid in the body.",
 			);
 		}
 

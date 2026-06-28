@@ -13,6 +13,7 @@ import {
 	Get,
 	Patch,
 	Post,
+	Query,
 	Res,
 	UseGuards,
 } from "@nestjs/common";
@@ -68,14 +69,14 @@ export class ConnectionsController {
 	}
 
 	@UseGuards(AuthenticatedGuard, GroupMemberGuard)
-	@Post("connection/init")
+	@Get("connection/init")
 	async connectionInit(
-		@Body() body: ConnectionInitDto,
+		@Query() query: ConnectionInitDto,
 		@Res({ passthrough: true }) response: Response,
 	): Promise<ConnectionInitReturn> {
-		switch (body.type) {
+		switch (query.type) {
 			case "oauth": {
-				if (!body.service) {
+				if (!query.service) {
 					throw createException(
 						"badrequest",
 						"INVALID_BODY",
@@ -83,7 +84,7 @@ export class ConnectionsController {
 					);
 				}
 
-        response.redirect(`/oauth/${body.service}`);
+        response.redirect(`http://localhost:3001/oauth/${query.service}`);
         break;
 			}
 			case "auth": {

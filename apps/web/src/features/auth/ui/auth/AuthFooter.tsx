@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 
 import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
@@ -13,6 +12,10 @@ import {
 	Spinner,
 	useAppSelector,
 } from "@/shared";
+import DiscordIcon from "@/shared/assets/discord.svg";
+import GithubIcon from "@/shared/assets/github.svg";
+import GoogleIcon from "@/shared/assets/google.svg";
+import TelegramIcon from "@/shared/assets/telegram.svg";
 import { useIsLoading } from "@/shared/model/redux.selectors";
 
 export const AuthFooter = () => {
@@ -28,7 +31,7 @@ export const AuthFooter = () => {
 
 	// jsx
 	return (
-		<CardFooter className="flex flex-col gap-2">
+		<CardFooter className="flex flex-col gap-1">
 			<Button
 				disabled={!!verify || isLoading}
 				type="submit"
@@ -40,76 +43,95 @@ export const AuthFooter = () => {
 
 			{type !== "forgot_password" && (
 				<>
-					<Separator />
+					<Separator className="my-1" />
 
-					{awaitingGroup ? (
-						<Button
-							type="button"
-							variant="outline"
-							className="w-full"
-              onClick={() => {
-                fetch("/connections/connection/init")
-              }}
+					<Button
+						type="button"
+						variant={awaitingGroup ? "outline" : "secondary"}
+						className="w-full"
+						asChild
+					>
+						<Link
+							href={
+								awaitingGroup
+									? `http://localhost:3001/connections/connection/init?type=oauth&service=google&groupId=${awaitingGroup.id}`
+									: "http://localhost:3001/oauth/google"
+							}
 						>
-							<Image
-								alt=""
-								src="/google.svg"
-								width={14}
-								height={14}
-							/>
-							<span>Connect Google in {awaitingGroup.emoji}</span>
-						</Button>
-					) : (
-						<Button
-							type="button"
-							variant="secondary"
-							className="w-full"
-							asChild
-						>
-							<Link href="http://localhost:3001/oauth/google">
-								<Image
-									alt=""
-									src="/google.svg"
-									width={14}
-									height={14}
-								/>
+							<GoogleIcon />
+							{awaitingGroup ? (
+								<span>Connect Google in {awaitingGroup.emoji}</span>
+							) : (
 								<span>Continue with Google</span>
-							</Link>
-						</Button>
-					)}
+							)}
+						</Link>
+					</Button>
 
-					{awaitingGroup ? (
-						<Button
-							type="button"
-							variant="outline"
-							className="w-full"
+					<Button
+						type="button"
+						variant={awaitingGroup ? "outline" : "secondary"}
+						className="w-full"
+						asChild
+					>
+						<Link
+							href={
+								awaitingGroup
+									? `http://localhost:3001/connections/connection/init?type=oauth&service=github&groupId=${awaitingGroup.id}`
+									: "http://localhost:3001/oauth/github"
+							}
 						>
-							<Image
-								alt=""
-								src="/github.svg"
-								width={16}
-								height={16}
-							/>
-							<span>Connect Github in {awaitingGroup.emoji}</span>
-						</Button>
-					) : (
-						<Button
-							type="button"
-							variant="secondary"
-							className="w-full"
-							asChild
-						>
-							<Link href="http://localhost:3001/oauth/github">
-								<Image
-									alt=""
-									src="/github.svg"
-									width={16}
-									height={16}
-								/>
+							<GithubIcon />
+							{awaitingGroup ? (
+								<span>Connect Github in {awaitingGroup.emoji}</span>
+							) : (
 								<span>Continue with Github</span>
-							</Link>
-						</Button>
-					)}
+							)}
+						</Link>
+					</Button>
+
+					<Button
+						type="button"
+						variant={awaitingGroup ? "outline" : "secondary"}
+						className="w-full"
+						asChild
+					>
+						<Link
+							href={
+								awaitingGroup
+									? `http://localhost:3001/connections/connection/init?type=oauth&service=discord&groupId=${awaitingGroup.id}`
+									: "http://localhost:3001/oauth/discord"
+							}
+						>
+							<DiscordIcon />
+							{awaitingGroup ? (
+								<span>Connect Discord in {awaitingGroup.emoji}</span>
+							) : (
+								<span>Continue with Discord</span>
+							)}
+						</Link>
+          </Button>
+          
+          					<Button
+						type="button"
+						variant={awaitingGroup ? "outline" : "secondary"}
+						className="w-full"
+						asChild
+					>
+						<Link
+							href={
+								awaitingGroup
+									? `http://localhost:3001/connections/connection/init?type=oauth&service=telegram&groupId=${awaitingGroup.id}`
+									: "http://localhost:3001/oauth/telegram"
+							}
+						>
+							<TelegramIcon />
+							{awaitingGroup ? (
+								<span>Connect Telegram in {awaitingGroup.emoji}</span>
+							) : (
+								<span>Continue with Telegram</span>
+							)}
+						</Link>
+					</Button>
 				</>
 			)}
 		</CardFooter>

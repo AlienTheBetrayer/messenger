@@ -9,7 +9,7 @@ import {
 	NotificationsPushDto,
 	NotificationsUpdateDto,
 } from "./notifications.dto";
-import { NotificationsGuard } from "./notifications.guard";
+import { NotificationsGuard } from "./guards/notifications.guard";
 import { NotificationsService } from "./notifications.service";
 
 @Controller("notifications")
