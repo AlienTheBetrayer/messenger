@@ -8,19 +8,19 @@ import { ConnectedSessionList } from "@/features/connections/ui/connectedsession
 import { CreateGroupPopover } from "@/features/connections/ui/group/CreateGroupFormPopover";
 import { DeleteConnectionMessageBox } from "@/features/ui/ui/messageboxes/DeleteConnectionMessageBox";
 import {
-	Button,
-	EmojiPicker,
-	EmojiPickerContent,
-	EmojiPickerFooter,
-	EmojiPickerSearch,
-	Item,
-	ItemContent,
-	ItemHeader,
-	ItemTitle,
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-	useAppSelector,
+  Button,
+  EmojiPicker,
+  EmojiPickerContent,
+  EmojiPickerFooter,
+  EmojiPickerSearch,
+  Item,
+  ItemContent,
+  ItemHeader,
+  ItemTitle,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  useAppSelector,
 } from "@/shared";
 
 export const Group = ({ groupId }: { groupId: string }) => {
@@ -52,7 +52,6 @@ export const Group = ({ groupId }: { groupId: string }) => {
 							<Button
 								variant="ghost"
 								className=" aspect-square"
-								size="xs"
 							>
 								{group.emoji}
 							</Button>
@@ -74,7 +73,7 @@ export const Group = ({ groupId }: { groupId: string }) => {
 						</PopoverContent>
 					</Popover>
 
-					<span className="text-xs">{group.title}</span>
+					<span>{group.title}</span>
 				</ItemTitle>
 
 				{group.owner_user_id === auth?.user.id && (

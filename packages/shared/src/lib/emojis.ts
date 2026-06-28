@@ -1,5 +1,3 @@
-import { randomElement } from "@gravity/shared";
-
 /**
  * default group emojis (randomly selected)
  */
@@ -65,11 +63,3 @@ export const GROUP_EMOJIS = [
 	"🎉",
 	"🎁",
 ];
-
-/**
- * picks a random emoji for a group
- * @returns random emoji
- */
-export const randomGroupFormEmoji = () => {
-	return randomElement(GROUP_EMOJIS);
-};

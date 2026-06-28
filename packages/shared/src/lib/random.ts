@@ -1,3 +1,5 @@
+import { GROUP_EMOJIS } from "./emojis.js";
+
 /**
  * generates a random number within a specified range
  * @param min start value of the range
@@ -44,4 +46,12 @@ export const randomHex = () => {
  */
 export const randomElement = <T>(array: T[]): T => {
 	return array[randomRange(0, array.length - 1)];
+};
+
+/**
+ * picks a random emoji for a group
+ * @returns random emoji
+ */
+export const randomGroupFormEmoji = () => {
+	return randomElement(GROUP_EMOJIS);
 };

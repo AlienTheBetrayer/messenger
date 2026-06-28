@@ -1,4 +1,4 @@
-import { AuthConfig, generateId } from "@gravity/shared";
+import { AuthConfig, generateId, randomGroupFormEmoji } from "@gravity/shared";
 import { Injectable } from "@nestjs/common";
 import bcrypt from "bcryptjs";
 import { Request, Response } from "express";
@@ -235,6 +235,7 @@ export class AppJwtService {
 			data: {
 				id: generateId(),
 				title: "Default",
+				emoji: randomGroupFormEmoji(),
 				connected_sessions: {
 					create: {
 						id: generateId(),

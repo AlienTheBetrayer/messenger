@@ -1,9 +1,9 @@
+import { randomGroupFormEmoji } from "@gravity/shared";
 import { Pencil, Plus, RotateCcw } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
 
 import { useGroupActions } from "@/features/connections/hooks/useGroupActions";
-import { randomGroupFormEmoji } from "@/features/connections/lib/emojis";
 import { groupSelectors } from "@/features/connections/model/sessionGroup.api";
 import { useGroupFormProvider } from "@/features/connections/providers/GroupFormProvider";
 import { CreateGroupPopoverParams } from "@/features/connections/ui/group/CreateGroupFormPopover";
