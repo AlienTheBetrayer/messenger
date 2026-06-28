@@ -38,14 +38,7 @@ export class OAuthService {
 
 		// login upon success
 		if (identity) {
-			const { session } = await this.login(identity, ctx, response);
-
-			if (identity.metadata.action === "connect" && identity.metadata.groupId) {
-				this.connectionsService.connectionAdd({
-					session,
-					groupId: identity.metadata.groupId,
-				});
-			}
+			await this.login(identity, ctx, response);
 		}
 
 		response.redirect("http://localhost:3000/login");

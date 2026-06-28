@@ -67,7 +67,8 @@ export const Group = ({ groupId }: { groupId: string }) => {
 					>
 						<PopoverTrigger asChild>
 							<Button
-								variant="ghost"
+                variant="ghost"
+										size="xs"
 								className=" aspect-square"
 							>
 								{group.emoji}
@@ -103,7 +104,7 @@ export const Group = ({ groupId }: { groupId: string }) => {
 										size="xs"
 										variant={awaitingGroup ? "destructive" : "ghost"}
 										asChild={!awaitingGroup}
-										onClick={() => {
+                    onClick={() => {
 											dispatch(
 												toggleConnectSessionsAwaitingGroupId({
 													groupId: group.id,
