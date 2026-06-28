@@ -2,14 +2,14 @@ import { Module } from "@nestjs/common";
 
 import { AppJwtModule } from "../jwt/jwt.module";
 import { UserModule } from "../user/user.module";
-import { GithubStrategy, GoogleStrategy } from "./external";
+import { DiscordStrategy, GithubStrategy, GoogleStrategy } from "./external";
 import { OAuthController } from "./oauth.controller";
 import { OAuthService } from "./oauth.service";
 
 /**
  * all oauth services
  */
-const services = [GoogleStrategy, GithubStrategy];
+const services = [GoogleStrategy, GithubStrategy, DiscordStrategy];
 
 @Module({
 	imports: [AppJwtModule, UserModule],

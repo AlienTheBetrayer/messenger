@@ -1,6 +1,11 @@
 import { Avatar, Style } from "@dicebear/core";
 import definition from "@dicebear/styles/identicon.json";
-import { generateId, randomHex } from "@gravity/shared";
+import {
+	generateId,
+	randomHex,
+	UserCreateReturn,
+	UserCreateSchema,
+} from "@gravity/shared";
 import { Injectable } from "@nestjs/common";
 import bcrypt from "bcryptjs";
 import { nanoid } from "nanoid";
@@ -8,7 +13,6 @@ import { nanoid } from "nanoid";
 import { createException } from "../../common";
 import { normalizeString } from "../../common/lib/normalize";
 import { PrismaService } from "../prisma/prisma.service";
-import { UserSchema } from "./user.dto";
 
 @Injectable()
 export class UserService {
@@ -19,7 +23,7 @@ export class UserService {
 	 * @param body email
 	 * @returns generated username
 	 */
-	async generateUsername(body: UserSchema["email"]) {
+	async generateUsername(body: UserCreateSchema["email"]) {
 		// normalizing
 		const username = body.split("@")[0];
 		const normalizedUsername = normalizeString(username);
@@ -66,7 +70,7 @@ export class UserService {
 	 * @param password raw password
 	 * @returns user object, throws if email already taken
 	 */
-	async create(body: UserSchema) {
+	async create(body: UserCreateSchema): Promise<UserCreateReturn> {
 		// check if user already exists
 		const isFound = await this.prismaService.users.count({
 			where: {
@@ -99,7 +103,7 @@ export class UserService {
 		});
 
 		// username
-		const username = await this.generateUsername(body.email);
+		const username = body.username || (await this.generateUsername(body.email));
 
 		// creating the user
 		const user = await this.prismaService.users.create({
@@ -111,9 +115,9 @@ export class UserService {
 				color,
 				image_url: avatar.toDataUri(),
 			},
-    });
+		});
 
-		return user;
+		return { user };
 	}
 
 	/**

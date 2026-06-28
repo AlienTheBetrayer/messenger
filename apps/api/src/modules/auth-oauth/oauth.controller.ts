@@ -8,7 +8,7 @@ import {
 	OAuthIdentity,
 	OAuthIdentityType,
 } from "./decorators/oauthidentity.decorator";
-import { GithubGuard, GoogleGuard } from "./guards";
+import { DiscordGuard, GithubGuard, GoogleGuard } from "./guards";
 import { OAuthService } from "./oauth.service";
 import { redirectErrorURL } from "./oauth.types";
 
@@ -59,6 +59,31 @@ export class OAuthController {
 	@Get("github/callback")
 	@UseGuards(GithubGuard, NotAuthenticatedGuard)
 	async githubCallback(
+		@OAuthIdentity() identity: OAuthIdentityType,
+		@AuthContext() ctx: AuthContextType,
+		@Res({ passthrough: true }) response: Response,
+	) {
+		await this.oauthService.callback(identity, ctx, response);
+	}
+
+	/**
+	 * used to initiate the discord authentication process
+	 */
+	@AuthenticationFailureRedirect(redirectErrorURL("AUTHENTICATED"))
+	@Get("discord")
+	@UseGuards(DiscordGuard, NotAuthenticatedGuard)
+	discordAuth() {}
+
+	/**
+	 * finished discord authentication session
+	 * @param request request object
+	 * @param response response object
+	 * @returns redirects the user back to the frontend
+	 */
+	@AuthenticationFailureRedirect(redirectErrorURL("AUTHENTICATED"))
+	@Get("discord/callback")
+	@UseGuards(DiscordGuard, NotAuthenticatedGuard)
+	async discordCallback(
 		@OAuthIdentity() identity: OAuthIdentityType,
 		@AuthContext() ctx: AuthContextType,
 		@Res({ passthrough: true }) response: Response,

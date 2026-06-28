@@ -1,30 +1,30 @@
 import {
-  AuthCodeReturn,
-  AuthForgotPasswordReturn,
-  AuthLoginReturn,
-  AuthLogoutReturn,
-  AuthMeReturn,
-  AuthSignupReturn,
+	AuthCodeReturn,
+	AuthForgotPasswordReturn,
+	AuthLoginReturn,
+	AuthLogoutReturn,
+	AuthMeReturn,
+	AuthSignupReturn,
 } from "@gravity/shared";
 import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Post,
-  Res,
-  UseGuards,
+	Body,
+	Controller,
+	Delete,
+	Get,
+	Post,
+	Res,
+	UseGuards,
 } from "@nestjs/common";
 import { Response } from "express";
 
 import { createException } from "../../common";
 import {
-  AuthContext,
-  AuthContextType,
-  AuthenticatedUser,
-  AuthenticatedUserType,
-  RefreshToken,
-  RefreshTokenType,
+	AuthContext,
+	AuthContextType,
+	AuthenticatedUser,
+	AuthenticatedUserType,
+	RefreshToken,
+	RefreshTokenType,
 } from "../auth-core/decorators";
 import { AuthenticatedGuard, NotAuthenticatedGuard } from "../auth-core/guards";
 import { AppJwtService } from "../jwt/jwt.service";
@@ -61,7 +61,7 @@ export class AuthController {
 	@Post("signup")
 	async signup(@Body() body: AuthDto): Promise<AuthSignupReturn> {
 		const user = await this.authService.signup(body);
-		return { user };
+		return user;
 	}
 
 	/**
@@ -111,8 +111,8 @@ export class AuthController {
 	 */
 	@UseGuards(AuthenticatedGuard)
 	@Get("me")
-  me(@AuthenticatedUser() user: AuthenticatedUserType): AuthMeReturn {
-    const { session, ...userObject } = user;
+	me(@AuthenticatedUser() user: AuthenticatedUserType): AuthMeReturn {
+		const { session, ...userObject } = user;
 		return { session, user: userObject };
 	}
 

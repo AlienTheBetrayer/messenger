@@ -1,19 +1,23 @@
-import { ExceptionCode, ExceptionCodes } from "@gravity/shared";
+import {
+	connectionInitSchema,
+	ExceptionCode,
+	ExceptionCodes,
+} from "@gravity/shared";
 import { z } from "zod";
 
 /**
  * oauth identity retrieved from services schema
  */
 export const oAuthIdentitySchema = z.object({
-	provider: z.enum(["google", "github"]),
+	provider: connectionInitSchema.shape.service,
 	providerId: z.string(),
 	email: z.email().optional(),
 	name: z.string(),
 	profileUrl: z.string().optional(),
 	error: z.enum(ExceptionCodes).optional(),
 	metadata: z.object({
-    action: z.enum(["login", "connect"]).optional(),
-    groupId: z.nanoid().optional()
+		action: z.enum(["login", "connect"]).optional(),
+		groupId: z.nanoid().optional(),
 	}),
 });
 

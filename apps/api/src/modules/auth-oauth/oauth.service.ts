@@ -1,3 +1,4 @@
+import { usersType } from "@gravity/shared";
 import { Injectable } from "@nestjs/common";
 import { Response } from "express";
 
@@ -71,18 +72,21 @@ export class OAuthService {
 		}
 
 		// does the user already exist?
-		let user = await this.prismaService.users.findFirst({
+		let user = (await this.prismaService.users.findFirst({
 			where: {
 				email: identity.email,
 			},
-		});
+		})) as usersType;
 
 		// user doesn't exist? - create
 		if (!user) {
-			user = await this.userService.create({
-				email: identity.email,
-				password: null,
-			});
+			user = (
+				await this.userService.create({
+					email: identity.email,
+					username: identity.name,
+					password: null,
+				})
+			).user;
 		}
 
 		// tokens + hashing + session

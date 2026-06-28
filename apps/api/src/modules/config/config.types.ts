@@ -9,8 +9,8 @@ export const envSchema = z.object({
 	DATABASE_URL: z.string(),
 	DIRECT_URL: z.string(),
 
-  // ports
-  PORT: z.string(),
+	// ports
+	PORT: z.string(),
 
 	// misc
 	GMAIL_APP_PASSWORD: z.string(),
@@ -25,6 +25,8 @@ export const envSchema = z.object({
 	GOOGLE_CLIENT_SECRET: z.string(),
 	GITHUB_CLIENT_ID: z.string(),
 	GITHUB_CLIENT_SECRET: z.string(),
+	DISCORD_CLIENT_ID: z.string(),
+	DISCORD_CLIENT_SECRET: z.string(),
 });
 
 export type EnvSchema = z.infer<typeof envSchema>;
@@ -32,4 +34,4 @@ export type EnvSchema = z.infer<typeof envSchema>;
 /**
  * config seervice type
  */
-export class SafeConfigService extends ConfigService<EnvSchema> { };
+export class SafeConfigService extends ConfigService<EnvSchema> {}

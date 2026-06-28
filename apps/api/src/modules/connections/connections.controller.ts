@@ -84,7 +84,7 @@ export class ConnectionsController {
 					);
 				}
 
-        response.redirect(`http://localhost:3001/oauth/${query.service}`);
+        response.redirect(`http://localhost:3001/oauth/${query.service}?groupId=${query.groupId}`);
         break;
 			}
 			case "auth": {

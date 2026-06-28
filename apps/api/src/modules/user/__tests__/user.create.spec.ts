@@ -1,4 +1,5 @@
-import { UserSchema } from "../user.dto";
+import { UserCreateSchema } from "@gravity/shared";
+
 import { jestInitUser } from "./init";
 
 jest.mock("@dicebear/core", () => ({
@@ -22,7 +23,7 @@ describe("UserService", () => {
 		jest.clearAllMocks();
 	});
 
-	const dto: UserSchema = {
+	const dto: UserCreateSchema = {
 		email: "email",
 		password: "password",
 	};

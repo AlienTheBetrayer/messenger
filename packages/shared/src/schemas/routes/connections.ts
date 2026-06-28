@@ -45,7 +45,7 @@ export type ConnectionDeleteReturn = {
  */
 export const connectionInitSchema = z.object({
   type: z.enum(["oauth", "auth"]),
-  service: z.enum(["github", "google", "discord"]).or(z.null()),
+  service: z.enum(["github", "google", "discord", "telegram"]).or(z.null()),
 	groupId: z.nanoid(),
 });
 export type ConnectionInitSchema = z.infer<typeof connectionInitSchema>;
