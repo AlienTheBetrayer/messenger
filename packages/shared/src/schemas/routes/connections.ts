@@ -1,8 +1,8 @@
 import z from "zod";
 
 import {
-	auth_sessionsSchema,
-	auth_sessionsType,
+  auth_sessionsSchema,
+  auth_sessionsType,
 } from "../prisma/schemas/models/auth_sessions.schema.js";
 import { connected_sessionsType } from "../prisma/schemas/models/connected_sessions.schema.js";
 import { connected_sessions_groupType } from "../prisma/schemas/models/connected_sessions_group.schema.js";
@@ -45,8 +45,7 @@ export type ConnectionDeleteReturn = {
  * connection/init
  */
 export const connectionInitSchema = z.object({
-	type: z.enum(["oauth", "auth"]),
-	service: z.enum(["github", "google", "discord", "telegram"]).or(z.null()),
+	service: z.enum(["github", "google", "discord", "telegram"]),
 	groupId: z.nanoid(),
 });
 export type ConnectionInitSchema = z.infer<typeof connectionInitSchema>;

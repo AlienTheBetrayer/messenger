@@ -1,82 +1,102 @@
 "use client";
 
-import Image from "next/image";
+import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 
-import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
-import { selectConnectSessionsAwaitingGroupId } from "@/features/ui/model/ui.selectors";
-import { Button, Separator, useAppSelector } from "@/shared";
+import { selectAwaitingConnectionGroup } from "@/features/ui/model/ui.selectors";
+import { Button, queryStateHooks, Separator, useAppSelector } from "@/shared";
+import DiscordIcon from "@/shared/assets/discord.svg";
+import GithubIcon from "@/shared/assets/github.svg";
+import GoogleIcon from "@/shared/assets/google.svg";
 
 export const AuthFooterServiceButtons = () => {
 	// redux
-	const groupId = useAppSelector((state) =>
-		selectConnectSessionsAwaitingGroupId(state),
+	const awaitingGroup = useAppSelector((state) =>
+		selectAwaitingConnectionGroup(state),
 	);
 
 	// states
-	const urlExtension = groupId ? `?type=connect?groupId=${groupId}` : "";
-	const { type } = useAuthFormProvider();
-
-	// forgot password has no service buttons
-	if (type === "forgot_password") {
-		return null;
-	}
+	const [verify] = queryStateHooks.useVerify();
 
 	// jsx
 	return (
-		<div className="w-full flex flex-col gap-4">
-			<div className="relative flex items-center">
-				<Separator className="grow opacity-80 bg-border/50" />
-				<span className="absolute left-1/2 -translate-x-1/2 text-[10px] font-mono font-medium tracking-tight uppercase px-2 py-0.5 rounded border border-border/50 bg-background text-muted-foreground">
-					Identity Services
-				</span>
-			</div>
+		<AnimatePresence initial={false}>
+			{!verify && (
+				<motion.div
+					className="flex flex-col w-full gap-1 mt-2"
+					initial={{ height: 0, opacity: 0 }}
+					animate={{ height: "auto", opacity: 1 }}
+					exit={{ height: 0, opacity: 0 }}
+				>
+					<Separator className="my-1" />
 
-			<ul className="grid grid-cols-2 gap-3">
-				<li className="flex">
 					<Button
 						type="button"
-						variant="outline"
-						className="w-full h-9 gap-2.5 text-xs px-3 font-medium bg-background border-border/50 hover:bg-muted/40 transition-colors group"
+						variant={awaitingGroup ? "outline" : "secondary"}
+						className="w-full"
 						asChild
 					>
-						<Link href={`http://localhost:3001/oauth/google${urlExtension}`}>
-							<div className="size-4 shrink-0 flex items-center justify-center filter grayscale-[40%] group-hover:grayscale-0 transition-all">
-								<Image
-									alt="Google"
-									src="/google.svg"
-									width={14}
-									height={14}
-									priority
-								/>
-							</div>
-							Google Account
+						<Link
+							href={
+								awaitingGroup
+									? `http://localhost:3001/connections/connection/init?service=google&groupId=${awaitingGroup.id}`
+									: "http://localhost:3001/oauth/google"
+							}
+						>
+							<GoogleIcon />
+							{awaitingGroup ? (
+								<span>Connect Google in {awaitingGroup.emoji}</span>
+							) : (
+								<span>Continue with Google</span>
+							)}
 						</Link>
 					</Button>
-				</li>
 
-				<li className="flex">
 					<Button
 						type="button"
-						variant="outline"
-						className="w-full h-9 gap-2.5 text-xs px-3 font-medium bg-background border-border/50 hover:bg-muted/40 transition-colors group"
+						variant={awaitingGroup ? "outline" : "secondary"}
+						className="w-full"
 						asChild
 					>
-						<Link href={`http://localhost:3001/oauth/github${urlExtension}`}>
-							<div className="size-4 shrink-0 flex items-center justify-center filter grayscale-[40%] group-hover:grayscale-0 transition-all">
-								<Image
-									alt="Github"
-									src="/github.svg"
-									width={16}
-									height={16}
-									priority
-								/>
-							</div>
-							Github Account
+						<Link
+							href={
+								awaitingGroup
+									? `http://localhost:3001/connections/connection/init?service=github&groupId=${awaitingGroup.id}`
+									: "http://localhost:3001/oauth/github"
+							}
+						>
+							<GithubIcon />
+							{awaitingGroup ? (
+								<span>Connect Github in {awaitingGroup.emoji}</span>
+							) : (
+								<span>Continue with Github</span>
+							)}
 						</Link>
 					</Button>
-				</li>
-			</ul>
-		</div>
+
+					<Button
+						type="button"
+						variant={awaitingGroup ? "outline" : "secondary"}
+						className="w-full"
+						asChild
+					>
+						<Link
+							href={
+								awaitingGroup
+									? `http://localhost:3001/connections/connection/init?service=discord&groupId=${awaitingGroup.id}`
+									: "http://localhost:3001/oauth/discord"
+							}
+						>
+							<DiscordIcon />
+							{awaitingGroup ? (
+								<span>Connect Discord in {awaitingGroup.emoji}</span>
+							) : (
+								<span>Continue with Discord</span>
+							)}
+						</Link>
+					</Button>
+				</motion.div>
+			)}
+		</AnimatePresence>
 	);
 };

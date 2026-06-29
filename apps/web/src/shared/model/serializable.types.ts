@@ -3,6 +3,8 @@ import {
 	AuthCodeReturn,
 	AuthCodeSchema,
 	AuthForgotPasswordReturn,
+	AuthLoginConnectionReturn,
+	AuthLoginConnectionSchema,
 	AuthLoginReturn,
 	AuthLogoutReturn,
 	AuthLogoutSchema,
@@ -41,6 +43,10 @@ export type AuthMeReturn__ = DateToString<AuthMeReturn>;
 export type AuthLogoutSchema__ = DateToString<AuthLogoutSchema>;
 export type AuthLogoutReturn__ = DateToString<AuthLogoutReturn>;
 export type AuthLoginReturn__ = DateToString<AuthLoginReturn>;
+export type AuthLoginConnectionReturn__ =
+	DateToString<AuthLoginConnectionReturn>;
+export type AuthLoginConnectionSchema__ =
+	DateToString<AuthLoginConnectionSchema>;
 export type AuthCodeReturn__ = DateToString<AuthCodeReturn>;
 export type AuthCodeSchema__ = DateToString<AuthCodeSchema>;
 export type notificationsType__ = DateToString<notificationsType>;

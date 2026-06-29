@@ -19,7 +19,6 @@ import {
 } from "@nestjs/common";
 import { Response } from "express";
 
-import { createException } from "../../common";
 import {
 	AuthenticatedUser,
 	AuthenticatedUserType,
@@ -33,7 +32,7 @@ import {
 	GroupEditDto,
 } from "./connections.dto";
 import { ConnectionsService } from "./connections.service";
-import { GroupNotOwnerGuard, GroupOwnerGuard } from "./guards";
+import { GroupOwnerGuard } from "./guards";
 
 @Controller("connections")
 export class ConnectionsController {
@@ -55,10 +54,11 @@ export class ConnectionsController {
 	}
 
 	/**
-	 *
+	 * deletes the connection by its id (have to be an owner)
+	 * @param connectionId id of the connection to delete
 	 * @returns
 	 */
-	@UseGuards(AuthenticatedGuard)
+	@UseGuards(AuthenticatedGuard, GroupOwnerGuard)
 	@Delete("connection/delete")
 	async connectionDelete(
 		@Body() body: ConnectionDeleteDto,
@@ -68,31 +68,19 @@ export class ConnectionsController {
 		return { connected_session };
 	}
 
+	/**
+	 * @param service service to authenticate
+	 * @param groupId id of the group
+	 */
 	@UseGuards(AuthenticatedGuard, GroupOwnerGuard)
 	@Get("connection/init")
 	async connectionInit(
 		@Query() query: ConnectionInitDto,
 		@Res({ passthrough: true }) response: Response,
 	): Promise<ConnectionInitReturn> {
-		switch (query.type) {
-			case "oauth": {
-				if (!query.service) {
-					throw createException(
-						"badrequest",
-						"INVALID_BODY",
-						"service is required for oauth connection.",
-					);
-				}
-
-				response.redirect(
-					`http://localhost:3001/oauth/${query.service}?action=connect&groupId=${query.groupId}`,
-				);
-				break;
-			}
-			case "auth": {
-				break;
-			}
-		}
+		response.redirect(
+			`http://localhost:3001/oauth/${query.service}?action=connect&groupId=${query.groupId}`,
+		);
 	}
 
 	/**

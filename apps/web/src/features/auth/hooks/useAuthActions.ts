@@ -1,25 +1,34 @@
-import { AuthFormSchema, AuthSchema, generateId, VerificationFormSchema } from "@gravity/shared";
+import {
+	AuthFormSchema,
+	generateId,
+	VerificationFormSchema,
+} from "@gravity/shared";
 import { useCallback, useMemo } from "react";
 
 import { useAuthNotifications } from "@/features/auth/hooks/useAuthNotifications";
 import {
 	useForgotPasswordMutation,
 	useGetCodeMutation,
+	useLoginConnectionMutation,
 	useLoginMutation,
 	useSignupMutation,
 } from "@/features/auth/model/auth.api";
 import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
-import { selectAwaitingConnectionGroup, selectConnectSessionsAwaitingGroupId } from "@/features/ui/model/ui.selectors";
+import { selectAwaitingConnectionGroup } from "@/features/ui/model/ui.selectors";
 import { normalizeError, queryStateHooks, useAppSelector } from "@/shared";
-import { usersType__ } from "@/shared/model/serializable.types";
+import {
+	AuthLoginReturn__,
+	usersType__,
+} from "@/shared/model/serializable.types";
 
 export const useAuthActions = () => {
 	// redux
 	const [getCode] = useGetCodeMutation();
 	const [login] = useLoginMutation();
+	const [loginConnection] = useLoginConnectionMutation();
 	const [signup] = useSignupMutation();
-  const [forgotPassword] = useForgotPasswordMutation();
-  
+	const [forgotPassword] = useForgotPasswordMutation();
+
 	const awaitingGroup = useAppSelector((state) =>
 		selectAwaitingConnectionGroup(state),
 	);
@@ -68,24 +77,27 @@ export const useAuthActions = () => {
 			// api requests
 			const fn = async () => {
 				try {
-          let user: usersType__ | null = null;
-          
-          const connectData = {
-            action: awaitingGroup ? "connect" : "login",
-            actionMetadata: awaitingGroup ? {
-              groupId: awaitingGroup.id,
-              connectionId: generateId()
-            } : undefined
-          } satisfies ({ action: AuthSchema["action"], actionMetadata?: AuthSchema["actionMetadata"] });
+					let user: usersType__ | null = null;
 
 					switch (type) {
 						case "login": {
-							const ret = await login({
-								email: values.email,
-								password: values.password,
-								code: data.code,
-								...connectData
-							}).unwrap();
+							let ret: AuthLoginReturn__ | null = null;
+
+							if (awaitingGroup) {
+								ret = await loginConnection({
+									email: values.email,
+									password: values.password,
+									code: data.code,
+									groupId: awaitingGroup.id,
+									connectionId: generateId(),
+								}).unwrap();
+							} else {
+								ret = await login({
+									email: values.email,
+									password: values.password,
+									code: data.code,
+								}).unwrap();
+							}
 
 							user = ret.user;
 							break;
@@ -95,7 +107,6 @@ export const useAuthActions = () => {
 								email: values.email,
 								password: values.password,
 								code: data.code,
-								...connectData
 							}).unwrap();
 
 							user = ret.user;
@@ -107,7 +118,6 @@ export const useAuthActions = () => {
 								email: values.email,
 								password: values.password,
 								code: data.code,
-								...connectData
 							}).unwrap();
 
 							user = ret.user;
@@ -132,6 +142,7 @@ export const useAuthActions = () => {
 			authForm,
 			forgotPassword,
 			login,
+			loginConnection,
 			notifications,
 			setVerify,
 			signup,
