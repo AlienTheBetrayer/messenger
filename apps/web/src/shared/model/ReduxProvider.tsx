@@ -14,14 +14,14 @@ export const ReduxProvider = ({
 	auth,
 }: {
 	children: React.ReactNode;
-	auth: AuthMeReturn | ApiErrorSchema;
+	auth: AuthMeReturn | null;
 }) => {
 	const storeRef = useRef<Store | null>(null);
 
 	if (!storeRef.current) {
 		let preloadedState: Record<string, unknown> = {};
 
-		if ("user" in auth) {
+		if (auth) {
 			const { normalizedUsers } = normalizeAuthData(auth);
 
 			preloadedState = {

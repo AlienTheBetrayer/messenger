@@ -1,6 +1,6 @@
 import "@/shared/styles/globals.css";
 
-import { ApiErrorSchema, AuthMeReturn } from "@gravity/shared";
+import { AuthMeReturn } from "@gravity/shared";
 
 import { NotificationSonner } from "@/features/notifications/ui/NotificationSonner";
 import { ThemesProvider } from "@/features/ui";
@@ -17,9 +17,11 @@ export default async function RootLayout({
 	children: React.ReactNode;
 }>) {
 	// auth
-	const auth = (await (await sfetch("/auth/me")).json()) as
-		| AuthMeReturn
-		| ApiErrorSchema;
+  let auth: AuthMeReturn | null = null;
+  try {
+    auth = (await (await sfetch("/auth/me")).json()) as AuthMeReturn;
+  } catch {
+  }
 
 	// jsx
 	return (

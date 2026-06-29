@@ -25,7 +25,7 @@ export const sfetch = async (input: string, init?: RequestInit) => {
 	const url = `${backendUrl}${slash}${input}`;
 
 	// fetching
-	return fetch(url, {
+	return await fetch(url, {
 		headers: {
 			Cookie: `accessToken=${accessToken}; refreshToken=${refreshToken}`,
 		},
