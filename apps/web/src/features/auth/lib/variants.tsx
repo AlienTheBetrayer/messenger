@@ -145,7 +145,12 @@ export const RedirectPopupVariants = {
 		title: "Already authenticated.",
 		description: "You are already signed in.",
 		content: "Log out first in order to log in or sign up using OAuth.",
-	},
+  },
+  USER_ALREADY_EXISTS: {
+    title: "User already exists.",
+    description: "Session is already present.",
+    content: "Log out first in order to add this session.",
+  }
 } as const satisfies Partial<Record<ExceptionCode, RedirectPopupVariant>>;
 
 /**

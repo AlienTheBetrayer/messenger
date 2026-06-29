@@ -4,9 +4,11 @@ import { Response } from "express";
 import { AuthContext, AuthContextType } from "../auth-core/decorators";
 import { NotAuthenticatedGuard } from "../auth-core/guards";
 import { AuthenticationFailureRedirect } from "../auth-core/metadata/auth.metadata";
+import { NotConnectedGuard } from "../connections/guards";
+import { ConnectionFailureRedirect } from "../connections/metadata/connection.metadata";
 import {
-	OAuthIdentity,
-	OAuthIdentityType,
+  OAuthIdentity,
+  OAuthIdentityType,
 } from "./decorators/oauthidentity.decorator";
 import { DiscordGuard, GithubGuard, GoogleGuard } from "./guards";
 import { OAuthService } from "./oauth.service";
@@ -21,7 +23,7 @@ export class OAuthController {
 	 */
 	@Get("google")
 	@AuthenticationFailureRedirect(redirectErrorURL("AUTHENTICATED"))
-	@UseGuards(GoogleGuard, NotAuthenticatedGuard)
+	@UseGuards(GoogleGuard, NotAuthenticatedGuard, NotConnectedGuard)
 	googleAuth() {}
 
 	/**
@@ -30,9 +32,10 @@ export class OAuthController {
 	 * @param response response object
 	 * @returns redirects the user back to the frontend
 	 */
+	@ConnectionFailureRedirect(redirectErrorURL("USER_ALREADY_EXISTS"))
 	@AuthenticationFailureRedirect(redirectErrorURL("AUTHENTICATED"))
 	@Get("google/callback")
-	@UseGuards(GoogleGuard, NotAuthenticatedGuard)
+	@UseGuards(GoogleGuard, NotAuthenticatedGuard, NotConnectedGuard)
 	async googleCallback(
 		@OAuthIdentity() identity: OAuthIdentityType,
 		@AuthContext() ctx: AuthContextType,
@@ -46,7 +49,7 @@ export class OAuthController {
 	 */
 	@AuthenticationFailureRedirect(redirectErrorURL("AUTHENTICATED"))
 	@Get("github")
-	@UseGuards(GithubGuard, NotAuthenticatedGuard)
+	@UseGuards(GithubGuard, NotAuthenticatedGuard, NotConnectedGuard)
 	githubAuth() {}
 
 	/**
@@ -55,9 +58,10 @@ export class OAuthController {
 	 * @param response response object
 	 * @returns redirects the user back to the frontend
 	 */
+	@ConnectionFailureRedirect(redirectErrorURL("USER_ALREADY_EXISTS"))
 	@AuthenticationFailureRedirect(redirectErrorURL("AUTHENTICATED"))
 	@Get("github/callback")
-	@UseGuards(GithubGuard, NotAuthenticatedGuard)
+	@UseGuards(GithubGuard, NotAuthenticatedGuard, NotConnectedGuard)
 	async githubCallback(
 		@OAuthIdentity() identity: OAuthIdentityType,
 		@AuthContext() ctx: AuthContextType,
@@ -71,7 +75,7 @@ export class OAuthController {
 	 */
 	@AuthenticationFailureRedirect(redirectErrorURL("AUTHENTICATED"))
 	@Get("discord")
-	@UseGuards(DiscordGuard, NotAuthenticatedGuard)
+	@UseGuards(DiscordGuard, NotAuthenticatedGuard, NotConnectedGuard)
 	discordAuth() {}
 
 	/**
@@ -80,9 +84,10 @@ export class OAuthController {
 	 * @param response response object
 	 * @returns redirects the user back to the frontend
 	 */
+	@ConnectionFailureRedirect(redirectErrorURL("USER_ALREADY_EXISTS"))
 	@AuthenticationFailureRedirect(redirectErrorURL("AUTHENTICATED"))
 	@Get("discord/callback")
-	@UseGuards(DiscordGuard, NotAuthenticatedGuard)
+	@UseGuards(DiscordGuard, NotAuthenticatedGuard, NotConnectedGuard)
 	async discordCallback(
 		@OAuthIdentity() identity: OAuthIdentityType,
 		@AuthContext() ctx: AuthContextType,

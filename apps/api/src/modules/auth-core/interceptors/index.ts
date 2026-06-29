@@ -1,2 +1,2 @@
 export * from "./auth.interceptor.js";
-export * from "./redirectexception.interceptor.js";
+export * from "../../../common/interceptors/redirectexception.interceptor.js";

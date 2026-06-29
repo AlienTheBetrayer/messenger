@@ -1,7 +1,6 @@
 import {
 	ConnectionAddSchema,
 	ConnectionDeleteSchema,
-	ConnectionInitSchema,
 	generateId,
 	GroupCreateSchema,
 	GroupDeleteSchema,
@@ -9,6 +8,7 @@ import {
 } from "@gravity/shared";
 import { Injectable } from "@nestjs/common";
 
+import { createException } from "../../common";
 import { AuthenticatedUserType } from "../auth-core/decorators";
 import { PrismaService } from "../prisma/prisma.service";
 
@@ -56,27 +56,45 @@ export class ConnectionsService {
 		return connected;
 	}
 
-	async connectionAdd(body: ConnectionAddSchema) {
-    const connection = await this.prismaService.connected_sessions.create({
-      data: {
-        id: body.connectionId ?? generateId(),
-        session_id: body.session.id,
-        group_id: body.groupId,
-      },
+  async connectionAdd(body: ConnectionAddSchema) {
+    // checking if the connection already exists
+		const isFound = await this.prismaService.connected_sessions.count({
+			where: {
+				session_id: body.session.id,
+				group_id: body.groupId,
+			},
     });
 
-    return { connection };
+    if (isFound) {
+			throw createException(
+				"conflict",
+				"USER_ALREADY_EXISTS",
+				"connection already exists.",
+			);
+		}
+
+    // creating the connection
+		const connection = await this.prismaService.connected_sessions.create({
+			data: {
+				id: body.connectionId ?? generateId(),
+				session_id: body.session.id,
+				group_id: body.groupId,
+			},
+		});
+
+		return { connection };
 	}
 
-  async connectionDelete(body: ConnectionDeleteSchema) {
-    const connected_session = await this.prismaService.connected_sessions.delete({
-      where: {
-        id: body.connectionId
-      }
-    });
+	async connectionDelete(body: ConnectionDeleteSchema) {
+		const connected_session =
+			await this.prismaService.connected_sessions.delete({
+				where: {
+					id: body.connectionId,
+				},
+			});
 
-    return connected_session;
-  }
+		return connected_session;
+	}
 
 	/**
 	 * creates a group that can link multiple sessions

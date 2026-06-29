@@ -18,15 +18,15 @@ export class RedirectExceptionInterceptor implements NestInterceptor {
 	intercept(ctx: ExecutionContext, next: CallHandler) {
 		const response: Response = ctx.switchToHttp().getResponse();
 
-    // redirect
+		// redirect
 		const redirect = this.reflector.get<string | undefined>(
 			"authentication-success-redirect",
 			ctx.getHandler(),
-    );
+		);
 
-    if (!redirect) {
-      return next.handle();
-    }
+		if (!redirect) {
+			return next.handle();
+		}
 
 		return next.handle().pipe(
 			map((data: unknown) => {

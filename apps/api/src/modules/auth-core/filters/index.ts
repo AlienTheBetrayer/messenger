@@ -1,1 +1,1 @@
-export * from "./redirectexception.filter.js";
+export * from "../../../common/filters/redirectexception.filter.js";

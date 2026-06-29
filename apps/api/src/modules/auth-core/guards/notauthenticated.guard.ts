@@ -34,7 +34,7 @@ export class NotAuthenticatedGuard implements CanActivate {
 		const request: Request = context.switchToHttp().getRequest();
 		const parsed = await oAuthIdentitySchema.safeParseAsync(request.user);
 
-		// passing if connection mode
+    // passing if connection mode
 		if (parsed.success && parsed.data.metadata.action === "connect") {
 			return true;
 		}

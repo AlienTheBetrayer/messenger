@@ -33,7 +33,7 @@ import {
 	GroupEditDto,
 } from "./connections.dto";
 import { ConnectionsService } from "./connections.service";
-import { GroupOwnerGuard } from "./guards";
+import { GroupNotOwnerGuard, GroupOwnerGuard } from "./guards";
 
 @Controller("connections")
 export class ConnectionsController {
@@ -60,7 +60,7 @@ export class ConnectionsController {
 	 */
 	@UseGuards(AuthenticatedGuard)
 	@Delete("connection/delete")
-	async connectionelete(
+	async connectionDelete(
 		@Body() body: ConnectionDeleteDto,
 	): Promise<ConnectionDeleteReturn> {
 		const connected_session =
