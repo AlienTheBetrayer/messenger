@@ -1,4 +1,3 @@
-export * from "./model/users.api.js";
 export * from "./providers/ProfileProvider.js";
 export * from "./ui/profile/dialog/InfoCube.js";
 export * from "./ui/profile/dialog/ProfileDialog.js";

@@ -1,4 +1,4 @@
-import { AuthFormSchema, VerificationFormSchema } from "@gravity/shared";
+import { AuthFormSchema, AuthSchema, generateId, VerificationFormSchema } from "@gravity/shared";
 import { useCallback, useMemo } from "react";
 
 import { useAuthNotifications } from "@/features/auth/hooks/useAuthNotifications";
@@ -9,20 +9,25 @@ import {
 	useSignupMutation,
 } from "@/features/auth/model/auth.api";
 import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
-import { normalizeError, queryStateHooks } from "@/shared";
+import { selectAwaitingConnectionGroup, selectConnectSessionsAwaitingGroupId } from "@/features/ui/model/ui.selectors";
+import { normalizeError, queryStateHooks, useAppSelector } from "@/shared";
 import { usersType__ } from "@/shared/model/serializable.types";
 
 export const useAuthActions = () => {
-	// states
-	const { authForm, verifyForm, type } = useAuthFormProvider();
-	const [, setVerify] = queryStateHooks.useVerify();
-	const notifications = useAuthNotifications();
-
 	// redux
 	const [getCode] = useGetCodeMutation();
 	const [login] = useLoginMutation();
 	const [signup] = useSignupMutation();
-	const [forgotPassword] = useForgotPasswordMutation();
+  const [forgotPassword] = useForgotPasswordMutation();
+  
+	const awaitingGroup = useAppSelector((state) =>
+		selectAwaitingConnectionGroup(state),
+	);
+
+	// states
+	const { authForm, verifyForm, type } = useAuthFormProvider();
+	const [, setVerify] = queryStateHooks.useVerify();
+	const notifications = useAuthNotifications();
 
 	// auth
 	const auth = useCallback(
@@ -31,7 +36,11 @@ export const useAuthActions = () => {
 
 			const fn = async () => {
 				try {
-					const res = await getCode({ email: data.email, type }).unwrap();
+					const res = await getCode({
+						email: data.email,
+						type,
+						action: awaitingGroup ? "connect" : "login",
+					}).unwrap();
 					return res;
 				} catch (e) {
 					const message = normalizeError(e);
@@ -42,7 +51,7 @@ export const useAuthActions = () => {
 
 			notifications.auth(fn);
 		},
-		[authForm, getCode, notifications, setVerify, type],
+		[authForm, getCode, notifications, setVerify, type, awaitingGroup],
 	);
 
 	// verify
@@ -59,7 +68,15 @@ export const useAuthActions = () => {
 			// api requests
 			const fn = async () => {
 				try {
-					let user: usersType__ | null = null;
+          let user: usersType__ | null = null;
+          
+          const connectData = {
+            action: awaitingGroup ? "connect" : "login",
+            actionMetadata: awaitingGroup ? {
+              groupId: awaitingGroup.id,
+              connectionId: generateId()
+            } : undefined
+          } satisfies ({ action: AuthSchema["action"], actionMetadata?: AuthSchema["actionMetadata"] });
 
 					switch (type) {
 						case "login": {
@@ -67,6 +84,7 @@ export const useAuthActions = () => {
 								email: values.email,
 								password: values.password,
 								code: data.code,
+								...connectData
 							}).unwrap();
 
 							user = ret.user;
@@ -77,6 +95,7 @@ export const useAuthActions = () => {
 								email: values.email,
 								password: values.password,
 								code: data.code,
+								...connectData
 							}).unwrap();
 
 							user = ret.user;
@@ -88,6 +107,7 @@ export const useAuthActions = () => {
 								email: values.email,
 								password: values.password,
 								code: data.code,
+								...connectData
 							}).unwrap();
 
 							user = ret.user;
@@ -117,6 +137,7 @@ export const useAuthActions = () => {
 			signup,
 			type,
 			verifyForm,
+			awaitingGroup,
 		],
 	);
 

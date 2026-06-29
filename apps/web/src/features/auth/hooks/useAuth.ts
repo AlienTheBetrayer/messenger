@@ -2,11 +2,11 @@
 
 import { useMeQuery } from "@/features/auth/model/auth.api";
 import { sessionSelectors } from "@/features/connections/model/sessions.api";
-import { usersSelectors } from "@/features/users";
+import { usersSelectors } from "@/features/users/model/users.api";
 import { useAppSelector } from "@/shared";
 import {
-	auth_sessionsType__,
-	usersType__,
+  auth_sessionsType__,
+  usersType__,
 } from "@/shared/model/serializable.types";
 
 /**

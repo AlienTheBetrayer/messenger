@@ -131,7 +131,11 @@ export class AuthService {
 
 		return {
 			user,
-			...(await this.jwtService.issueAuthData({ userId: user.id, ctx })),
+			...(await this.jwtService.issueAuthData({
+				userId: user.id,
+				ctx,
+				action: body.action ?? "login",
+			})),
 		};
 	}
 

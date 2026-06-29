@@ -26,7 +26,9 @@ import {
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
-	timeAgo,
+	Tooltip,
+	TooltipContent,
+	TooltipTrigger,
 	useAppSelector,
 } from "@/shared";
 
@@ -170,20 +172,27 @@ export const CreateGroupForm = ({
 			</CardContent>
 
 			<CardFooter className="flex justify-end items-center gap-2">
-				<Button
-					type="button"
-					size="sm"
-					variant="secondary"
-					className="aspect-square"
-					onClick={() => {
-						groupForm.setValues({
-							title: "",
-							emoji: randomGroupFormEmoji(),
-						});
-					}}
-				>
-					<RotateCcw />
-				</Button>
+				<Tooltip>
+					<TooltipTrigger asChild>
+						<Button
+							type="button"
+							size="sm"
+							variant="secondary"
+							className="aspect-square"
+							onClick={() => {
+								groupForm.setValues({
+									title: "",
+									emoji: randomGroupFormEmoji(),
+								});
+							}}
+						>
+							<RotateCcw />
+						</Button>
+					</TooltipTrigger>
+					<TooltipContent side="bottom">
+						<span>Reset (random emoji)</span>
+					</TooltipContent>
+				</Tooltip>
 
 				<Button
 					type="submit"

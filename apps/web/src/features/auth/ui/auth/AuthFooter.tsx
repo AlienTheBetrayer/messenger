@@ -16,7 +16,6 @@ import {
 import DiscordIcon from "@/shared/assets/discord.svg";
 import GithubIcon from "@/shared/assets/github.svg";
 import GoogleIcon from "@/shared/assets/google.svg";
-import TelegramIcon from "@/shared/assets/telegram.svg";
 import { useIsLoading } from "@/shared/model/redux.selectors";
 
 export const AuthFooter = () => {
@@ -36,10 +35,17 @@ export const AuthFooter = () => {
 			<Button
 				disabled={!!verify || isLoading}
 				type="submit"
+				variant={awaitingGroup ? "outline" : "default"}
 				className="w-full"
 				form="auth-form"
 			>
-				{isLoading ? <Spinner /> : <span>Continue</span>}
+				{isLoading ? (
+					<Spinner />
+				) : (
+					<span>
+						Continue {awaitingGroup ? `in ${awaitingGroup.emoji}` : ""}
+					</span>
+				)}
 			</Button>
 
 			{type !== "forgot_password" && (
@@ -115,29 +121,6 @@ export const AuthFooter = () => {
 										<span>Connect Discord in {awaitingGroup.emoji}</span>
 									) : (
 										<span>Continue with Discord</span>
-									)}
-								</Link>
-							</Button>
-
-							<Button
-								type="button"
-								variant={awaitingGroup ? "outline" : "secondary"}
-								className="w-full opacity-30"
-								inert
-								asChild
-							>
-								<Link
-									href={
-										awaitingGroup
-											? `http://localhost:3001/connections/connection/init?type=oauth&service=telegram&groupId=${awaitingGroup.id}`
-											: "http://localhost:3001/oauth/telegram"
-									}
-								>
-									<TelegramIcon />
-									{awaitingGroup ? (
-										<span>Connect Telegram in {awaitingGroup.emoji}</span>
-									) : (
-										<span>Continue with Telegram</span>
 									)}
 								</Link>
 							</Button>

@@ -14,6 +14,7 @@ export const uiSlice = createSlice({
 		 */
 
     reset: () => UiSliceInitial,
+    get: (draft) => draft,
 
 		setConnectSessionsAwaitingGroupId: (
 			draft,

@@ -5,6 +5,7 @@ import {
 	AuthLogoutReturn,
 	AuthMeReturn,
 	AuthSignupReturn,
+	generateId,
 } from "@gravity/shared";
 import {
 	Body,
@@ -27,6 +28,7 @@ import {
 	RefreshTokenType,
 } from "../auth-core/decorators";
 import { AuthenticatedGuard, NotAuthenticatedGuard } from "../auth-core/guards";
+import { ConnectionsService } from "../connections/connections.service";
 import { AppJwtService } from "../jwt/jwt.service";
 import { AuthCodeDto, AuthDto } from "./auth.dto";
 import { AuthService } from "./auth.service";
@@ -36,6 +38,7 @@ export class AuthController {
 	constructor(
 		private readonly authService: AuthService,
 		private readonly jwtService: AppJwtService,
+		private readonly connectionsService: ConnectionsService,
 	) {}
 
 	/**
@@ -82,8 +85,32 @@ export class AuthController {
 		const { accessToken, refreshToken, session, user } =
 			await this.authService.login(body, ctx);
 
-		// cookies
-		this.jwtService.setAuthHttpCookies({ accessToken, refreshToken, response });
+		switch (body.action) {
+			case "connect": {
+				if (!body.actionMetadata) {
+					throw createException(
+						"badrequest",
+						"INVALID_BODY",
+						"actionMetadata is required in body",
+					);
+				}
+
+				await this.connectionsService.connectionAdd({
+					session,
+					groupId: body.actionMetadata.groupId,
+					connectionId: body.actionMetadata.connectionId ?? generateId(),
+				});
+				break;
+			}
+			default: {
+				this.jwtService.setAuthHttpCookies({
+					accessToken,
+					refreshToken,
+					response,
+				});
+				break;
+			}
+		}
 
 		return { accessToken, refreshToken, session, user };
 	}

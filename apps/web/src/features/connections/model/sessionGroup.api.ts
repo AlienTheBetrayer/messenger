@@ -21,7 +21,7 @@ import {
 	sessionAdapter,
 	sessionApi,
 } from "@/features/connections/model/sessions.api";
-import { usersAdapter, usersApi } from "@/features/users";
+import { usersAdapter, usersApi } from "@/features/users/model/users.api";
 import { baseApi } from "@/shared/model/redux.store";
 import { RootState } from "@/shared/model/redux.types";
 import {

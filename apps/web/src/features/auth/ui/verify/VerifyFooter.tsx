@@ -1,11 +1,15 @@
 "use client";
 
-import { Button, CardFooter, Spinner } from "@/shared";
+import { selectAwaitingConnectionGroup } from "@/features/ui/model/ui.selectors";
+import { Button, CardFooter, Spinner, useAppSelector } from "@/shared";
 import { useIsLoading } from "@/shared/model/redux.selectors";
 
 export const VerifyFooter = () => {
-	// states
+	// redux
 	const isLoading = useIsLoading(["login", "signup", "forgotPassword"]);
+	const awaitingGroup = useAppSelector((state) =>
+		selectAwaitingConnectionGroup(state),
+	);
 
 	// jsx
 	return (
@@ -13,10 +17,14 @@ export const VerifyFooter = () => {
 			<Button
 				disabled={isLoading}
 				type="submit"
-				variant="secondary"
+				variant={awaitingGroup ? "outline" : "default"}
 				className="w-full"
 			>
-				{isLoading ? <Spinner /> : <span>Verify</span>}
+				{isLoading ? (
+					<Spinner />
+				) : (
+					<span>Verify {awaitingGroup ? `in ${awaitingGroup.emoji}` : ""}</span>
+				)}
 			</Button>
 		</CardFooter>
 	);

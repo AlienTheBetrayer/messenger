@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 
-import { InfoCube, usersSelectors } from "@/features/users";
+import { InfoCube } from "@/features/users";
+import { usersSelectors } from "@/features/users/model/users.api";
 import { Button, ButtonProps, useAppSelector } from "@/shared";
 
 export const MiniProfileCube = ({

@@ -28,17 +28,15 @@ export const GroupList = () => {
 	// jsx
 	return (
 		<ul className="w-full flex flex-col max-h-42 scrollbar-none overflow-y-auto pb-4">
-			{groups.ids.map((groupId, idx) => (
+			{groups.ids.map((groupId) => (
 				<Fragment key={groupId}>
 					<li>
 						<Group groupId={groupId} />
 					</li>
 
-					{idx !== groups.ids.length - 1 && (
-						<li>
-							<Separator />
-						</li>
-					)}
+					<li>
+						<Separator />
+					</li>
 				</Fragment>
 			))}
 		</ul>

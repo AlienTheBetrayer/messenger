@@ -15,6 +15,13 @@ export const authSchema = z.object({
 		.min(AuthConfig.password.min)
 		.max(AuthConfig.password.max),
 	code: z.string().length(AuthConfig.code.length),
+	action: z.enum(["login", "connect"]).optional(),
+	actionMetadata: z
+		.object({
+			groupId: z.nanoid(),
+			connectionId: z.nanoid(),
+		})
+		.optional(),
 });
 
 export type AuthSchema = z.infer<typeof authSchema>;
@@ -25,6 +32,7 @@ export type AuthSchema = z.infer<typeof authSchema>;
 export const codeSchema = z.object({
 	email: z.email(),
 	type: verification_code_typeSchema,
+	action: z.enum(["login", "connect"]).optional(),
 });
 
 export type AuthCodeSchema = z.infer<typeof codeSchema>;

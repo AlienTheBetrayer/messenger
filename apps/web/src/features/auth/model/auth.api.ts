@@ -1,3 +1,15 @@
+import {
+  sessionConnectionAdapter,
+  sessionConnectionApi,
+} from "@/features/connections/model/sessionConnections.api";
+import {
+  groupAdapter,
+  groupApi,
+} from "@/features/connections/model/sessionGroup.api";
+import {
+  sessionAdapter,
+  sessionApi,
+} from "@/features/connections/model/sessions.api";
 import { uiSlice } from "@/features/ui/model/ui.slice";
 import { usersAdapter, usersApi } from "@/features/users/model/users.api";
 import { baseApi } from "@/shared/model/redux.store";
@@ -41,22 +53,76 @@ export const authApi = baseApi.injectEndpoints({
 			}),
 
 			async onQueryStarted(args, { dispatch, queryFulfilled }) {
+				// data retrieving
 				const { data } = await queryFulfilled;
 
-				// dispatching the user id
-				dispatch(
-					authApi.util.upsertQueryData("me", undefined, {
-						userId: data.user.id,
-					}),
-				);
+				// optimistic updates
+				switch (args.action) {
+					case "connect": {
+						const metadata = args.actionMetadata;
+
+						if (!metadata) {
+							return;
+						}
+
+						const { groupId, connectionId } = metadata;
+
+						// dispatching the updated connection
+						dispatch(
+							sessionConnectionApi.util.updateQueryData(
+								"getConnectedSessions",
+								undefined,
+								(draft) =>
+									sessionConnectionAdapter.addOne(draft, {
+										id: connectionId,
+										group_id: groupId,
+										created_at: new Date().toISOString(),
+										session_id: data.session.id,
+									}),
+							),
+						);
+
+						// dispatching the updated ids
+						dispatch(
+							groupApi.util.updateQueryData("getGroups", undefined, (draft) => {
+								groupAdapter.updateOne(draft, {
+									id: groupId,
+									changes: {
+										connectedSessionIds: [
+											...(draft.entities[groupId]?.connectedSessionIds ?? {}),
+											connectionId,
+										],
+									},
+								});
+							}),
+						);
+
+						break;
+					}
+					default: {
+						// dispatching the current authenticated user
+						dispatch(
+							authApi.util.upsertQueryData("me", undefined, {
+								userId: data.user.id,
+								sessionId: data.session.id,
+							}),
+						);
+						break;
+					}
+				}
 
 				// dispatching the actual user
 				dispatch(
-					usersApi.util.upsertQueryData(
-						"getUsers",
-						undefined,
-						usersAdapter.setOne(usersAdapter.getInitialState(), data.user),
+					usersApi.util.updateQueryData("getUsers", undefined, (draft) =>
+						usersAdapter.addOne(draft, data.user),
 					),
+				);
+
+				// dispatching the actual session
+				dispatch(
+					sessionApi.util.updateQueryData("getSessions", undefined, (draft) => {
+						sessionAdapter.addOne(draft, data.session);
+					}),
 				);
 			},
 		}),

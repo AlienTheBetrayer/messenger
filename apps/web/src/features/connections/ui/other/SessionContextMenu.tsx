@@ -66,7 +66,7 @@ export const SessionContextMenu = ({
 			<li>
 				<Tooltip open={!ableToKick ? undefined : false}>
 					<TooltipTrigger asChild>
-						<span className="w-fit inline-block">
+						<span className="w-full inline-block">
 							<DeleteConnectionMessageBox
 								type="connection"
 								onConfirm={() => {
