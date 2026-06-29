@@ -1,8 +1,4 @@
-import {
-	AuthFormSchema,
-	usersType,
-	VerificationFormSchema,
-} from "@gravity/shared";
+import { AuthFormSchema, VerificationFormSchema } from "@gravity/shared";
 import { useCallback, useMemo } from "react";
 
 import { useAuthNotifications } from "@/features/auth/hooks/useAuthNotifications";
@@ -14,6 +10,7 @@ import {
 } from "@/features/auth/model/auth.api";
 import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
 import { normalizeError, queryStateHooks } from "@/shared";
+import { usersType__ } from "@/shared/model/serializable.types";
 
 export const useAuthActions = () => {
 	// states
@@ -62,7 +59,7 @@ export const useAuthActions = () => {
 			// api requests
 			const fn = async () => {
 				try {
-					let user: usersType | null = null;
+					let user: usersType__ | null = null;
 
 					switch (type) {
 						case "login": {

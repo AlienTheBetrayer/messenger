@@ -26,6 +26,7 @@ import {
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
+	timeAgo,
 	useAppSelector,
 } from "@/shared";
 
@@ -87,9 +88,11 @@ export const CreateGroupForm = ({
 					Group {params?.type === "edit" ? "editing" : "creation"}
 				</CardTitle>
 				<CardDescription className="text-xs">
-					{params?.type === "edit"
-						? "This will update the group."
-						: "This will create a group that can link multiple sessions."}
+					<span>
+						{params?.type === "edit"
+							? "This will update the group."
+							: "This will create a group that can link multiple sessions."}
+					</span>
 				</CardDescription>
 			</CardHeader>
 

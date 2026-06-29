@@ -25,16 +25,10 @@ export const sfetch = async (input: string, init?: RequestInit) => {
 	const url = `${backendUrl}${slash}${input}`;
 
 	// fetching
-	try {
-		const promise = await fetch(url, {
-			headers: {
-				Cookie: `accessToken=${accessToken}; refreshToken=${refreshToken}`,
-			},
-			...(init ?? {}),
-		});
-
-		return promise;
-	} catch (e) {
-		return e;
-	}
+	return fetch(url, {
+		headers: {
+			Cookie: `accessToken=${accessToken}; refreshToken=${refreshToken}`,
+		},
+		...(init ?? {}),
+	});
 };

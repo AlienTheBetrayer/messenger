@@ -1,9 +1,9 @@
-import { usersType } from "@gravity/shared";
 import { useCallback, useMemo } from "react";
 
 import { useNotificationDispatch } from "@/features/notifications/hooks/useNotificationDispatch";
 import { NotificationLayout } from "@/features/notifications/ui/layout/NotificationLayout";
 import { Button } from "@/shared";
+import { usersType__ } from "@/shared/model/serializable.types";
 
 /**
  * hook that returns notifications for promises for both auth and verify
@@ -52,7 +52,7 @@ export const useAuthNotifications = () => {
 	);
 
 	const verify = useCallback(
-		(fn: () => Promise<usersType>) => {
+		(fn: () => Promise<usersType__>) => {
 			promise(fn, {
 				loading: () => ({
 					node: <NotificationLayout text="Verifying the code..." />,

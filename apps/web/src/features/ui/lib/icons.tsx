@@ -8,7 +8,6 @@ import {
 	Moon,
 	Settings,
 	Trash2,
-	Trash2Icon,
 	X,
 } from "lucide-react";
 
@@ -26,7 +25,6 @@ export const Icons = {
 	settings: <Settings />,
 	trash: <Trash2 />,
 	box: <Box />,
-	trash: <Trash2Icon />,
 } as const satisfies Record<string, React.ReactNode>;
 
 /**

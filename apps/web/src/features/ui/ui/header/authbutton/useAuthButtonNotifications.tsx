@@ -1,14 +1,14 @@
-import { AuthLogoutReturn } from "@gravity/shared";
 import { useCallback, useMemo } from "react";
 
 import { useNotificationDispatch } from "@/features/notifications/hooks/useNotificationDispatch";
 import { NotificationLayout } from "@/features/notifications/ui/layout/NotificationLayout";
+import { AuthLogoutReturn__ } from "@/shared/model/serializable.types";
 
 export const useAuthButtonNotifications = () => {
 	const { promise } = useNotificationDispatch();
 
 	const logout = useCallback(
-		(fn: () => Promise<AuthLogoutReturn>) => {
+		(fn: () => Promise<AuthLogoutReturn__>) => {
 			promise(fn, {
 				loading: () => ({
 					node: <NotificationLayout text="Logging out..." />,
