@@ -11,21 +11,21 @@ import { selectIsConnectSessionsAwaiting } from "@/features/ui/model/ui.selector
 import { toggleConnectSessionsAwaitingGroupId } from "@/features/ui/model/ui.slice";
 import { DeleteConnectionMessageBox } from "@/features/ui/ui/messageboxes/DeleteConnectionMessageBox";
 import {
-  Button,
-  EmojiPicker,
-  EmojiPickerContent,
-  EmojiPickerFooter,
-  EmojiPickerSearch,
-  Item,
-  ItemContent,
-  ItemHeader,
-  ItemTitle,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
+	Button,
+	EmojiPicker,
+	EmojiPickerContent,
+	EmojiPickerFooter,
+	EmojiPickerSearch,
+	Item,
+	ItemContent,
+	ItemHeader,
+	ItemTitle,
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+	Tooltip,
+	TooltipContent,
+	TooltipTrigger,
 } from "@/shared";
 import { useAppDispatch, useAppSelector } from "@/shared/model/redux.hooks";
 
@@ -60,41 +60,39 @@ export const Group = ({ groupId }: { groupId: string }) => {
 		>
 			<ItemHeader>
 				<ItemTitle className="flex flex-row items-center gap-0">
-					<Popover
-						open={open}
-            onOpenChange={(flag) => {
-              if (flag && group.owner_user_id === auth?.user.id) {
-                setOpen(true);
-              } else {
-                setOpen(false);
-              }
-            }}
-					>
-						<PopoverTrigger asChild>
-							<Button
-								variant="ghost"
-								size="xs"
-								className=" aspect-square"
-							>
-								{group.emoji}
-							</Button>
-						</PopoverTrigger>
+					{group.owner_user_id === auth?.user.id ? (
+						<Popover
+							open={open}
+							onOpenChange={setOpen}
+						>
+							<PopoverTrigger asChild>
+								<Button
+									variant="ghost"
+									size="xs"
+									className="aspect-square"
+								>
+									<span className="text-xs">{group.emoji}</span>
+								</Button>
+							</PopoverTrigger>
 
-            <PopoverContent>
-							<EmojiPicker
-								sticky={false}
-								className="h-[300px]"
-								onEmojiSelect={({ emoji }) => {
-									setOpen(false);
-									editGroup({ emoji, groupId: group.id });
-								}}
-							>
-								<EmojiPickerSearch />
-								<EmojiPickerContent />
-								<EmojiPickerFooter />
-							</EmojiPicker>
-						</PopoverContent>
-					</Popover>
+							<PopoverContent>
+								<EmojiPicker
+									sticky={false}
+									className="h-[300px]"
+									onEmojiSelect={({ emoji }) => {
+										setOpen(false);
+										editGroup({ emoji, groupId: group.id });
+									}}
+								>
+									<EmojiPickerSearch />
+									<EmojiPickerContent />
+									<EmojiPickerFooter />
+								</EmojiPicker>
+							</PopoverContent>
+						</Popover>
+					) : (
+						<span className="text-xs">{group.emoji}</span>
+					)}
 
 					<span>{group.title}</span>
 				</ItemTitle>

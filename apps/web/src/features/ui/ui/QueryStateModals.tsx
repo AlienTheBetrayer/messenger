@@ -1,4 +1,4 @@
-import { ConnectionVerificationModal } from "@/features/ui/ui/modals/ConnectionVerificationModal";
+import { ConnectionVerificationModal } from "@/features/connections/ui/modal/ConnectionVerificationModal";
 
 export const QueryStateModals = () => {
 	return <ConnectionVerificationModal />;

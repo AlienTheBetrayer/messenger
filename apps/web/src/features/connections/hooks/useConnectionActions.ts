@@ -1,17 +1,20 @@
 import { PickRequired } from "@gravity/shared";
 import { useCallback, useMemo } from "react";
 
+import { useGetCodeMutation } from "@/features/auth/model/auth.api";
 import { useConnectionNotifications } from "@/features/connections/hooks/useConnectionNotifications";
 import {
 	useAddConnectionMutation,
 	useDeleteConnectionMutation,
+	useGetConnectionCodeMutation,
 	useLoginConnectionMutation,
 } from "@/features/connections/model/connections.api";
 import { normalizeError } from "@/shared";
 import {
 	ConnectionAddSchema__,
+	ConnectionCodeSchema__,
+	ConnectionDeleteSchema__,
 	ConnectionLoginSchema__,
-	ConnectionsDeleteSchema__,
 } from "@/shared/model/serializable.types";
 
 export const useConnectionActions = () => {
@@ -19,13 +22,31 @@ export const useConnectionActions = () => {
 	const [connectionDelete] = useDeleteConnectionMutation();
 	const [connectionAdd] = useAddConnectionMutation();
 	const [connectionLogin] = useLoginConnectionMutation();
+	const [connectionGetCode] = useGetConnectionCodeMutation();
 
 	// notifications
 	const notifications = useConnectionNotifications();
 
 	// functions
+	const getCode = useCallback(
+		async (data: ConnectionCodeSchema__) => {
+			const fn = async () => {
+				try {
+					const res = await connectionGetCode(data).unwrap();
+					return res;
+				} catch (e) {
+					const message = normalizeError(e);
+					throw new Error(message);
+				}
+			};
+
+			notifications.connectionCode(fn);
+		},
+		[notifications, connectionGetCode],
+	);
+
 	const deleteConnection = useCallback(
-		async (data: ConnectionsDeleteSchema__) => {
+		async (data: ConnectionDeleteSchema__) => {
 			const fn = async () => {
 				try {
 					const res = await connectionDelete(data).unwrap();
@@ -76,7 +97,7 @@ export const useConnectionActions = () => {
 	);
 
 	return useMemo(
-		() => ({ deleteConnection, loginConnection, addConnection }),
-		[deleteConnection, loginConnection, addConnection],
+		() => ({ getCode, deleteConnection, loginConnection, addConnection }),
+		[deleteConnection, loginConnection, addConnection, getCode],
 	);
 };

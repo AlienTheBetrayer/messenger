@@ -1,5 +1,6 @@
 import {
 	ConnectionAddReturn,
+	ConnectionCodeReturn,
 	ConnectionDeleteReturn,
 	ConnectionInitReturn,
 	ConnectionLoginReturn,
@@ -31,6 +32,7 @@ import { AuthenticatedGuard } from "../auth-core/guards";
 import { AppJwtService } from "../jwt/jwt.service";
 import {
 	ConnectionAddDto,
+	ConnectionCodeDto,
 	ConnectionDeleteDto,
 	ConnectionInitDto,
 	ConnectionLoginDto,
@@ -65,6 +67,19 @@ export class ConnectionsController {
 	): Promise<ConnectionsReturn> {
 		const groups = await this.connectionsService.connections(user.id);
 		return { groups };
+	}
+
+	/**
+	 * issues the code in order to authenticate as the owner
+	 * @returns true if succeded.
+	 */
+	@UseGuards(AuthenticatedGuard, ConnectionMemberGuard)
+	@Post("connection/code")
+	async connectionCode(
+		@Body() body: ConnectionCodeDto,
+  ): Promise<ConnectionCodeReturn> {
+    const ret = await this.connectionsService.connectionCode(body);
+    return ret;
 	}
 
 	/**

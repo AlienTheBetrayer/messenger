@@ -1,5 +1,6 @@
 import {
 	ConnectionAddSchema,
+	ConnectionCodeSchema,
 	ConnectionCreateSchema,
 	ConnectionDeleteSchema,
 	ConnectionLoginSchema,
@@ -18,14 +19,43 @@ import {
 } from "../auth-core/decorators";
 import { AppJwtService } from "../jwt/jwt.service";
 import { PrismaService } from "../prisma/prisma.service";
+import { VerifyService } from "../verify/verify.service";
 
 @Injectable()
 export class ConnectionsService {
 	constructor(
 		private readonly prismaService: PrismaService,
 		private readonly jwtService: AppJwtService,
-		private readonly authService: AuthService,
-	) {}
+    private readonly authService: AuthService,
+    private readonly verifyService: VerifyService
+  ) { }
+  
+  async connectionCode(body: ConnectionCodeSchema ) {
+    // getting the email
+    const connection = await this.prismaService.connections.findFirst({
+      where: {
+        id: body.connectionId
+      },
+      include: {
+        users: true 
+      }
+    });
+
+    if (!connection) {
+      throw createException(
+        "unauthorized",
+        "UNAUTHENTICATED",
+        "connection not found.",
+      );
+    }
+
+    await this.verifyService.issueCode({
+      type: "owner_connect",
+      email: connection.users.email,
+    });
+
+    return true;
+  }
 
 	async connectionLogin(
 		body: ConnectionLoginSchema,

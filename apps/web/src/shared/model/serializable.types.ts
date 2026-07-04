@@ -12,6 +12,8 @@ import {
 	AuthSignupReturn,
 	ConnectionAddReturn,
 	ConnectionAddSchema,
+	ConnectionCodeReturn,
+	ConnectionCodeSchema,
 	ConnectionDeleteReturn,
 	ConnectionDeleteSchema,
 	ConnectionLoginReturn,
@@ -54,10 +56,12 @@ export type NotificationsUpdateReturn__ =
 	DateToString<NotificationsUpdateReturn>;
 export type NotificationsUpdateSchema__ =
 	DateToString<NotificationsUpdateSchema>;
-export type ConnectionsDeleteSchema__ = DateToString<ConnectionDeleteSchema>;
+export type ConnectionDeleteSchema__ = DateToString<ConnectionDeleteSchema>;
 export type ConnectionDeleteReturn__ = DateToString<ConnectionDeleteReturn>;
 export type ConnectionLoginReturn__ = DateToString<ConnectionLoginReturn>;
 export type ConnectionLoginSchema__ = DateToString<ConnectionLoginSchema>;
+export type ConnectionCodeSchema__ = DateToString<ConnectionCodeSchema>;
+export type ConnectionCodeReturn__ = DateToString<ConnectionCodeReturn>;
 export type GroupCreateReturn__ = DateToString<GroupCreateReturn>;
 export type ConnectionAddSchema__ = DateToString<ConnectionAddSchema>;
 export type ConnectionAddReturn__ = DateToString<ConnectionAddReturn>;

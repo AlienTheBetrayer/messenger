@@ -2,7 +2,7 @@ import { ConnectionVerifyFormSchema } from "@gravity/shared";
 import { createContext, useContext } from "react";
 import { UseFormReturn } from "react-hook-form";
 
-import { useConnectionVerificationForms } from "@/features/ui/hooks/useConnectionVerificationForms";
+import { useConnectionVerificationForms } from "@/features/connections/hooks/useConnectionVerificationForms";
 
 export type ConnectionVerificationFormType = {
 	connectionVerificationForm: UseFormReturn<ConnectionVerifyFormSchema>;

@@ -1,16 +1,12 @@
 "use client";
-
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
 
+/**
+ * types
+ */
 type Options = {
 	replace?: boolean;
-	shallow?: boolean;
-};
-
-const DefaultOptions: Options = {
-	replace: true,
-	shallow: true,
 };
 
 type EnumValue<T extends readonly string[]> = T extends readonly string[]
@@ -18,43 +14,75 @@ type EnumValue<T extends readonly string[]> = T extends readonly string[]
 	: string;
 
 /**
- * read and modify URL search params with ease
+ * metadata
+ */
+const DefaultOptions: Options = {
+	replace: true,
+};
+
+let pendingUpdates: Record<string, string | null> | null = null;
+let batchTimeout: Promise<void> | null = null;
+
+/**
+ * read and modify URL search params with ease. (concurrency handled)
  * @param key url key
  * @param options options object
  * @returns value and setter function
+
  */
 export function useQueryState<E extends readonly string[]>(
 	key: string,
 	types?: E,
 ) {
-	// nextjs hooks
 	const router = useRouter();
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
 
 	type T = EnumValue<E> | null;
-
-	// value
 	const value = searchParams.get(key) as T;
 
-	// setter function
 	const setValue = useCallback(
 		(newValue: T, options: Options = DefaultOptions) => {
-			const params = new URLSearchParams(searchParams.toString());
+			if (!pendingUpdates) {
+				pendingUpdates = {};
 
-			if (!newValue) {
-				params.delete(key);
-			} else {
-				params.set(key, newValue);
+				const currentSearch =
+					typeof window !== "undefined"
+						? window.location.search
+						: searchParams.toString();
+				const initialParams = new URLSearchParams(currentSearch);
+				initialParams.forEach((val, k) => {
+					if (pendingUpdates) {
+						pendingUpdates[k] = val;
+					}
+				});
 			}
 
-			const qs = params.toString();
-			const url = qs ? `${pathname}?${qs}` : pathname;
+			pendingUpdates[key] = newValue;
 
-			if (options.replace) {
-				router.replace(url);
-			} else {
-				router.push(url);
+			if (!batchTimeout) {
+				batchTimeout = Promise.resolve().then(() => {
+					if (!pendingUpdates) return;
+
+					const finalParams = new URLSearchParams();
+					Object.entries(pendingUpdates).forEach(([k, v]) => {
+						if (v !== null && v !== undefined && v !== "") {
+							finalParams.set(k, v);
+						}
+					});
+
+					const qs = finalParams.toString();
+					const url = qs ? `${pathname}?${qs}` : pathname;
+
+					if (options.replace) {
+						router.replace(url);
+					} else {
+						router.push(url);
+					}
+
+					pendingUpdates = null;
+					batchTimeout = null;
+				});
 			}
 		},
 		[key, pathname, router, searchParams],

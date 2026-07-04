@@ -18,12 +18,17 @@ const useConnection = () => {
 	return useQueryState("connection", ["pending"] as const);
 };
 
+const useId = () => {
+	return useQueryState("id");
+};
+
 /**
  * grouped type-safe hooks (useQueryState from nuqs)
  * @returns hook functions
  */
 export const queryStateHooks = {
 	useVerify,
+	useId,
 	useConnection,
 	useError,
 };

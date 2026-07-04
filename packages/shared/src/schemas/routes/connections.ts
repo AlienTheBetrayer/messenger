@@ -1,5 +1,6 @@
 import z from "zod";
 
+import { connectionVerifyFormSchema } from "../forms/connection.js";
 import { connectionsType } from "../prisma/schemas/models/connections.schema.js";
 import { connections_groupType } from "../prisma/schemas/models/connections_group.schema.js";
 import { usersType } from "../prisma/schemas/models/users.schema.js";
@@ -66,8 +67,18 @@ export type ConnectionInitReturn = void;
  */
 export const connectionLoginSchema = z.object({
 	connectionId: z.nanoid(),
+	code: connectionVerifyFormSchema.shape.code.optional(),
 });
 export type ConnectionLoginSchema = z.infer<typeof connectionLoginSchema>;
 export type ConnectionLoginReturn = AuthLoginReturn & {
 	connection: connectionsType;
 };
+
+/**
+ * connection/code
+ */
+export const connectionCodeSchema = z.object({
+	connectionId: z.nanoid(),
+});
+export type ConnectionCodeSchema = z.infer<typeof connectionCodeSchema>;
+export type ConnectionCodeReturn = boolean;

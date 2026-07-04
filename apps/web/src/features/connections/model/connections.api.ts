@@ -23,10 +23,12 @@ import { baseApi } from "@/shared/model/redux.store";
 import {
 	ConnectionAddReturn__,
 	ConnectionAddSchema__,
+	ConnectionCodeReturn__,
+	ConnectionCodeSchema__,
 	ConnectionDeleteReturn__,
+	ConnectionDeleteSchema__,
 	ConnectionLoginReturn__,
 	ConnectionLoginSchema__,
-	ConnectionsDeleteSchema__,
 	ConnectionsReturn__,
 } from "@/shared/model/serializable.types";
 
@@ -51,6 +53,17 @@ export const connectionsApi = baseApi.injectEndpoints({
 			providesTags: ["getConnections"],
 		}),
 
+		getConnectionCode: build.mutation<
+			ConnectionCodeReturn__,
+			ConnectionCodeSchema__
+		>({
+			query: (body) => ({
+				url: "/connections/connection/code",
+				method: "POST",
+				body,
+			}),
+		}),
+
 		loginConnection: build.mutation<
 			ConnectionLoginReturn__,
 			ConnectionLoginSchema__
@@ -68,9 +81,9 @@ export const connectionsApi = baseApi.injectEndpoints({
 					state: getState() as never,
 					data,
 				});
-			},
 
-			invalidatesTags: ["getConnections"],
+				dispatch(connectionsApi.util.invalidateTags(["getConnections"]));
+			},
 		}),
 
 		addConnection: build.mutation<
@@ -94,7 +107,7 @@ export const connectionsApi = baseApi.injectEndpoints({
 
 		deleteConnection: build.mutation<
 			ConnectionDeleteReturn__,
-			ConnectionsDeleteSchema__
+			ConnectionDeleteSchema__
 		>({
 			query: (body) => ({
 				url: "/connections/connection/delete",
@@ -152,6 +165,7 @@ export const connectionsApi = baseApi.injectEndpoints({
 export const {
 	useGetConnectionsQuery,
 	useLoginConnectionMutation,
+	useGetConnectionCodeMutation,
 	useAddConnectionMutation,
 	useCreateGroupMutation,
 	useEditGroupMutation,

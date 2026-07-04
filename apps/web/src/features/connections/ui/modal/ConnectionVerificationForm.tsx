@@ -1,7 +1,7 @@
 import { Controller } from "react-hook-form";
 
-import { useConnectionVerificationActions } from "@/features/ui/hooks/useConnectionVerificationActions";
-import { useConnectionVerificationFormProvider } from "@/features/ui/providers/ConnectionVerificationFormProvider";
+import { useConnectionActions } from "@/features/connections/hooks/useConnectionActions";
+import { useConnectionVerificationFormProvider } from "@/features/connections/providers/ConnectionVerificationFormProvider";
 import {
 	Button,
 	DialogClose,
@@ -15,26 +15,38 @@ import {
 	FieldGroup,
 	FieldLabel,
 	Input,
+	queryStateHooks,
 } from "@/shared";
 
 export const ConnectionVerificationForm = () => {
-	// forms
+	// states
 	const forms = useConnectionVerificationFormProvider();
-	const { verify } = useConnectionVerificationActions();
+	const [id, setId] = queryStateHooks.useId();
+	const [, setConnection] = queryStateHooks.useConnection();
+
+	// actions
+	const { loginConnection } = useConnectionActions();
 
 	// jsx
 	return (
 		<form
 			noValidate
 			id="connection-verify-form"
-			onSubmit={forms.connectionVerificationForm.handleSubmit(verify)}
+			onSubmit={forms.connectionVerificationForm.handleSubmit((data) => {
+				if (!id) {
+					return;
+				}
+
+				loginConnection({ ...data, connectionId: id });
+				setConnection(null);
+				setId(null);
+			})}
 		>
 			<DialogContent className="sm:max-w-sm">
 				<DialogHeader>
-					<DialogTitle>Verify connection</DialogTitle>
+					<DialogTitle>Verify the connection</DialogTitle>
 					<DialogDescription>
-						Use the code that has been sent to your email to connect as the
-						owner.
+						Use the code that has been sent to the email of the owner.
 					</DialogDescription>
 				</DialogHeader>
 				<FieldGroup>

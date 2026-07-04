@@ -27,8 +27,8 @@ const persistedLocalReducer = persistReducer(
  * has to be injected later into
  */
 export const baseApi = createApi({
-	tagTypes: ["getConnections"],
-	reducerPath: "api",
+  reducerPath: "api",
+  tagTypes: ["getConnections"],
 	keepUnusedDataFor: 99999999,
 	baseQuery: fetchBaseQuery({ baseUrl: "/api" }),
 	endpoints: () => ({}),

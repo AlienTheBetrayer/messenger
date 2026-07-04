@@ -21,7 +21,8 @@ export const SessionContextMenu = ({
 	connectionId: string;
 }) => {
 	// states
-	const [, setConnection] = queryStateHooks.useConnection();
+  const [, setConnection] = queryStateHooks.useConnection();
+  const [, setId] = queryStateHooks.useId();
 
 	// redux
 	const auth = useAuth();
@@ -37,7 +38,7 @@ export const SessionContextMenu = ({
 	);
 
 	// actions
-	const { deleteConnection, loginConnection } = useConnectionActions();
+	const { deleteConnection, loginConnection, getCode } = useConnectionActions();
 
 	// fallbacks
 	if (!group || !connection) {
@@ -45,15 +46,16 @@ export const SessionContextMenu = ({
 	}
 
 	// ui states
-	const isOwner = group.owner_user_id === auth?.user.id;
+  const amIOwner = group.owner_user_id === auth?.user.id;
+  const isOwner = connection.user_id === group.owner_user_id;
 	const isAlone =
 		connectionsForGroup.length === 1 &&
 		connectionsForGroup[0].id === connectionId;
 	const isMyself = connection.user_id === auth?.user.id;
 
-	const ableToKick = !isAlone && isOwner && !isMyself;
-	const ableToJoin = !isMyself;
-
+	const ableToKick = !isAlone && amIOwner && !isMyself;
+  const ableToJoin = !isMyself;
+  
 	// jsx
 	return (
 		<ul className="flex flex-col gap-2 *:w-full">
@@ -62,10 +64,12 @@ export const SessionContextMenu = ({
 					<TooltipTrigger asChild>
 						<Button
 							onClick={() => {
-								if (isOwner) {
+								if (!isOwner) {
 									loginConnection({ connectionId });
 								} else {
-									setConnection("pending");
+                  setConnection("pending");
+                  setId(connectionId);
+                  getCode({ connectionId });
 								}
 							}}
 							className="w-full justify-start"

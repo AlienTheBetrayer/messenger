@@ -254,16 +254,57 @@ export const useConnectionNotifications = () => {
 			});
 		},
 		[promise],
-	);
+  );
+  
+  const connectionCode = useCallback(
+      (fn: () => Promise<unknown>) => {
+        promise(fn, {
+          loading: () => ({
+            node: <NotificationLayout text="Sending the code..." />,
+            text: "Sending the code...",
+          }),
+          error: (e: unknown) => {
+            const message = e instanceof Error ? e.message : "";
+  
+            return {
+              node: (
+                <NotificationLayout
+                  text={`Code generation failed. ${message}`}
+                  action={
+                    <Button
+                      onClick={() => {
+                        fn();
+                      }}
+                    >
+                      Retry
+                    </Button>
+                  }
+                />
+              ),
+              text: `Code generation failed. ${message}`,
+            };
+          },
+          success: () => ({
+            node: (
+              <NotificationLayout text={`Successfully generated the code!`} />
+            ),
+            text: `Successfully generated the code!`,
+          }),
+        });
+      },
+      [promise],
+    );
+  
 
 	return useMemo(
 		() => ({
 			groupCreate,
-			groupEdit,
+      groupEdit,
 			groupDelete,
 			connectionAdd,
 			connectionDelete,
-			connectionLogin,
+      connectionLogin,
+      connectionCode,
 		}),
 		[
 			groupCreate,
@@ -271,7 +312,8 @@ export const useConnectionNotifications = () => {
 			groupDelete,
 			connectionDelete,
 			connectionLogin,
-			connectionAdd,
+      connectionAdd,
+      connectionCode,
 		],
 	);
 };
