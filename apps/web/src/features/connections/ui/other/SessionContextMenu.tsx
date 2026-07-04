@@ -2,16 +2,12 @@ import { LogOut, Trash2Icon } from "lucide-react";
 
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useConnectionActions } from "@/features/connections/hooks/useConnectionActions";
-import { sessionConnectionsSelectors } from "@/features/connections/model/sessionConnections.api";
-import { groupSelectors } from "@/features/connections/model/sessionGroup.api";
+import { selectConnectionsForGroup } from "@/features/connections/model/connection.selectors";
+import { connectionSelectors } from "@/features/connections/model/connection.slice";
+import { groupSelectors } from "@/features/connections/model/group.slice";
 import { DeleteConnectionMessageBox } from "@/features/ui/ui/messageboxes/DeleteConnectionMessageBox";
-import {
-	Button,
-	Tooltip,
-	TooltipContent,
-	TooltipTrigger,
-	useAppSelector,
-} from "@/shared";
+import { Button, Tooltip, TooltipContent, TooltipTrigger } from "@/shared";
+import { useAppSelector } from "@/shared/model/redux.hooks";
 
 export const SessionContextMenu = ({
 	connectionId,
@@ -21,13 +17,20 @@ export const SessionContextMenu = ({
 	// redux
 	const auth = useAuth();
 	const connection = useAppSelector((state) =>
-		sessionConnectionsSelectors.selectById(state, connectionId),
+		connectionSelectors.selectById(state, connectionId),
 	);
-	const group = useAppSelector((state) =>
-		groupSelectors.selectById(state, connection?.group_id ?? ""),
+	const group = useAppSelector(
+		(state) =>
+			connection && groupSelectors.selectById(state, connection.group_id),
 	);
-	const { deleteConnection } = useConnectionActions();
+	const connectionsForGroup = useAppSelector(
+		(state) => group && selectConnectionsForGroup(state, group.id),
+  );
+  
+  // actions
+	const { deleteConnection, loginConnection } = useConnectionActions();
 
+  // fallbacks
 	if (!group || !connection) {
 		return null;
 	}
@@ -35,12 +38,12 @@ export const SessionContextMenu = ({
 	// ui states
 	const isOwner = group.owner_user_id === auth?.user.id;
 	const isAlone =
-		group.connectedSessionIds.length === 1 &&
-		group.connectedSessionIds[0] === connectionId;
-	const isMyself = connection.session_id === auth?.session.id;
+		connectionsForGroup.length === 1 &&
+		connectionsForGroup[0].id === connectionId;
+	const isMyself = connection.user_id === auth?.user.id;
 
 	const ableToKick = !isAlone && isOwner && !isMyself;
-  const ableToJoin = !isMyself;
+	const ableToJoin = !isMyself;
 
 	// jsx
 	return (
@@ -49,6 +52,9 @@ export const SessionContextMenu = ({
 				<Tooltip open={!ableToJoin ? undefined : false}>
 					<TooltipTrigger asChild>
 						<Button
+							onClick={() => {
+								loginConnection({ connectionId });
+							}}
 							className="w-full justify-start"
 							size="sm"
 							disabled={!ableToJoin}

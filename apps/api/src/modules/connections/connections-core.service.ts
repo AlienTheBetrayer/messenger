@@ -1,8 +1,8 @@
+import { connections_groupType, connectionsType } from "@gravity/shared";
 import { Injectable } from "@nestjs/common";
 import { Request } from "express";
 import z from "zod";
 
-import { createException } from "../../common";
 import { authenticatedUserSchema } from "../auth-core/decorators";
 import { oAuthIdentitySchema } from "../auth-oauth/oauth.types";
 import { PrismaService } from "../prisma/prisma.service";
@@ -11,7 +11,13 @@ import { PrismaService } from "../prisma/prisma.service";
 export class ConnectionsCoreService {
 	constructor(private prismaService: PrismaService) {}
 
-	async verifyMembership(request: Request) {
+	/**
+	 * validates whether you're a member/owner of the group by "groupId" in your body/query. (have to run after AuthGuards)
+	 * @param request request object
+	 * @param type type of the validation
+	 * @returns true if validated, throws if otherwise
+	 */
+	async verifyGroup(request: Request, type: "membership" | "ownership") {
 		// parsing (ensuring groupId is there)
 		const parsedGroup = z.safeParse(
 			z.looseObject({
@@ -24,112 +30,56 @@ export class ConnectionsCoreService {
 		);
 
 		if (!parsedGroup.success) {
-			throw createException(
-				"unauthorized",
-				"UNAUTHENTICATED",
-				"groupId is invalid in the body.",
-			);
+			throw new Error("groupId is invalid in the body/query.");
 		}
 
 		// parsing 2 (ensuring the user is even there)
 		const parsedUser = z.safeParse(authenticatedUserSchema, request.user);
 
 		if (!parsedUser.success) {
-			throw createException(
-				"unauthorized",
-				"UNAUTHENTICATED",
-				"you are not authenticated.",
-			);
+			throw new Error("you are not authenticated.");
 		}
 
-		// getting connections
-		const connections = await this.prismaService.connected_sessions.findMany({
-			where: {
-				group_id: parsedGroup.data.groupId,
-				auth_sessions: {
-					user_id: parsedUser.data.id,
-				},
-			},
-			include: {
-				connected_sessions_group: true,
-			},
-		});
+		let validated: connectionsType | connections_groupType | null = null;
 
-		if (!connections.length) {
-			throw createException(
-				"unauthorized",
-				"UNAUTHENTICATED",
-				"you are not a member of this group.",
-			);
+		switch (type) {
+			case "membership": {
+				validated = await this.prismaService.connections.findFirst({
+					where: {
+						group_id: parsedGroup.data.groupId,
+						user_id: parsedUser.data.id,
+					},
+				});
+				break;
+			}
+			case "ownership": {
+				validated = await this.prismaService.connections_group.findFirst({
+					where: {
+						id: parsedGroup.data.groupId,
+						owner_user_id: parsedUser.data.id,
+					},
+				});
+				break;
+			}
 		}
 
-		// setting the group
-		(request.user as typeof parsedUser.data).session.groups = connections.map(
-			({ connected_sessions_group }) => connected_sessions_group,
-		);
-
-		return true;
-	}
-
-	async verifyOwnership(request: Request) {
-		// parsing (ensuring groupId is there)
-		const parsedGroup = z.safeParse(
-			z.looseObject({
-				groupId: z.nanoid(),
-			}),
-			{
-				...request.body,
-				...request.query,
-			},
-		);
-
-		if (!parsedGroup.success) {
-			throw createException(
-				"unauthorized",
-				"UNAUTHENTICATED",
-				"groupId is invalid in the body.",
-			);
-		}
-
-		// parsing 2 (ensuring the user is even there)
-		const parsedUser = z.safeParse(authenticatedUserSchema, request.user);
-
-		if (!parsedUser.success) {
-			throw createException(
-				"unauthorized",
-				"UNAUTHENTICATED",
-				"you are not authenticated.",
-			);
-		}
-
-		// getting connections
-		const group = await this.prismaService.connected_sessions_group.findFirst({
-			where: {
-				id: parsedGroup.data.groupId,
-				owner_user_id: parsedUser.data.id,
-			},
-		});
-
-		if (!group) {
-			throw createException(
-				"unauthorized",
-				"UNAUTHENTICATED",
-				"you are not an owner of the group.",
-			);
+		if (!validated) {
+			throw new Error("group has not been validatd.");
 		}
 
 		return true;
 	}
 
-	async verifyConnection(request: Request) {
+	/**
+	 * validates whether you're connected to a group you're trying to connect. (made for OAuth)
+	 * @param request request object
+	 * @returns true if validated, throws if otherwise
+	 */
+	async verifyOAuthConnection(request: Request) {
 		const identity = z.safeParse(oAuthIdentitySchema, request.user);
 
 		if (!identity.success) {
-			throw createException(
-				"badrequest",
-				"INVALID_BODY",
-				"identity is invalid.",
-			);
+			throw new Error("identity is invalid.");
 		}
 
 		// if not connecting, let it pass
@@ -139,11 +89,7 @@ export class ConnectionsCoreService {
 
 		// email is required
 		if (!identity.data.email) {
-			throw createException(
-				"notfound",
-				"EMAIL_NOT_FOUND",
-				"identity has no email attached.",
-			);
+			throw new Error("identity has no email attached.");
 		}
 
 		// user by email
@@ -151,32 +97,93 @@ export class ConnectionsCoreService {
 			where: {
 				email: identity.data.email,
 			},
-    });
-    
+		});
+
 		if (!user) {
-			throw createException(
-				"notfound",
-				"EMAIL_NOT_FOUND",
-				"user was not found.",
-			);
+      return true;
 		}
 
-		// any connected sessions with auth session with that id
-		const isFound = await this.prismaService.connected_sessions.count({
+		// any connected sessions with that user id
+		const isFound = await this.prismaService.connections.count({
 			where: {
 				group_id: identity.data.metadata.groupId,
-				auth_sessions: {
-					user_id: user.id,
-				},
+				user_id: user.id,
 			},
-    });
-    
+		});
+
 		if (isFound) {
-			throw createException(
-				"conflict",
-				"AUTHENTICATED",
-				"session is already connected.",
-			);
+			throw new Error("session is already connected.");
+		}
+
+		return true;
+	}
+
+	/**
+	 * validstea whether you're a member of the group by "connectionId" in your body/query. (have to run after AuthGuards)
+	 * @param request request object
+	 * @param type type of the validation
+	 * @returns true if validated, throws if otherwise
+	 */
+	async verifyConnection(request: Request, type: "membership" | "ownership") {
+		// parsing (ensuring groupId is there)
+		const parsedConnection = z.safeParse(
+			z.looseObject({
+				connectionId: z.nanoid(),
+			}),
+			{
+				...request.body,
+				...request.query,
+			},
+		);
+
+		if (!parsedConnection.success) {
+			throw new Error("groupId is invalid in the body/query.");
+		}
+
+		// parsing 2 (ensuring the user is even there)
+		const parsedUser = z.safeParse(authenticatedUserSchema, request.user);
+
+		if (!parsedUser.success) {
+			throw new Error("user is not authenticated.");
+		}
+
+		// getting the group
+		const connection = await this.prismaService.connections.findFirst({
+			where: {
+				id: parsedConnection.data.connectionId,
+			},
+		});
+
+		if (!connection) {
+			throw new Error("cannot find group by the connectionId.");
+		}
+
+		let validated: connectionsType | connections_groupType | null = null;
+
+		switch (type) {
+			case "membership": {
+				validated = await this.prismaService.connections.findFirst({
+					where: {
+						group_id: connection.group_id,
+						user_id: parsedUser.data.id,
+					},
+				});
+
+				break;
+			}
+			case "ownership": {
+				validated = await this.prismaService.connections_group.findFirst({
+					where: {
+						id: connection.group_id,
+						owner_user_id: parsedUser.data.id,
+					},
+				});
+				break;
+			}
+		}
+
+		if (!validated) {
+			throw new Error("connection has not been validated.");
 		}
 
 		return true;

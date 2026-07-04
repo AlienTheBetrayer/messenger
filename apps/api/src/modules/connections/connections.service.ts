@@ -1,6 +1,8 @@
 import {
 	ConnectionAddSchema,
+	ConnectionCreateSchema,
 	ConnectionDeleteSchema,
+	ConnectionLoginSchema,
 	generateId,
 	GroupCreateSchema,
 	GroupDeleteSchema,
@@ -9,23 +11,74 @@ import {
 import { Injectable } from "@nestjs/common";
 
 import { createException } from "../../common";
-import { AuthenticatedUserType } from "../auth-core/decorators";
+import { AuthService } from "../auth/auth.service";
+import {
+	AuthContextType,
+	AuthenticatedUserType,
+} from "../auth-core/decorators";
+import { AppJwtService } from "../jwt/jwt.service";
 import { PrismaService } from "../prisma/prisma.service";
 
 @Injectable()
 export class ConnectionsService {
-	constructor(private readonly prismaService: PrismaService) {}
+	constructor(
+		private readonly prismaService: PrismaService,
+		private readonly jwtService: AppJwtService,
+		private readonly authService: AuthService,
+	) {}
+
+	async connectionLogin(
+		body: ConnectionLoginSchema,
+		ctx: AuthContextType,
+		authenticatedUser: AuthenticatedUserType,
+	) {
+		// validating and getting the connection
+		const foundConnection = await this.prismaService.connections.findFirst({
+			where: {
+				id: body.connectionId,
+			},
+			include: {
+				users: true,
+			},
+		});
+
+		if (!foundConnection) {
+			throw createException(
+				"unauthorized",
+				"UNAUTHENTICATED",
+				"connection not found.",
+			);
+		}
+
+		// deleting the old session
+		await this.prismaService.auth_sessions.delete({
+			where: {
+				id: authenticatedUser.session.id,
+			},
+		});
+
+		// tokens + session issuing
+		const { accessToken, refreshToken, session } =
+			await this.jwtService.issueAuthData({
+				userId: foundConnection.user_id,
+				ctx,
+				config: { createGroup: false },
+			});
+
+		const { users: user, ...connection } = foundConnection;
+		return { accessToken, refreshToken, connection, user, session };
+	}
 
 	/**
 	 * gets all the currently connected auth sessions in groups
-	 * @param sessionId id of the "auth_sessions" session
+	 * @param id of the user
 	 * @returns sessions categorized by its connection (id + title + emoji)
 	 */
-	async connections(sessionId: string) {
+	async connections(userId: string) {
 		// getting the connection ids
-		const groupIds = await this.prismaService.connected_sessions.findMany({
+		const groupIds = await this.prismaService.connections.findMany({
 			where: {
-				session_id: sessionId,
+				user_id: userId,
 			},
 			select: {
 				group_id: true,
@@ -33,39 +86,64 @@ export class ConnectionsService {
 		});
 
 		// getting the sessions
-		const connected =
-			await this.prismaService.connected_sessions_group.findMany({
-				where: {
-					id: {
-						in: groupIds.map(({ group_id }) => group_id),
+		const connected = await this.prismaService.connections_group.findMany({
+			where: {
+				id: {
+					in: groupIds.map(({ group_id }) => group_id),
+				},
+			},
+			include: {
+				connections: {
+					include: {
+						users: true,
 					},
 				},
-				include: {
-					connected_sessions: {
-						include: {
-							auth_sessions: {
-								include: {
-									users: true,
-								},
-							},
-						},
-					},
-				},
-			});
+			},
+		});
 
 		return connected;
 	}
 
-  async connectionAdd(body: ConnectionAddSchema) {
-    // checking if the connection already exists
-		const isFound = await this.prismaService.connected_sessions.count({
+	/**
+	 * adds the user for a connection
+	 * @param email email address
+	 * @param password secure password
+	 * @param code code that was sent to email (use /code/)
+	 * @param groupId id of the group
+	 * @param connectionId optional id of the connection
+	 * @returns authentication tokens, user and a session
+	 */
+	async connectionAdd(body: ConnectionAddSchema, ctx: AuthContextType) {
+		const { user } = await this.authService.loginVerify(
+			{ password: body.password, code: body.code, email: body.email },
+			ctx,
+		);
+
+		const { connection } = await this.connectionCreate({
+			groupId: body.groupId,
+			userId: user.id,
+			connectionId: body.connectionId ?? generateId(),
+		});
+
+		return { user, connection };
+	}
+
+	/**
+	 * creates a group that can link multiple sessions
+	 * @param title required title
+	 * @param emoji optional emoji
+	 * @returns group
+	 */
+	async connectionCreate(body: ConnectionCreateSchema) {
+		// checking if the connection already exists
+		const isFound = await this.prismaService.connections.count({
 			where: {
-				session_id: body.session.id,
+				user_id: body.userId,
 				group_id: body.groupId,
 			},
-    });
+		});
 
-    if (isFound) {
+		if (isFound) {
 			throw createException(
 				"conflict",
 				"USER_ALREADY_EXISTS",
@@ -73,11 +151,11 @@ export class ConnectionsService {
 			);
 		}
 
-    // creating the connection
-		const connection = await this.prismaService.connected_sessions.create({
+		// creating the connection
+		const connection = await this.prismaService.connections.create({
 			data: {
 				id: body.connectionId ?? generateId(),
-				session_id: body.session.id,
+				user_id: body.userId,
 				group_id: body.groupId,
 			},
 		});
@@ -85,13 +163,17 @@ export class ConnectionsService {
 		return { connection };
 	}
 
+	/**
+	 * deletes the connection by its id (have to be an owner)
+	 * @param connectionId id of the connection to delete
+	 * @returns
+	 */
 	async connectionDelete(body: ConnectionDeleteSchema) {
-		const connected_session =
-			await this.prismaService.connected_sessions.delete({
-				where: {
-					id: body.connectionId,
-				},
-			});
+		const connected_session = await this.prismaService.connections.delete({
+			where: {
+				id: body.connectionId,
+			},
+		});
 
 		return connected_session;
 	}
@@ -104,7 +186,7 @@ export class ConnectionsService {
 	 */
 	async groupAdd(body: GroupCreateSchema, user: AuthenticatedUserType) {
 		// group
-		const group = await this.prismaService.connected_sessions_group.create({
+		const group = await this.prismaService.connections_group.create({
 			data: {
 				id: body.groupId ?? generateId(),
 				owner_user_id: user.id,
@@ -114,10 +196,10 @@ export class ConnectionsService {
 		});
 
 		// connection
-		const connection = await this.prismaService.connected_sessions.create({
+		const connection = await this.prismaService.connections.create({
 			data: {
 				id: body.connectionId ?? generateId(),
-				session_id: user.session.id,
+				user_id: user.id,
 				group_id: group.id,
 			},
 		});
@@ -133,7 +215,7 @@ export class ConnectionsService {
 	 * @returns updated group
 	 */
 	async groupEdit(body: GroupEditSchema) {
-		const group = await this.prismaService.connected_sessions_group.update({
+		const group = await this.prismaService.connections_group.update({
 			where: {
 				id: body.groupId,
 			},
@@ -153,7 +235,7 @@ export class ConnectionsService {
 	 * @returns deleted group
 	 */
 	async groupDelete(body: GroupDeleteSchema) {
-		const group = await this.prismaService.connected_sessions_group.delete({
+		const group = await this.prismaService.connections_group.delete({
 			where: {
 				id: body.groupId,
 			},

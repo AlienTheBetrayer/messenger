@@ -8,7 +8,11 @@ import { useCallback, useMemo } from "react";
 import { useNotificationDispatch } from "@/features/notifications/hooks/useNotificationDispatch";
 import { NotificationLayout } from "@/features/notifications/ui/layout/NotificationLayout";
 import { Button } from "@/shared";
-import { ConnectionDeleteReturn__ } from "@/shared/model/serializable.types";
+import {
+	ConnectionAddReturn__,
+	ConnectionDeleteReturn__,
+	ConnectionLoginReturn__,
+} from "@/shared/model/serializable.types";
 
 export const useConnectionNotifications = () => {
 	// dispatcher
@@ -178,13 +182,96 @@ export const useConnectionNotifications = () => {
 		[promise],
 	);
 
+	const connectionAdd = useCallback(
+		(fn: () => Promise<ConnectionAddReturn__>) => {
+			promise(fn, {
+				loading: () => ({
+					node: <NotificationLayout text="Connecting..." />,
+					text: "Connecting...",
+				}),
+				error: (e: unknown) => {
+					const message = e instanceof Error ? e.message : "";
+
+					return {
+						node: (
+							<NotificationLayout
+								text={`Connection failed. ${message}`}
+								action={
+									<Button
+										onClick={() => {
+											fn();
+										}}
+									>
+										Retry
+									</Button>
+								}
+							/>
+						),
+						text: `Connection failed. ${message}`,
+					};
+				},
+				success: () => ({
+					node: <NotificationLayout text="Connected!" />,
+					text: "Connected!",
+				}),
+			});
+		},
+		[promise],
+	);
+
+	const connectionLogin = useCallback(
+		(fn: () => Promise<ConnectionLoginReturn__>) => {
+			promise(fn, {
+				loading: () => ({
+					node: <NotificationLayout text="Connecting..." />,
+					text: "Connecting...",
+				}),
+				error: (e: unknown) => {
+					const message = e instanceof Error ? e.message : "";
+
+					return {
+						node: (
+							<NotificationLayout
+								text={`Connection failed. ${message}`}
+								action={
+									<Button
+										onClick={() => {
+											fn();
+										}}
+									>
+										Retry
+									</Button>
+								}
+							/>
+						),
+						text: `Connection failed. ${message}`,
+					};
+				},
+				success: () => ({
+					node: <NotificationLayout text="Connected!" />,
+					text: "Connected!",
+				}),
+			});
+		},
+		[promise],
+	);
+
 	return useMemo(
 		() => ({
 			groupCreate,
 			groupEdit,
 			groupDelete,
+			connectionAdd,
 			connectionDelete,
+			connectionLogin,
 		}),
-		[groupCreate, groupEdit, groupDelete, connectionDelete],
+		[
+			groupCreate,
+			groupEdit,
+			groupDelete,
+			connectionDelete,
+			connectionLogin,
+			connectionAdd,
+		],
 	);
 };

@@ -8,7 +8,7 @@ import {
 } from "../../auth-core/decorators";
 
 /**
- * gets the current authentication groups you are in (works only if GroupMemberGuard is set)
+ * gets the current authentication groups you are in (works only if GroupMemberGuard or ConnectionMemberGuard is set)
  */
 export const CurrentGroups = createParamDecorator(
 	(data, ctx: ExecutionContext) => {

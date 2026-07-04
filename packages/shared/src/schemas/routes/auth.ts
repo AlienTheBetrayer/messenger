@@ -3,7 +3,7 @@ import z from "zod";
 import { AuthConfig } from "../../config/auth.js";
 import { verification_code_typeSchema } from "../prisma/schemas/enums/verification_code_type.schema.js";
 import { auth_sessionsType } from "../prisma/schemas/models/auth_sessions.schema.js";
-import { connected_sessionsType } from "../prisma/schemas/models/connected_sessions.schema.js";
+import { connectionsType } from "../prisma/schemas/models/connections.schema.js";
 import { usersType } from "../prisma/schemas/models/users.schema.js";
 
 /**
@@ -19,15 +19,6 @@ export const authSchema = z.object({
 });
 
 export type AuthSchema = z.infer<typeof authSchema>;
-
-/**
- * login connection
- */
-export const authLoginConnectionSchema = authSchema.extend({
-	groupId: z.nanoid(),
-	connectionId: z.nanoid().optional()
-});
-export type AuthLoginConnectionSchema = z.infer<typeof authLoginConnectionSchema>;
 
 /**
  * shared code
@@ -59,19 +50,17 @@ export type AuthLoginReturn = {
 };
 
 /**
- * loginConnection
- */
-export type AuthLoginConnectionReturn = AuthLoginReturn & {
-	connection: connected_sessionsType;
-};
-
-/**
  * logout
  */
 export type AuthLogoutSchema = void;
 export type AuthLogoutReturn = {
 	session: auth_sessionsType | null;
 };
+
+/**
+ * connection relogin
+ */
+
 
 /**
  * me

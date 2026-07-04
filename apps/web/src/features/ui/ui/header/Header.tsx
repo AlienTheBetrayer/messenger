@@ -7,7 +7,7 @@ import { Separator } from "@/shared";
 export const Header = async () => {
 	return (
 		<HeaderProvider>
-			<header className="sticky top-0 w-full z-50 bg-background/80 backdrop-blur-md p-3 flex items-center justify-center">
+			<header className="sticky top-0 w-full z-50 bg-background/40 backdrop-blur-sm p-3 flex items-center justify-center">
 				<nav className="w-full max-w-7xl mx-auto flex items-center justify-between">
 					<Navigation />
 
@@ -19,9 +19,7 @@ export const Header = async () => {
 							/>
 						</li>
 
-						<li
-              className="flex items-center"
-						>
+						<li className="flex items-center">
 							<ThemeButton />
 						</li>
 
@@ -32,8 +30,7 @@ export const Header = async () => {
 							/>
 						</li>
 
-            <li className="flex items-center"
-            >
+						<li className="flex items-center">
 							<AuthButtons />
 						</li>
 					</ul>

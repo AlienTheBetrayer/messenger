@@ -16,7 +16,7 @@ export class NotConnectedGuard implements CanActivate {
 		const request: Request = context.switchToHttp().getRequest();
 
 		try {
-			return await this.connectionsCoreService.verifyConnection(request);
+			return await this.connectionsCoreService.verifyOAuthConnection(request);
 		} catch (e) {
 			// optional redirect
 			const redirectURL = this.reflector.get<string | undefined>(
@@ -24,7 +24,7 @@ export class NotConnectedGuard implements CanActivate {
 				context.getHandler(),
 			);
 
-			const message = e instanceof Error ? e.message : null;
+      const message = e instanceof Error ? e.message : null;
 			throw createException(
 				"unauthorized",
 				"UNAUTHENTICATED",

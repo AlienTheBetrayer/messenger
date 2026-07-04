@@ -30,7 +30,7 @@ export class OAuthService {
 		identity: OAuthIdentityType,
 		ctx: AuthContextType,
 		response: Response,
-	) {
+  ) {
 		// handling error
 		if (identity?.error) {
 			response.redirect(redirectErrorURL(identity.error));
@@ -55,6 +55,48 @@ export class OAuthService {
 		ctx: AuthContextType,
 		response: Response,
 	) {
+		// user
+    const { user } = await this.createUser(identity);
+
+		// authentication process
+		switch (identity?.metadata.action) {
+			case "connect": {
+				if (!identity.metadata.groupId) {
+					throw createException(
+						"badrequest",
+						"INVALID_BODY",
+						"groupId is required for the connection mode.",
+					);
+				}
+
+				await this.connectionsService.connectionCreate({
+					groupId: identity.metadata.groupId,
+					userId: user.id,
+				});
+				break;
+			}
+			default: {
+				// tokens + hashing + session
+				const { accessToken, refreshToken } =
+					await this.jwtService.issueAuthData({
+						userId: user.id,
+						ctx,
+						config: { createGroup: true },
+					});
+
+				this.jwtService.setAuthHttpCookies({
+					accessToken,
+					refreshToken,
+					response,
+				});
+				break;
+			}
+		}
+
+		return { user };
+	}
+
+  async createUser(identity: OAuthIdentityType) {
 		// does the user have an email?
 		if (!identity?.email) {
 			throw createException(
@@ -82,41 +124,6 @@ export class OAuthService {
 			).user;
 		}
 
-		// tokens + hashing + session
-		const { accessToken, refreshToken, session } =
-			await this.jwtService.issueAuthData({
-				userId: user.id,
-        ctx,
-        action: identity.metadata.action ?? "login",
-			});
-
-		// authentication process
-		switch (identity.metadata.action) {
-      case "connect": {
-				if (!identity.metadata.groupId) {
-					throw createException(
-						"badrequest",
-						"INVALID_BODY",
-						"groupId is required for the connection mode.",
-					);
-        }
-        
-				await this.connectionsService.connectionAdd({
-					groupId: identity.metadata.groupId,
-					session,
-				});
-				break;
-			}
-			default: {
-				this.jwtService.setAuthHttpCookies({
-					accessToken,
-					refreshToken,
-					response,
-				});
-				break;
-			}
-		}
-
-		return { user, accessToken, refreshToken, session };
+		return { user };
 	}
 }

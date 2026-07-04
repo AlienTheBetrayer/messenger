@@ -14,9 +14,8 @@ import {
 	Tooltip,
 	TooltipContent,
 	TooltipTrigger,
-	useAppDispatch,
-	useAppSelector,
 } from "@/shared";
+import { useAppDispatch, useAppSelector } from "@/shared/model/redux.hooks";
 
 export const AuthHeader = () => {
 	// redux

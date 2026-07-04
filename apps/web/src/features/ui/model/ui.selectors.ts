@@ -1,6 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import { selectGroupsData } from "@/features/connections/model/sessionGroup.api";
+import { groupSelectors } from "@/features/connections/model/group.slice";
 import { RootState } from "@/shared/model/redux.types";
 
 export const selectConnectSessionsAwaitingGroupId = (state: RootState) => {
@@ -17,9 +17,9 @@ export const selectIsConnectSessionsAwaiting = (
 export const selectAwaitingConnectionGroup = createSelector(
 	[
 		(state: RootState) => selectConnectSessionsAwaitingGroupId(state),
-		(state: RootState) => selectGroupsData(state),
+		(state: RootState) => groupSelectors.selectEntities(state),
 	],
 	(groupId, groups) => {
-		return groupId ? groups.entities[groupId] : null;
+		return groupId ? groups[groupId] : null;
 	},
 );

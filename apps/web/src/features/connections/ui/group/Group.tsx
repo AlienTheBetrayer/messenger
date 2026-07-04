@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useGroupActions } from "@/features/connections/hooks/useGroupActions";
-import { groupSelectors } from "@/features/connections/model/sessionGroup.api";
+import { groupSelectors } from "@/features/connections/model/group.slice";
 import { ConnectedSessionList } from "@/features/connections/ui/connectedsession/ConnectedSessionList";
 import { CreateGroupPopover } from "@/features/connections/ui/group/CreateGroupFormPopover";
 import { selectIsConnectSessionsAwaiting } from "@/features/ui/model/ui.selectors";
@@ -26,9 +26,8 @@ import {
 	Tooltip,
 	TooltipContent,
 	TooltipTrigger,
-	useAppDispatch,
-	useAppSelector,
 } from "@/shared";
+import { useAppDispatch, useAppSelector } from "@/shared/model/redux.hooks";
 
 export const Group = ({ groupId }: { groupId: string }) => {
 	// redux
@@ -51,8 +50,8 @@ export const Group = ({ groupId }: { groupId: string }) => {
 	// fallback
 	if (!group) {
 		return null;
-  }
-  
+	}
+
 	// jsx
 	return (
 		<Item
@@ -67,8 +66,8 @@ export const Group = ({ groupId }: { groupId: string }) => {
 					>
 						<PopoverTrigger asChild>
 							<Button
-                variant="ghost"
-										size="xs"
+								variant="ghost"
+								size="xs"
 								className=" aspect-square"
 							>
 								{group.emoji}
@@ -104,7 +103,7 @@ export const Group = ({ groupId }: { groupId: string }) => {
 										size="xs"
 										variant={awaitingGroup ? "destructive" : "ghost"}
 										asChild={!awaitingGroup}
-                    onClick={() => {
+										onClick={() => {
 											dispatch(
 												toggleConnectSessionsAwaitingGroupId({
 													groupId: group.id,
@@ -164,7 +163,7 @@ export const Group = ({ groupId }: { groupId: string }) => {
 			</ItemHeader>
 
 			<ItemContent>
-				<ConnectedSessionList connectedSessionIds={group.connectedSessionIds} />
+				<ConnectedSessionList groupId={groupId} />
 			</ItemContent>
 		</Item>
 	);

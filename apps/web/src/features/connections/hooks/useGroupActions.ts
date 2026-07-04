@@ -3,10 +3,10 @@ import { useCallback, useMemo } from "react";
 
 import { useConnectionNotifications } from "@/features/connections/hooks/useConnectionNotifications";
 import {
-  useCreateGroupMutation,
-  useDeleteGroupMutation,
-  useEditGroupMutation,
-} from "@/features/connections/model/sessionGroup.api";
+	useCreateGroupMutation,
+	useDeleteGroupMutation,
+	useEditGroupMutation,
+} from "@/features/connections/model/connections.api";
 import { normalizeError } from "@/shared";
 
 export const useGroupActions = () => {

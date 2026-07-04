@@ -16,7 +16,7 @@ export const groupFormSchema = z.object({
 			GroupConfig.title.max,
 			`Title must be at most ${GroupConfig.title.max} characters.`,
 		),
-	emoji: z.emoji().optional(),
+	emoji: z.emoji()
 });
 
 /**

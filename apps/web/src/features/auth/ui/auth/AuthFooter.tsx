@@ -3,13 +3,8 @@
 import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
 import { AuthFooterServiceButtons } from "@/features/auth/ui/auth/AuthFooterServiceButtons";
 import { selectAwaitingConnectionGroup } from "@/features/ui/model/ui.selectors";
-import {
-	Button,
-	CardFooter,
-	queryStateHooks,
-	Spinner,
-	useAppSelector,
-} from "@/shared";
+import { Button, CardFooter, queryStateHooks, Spinner } from "@/shared";
+import { useAppSelector } from "@/shared/model/redux.hooks";
 import { useIsLoading } from "@/shared/model/redux.selectors";
 
 export const AuthFooter = () => {

@@ -1,15 +1,9 @@
-import {
-	AuthCodeSchema,
-	AuthLoginConnectionSchema,
-	AuthSchema,
-	generateId,
-} from "@gravity/shared";
+import { AuthCodeSchema, AuthSchema } from "@gravity/shared";
 import { Injectable } from "@nestjs/common";
 import bcrypt from "bcryptjs";
 
 import { createException } from "../../common";
 import { AuthContextType } from "../auth-core/decorators";
-import { ConnectionsService } from "../connections/connections.service";
 import { AppJwtService } from "../jwt/jwt.service";
 import { PrismaService } from "../prisma/prisma.service";
 import { UserService } from "../user/user.service";
@@ -22,7 +16,6 @@ export class AuthService {
 		private readonly verifyService: VerifyService,
 		private readonly jwtService: AppJwtService,
 		private readonly userService: UserService,
-		private readonly connectionsService: ConnectionsService,
 	) {}
 
 	/**
@@ -95,17 +88,9 @@ export class AuthService {
 	}
 
 	/**
-	 * authenticates the user.
-	 * @param email email address
-	 * @param password secure password
-	 * @param code code that was sent to email (use /code/)
-	 * @returns authentication tokens, user and a session
+	 * validates the login (does not create anything, pure function)
 	 */
-	async login(
-		body: AuthSchema,
-		ctx: AuthContextType,
-		action: "login" | "connect",
-	) {
+	async loginVerify(body: AuthSchema, ctx: AuthContextType) {
 		// verifying the code
 		await this.verifyService.validateCode({
 			email: body.email,
@@ -140,11 +125,27 @@ export class AuthService {
 			);
 		}
 
+		return { user };
+	}
+
+	/**
+	 * authenticates the user.
+	 * @param email email address
+	 * @param password secure password
+	 * @param code code that was sent to email (use /code/)
+	 * @returns authentication tokens, user and a session
+	 */
+	async login(
+		body: AuthSchema,
+		ctx: AuthContextType,
+	) {
+		const { user } = await this.loginVerify(body, ctx);
+
+		// issuing tokens + auth session
 		const { accessToken, refreshToken, session } =
 			await this.jwtService.issueAuthData({
 				userId: user.id,
 				ctx,
-				action,
 			});
 
 		return {
@@ -153,22 +154,6 @@ export class AuthService {
 			refreshToken,
 			session,
 		};
-	}
-
-	async loginConnection(body: AuthLoginConnectionSchema, ctx: AuthContextType) {
-		const { accessToken, refreshToken, session, user } = await this.login(
-			{ password: body.password, code: body.code, email: body.email },
-			ctx,
-			"connect",
-		);
-
-		const { connection } = await this.connectionsService.connectionAdd({
-			session,
-			groupId: body.groupId,
-			connectionId: body.connectionId ?? generateId(),
-		});
-
-		return { accessToken, refreshToken, session, user, connection };
 	}
 
 	/**

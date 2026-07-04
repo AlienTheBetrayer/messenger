@@ -1,21 +1,31 @@
 "use client";
 
+import { Crown } from "lucide-react";
 import Link from "next/link";
 
+import { groupSelectors } from "@/features/connections/model/group.slice";
+import { cn } from "@/features/ui";
 import { InfoCube } from "@/features/users";
-import { usersSelectors } from "@/features/users/model/users.api";
-import { Button, ButtonProps, useAppSelector } from "@/shared";
+import { userSelectors } from "@/features/users/model/users.slice";
+import { Button, ButtonProps } from "@/shared";
+import { useAppSelector } from "@/shared/model/redux.hooks";
 
 export const MiniProfileCube = ({
 	userId,
+	groupId,
 	props,
 }: {
 	userId: string;
+	groupId?: string;
 	props?: ButtonProps;
 }) => {
 	// redux
 	const user = useAppSelector((state) =>
-		usersSelectors.selectById(state, userId),
+		userSelectors.selectById(state, userId),
+	);
+	const group = useAppSelector(
+		(state) =>
+			(groupId && groupSelectors.selectById(state, groupId)) || undefined,
 	);
 
 	// fallback
@@ -23,13 +33,16 @@ export const MiniProfileCube = ({
 		return null;
 	}
 
+	const { className, ...otherProps } = props ?? {};
+
 	// jsx
 	return (
 		<Button
 			variant="ghost"
 			size="sm"
-			{...props}
 			asChild
+			className={cn("grow w-full justify-start", className)}
+			{...otherProps}
 		>
 			<Link
 				href="/profile"
@@ -41,8 +54,17 @@ export const MiniProfileCube = ({
 					image={user.image_url}
 					color={user.color}
 				/>
+
 				<div className="flex flex-col">
-					<span className="truncate text-xs ml-0!">{user.username}</span>
+					<span className="flex gap-0.5 items-center truncate text-xs ml-0!">
+						{group?.owner_user_id === userId && (
+							<div className="rounded-sm bg-background/30 border border-primary/10 p-0.5">
+								<Crown className="size-3.5" />
+							</div>
+						)}
+						{user.username}
+					</span>
+
 					<span className="truncate text-[10px] text-muted-foreground ml-0!">
 						{user.color}
 					</span>

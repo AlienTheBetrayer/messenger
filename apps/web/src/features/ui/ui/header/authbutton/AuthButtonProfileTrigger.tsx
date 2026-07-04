@@ -2,14 +2,15 @@
 
 import Image from "next/image";
 
-import { groupApi } from "@/features/connections/model/sessionGroup.api";
+import { connectionsApi } from "@/features/connections/model/connections.api";
 import { selectConnectSessionsCollapsedMenu } from "@/features/ui/model/local.selectors";
 import { useHeaderProvider } from "@/features/ui/providers/HeaderProvider";
-import { Button, PopoverTrigger, useAppSelector } from "@/shared";
+import { Button, PopoverTrigger } from "@/shared";
+import { useAppSelector } from "@/shared/model/redux.hooks";
 
 export const AuthButtonProfileTrigger = () => {
 	// redux
-	const prefetch = groupApi.usePrefetch("getGroups");
+	const prefetch = connectionsApi.usePrefetch("getConnections");
 	const collapsedMenu = useAppSelector(selectConnectSessionsCollapsedMenu);
 
 	// auth

@@ -16,7 +16,7 @@ export class GroupNotMemberGuard implements CanActivate {
 	private async verify(request: Request) {
 		// throws if not verified
 		try {
-			await this.connectionCoreService.verifyMembership(request);
+			await this.connectionCoreService.verifyGroup(request, "membership");
 		} catch (e) {
 			return true;
 		}

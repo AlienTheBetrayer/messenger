@@ -1,5 +1,5 @@
 /**
- * normalizes the string and replaces all [a-z0-9] symbols with underscores
+ * normalizes the string and replaces all not [a-z0-9] symbols with underscores
  * @param local string to normalize
  * @param char symbol to replace
  * @returns normalized string, with a-z0-9 symbols.

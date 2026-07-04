@@ -1,10 +1,9 @@
 import { QueryStatus } from "@reduxjs/toolkit/query";
 
 import { authApi } from "@/features/auth/model/auth.api";
-import { sessionConnectionApi } from "@/features/connections/model/sessionConnections.api";
-import { groupApi } from "@/features/connections/model/sessionGroup.api";
-import { sessionApi } from "@/features/connections/model/sessions.api";
-import { usersApi } from "@/features/users";
+import { connectionsApi } from "@/features/connections/model/connections.api";
+import { notificationsApi } from "@/features/notifications/model/notifications.slice";
+import { usersApi } from "@/features/users/model/users.api";
 import { createReduxStore } from "@/shared/model/redux.store";
 
 /**
@@ -27,7 +26,6 @@ export type RTKQueryEntry = {
  */
 export type RTKEndpointName =
 	| keyof typeof authApi.endpoints
-	| keyof typeof sessionApi.endpoints
-	| keyof typeof sessionConnectionApi.endpoints
-	| keyof typeof groupApi.endpoints
-	| keyof typeof usersApi.endpoints;
+	| keyof typeof connectionsApi.endpoints
+	| keyof typeof usersApi.endpoints
+	| keyof typeof notificationsApi.endpoints;

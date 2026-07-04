@@ -1,15 +1,15 @@
 import z from "zod";
 
 import { groupFormSchema } from "../forms/group.js";
-import { connected_sessionsType } from "../prisma/schemas/models/connected_sessions.schema.js";
-import { connected_sessions_groupType } from "../prisma/schemas/models/connected_sessions_group.schema.js";
+import { connectionsType } from "../prisma/schemas/models/connections.schema.js";
+import { connections_groupType } from "../prisma/schemas/models/connections_group.schema.js";
 
 /**
  * create
  */
 export type GroupCreateReturn = {
-	group: connected_sessions_groupType;
-	connection: connected_sessionsType;
+	group: connections_groupType;
+	connection: connectionsType;
 };
 
 export const groupCreateSchema = z.object({
@@ -25,7 +25,7 @@ export type GroupCreateSchema = z.infer<typeof groupCreateSchema>;
  * edit
  */
 export type GroupEditReturn = {
-	group: connected_sessions_groupType;
+	group: connections_groupType;
 };
 
 export const groupEditSchema = z.object({
@@ -40,7 +40,7 @@ export type GroupEditSchema = z.infer<typeof groupEditSchema>;
  * delete
  */
 export type GroupDeleteReturn = {
-	group: connected_sessions_groupType;
+	group: connections_groupType;
 };
 
 export const groupDeleteSchema = z.object({

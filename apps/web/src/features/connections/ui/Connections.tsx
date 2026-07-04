@@ -4,7 +4,7 @@ import { Boxes, ChevronsUpDown } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 
 import { useAuth } from "@/features/auth/hooks/useAuth";
-import { groupApi } from "@/features/connections/model/sessionGroup.api";
+import { connectionsApi } from "@/features/connections/model/connections.api";
 import { CreateGroupPopover } from "@/features/connections/ui/group/CreateGroupFormPopover";
 import { GroupList } from "@/features/connections/ui/group/GroupsList";
 import { MiniProfileCube } from "@/features/connections/ui/other/MiniProfileCube";
@@ -18,9 +18,8 @@ import {
 	Tooltip,
 	TooltipContent,
 	TooltipTrigger,
-	useAppDispatch,
-	useAppSelector,
 } from "@/shared";
+import { useAppDispatch, useAppSelector } from "@/shared/model/redux.hooks";
 
 export const Connections = () => {
 	return (
@@ -33,7 +32,7 @@ export const Connections = () => {
 const ConnectionsDisplay = () => {
 	// redux
 	const dispatch = useAppDispatch();
-	const prefetchGroups = groupApi.usePrefetch("getGroups");
+	const prefetchConnections = connectionsApi.usePrefetch("getConnections");
 	const collapsedMenu = useAppSelector(selectConnectSessionsCollapsedMenu);
 	const auth = useAuth();
 
@@ -71,7 +70,7 @@ const ConnectionsDisplay = () => {
 							initial={{ width: 0, opacity: 0 }}
 							animate={{ width: "auto", opacity: 1 }}
 							exit={{ width: 0, opacity: 0 }}
-							className="overflow-hidden"
+							className="overflow-hidden grow"
 						>
 							<MiniProfileCube userId={auth?.user.id ?? ""} />
 						</motion.div>
@@ -86,7 +85,7 @@ const ConnectionsDisplay = () => {
 							size="sm"
 							onPointerDown={() => {
 								if (collapsedMenu) {
-									prefetchGroups();
+									prefetchConnections();
 								}
 							}}
 							onClick={() => {

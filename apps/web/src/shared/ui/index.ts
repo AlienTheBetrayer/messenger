@@ -25,5 +25,6 @@ export * from "./slider.js";
 export * from "./sonner.js";
 export * from "./spinner.js";
 export * from "./switch.js";
+export * from "./table.js";
 export * from "./textarea.js";
 export * from "./tooltip.js";

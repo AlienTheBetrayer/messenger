@@ -103,7 +103,9 @@ export class UserService {
 		});
 
 		// username
-		const username = body.username || (await this.generateUsername(body.email));
+		const username =
+			normalizeString(body.username ?? "") ||
+			(await this.generateUsername(body.email));
 
 		// creating the user
 		const user = await this.prismaService.users.create({

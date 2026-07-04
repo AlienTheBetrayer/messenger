@@ -9,7 +9,6 @@ import z from "zod";
 import { createException } from "../../common";
 import { TokenPayloadSchema, tokenPayloadSchema } from "../auth/auth.types";
 import { AuthContextType } from "../auth-core/decorators";
-import { oAuthIdentityMetadata } from "../auth-oauth/oauth.types";
 import { AppConfigService } from "../config/config.service";
 import { EnvSchema } from "../config/config.types";
 import { PrismaService } from "../prisma/prisma.service";
@@ -167,7 +166,7 @@ export class AppJwtService {
 	async issueAuthData(params: {
 		userId: string;
 		ctx: AuthContextType;
-		action?: oAuthIdentityMetadata["action"];
+		config?: { createGroup: boolean };
 	}) {
 		// session
 		const session = await this.prismaService.auth_sessions.create({
@@ -235,22 +234,31 @@ export class AppJwtService {
 			},
 		});
 
-		// creating the connected group session if we're logging in
-		if (params.action !== "connect") {
-			await this.prismaService.connected_sessions_group.create({
-				data: {
-					id: generateId(),
-					title: "Default",
-					emoji: randomGroupFormEmoji(),
-					connected_sessions: {
-						create: {
-							id: generateId(),
-							session_id: updatedSession.id,
-						},
-					},
-					owner_user_id: params.userId,
+		if (params.config?.createGroup !== false) {
+			// checking if the user is already connected to a group
+			const found = await this.prismaService.connections.findFirst({
+				where: {
+					user_id: session.user_id,
 				},
 			});
+
+			if (!found) {
+				// creating the connected group session if we're logging in
+				await this.prismaService.connections_group.create({
+					data: {
+						id: generateId(),
+						title: "Default",
+						emoji: randomGroupFormEmoji(),
+						connections: {
+							create: {
+								id: generateId(),
+								user_id: params.userId,
+							},
+						},
+						owner_user_id: params.userId,
+					},
+				});
+			}
 		}
 
 		return { accessToken, refreshToken, session: updatedSession };

@@ -15,7 +15,7 @@ export const NotificationSonner = () => {
 			theme={theme.resolvedTheme as ToasterProps["theme"]}
 			expand={false}
 			visibleToasts={3}
-			position="top-center"
+			position="bottom-left"
 			className="**:data-content:w-full"
 			closeButton
 			duration={4000}

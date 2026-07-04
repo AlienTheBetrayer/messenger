@@ -1,20 +1,17 @@
 import z from "zod";
 
-import {
-  auth_sessionsSchema,
-  auth_sessionsType,
-} from "../prisma/schemas/models/auth_sessions.schema.js";
-import { connected_sessionsType } from "../prisma/schemas/models/connected_sessions.schema.js";
-import { connected_sessions_groupType } from "../prisma/schemas/models/connected_sessions_group.schema.js";
+import { connectionsType } from "../prisma/schemas/models/connections.schema.js";
+import { connections_groupType } from "../prisma/schemas/models/connections_group.schema.js";
 import { usersType } from "../prisma/schemas/models/users.schema.js";
+import { AuthLoginReturn, authSchema } from "./auth.js";
 
 /**
  * connections (get)
  */
 export type ConnectionsReturn = {
-	connections: (connected_sessions_groupType & {
-		connected_sessions: (connected_sessionsType & {
-			auth_sessions: auth_sessionsType & { users: usersType };
+	groups: (connections_groupType & {
+		connections: (connectionsType & {
+			users: usersType;
 		})[];
 	})[];
 };
@@ -22,14 +19,27 @@ export type ConnectionsReturn = {
 /**
  * connection/add
  */
-export const connectionAddSchema = z.object({
+export const connectionAddSchema = authSchema.extend({
 	groupId: z.nanoid(),
 	connectionId: z.nanoid().optional(),
-	session: auth_sessionsSchema,
 });
 export type ConnectionAddSchema = z.infer<typeof connectionAddSchema>;
 export type ConnectionAddReturn = {
-	connected_session: connected_sessionsType;
+	connection: connectionsType;
+	user: usersType;
+};
+
+/**
+ * connection/create
+ */
+export const connectionCreateSchema = z.object({
+	groupId: z.nanoid(),
+	connectionId: z.nanoid().optional(),
+	userId: z.nanoid(),
+});
+export type ConnectionCreateSchema = z.infer<typeof connectionCreateSchema>;
+export type ConnectionCreateReturn = {
+	connection: connectionsType;
 };
 
 /**
@@ -38,7 +48,7 @@ export type ConnectionAddReturn = {
 export const connectionDeleteSchema = z.object({ connectionId: z.nanoid() });
 export type ConnectionDeleteSchema = z.infer<typeof connectionDeleteSchema>;
 export type ConnectionDeleteReturn = {
-	connected_session: connected_sessionsType;
+	connection: connectionsType;
 };
 
 /**
@@ -50,3 +60,14 @@ export const connectionInitSchema = z.object({
 });
 export type ConnectionInitSchema = z.infer<typeof connectionInitSchema>;
 export type ConnectionInitReturn = void;
+
+/**
+ * connection/login
+ */
+export const connectionLoginSchema = z.object({
+	connectionId: z.nanoid(),
+});
+export type ConnectionLoginSchema = z.infer<typeof connectionLoginSchema>;
+export type ConnectionLoginReturn = AuthLoginReturn & {
+	connection: connectionsType;
+};

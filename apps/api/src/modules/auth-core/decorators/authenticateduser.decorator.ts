@@ -1,6 +1,6 @@
 import {
 	auth_sessionsSchema,
-	connected_sessions_groupSchema,
+	connections_groupSchema,
 	usersSchema,
 } from "@gravity/shared";
 import { createParamDecorator, ExecutionContext } from "@nestjs/common";
@@ -12,7 +12,7 @@ import z from "zod";
  */
 export const authenticatedUserSchema = usersSchema.extend({
 	session: auth_sessionsSchema.extend({
-		groups: connected_sessions_groupSchema.array().optional(),
+		groups: connections_groupSchema.array().optional(),
 	}),
 });
 

@@ -1,12 +1,15 @@
 import { Fragment } from "react/jsx-runtime";
 
-import { useGetGroupsQuery } from "@/features/connections/model/sessionGroup.api";
+import { useGetConnectionsQuery } from "@/features/connections/model/connections.api";
+import { groupSelectors } from "@/features/connections/model/group.slice";
 import { Group } from "@/features/connections/ui/group/Group";
 import { Separator } from "@/shared";
+import { useAppSelector } from "@/shared/model/redux.hooks";
 
 export const GroupList = () => {
 	// redux
-	const { data: groups, isLoading } = useGetGroupsQuery();
+	const { isLoading } = useGetConnectionsQuery();
+	const groupIds = useAppSelector((state) => groupSelectors.selectIds(state));
 
 	if (isLoading) {
 		return (
@@ -21,14 +24,14 @@ export const GroupList = () => {
 		);
 	}
 
-	if (!groups?.ids.length) {
+	if (!groupIds.length) {
 		return null;
 	}
 
 	// jsx
 	return (
 		<ul className="w-full flex flex-col max-h-42 scrollbar-none overflow-y-auto pb-4">
-			{groups.ids.map((groupId) => (
+			{groupIds.map((groupId) => (
 				<Fragment key={groupId}>
 					<li>
 						<Group groupId={groupId} />

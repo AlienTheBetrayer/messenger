@@ -14,7 +14,7 @@ export class ConnectedGuard implements CanActivate {
 
 	async verify(request: Request) {
 		try {
-			await this.connectionsCoreService.verifyConnection(request);
+			await this.connectionsCoreService.verifyOAuthConnection(request);
 		} catch {
 			return true;
 		}

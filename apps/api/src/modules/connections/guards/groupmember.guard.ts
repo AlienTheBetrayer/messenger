@@ -12,7 +12,10 @@ export class GroupMemberGuard implements CanActivate {
 		const request: Request = context.switchToHttp().getRequest();
 
 		try {
-			return await this.connectionCoreService.verifyMembership(request);
+			return await this.connectionCoreService.verifyGroup(
+				request,
+				"membership",
+			);
 		} catch (e) {
 			const message = e instanceof Error ? e.message : null;
 			throw createException(

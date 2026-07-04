@@ -1,7 +1,6 @@
 import {
 	AuthCodeReturn,
 	AuthForgotPasswordReturn,
-	AuthLoginConnectionReturn,
 	AuthLoginReturn,
 	AuthLogoutReturn,
 	AuthMeReturn,
@@ -29,7 +28,7 @@ import {
 } from "../auth-core/decorators";
 import { AuthenticatedGuard, NotAuthenticatedGuard } from "../auth-core/guards";
 import { AppJwtService } from "../jwt/jwt.service";
-import { AuthCodeDto, AuthConnectionDto, AuthDto } from "./auth.dto";
+import { AuthCodeDto, AuthDto } from "./auth.dto";
 import { AuthService } from "./auth.service";
 
 @Controller("auth")
@@ -81,7 +80,7 @@ export class AuthController {
 	): Promise<AuthLoginReturn> {
 		// authenticating
 		const { accessToken, refreshToken, session, user } =
-			await this.authService.login(body, ctx, "login");
+			await this.authService.login(body, ctx);
 
 		this.jwtService.setAuthHttpCookies({
 			accessToken,
@@ -90,27 +89,6 @@ export class AuthController {
 		});
 
 		return { accessToken, refreshToken, session, user };
-	}
-
-	/**
-	 * authenticates the user for a connection
-	 * @param email email address
-	 * @param password secure password
-	 * @param code code that was sent to email (use /code/)
-	 * @param groupId id of the group
-	 * @param connectionId optional id of the connection
-	 * @returns authentication tokens, user and a session
-	 */
-	@UseGuards(NotAuthenticatedGuard)
-	@Post("login-connection")
-	async loginConnection(
-		@Body() body: AuthConnectionDto,
-		@AuthContext() ctx: AuthContextType,
-		@Res({ passthrough: true }) response: Response,
-	): Promise<AuthLoginConnectionReturn> {
-		// authenticating
-		const ret = await this.authService.loginConnection(body, ctx);
-		return ret;
 	}
 
 	/**

@@ -1,8 +1,7 @@
 import { Check, EllipsisVertical } from "lucide-react";
 
 import { useAuth } from "@/features/auth/hooks/useAuth";
-import { sessionConnectionsSelectors } from "@/features/connections/model/sessionConnections.api";
-import { sessionSelectors } from "@/features/connections/model/sessions.api";
+import { connectionSelectors } from "@/features/connections/model/connection.slice";
 import { MiniProfileCube } from "@/features/connections/ui/other/MiniProfileCube";
 import { SessionContextMenu } from "@/features/connections/ui/other/SessionContextMenu";
 import {
@@ -13,8 +12,8 @@ import {
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
-	useAppSelector,
 } from "@/shared";
+import { useAppSelector } from "@/shared/model/redux.hooks";
 
 export const ConnectedSession = ({
 	connectedSessionId,
@@ -23,26 +22,26 @@ export const ConnectedSession = ({
 }) => {
 	// redux
 	const connection = useAppSelector((state) =>
-		sessionConnectionsSelectors.selectById(state, connectedSessionId),
-	);
-	const session = useAppSelector((state) =>
-		sessionSelectors.selectById(state, connection.session_id ?? ""),
+		connectionSelectors.selectById(state, connectedSessionId),
 	);
 	const auth = useAuth();
 
 	// fallbacks
-	if (!connection || !session) {
+	if (!connection) {
 		return null;
 	}
 
-	if (auth?.session.id === connection.session_id) {
+	if (auth?.user.id === connection.user_id) {
 		return (
 			<div className="relative h-12">
-        <ConnectedSessionMainButton userId={session.user_id} />
-        
-        <span className="absolute top-1/2 -translate-y-1/2 right-2 size-6 flex items-center justify-center text-green-secondary">
-          <Check className="size-4"/>
-        </span>
+				<ConnectedSessionMainButton
+					userId={connection.user_id}
+					groupId={connection.group_id}
+				/>
+
+				<span className="absolute top-1/2 -translate-y-1/2 right-2 size-6 flex items-center justify-center text-green-secondary">
+					<Check className="size-4" />
+				</span>
 			</div>
 		);
 	}
@@ -52,7 +51,10 @@ export const ConnectedSession = ({
 		<ContextMenu>
 			<ContextMenuTrigger>
 				<div className="relative h-12">
-					<ConnectedSessionMainButton userId={session.user_id} />
+					<ConnectedSessionMainButton
+						userId={connection.user_id}
+						groupId={connection.group_id}
+					/>
 
 					<Popover>
 						<PopoverTrigger asChild>
@@ -78,10 +80,17 @@ export const ConnectedSession = ({
 	);
 };
 
-const ConnectedSessionMainButton = ({ userId }: { userId: string }) => {
+const ConnectedSessionMainButton = ({
+	userId,
+	groupId,
+}: {
+	userId: string;
+	groupId?: string;
+}) => {
 	return (
 		<MiniProfileCube
 			userId={userId}
+			groupId={groupId}
 			props={{
 				variant: "secondary",
 				size: "xl",

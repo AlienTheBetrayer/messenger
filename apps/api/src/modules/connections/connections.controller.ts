@@ -1,6 +1,8 @@
 import {
+	ConnectionAddReturn,
 	ConnectionDeleteReturn,
 	ConnectionInitReturn,
+	ConnectionLoginReturn,
 	ConnectionsReturn,
 	GroupCreateReturn,
 	GroupDeleteReturn,
@@ -20,23 +22,36 @@ import {
 import { Response } from "express";
 
 import {
+	AuthContext,
+	AuthContextType,
 	AuthenticatedUser,
 	AuthenticatedUserType,
 } from "../auth-core/decorators";
 import { AuthenticatedGuard } from "../auth-core/guards";
+import { AppJwtService } from "../jwt/jwt.service";
 import {
+	ConnectionAddDto,
 	ConnectionDeleteDto,
 	ConnectionInitDto,
+	ConnectionLoginDto,
 	GroupCreateDto,
 	GroupDeleteDto,
 	GroupEditDto,
 } from "./connections.dto";
 import { ConnectionsService } from "./connections.service";
-import { GroupOwnerGuard } from "./guards";
+import {
+	ConnectionMemberGuard,
+	ConnectionOwnerGuard,
+	GroupMemberGuard,
+	GroupOwnerGuard,
+} from "./guards";
 
 @Controller("connections")
 export class ConnectionsController {
-	constructor(private readonly connectionsService: ConnectionsService) {}
+	constructor(
+		private readonly connectionsService: ConnectionsService,
+		private readonly jwtService: AppJwtService,
+	) {}
 
 	/**
 	 * gets all the currently connected auth sessions in groups
@@ -47,10 +62,59 @@ export class ConnectionsController {
 	async connections(
 		@AuthenticatedUser() user: AuthenticatedUserType,
 	): Promise<ConnectionsReturn> {
-		const connections = await this.connectionsService.connections(
-			user.session.id,
-		);
-		return { connections };
+		const groups = await this.connectionsService.connections(user.id);
+		return { groups };
+	}
+
+	/**
+	 * relogins you with a different connection. (only works if you're a member of it)
+	 * @param connectionId id of the connection
+	 * @returns
+	 */
+	@UseGuards(AuthenticatedGuard, ConnectionMemberGuard)
+	@Post("connection/login")
+	async connectionLogin(
+		@Body() body: ConnectionLoginDto,
+		@AuthContext() ctx: AuthContextType,
+		@AuthenticatedUser() authenticatedUser: AuthenticatedUserType,
+		@Res({ passthrough: true }) response: Response,
+	): Promise<ConnectionLoginReturn> {
+		// validating + creating the session/tokens
+		const { accessToken, refreshToken, connection, session, user } =
+			await this.connectionsService.connectionLogin(
+				body,
+				ctx,
+				authenticatedUser,
+			);
+
+		// setting tokens
+		this.jwtService.setAuthHttpCookies({
+			accessToken,
+			refreshToken,
+			response,
+		});
+
+		return { accessToken, refreshToken, session, connection, user };
+	}
+
+	/**
+	 * adds the user for a connection. (does not authenticate)
+	 * @param email email address
+	 * @param password secure password
+	 * @param code code that was sent to email (use /code/)
+	 * @param groupId id of the group
+	 * @param connectionId optional id of the connection
+	 * @returns authentication tokens, user and a session
+	 */
+	@UseGuards(AuthenticatedGuard, GroupMemberGuard)
+	@Post("connection/add")
+	async connectionAdd(
+		@Body() body: ConnectionAddDto,
+		@AuthContext() ctx: AuthContextType,
+	): Promise<ConnectionAddReturn> {
+		// authenticating
+		const ret = await this.connectionsService.connectionAdd(body, ctx);
+		return ret;
 	}
 
 	/**
@@ -58,14 +122,13 @@ export class ConnectionsController {
 	 * @param connectionId id of the connection to delete
 	 * @returns
 	 */
-	@UseGuards(AuthenticatedGuard, GroupOwnerGuard)
+	@UseGuards(AuthenticatedGuard, ConnectionOwnerGuard)
 	@Delete("connection/delete")
 	async connectionDelete(
 		@Body() body: ConnectionDeleteDto,
 	): Promise<ConnectionDeleteReturn> {
-		const connected_session =
-			await this.connectionsService.connectionDelete(body);
-		return { connected_session };
+		const connection = await this.connectionsService.connectionDelete(body);
+		return { connection };
 	}
 
 	/**

@@ -31,13 +31,19 @@ describe("AuthService", () => {
 	const user = {
 		id: "user-id",
 		password: "password",
-	};
+  };
+  const ret = {
+    accessToken: "a",
+    refreshToken: "r",
+    session: {}
+  }
 
 	describe("happy paths", () => {
 		it("should login if the code and password are valid", async () => {
 			// arrange
 			ctx.mockVerifyService.validateCode.mockResolvedValue({} as never);
-			ctx.mockPrismaService.users.findFirst.mockResolvedValue(user);
+      ctx.mockPrismaService.users.findFirst.mockResolvedValue(user);
+      ctx.mockAppJwtService.issueAuthData.mockResolvedValue(ret as never);
 			jest.spyOn(bcrypt, "compare").mockResolvedValue(true as never);
 
 			// act
@@ -53,7 +59,8 @@ describe("AuthService", () => {
 		it("should throw when attempting to login with an invalid password", async () => {
 			// arrange
 			ctx.mockPrismaService.users.findFirst.mockResolvedValue(undefined);
-			ctx.mockVerifyService.validateCode.mockResolvedValue(undefined as never);
+      ctx.mockVerifyService.validateCode.mockResolvedValue(undefined as never);
+      ctx.mockAppJwtService.issueAuthData.mockResolvedValue(ret as never);
 			jest.spyOn(bcrypt, "compare").mockResolvedValue(false as never);
 
 			// act
@@ -68,6 +75,7 @@ describe("AuthService", () => {
 			// arrange
 			ctx.mockPrismaService.users.findFirst.mockResolvedValue(null);
 			ctx.mockVerifyService.validateCode.mockResolvedValue(undefined as never);
+      ctx.mockAppJwtService.issueAuthData.mockResolvedValue(ret as never);
 
 			// act
 			const result = ctx.authService.login(dto, authCtx);
@@ -81,6 +89,7 @@ describe("AuthService", () => {
 			const error = new Error();
 			ctx.mockVerifyService.validateCode.mockRejectedValue(error);
 			jest.spyOn(bcrypt, "compare");
+      ctx.mockAppJwtService.issueAuthData.mockResolvedValue(ret as never);
 
 			// act
 			const result = ctx.authService.login(dto, authCtx);

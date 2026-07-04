@@ -9,25 +9,23 @@ import { useAuthNotifications } from "@/features/auth/hooks/useAuthNotifications
 import {
 	useForgotPasswordMutation,
 	useGetCodeMutation,
-	useLoginConnectionMutation,
 	useLoginMutation,
 	useSignupMutation,
 } from "@/features/auth/model/auth.api";
 import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
+import { useAddConnectionMutation } from "@/features/connections/model/connections.api";
 import { selectAwaitingConnectionGroup } from "@/features/ui/model/ui.selectors";
-import { normalizeError, queryStateHooks, useAppSelector } from "@/shared";
-import {
-	AuthLoginReturn__,
-	usersType__,
-} from "@/shared/model/serializable.types";
+import { normalizeError, queryStateHooks } from "@/shared";
+import { useAppSelector } from "@/shared/model/redux.hooks";
+import { usersType__ } from "@/shared/model/serializable.types";
 
 export const useAuthActions = () => {
 	// redux
 	const [getCode] = useGetCodeMutation();
 	const [login] = useLoginMutation();
-	const [loginConnection] = useLoginConnectionMutation();
 	const [signup] = useSignupMutation();
 	const [forgotPassword] = useForgotPasswordMutation();
+	const [addConnection] = useAddConnectionMutation();
 
 	const awaitingGroup = useAppSelector((state) =>
 		selectAwaitingConnectionGroup(state),
@@ -77,14 +75,15 @@ export const useAuthActions = () => {
 			// api requests
 			const fn = async () => {
 				try {
-					let user: usersType__ | null = null;
+					let ret: {
+						user: usersType__;
+						[key: string]: unknown;
+					} | null;
 
 					switch (type) {
 						case "login": {
-							let ret: AuthLoginReturn__ | null = null;
-
 							if (awaitingGroup) {
-								ret = await loginConnection({
+								ret = await addConnection({
 									email: values.email,
 									password: values.password,
 									code: data.code,
@@ -99,34 +98,29 @@ export const useAuthActions = () => {
 								}).unwrap();
 							}
 
-							user = ret.user;
 							break;
 						}
 						case "signup": {
-							const ret = await signup({
+							ret = await signup({
 								email: values.email,
 								password: values.password,
 								code: data.code,
 							}).unwrap();
-
-							user = ret.user;
 							break;
 						}
 
 						case "forgot_password": {
-							const ret = await forgotPassword({
+							ret = await forgotPassword({
 								email: values.email,
 								password: values.password,
 								code: data.code,
 							}).unwrap();
-
-							user = ret.user;
 							break;
 						}
 					}
 
 					setVerify("success");
-					return user;
+					return ret.user;
 				} catch (e) {
 					// error handling
 					const message = normalizeError(e);
@@ -142,7 +136,7 @@ export const useAuthActions = () => {
 			authForm,
 			forgotPassword,
 			login,
-			loginConnection,
+			addConnection,
 			notifications,
 			setVerify,
 			signup,

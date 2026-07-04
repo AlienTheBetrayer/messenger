@@ -6,6 +6,7 @@ import { NotificationSonner } from "@/features/notifications/ui/NotificationSonn
 import { ThemesProvider } from "@/features/ui";
 import { Header } from "@/features/ui/ui/header/Header";
 import { ReduxProvider, sfetch, TooltipProvider } from "@/shared";
+import { AuthMeReturn__ } from "@/shared/model/serializable.types";
 
 export const metadata = {
 	title: "Outwave",
@@ -17,11 +18,12 @@ export default async function RootLayout({
 	children: React.ReactNode;
 }>) {
 	// auth
-  let auth: AuthMeReturn | null = null;
-  try {
-    auth = (await (await sfetch("/auth/me")).json()) as AuthMeReturn;
-  } catch {
-  }
+	let auth: AuthMeReturn__ | null = null;
+	try {
+		auth = (await (await sfetch("/auth/me")).json()) as AuthMeReturn__;
+	} catch {
+		/** */
+	}
 
 	// jsx
 	return (

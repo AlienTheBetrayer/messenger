@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
 
 import { useGroupActions } from "@/features/connections/hooks/useGroupActions";
-import { groupSelectors } from "@/features/connections/model/sessionGroup.api";
+import { groupSelectors } from "@/features/connections/model/group.slice";
 import { useGroupFormProvider } from "@/features/connections/providers/GroupFormProvider";
 import { CreateGroupPopoverParams } from "@/features/connections/ui/group/CreateGroupFormPopover";
 import {
@@ -29,8 +29,8 @@ import {
 	Tooltip,
 	TooltipContent,
 	TooltipTrigger,
-	useAppSelector,
 } from "@/shared";
+import { useAppSelector } from "@/shared/model/redux.hooks";
 
 export const CreateGroupForm = ({
 	onSuccess,

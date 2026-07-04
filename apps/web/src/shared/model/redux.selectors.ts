@@ -44,7 +44,7 @@ const selectEndpointIndex = createSelector(selectApiState, (api) => {
  * @param status status to check
  * @returns
  */
-export const selectRouteStatus = (
+const selectRouteStatus = (
 	endpoints: RTKEndpointName[],
 	status: QueryStatus,
 ) => {

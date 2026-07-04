@@ -1,7 +1,8 @@
 "use client";
 
 import { selectAwaitingConnectionGroup } from "@/features/ui/model/ui.selectors";
-import { Button, CardFooter, Spinner, useAppSelector } from "@/shared";
+import { Button, CardFooter, Spinner } from "@/shared";
+import { useAppSelector } from "@/shared/model/redux.hooks";
 import { useIsLoading } from "@/shared/model/redux.selectors";
 
 export const VerifyFooter = () => {

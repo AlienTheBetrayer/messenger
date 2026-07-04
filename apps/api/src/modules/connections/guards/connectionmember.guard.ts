@@ -5,36 +5,23 @@ import { createException } from "../../../common";
 import { ConnectionsCoreService } from "../connections-core.service";
 
 @Injectable()
-export class GroupNotOwnerGuard implements CanActivate {
+export class ConnectionMemberGuard implements CanActivate {
 	constructor(private readonly connectionCoreService: ConnectionsCoreService) {}
-
-	/**
-	 * inverted version of verify ownership.
-	 * @param request request object
-	 * @returns true if not owner, throws if owner
-	 */
-	private async verify(request: Request) {
-		// throws if not verified
-		try {
-			await this.connectionCoreService.verifyOwnership(request);
-		} catch (e) {
-			return true;
-		}
-
-		throw new Error();
-	}
 
 	async canActivate(context: ExecutionContext) {
 		const request: Request = context.switchToHttp().getRequest();
 
 		try {
-			return await this.verify(request);
+			return await this.connectionCoreService.verifyConnection(
+        request,
+        "membership"
+			);
 		} catch (e) {
 			const message = e instanceof Error ? e.message : null;
 			throw createException(
 				"unauthorized",
 				"UNAUTHENTICATED",
-				`${message} only available for not owners.`,
+				`${message}; only available for members.`,
 			);
 		}
 	}

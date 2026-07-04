@@ -1,12 +1,12 @@
 "use client";
 
 import { useMeQuery } from "@/features/auth/model/auth.api";
-import { sessionSelectors } from "@/features/connections/model/sessions.api";
-import { usersSelectors } from "@/features/users/model/users.api";
-import { useAppSelector } from "@/shared";
+import { sessionSelectors } from "@/features/connections/model/sessions.slice";
+import { userSelectors } from "@/features/users/model/users.slice";
+import { useAppSelector } from "@/shared/model/redux.hooks";
 import {
-  auth_sessionsType__,
-  usersType__,
+	auth_sessionsType__,
+	usersType__,
 } from "@/shared/model/serializable.types";
 
 /**
@@ -16,22 +16,23 @@ import {
 export const useAuth = ():
 	| { user: usersType__; session: auth_sessionsType__ }
 	| undefined => {
-	// fetching (preloaded)
-	const data = useMeQuery();
+	// fetching validation (preloaded)
+	useMeQuery();
 
 	// selecting
-	const user = useAppSelector((state) =>
-		usersSelectors.selectById(state, data.data?.userId ?? ""),
+	const auth = useAppSelector((state) => state.auth);
+	const user = useAppSelector(
+		(state) =>
+			auth.status && userSelectors.selectById(state, auth.status?.userId),
 	);
-	const session = useAppSelector((state) =>
-		sessionSelectors.selectById(state, data.data?.sessionId ?? ""),
+	const session = useAppSelector(
+		(state) =>
+			auth.status && sessionSelectors.selectById(state, auth.status?.sessionId),
 	);
 
-	if (!data.data?.userId) {
+	if (!user || !session) {
 		return;
 	}
 
 	return { user, session };
-
-	return;
 };
