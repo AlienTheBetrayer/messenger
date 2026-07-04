@@ -11,21 +11,21 @@ import { selectIsConnectSessionsAwaiting } from "@/features/ui/model/ui.selector
 import { toggleConnectSessionsAwaitingGroupId } from "@/features/ui/model/ui.slice";
 import { DeleteConnectionMessageBox } from "@/features/ui/ui/messageboxes/DeleteConnectionMessageBox";
 import {
-	Button,
-	EmojiPicker,
-	EmojiPickerContent,
-	EmojiPickerFooter,
-	EmojiPickerSearch,
-	Item,
-	ItemContent,
-	ItemHeader,
-	ItemTitle,
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-	Tooltip,
-	TooltipContent,
-	TooltipTrigger,
+  Button,
+  EmojiPicker,
+  EmojiPickerContent,
+  EmojiPickerFooter,
+  EmojiPickerSearch,
+  Item,
+  ItemContent,
+  ItemHeader,
+  ItemTitle,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
 } from "@/shared";
 import { useAppDispatch, useAppSelector } from "@/shared/model/redux.hooks";
 
@@ -62,7 +62,13 @@ export const Group = ({ groupId }: { groupId: string }) => {
 				<ItemTitle className="flex flex-row items-center gap-0">
 					<Popover
 						open={open}
-						onOpenChange={setOpen}
+            onOpenChange={(flag) => {
+              if (flag && group.owner_user_id === auth?.user.id) {
+                setOpen(true);
+              } else {
+                setOpen(false);
+              }
+            }}
 					>
 						<PopoverTrigger asChild>
 							<Button
@@ -74,7 +80,7 @@ export const Group = ({ groupId }: { groupId: string }) => {
 							</Button>
 						</PopoverTrigger>
 
-						<PopoverContent>
+            <PopoverContent>
 							<EmojiPicker
 								sticky={false}
 								className="h-[300px]"
