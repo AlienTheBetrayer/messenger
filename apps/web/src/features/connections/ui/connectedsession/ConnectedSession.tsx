@@ -66,14 +66,14 @@ export const ConnectedSession = ({
 								<EllipsisVertical />
 							</Button>
 						</PopoverTrigger>
-						<PopoverContent className="w-screen max-w-32 shadowed">
+						<PopoverContent className="w-screen max-w-48 shadowed">
 							<SessionContextMenu connectionId={connectedSessionId} />
 						</PopoverContent>
 					</Popover>
 				</div>
 			</ContextMenuTrigger>
 
-			<ContextMenuContent className="w-screen max-w-32! shadowed p-3">
+			<ContextMenuContent className="w-screen max-w-48! shadowed p-3">
 				<SessionContextMenu connectionId={connectedSessionId} />
 			</ContextMenuContent>
 		</ContextMenu>

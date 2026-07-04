@@ -1,4 +1,3 @@
-import { connectionsType } from "@gravity/shared";
 import { createSelector } from "@reduxjs/toolkit";
 
 import { connectionSelectors } from "@/features/connections/model/connection.slice";

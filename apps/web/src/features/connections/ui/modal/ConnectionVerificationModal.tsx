@@ -7,7 +7,7 @@ import { Dialog, queryStateHooks } from "@/shared";
 export const ConnectionVerificationModal = () => {
 	// states
 	const [connection, setConnection] = queryStateHooks.useConnection();
-	const [id] = queryStateHooks.useId();
+	const [id, setId] = queryStateHooks.useId();
 
 	// jsx
 	return (
@@ -16,6 +16,7 @@ export const ConnectionVerificationModal = () => {
 			onOpenChange={(flag) => {
 				if (!flag) {
 					setConnection(null);
+					setId(null);
 				}
 			}}
 		>

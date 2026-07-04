@@ -1,6 +1,5 @@
 "use client";
 
-import { Crown } from "lucide-react";
 import Link from "next/link";
 
 import { groupSelectors } from "@/features/connections/model/group.slice";
@@ -28,6 +27,9 @@ export const MiniProfileCube = ({
 			(groupId && groupSelectors.selectById(state, groupId)) || undefined,
 	);
 
+	// ui states
+	const isOwner = user.id === group?.owner_user_id;
+
 	// fallback
 	if (!user) {
 		return null;
@@ -46,22 +48,25 @@ export const MiniProfileCube = ({
 		>
 			<Link
 				href="/profile"
-				className="flex gap-2"
+				className="grid! grid-cols-[20%_1fr]"
 			>
-				<InfoCube
-					animation="animate-bounce"
-					className="w-6 h-6"
-					image={user.image_url}
-					color={user.color}
-				/>
+				<div className="flex flex-col items-center justify-center">
+					{isOwner && (
+						<div className="flex items-center rounded-sm text-[9px] gap-1">
+							<span className="uppercase">owner</span>
+						</div>
+					)}
+
+					<InfoCube
+						animation="animate-bounce"
+						className="w-6 h-6"
+						image={user.image_url}
+						color={user.color}
+					/>
+				</div>
 
 				<div className="flex flex-col">
 					<span className="flex gap-0.5 items-center truncate text-xs ml-0!">
-						{group?.owner_user_id === userId && (
-							<div className="rounded-sm bg-background/30 border border-primary/10 p-0.5">
-								<Crown className="size-3.5" />
-							</div>
-						)}
 						{user.username}
 					</span>
 

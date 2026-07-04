@@ -71,7 +71,7 @@ export const Group = ({ groupId }: { groupId: string }) => {
 									size="xs"
 									className="aspect-square"
 								>
-									<span className="text-xs">{group.emoji}</span>
+									<span className="text-[11px]">{group.emoji}</span>
 								</Button>
 							</PopoverTrigger>
 
@@ -91,10 +91,10 @@ export const Group = ({ groupId }: { groupId: string }) => {
 							</PopoverContent>
 						</Popover>
 					) : (
-						<span className="text-xs">{group.emoji}</span>
+						<span className="text-[11px] pl-0.5 pr-1">{group.emoji}</span>
 					)}
 
-					<span>{group.title}</span>
+					<span className="text-xs">{group.title}</span>
 				</ItemTitle>
 
 				{group.owner_user_id === auth?.user.id && (
