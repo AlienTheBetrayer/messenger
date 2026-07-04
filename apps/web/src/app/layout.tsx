@@ -1,10 +1,9 @@
 import "@/shared/styles/globals.css";
 
-import { AuthMeReturn } from "@gravity/shared";
-
 import { NotificationSonner } from "@/features/notifications/ui/NotificationSonner";
 import { ThemesProvider } from "@/features/ui";
 import { Header } from "@/features/ui/ui/header/Header";
+import { QueryStateModals } from "@/features/ui/ui/QueryStateModals";
 import { ReduxProvider, sfetch, TooltipProvider } from "@/shared";
 import { AuthMeReturn__ } from "@/shared/model/serializable.types";
 
@@ -34,6 +33,7 @@ export default async function RootLayout({
 						<TooltipProvider delayDuration={250}>
 							<Header />
 							<NotificationSonner />
+							<QueryStateModals />
 
 							{children}
 						</TooltipProvider>

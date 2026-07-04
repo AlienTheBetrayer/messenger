@@ -1,4 +1,5 @@
 export * from "./connected.guard.js";
+export * from "./connectionlogin.guard.js";
 export * from "./connectionmember.guard.js";
 export * from "./connectionowner.guard.js";
 export * from "./groupmember.guard.js";

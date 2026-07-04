@@ -40,6 +40,7 @@ import {
 } from "./connections.dto";
 import { ConnectionsService } from "./connections.service";
 import {
+	ConnectionLoginGuard,
 	ConnectionMemberGuard,
 	ConnectionOwnerGuard,
 	GroupMemberGuard,
@@ -71,7 +72,7 @@ export class ConnectionsController {
 	 * @param connectionId id of the connection
 	 * @returns
 	 */
-	@UseGuards(AuthenticatedGuard, ConnectionMemberGuard)
+	@UseGuards(AuthenticatedGuard, ConnectionMemberGuard, ConnectionLoginGuard)
 	@Post("connection/login")
 	async connectionLogin(
 		@Body() body: ConnectionLoginDto,

@@ -8,7 +8,7 @@ export type GroupFormType = {
 	groupForm: UseFormReturn<GroupFormSchema>;
 } | null;
 
-export const GroupFormContext = createContext<GroupFormType | null>(null);
+export const GroupFormContext = createContext<GroupFormType>(null);
 
 /**
  * provider that wraps your group form
@@ -36,7 +36,7 @@ export const GroupFormProvider = ({
  */
 export const useGroupFormProvider = () => {
 	const context = useContext(GroupFormContext);
-	if (context === null) {
+	if (!context) {
 		throw new Error(
 			"useGroupFormProvider must be used within a GroupFormProvider",
 		);

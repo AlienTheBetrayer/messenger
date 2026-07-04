@@ -6,7 +6,13 @@ import { selectConnectionsForGroup } from "@/features/connections/model/connecti
 import { connectionSelectors } from "@/features/connections/model/connection.slice";
 import { groupSelectors } from "@/features/connections/model/group.slice";
 import { DeleteConnectionMessageBox } from "@/features/ui/ui/messageboxes/DeleteConnectionMessageBox";
-import { Button, Tooltip, TooltipContent, TooltipTrigger } from "@/shared";
+import {
+	Button,
+	queryStateHooks,
+	Tooltip,
+	TooltipContent,
+	TooltipTrigger,
+} from "@/shared";
 import { useAppSelector } from "@/shared/model/redux.hooks";
 
 export const SessionContextMenu = ({
@@ -14,6 +20,9 @@ export const SessionContextMenu = ({
 }: {
 	connectionId: string;
 }) => {
+	// states
+	const [, setConnection] = queryStateHooks.useConnection();
+
 	// redux
 	const auth = useAuth();
 	const connection = useAppSelector((state) =>
@@ -25,12 +34,12 @@ export const SessionContextMenu = ({
 	);
 	const connectionsForGroup = useAppSelector(
 		(state) => group && selectConnectionsForGroup(state, group.id),
-  );
-  
-  // actions
+	);
+
+	// actions
 	const { deleteConnection, loginConnection } = useConnectionActions();
 
-  // fallbacks
+	// fallbacks
 	if (!group || !connection) {
 		return null;
 	}
@@ -53,14 +62,18 @@ export const SessionContextMenu = ({
 					<TooltipTrigger asChild>
 						<Button
 							onClick={() => {
-								loginConnection({ connectionId });
+								if (isOwner) {
+									loginConnection({ connectionId });
+								} else {
+									setConnection("pending");
+								}
 							}}
 							className="w-full justify-start"
 							size="sm"
 							disabled={!ableToJoin}
 						>
 							<LogOut />
-							Log in
+							{isOwner ? "Request" : "Log in"}
 						</Button>
 					</TooltipTrigger>
 					<TooltipContent>
