@@ -1,6 +1,7 @@
-import { ExceptionCode, verification_codesType } from "@gravity/shared";
+import { ExceptionCode } from "@gravity/shared";
 import { Variants } from "motion";
 
+import { AuthFormType } from "@/features/auth/providers/AuthFormProvider";
 import { Icons } from "@/features/ui/lib";
 
 type VerifySuccessVariant = {
@@ -77,7 +78,7 @@ export const AuthFormVariants = {
 			},
 		},
 	},
-} as const satisfies Record<verification_codesType["type"], AuthFormVariant>;
+} as const satisfies Record<AuthFormType, AuthFormVariant>;
 
 /**
  * types of authentication
