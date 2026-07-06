@@ -4,11 +4,13 @@ import {
 	Injectable,
 	NestInterceptor,
 } from "@nestjs/common";
+import { Reflector } from "@nestjs/core";
 import { Request, Response } from "express";
 import { map } from "rxjs/operators";
 
 import { TokenPayloadSchema } from "../../auth/auth.types";
 import { AppJwtService } from "../../jwt/jwt.service";
+import { SKIP_AUTH_INTERCEPTOR_KEY } from "./auth.interceptor.metadata";
 
 /**
  * interceptor to new attach token if refresh is valid ensuring seamless authentication. (no need to refresh on FE)
@@ -16,11 +18,24 @@ import { AppJwtService } from "../../jwt/jwt.service";
  */
 @Injectable()
 export class AuthInterceptor implements NestInterceptor {
-	constructor(private readonly jwtService: AppJwtService) {}
+	constructor(
+		private readonly jwtService: AppJwtService,
+		private readonly reflector: Reflector,
+	) {}
 
 	intercept(context: ExecutionContext, next: CallHandler) {
 		const request: Request = context.switchToHttp().getRequest();
 		const response: Response = context.switchToHttp().getResponse();
+
+    // interceptor skipping logic
+		const shouldSkip = this.reflector.get<boolean | undefined>(
+			SKIP_AUTH_INTERCEPTOR_KEY,
+			context.getHandler(),
+		);
+
+		if (shouldSkip) {
+			return next.handle();
+		}
 
 		return next.handle().pipe(
 			map((data: unknown) => {

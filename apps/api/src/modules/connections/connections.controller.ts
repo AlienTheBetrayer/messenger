@@ -29,6 +29,7 @@ import {
 	AuthenticatedUserType,
 } from "../auth-core/decorators";
 import { AuthenticatedGuard } from "../auth-core/guards";
+import { SkipAuthInterceptor } from "../auth-core/interceptors/auth.interceptor.metadata";
 import { AppJwtService } from "../jwt/jwt.service";
 import {
 	ConnectionAddDto,
@@ -77,9 +78,9 @@ export class ConnectionsController {
 	@Post("connection/code")
 	async connectionCode(
 		@Body() body: ConnectionCodeDto,
-  ): Promise<ConnectionCodeReturn> {
-    const ret = await this.connectionsService.connectionCode(body);
-    return ret;
+	): Promise<ConnectionCodeReturn> {
+		const ret = await this.connectionsService.connectionCode(body);
+		return ret;
 	}
 
 	/**
@@ -87,6 +88,7 @@ export class ConnectionsController {
 	 * @param connectionId id of the connection
 	 * @returns
 	 */
+	@SkipAuthInterceptor()
 	@UseGuards(AuthenticatedGuard, ConnectionMemberGuard, ConnectionLoginGuard)
 	@Post("connection/login")
 	async connectionLogin(
@@ -95,6 +97,9 @@ export class ConnectionsController {
 		@AuthenticatedUser() authenticatedUser: AuthenticatedUserType,
 		@Res({ passthrough: true }) response: Response,
 	): Promise<ConnectionLoginReturn> {
+		// logging out first (tokens)
+		this.jwtService.deleteAuthTokens({ response, type: "all" });
+
 		// validating + creating the session/tokens
 		const { accessToken, refreshToken, connection, session, user } =
 			await this.connectionsService.connectionLogin(

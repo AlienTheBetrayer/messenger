@@ -26,36 +26,36 @@ export class ConnectionsService {
 	constructor(
 		private readonly prismaService: PrismaService,
 		private readonly jwtService: AppJwtService,
-    private readonly authService: AuthService,
-    private readonly verifyService: VerifyService
-  ) { }
-  
-  async connectionCode(body: ConnectionCodeSchema ) {
-    // getting the email
-    const connection = await this.prismaService.connections.findFirst({
-      where: {
-        id: body.connectionId
-      },
-      include: {
-        users: true 
-      }
-    });
+		private readonly authService: AuthService,
+		private readonly verifyService: VerifyService,
+	) {}
 
-    if (!connection) {
-      throw createException(
-        "unauthorized",
-        "UNAUTHENTICATED",
-        "connection not found.",
-      );
-    }
+	async connectionCode(body: ConnectionCodeSchema) {
+		// getting the email
+		const connection = await this.prismaService.connections.findFirst({
+			where: {
+				id: body.connectionId,
+			},
+			include: {
+				users: true,
+			},
+		});
 
-    await this.verifyService.issueCode({
-      type: "owner_connect",
-      email: connection.users.email,
-    });
+		if (!connection) {
+			throw createException(
+				"unauthorized",
+				"UNAUTHENTICATED",
+				"connection not found.",
+			);
+		}
 
-    return true;
-  }
+		await this.verifyService.issueCode({
+			type: "owner_connect",
+			email: connection.users.email,
+		});
+
+		return true;
+	}
 
 	async connectionLogin(
 		body: ConnectionLoginSchema,
@@ -78,14 +78,15 @@ export class ConnectionsService {
 				"UNAUTHENTICATED",
 				"connection not found.",
 			);
-		}
-
-		// deleting the old session
+    }
+    
+    		// deleting the old session
 		await this.prismaService.auth_sessions.delete({
 			where: {
 				id: authenticatedUser.session.id,
 			},
-		});
+    });
+    
 
 		// tokens + session issuing
 		const { accessToken, refreshToken, session } =

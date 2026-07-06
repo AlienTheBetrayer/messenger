@@ -274,7 +274,7 @@ export class AppJwtService {
 		accessToken: string;
 		refreshToken: string;
 		response: Response;
-	}) {
+  }) {
 		// access
 		this.setHttpCookie({
 			name: "accessToken",
