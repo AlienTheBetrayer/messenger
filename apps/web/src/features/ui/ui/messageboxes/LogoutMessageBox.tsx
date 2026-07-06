@@ -5,10 +5,14 @@ import { useLogoutMutation } from "@/features/auth/model/auth.api";
 import { Icons } from "@/features/ui/lib";
 import { useAuthButtonNotifications } from "@/features/ui/ui/header/authbutton/useAuthButtonNotifications";
 import { normalizeError } from "@/shared";
-import { Button, Spinner } from "@/shared/ui";
+import { Button, ButtonProps, Spinner } from "@/shared/ui";
 import { MessageBox } from "@/shared/ui/custom/MessageBox";
 
-export const LogoutMessageBox = () => {
+export const LogoutMessageBox = ({
+	buttonProps,
+}: {
+	buttonProps?: ButtonProps;
+}) => {
 	// states
 	const [logout, { isLoading }] = useLogoutMutation();
 	const notifications = useAuthButtonNotifications();
@@ -44,7 +48,8 @@ export const LogoutMessageBox = () => {
 				disabled={isLoading}
 				variant="destructive"
 				size="sm"
-				className="w-full gap-1.5"
+				className={"w-full gap-1.5"}
+				{...buttonProps}
 			>
 				{isLoading ? (
 					<Spinner className="size-3.5" />

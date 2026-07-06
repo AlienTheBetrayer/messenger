@@ -8,6 +8,7 @@ import { connectionsApi } from "@/features/connections/model/connections.api";
 import { CreateGroupPopover } from "@/features/connections/ui/group/CreateGroupFormPopover";
 import { GroupList } from "@/features/connections/ui/group/GroupsList";
 import { MiniProfileCube } from "@/features/connections/ui/other/MiniProfileCube";
+import { cn } from "@/features/ui";
 import { selectConnectSessionsCollapsedMenu } from "@/features/ui/model/local.selectors";
 import { toggleConnectSessionsCollapsedMenu } from "@/features/ui/model/local.slice";
 import {
@@ -21,19 +22,40 @@ import {
 } from "@/shared";
 import { useAppDispatch, useAppSelector } from "@/shared/model/redux.hooks";
 
-export const Connections = () => {
+type Mode = "static" | "default";
+
+export const Connections = ({
+	mode,
+	className,
+	groupClassName,
+}: {
+	mode?: Mode;
+	className?: string;
+	groupClassName?: string;
+}) => {
 	return (
-		<Card className="p-0 gap-0">
-			<ConnectionsDisplay />
+		<Card className={cn("p-0 gap-0", className ?? "")}>
+			<ConnectionsDisplay
+				mode={mode ?? "default"}
+				groupClassName={groupClassName}
+			/>
 		</Card>
 	);
 };
 
-const ConnectionsDisplay = () => {
+const ConnectionsDisplay = ({
+	mode,
+	groupClassName,
+}: {
+	mode: Mode;
+	groupClassName?: string;
+}) => {
 	// redux
 	const dispatch = useAppDispatch();
 	const prefetchConnections = connectionsApi.usePrefetch("getConnections");
-	const collapsedMenu = useAppSelector(selectConnectSessionsCollapsedMenu);
+	const collapsedMenu = useAppSelector((state) =>
+		mode === "static" ? false : selectConnectSessionsCollapsedMenu(state),
+	);
 	const auth = useAuth();
 
 	// jsx
@@ -46,15 +68,19 @@ const ConnectionsDisplay = () => {
 							initial={{ height: 0 }}
 							animate={{ height: "auto" }}
 							exit={{ height: 0 }}
+							className={cn(
+								"max-h-42 scrollbar-none overflow-y-auto",
+								groupClassName ?? "",
+							)}
 						>
-							{<GroupList />}
+							<GroupList />
 						</motion.div>
 					)}
 				</AnimatePresence>
 			</CardContent>
 
 			<CardFooter
-				className="flex items-center p-1.5"
+				className="flex items-center p-1 min-h-12"
 				style={
 					collapsedMenu
 						? {
@@ -70,18 +96,25 @@ const ConnectionsDisplay = () => {
 							initial={{ width: 0, opacity: 0 }}
 							animate={{ width: "auto", opacity: 1 }}
 							exit={{ width: 0, opacity: 0 }}
-							className="overflow-hidden grow"
+							className="flex items-center justify-center overflow-hidden grow"
 						>
-							<MiniProfileCube userId={auth?.user.id ?? ""} />
+							<MiniProfileCube
+								userId={auth?.user.id ?? ""}
+								props={{ size: "lg" }}
+							/>
 						</motion.div>
 					)}
 				</AnimatePresence>
 
-				<Tooltip>
+				<Tooltip open={mode === "static" ? false : undefined}>
 					<TooltipTrigger asChild>
 						<Button
-							className="aspect-square ml-auto"
+							className={cn(
+								"aspect-square ml-auto",
+								mode === "static" && "opacity-30",
+							)}
 							variant="secondary"
+							inert={mode === "static"}
 							size="sm"
 							onPointerDown={() => {
 								if (collapsedMenu) {

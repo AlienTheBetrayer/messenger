@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
 import { AuthFooterServiceButtons } from "@/features/auth/ui/auth/AuthFooterServiceButtons";
 import { selectAwaitingConnectionGroup } from "@/features/ui/model/ui.selectors";

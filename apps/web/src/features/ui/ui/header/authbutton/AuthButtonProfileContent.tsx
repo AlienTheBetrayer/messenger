@@ -9,7 +9,7 @@ import { Button, PopoverContent, PopoverHeader, Separator } from "@/shared";
 
 export const AuthButtonProfileContent = () => {
 	return (
-		<PopoverContent className="w-screen max-w-60">
+		<PopoverContent className="w-screen max-w-64">
 			<PopoverHeader>
 				<Connections />
 			</PopoverHeader>

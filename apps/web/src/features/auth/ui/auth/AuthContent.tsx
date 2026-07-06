@@ -33,7 +33,6 @@ export const AuthContent = () => {
 			<FieldGroup>
 				<Controller
 					name="email"
-					disabled={verify === "pending"}
 					control={authForm.control}
 					render={({ field, fieldState }) => (
 						<Field data-invalid={fieldState.invalid}>
@@ -42,7 +41,7 @@ export const AuthContent = () => {
 							</div>
 
 							{variant.elements.email.description && (
-								<FieldDescription>
+								<FieldDescription className="text-sm">
 									{variant.elements.email.description}
 								</FieldDescription>
 							)}
@@ -64,21 +63,23 @@ export const AuthContent = () => {
 					name="password"
 					control={authForm.control}
 					render={({ field, fieldState }) => (
-						<Field data-invalid={fieldState.invalid}>
+            <Field data-invalid={fieldState.invalid}>
 							<div className="flex items-center justify-between w-full">
-								<FieldLabel htmlFor="password">Password</FieldLabel>
+                <FieldLabel htmlFor="password">Password</FieldLabel>
+                {type !== "forgot_password" && (
 
-								<Button
-									variant="link"
-									type="button"
-									asChild
-								>
-									<Link href="/forgot-password">Forgot password?</Link>
-								</Button>
+                  <Button
+                    variant="link"
+                    type="button"
+                    asChild
+                  >
+                    <Link href="/forgot-password">Forgot password?</Link>
+                  </Button>
+                )}
 							</div>
 
 							{variant.elements.password.description && (
-								<FieldDescription>
+								<FieldDescription className="text-sm">
 									{variant.elements.password.description}
 								</FieldDescription>
 							)}

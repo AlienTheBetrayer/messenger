@@ -30,7 +30,7 @@ export const GroupList = () => {
 
 	// jsx
 	return (
-		<ul className="w-full flex flex-col max-h-42 scrollbar-none overflow-y-auto pb-4">
+		<ul className="w-full flex flex-col  pb-4">
 			{groupIds.map((groupId) => (
 				<Fragment key={groupId}>
 					<li>

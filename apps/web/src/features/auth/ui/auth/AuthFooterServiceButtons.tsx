@@ -24,7 +24,7 @@ export const AuthFooterServiceButtons = () => {
 		<AnimatePresence initial={false}>
 			{!verify && (
 				<motion.div
-					className="flex flex-col w-full gap-1 mt-2"
+					className={"flex flex-col w-full gap-1 mt-2"}
 					initial={{ height: 0, opacity: 0 }}
 					animate={{ height: "auto", opacity: 1 }}
 					exit={{ height: 0, opacity: 0 }}

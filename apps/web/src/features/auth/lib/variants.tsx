@@ -74,7 +74,7 @@ export const AuthFormVariants = {
 				description: "",
 			},
 			password: {
-				description: "",
+				description: "New password for your account",
 			},
 		},
 	},

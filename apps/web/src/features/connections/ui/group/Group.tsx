@@ -103,9 +103,9 @@ export const Group = ({ groupId }: { groupId: string }) => {
 							<Tooltip>
 								<TooltipTrigger asChild>
 									<Button
-										className="ml-auto! aspect-square"
+                    className="ml-auto! aspect-square"
 										size="xs"
-										variant={awaitingGroup ? "destructive" : "ghost"}
+										variant={awaitingGroup ? "destructive" : "default"}
 										asChild={!awaitingGroup}
 										onClick={() => {
 											dispatch(

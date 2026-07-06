@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 
+import { useAuth } from "@/features/auth/hooks/useAuth";
 import { groupSelectors } from "@/features/connections/model/group.slice";
 import { cn } from "@/features/ui";
 import { InfoCube } from "@/features/users";
@@ -26,6 +27,7 @@ export const MiniProfileCube = ({
 		(state) =>
 			(groupId && groupSelectors.selectById(state, groupId)) || undefined,
 	);
+	const auth = useAuth();
 
 	// ui states
 	const isOwner = user.id === group?.owner_user_id;
@@ -40,15 +42,18 @@ export const MiniProfileCube = ({
 	// jsx
 	return (
 		<Button
-			variant="ghost"
+			variant={"ghost"}
 			size="sm"
 			asChild
-			className={cn("grow w-full justify-start", className)}
+			className={cn(
+				"grow w-full justify-start",
+				className,
+			)}
 			{...otherProps}
 		>
 			<Link
 				href="/profile"
-				className="grid! grid-cols-[20%_1fr]"
+				className="grid! grid-cols-[2.5rem_auto]"
 			>
 				<div className="flex flex-col items-center justify-center">
 					{isOwner && (
@@ -59,7 +64,7 @@ export const MiniProfileCube = ({
 
 					<InfoCube
 						animation="animate-bounce"
-						className="w-6 h-6"
+						className="w-6.5 h-6.5"
 						image={user.image_url}
 						color={user.color}
 					/>

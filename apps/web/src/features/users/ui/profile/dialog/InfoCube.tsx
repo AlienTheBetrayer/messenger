@@ -23,7 +23,7 @@ export const InfoCube = ({
 	return (
 		<div
 			className={cn(
-				"flex shrink-0 items-center justify-center rounded-md w-8 h-8 border",
+				"flex shrink-0 items-center justify-center rounded-sm w-8 h-8 aspect-square border",
 				className,
 			)}
 			style={{
@@ -32,7 +32,7 @@ export const InfoCube = ({
 				background: `color-mix(in srgb, ${values.color} 20%, var(--background))`,
 			}}
 		>
-			<div className={cn("w-[55%] h-[55%]", animation)}>
+			<div className={cn("w-1/2 aspect-square", animation)}>
 				{typeof image === "string" ? (
 					<Image
 						src={image}

@@ -2,7 +2,7 @@ import { Check, EllipsisVertical } from "lucide-react";
 
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { connectionSelectors } from "@/features/connections/model/connection.slice";
-import { MiniProfileCube } from "@/features/connections/ui/other/MiniProfileCube";
+import { ConnectedSessionCubeButton } from "@/features/connections/ui/connectedsession/ConnectedSessionCubeButton";
 import { SessionContextMenu } from "@/features/connections/ui/other/SessionContextMenu";
 import {
 	Button,
@@ -34,7 +34,7 @@ export const ConnectedSession = ({
 	if (auth?.user.id === connection.user_id) {
 		return (
 			<div className="relative h-12">
-				<ConnectedSessionMainButton
+				<ConnectedSessionCubeButton
 					userId={connection.user_id}
 					groupId={connection.group_id}
 				/>
@@ -51,7 +51,7 @@ export const ConnectedSession = ({
 		<ContextMenu>
 			<ContextMenuTrigger>
 				<div className="relative h-12">
-					<ConnectedSessionMainButton
+					<ConnectedSessionCubeButton
 						userId={connection.user_id}
 						groupId={connection.group_id}
 					/>
@@ -77,25 +77,5 @@ export const ConnectedSession = ({
 				<SessionContextMenu connectionId={connectedSessionId} />
 			</ContextMenuContent>
 		</ContextMenu>
-	);
-};
-
-const ConnectedSessionMainButton = ({
-	userId,
-	groupId,
-}: {
-	userId: string;
-	groupId?: string;
-}) => {
-	return (
-		<MiniProfileCube
-			userId={userId}
-			groupId={groupId}
-			props={{
-				variant: "secondary",
-				size: "xl",
-				className: "not-hover:bg-muted/50 justify-start absolute inset-0",
-			}}
-		/>
 	);
 };

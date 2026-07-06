@@ -40,7 +40,7 @@ export class AuthCoreService {
 					token,
 					key:
 						type === "access" ? "ACCESS_TOKEN_SECRET" : "REFRESH_TOKEN_SECRET",
-				});
+        });
 
 				// verifying the session
 				const found = await this.prismaService.auth_sessions.findFirst({
