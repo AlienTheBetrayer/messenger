@@ -4,6 +4,7 @@ import { Request } from "express";
 import z from "zod";
 
 import { createException } from "../../../common";
+import { RequestParser } from "../../../common/lib/classes/parser";
 import { PrismaService } from "../../prisma/prisma.service";
 import { VerifyService } from "../../verify/verify.service";
 
@@ -17,24 +18,12 @@ export class ConnectionLoginGuard implements CanActivate {
 	async canActivate(context: ExecutionContext) {
 		const request: Request = context.switchToHttp().getRequest();
 
-		// parsing fields
-		const parsedFields = z.safeParse(
-			z.looseObject({
-				connectionId: z.nanoid(),
-				code: connectionLoginSchema.shape.code,
-			}),
-			{ ...request.body, ...request.query },
-		);
-
-		if (!parsedFields.success) {
-			throw createException(
-				"badrequest",
-				"INVALID_BODY",
-				"no connectionId found in the body.",
-			);
-		}
-
-		const { connectionId, code } = parsedFields.data;
+		// parsing
+		const parser = new RequestParser(request);
+		const { connectionId, code } = parser.body({
+			connectionId: z.nanoid(),
+			code: connectionLoginSchema.shape.code,
+		});
 
 		// getting the connection for metadata
 		const connection = await this.prismaService.connections.findFirst({

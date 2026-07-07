@@ -3,8 +3,7 @@ import { Injectable } from "@nestjs/common";
 import { Request } from "express";
 import z from "zod";
 
-import { authenticatedUserSchema } from "../auth-core/decorators";
-import { oAuthIdentitySchema } from "../auth-oauth/oauth.types";
+import { RequestParser } from "../../common/lib/classes/parser";
 import { PrismaService } from "../prisma/prisma.service";
 
 @Injectable()
@@ -18,27 +17,10 @@ export class ConnectionsCoreService {
 	 * @returns true if validated, throws if otherwise
 	 */
 	async verifyGroup(request: Request, type: "membership" | "ownership") {
-		// parsing (ensuring groupId is there)
-		const parsedGroup = z.safeParse(
-			z.looseObject({
-				groupId: z.nanoid(),
-			}),
-			{
-				...request.body,
-				...request.query,
-			},
-		);
-
-		if (!parsedGroup.success) {
-			throw new Error("groupId is invalid in the body/query.");
-		}
-
-		// parsing 2 (ensuring the user is even there)
-		const parsedUser = z.safeParse(authenticatedUserSchema, request.user);
-
-		if (!parsedUser.success) {
-			throw new Error("you are not authenticated.");
-		}
+		// parsing
+		const parser = new RequestParser(request);
+		const user = parser.user();
+		const group = parser.body({ groupId: z.nanoid() });
 
 		let validated: connectionsType | connections_groupType | null = null;
 
@@ -46,8 +28,8 @@ export class ConnectionsCoreService {
 			case "membership": {
 				validated = await this.prismaService.connections.findFirst({
 					where: {
-						group_id: parsedGroup.data.groupId,
-						user_id: parsedUser.data.id,
+						group_id: group.groupId,
+						user_id: user.id,
 					},
 				});
 				break;
@@ -55,8 +37,8 @@ export class ConnectionsCoreService {
 			case "ownership": {
 				validated = await this.prismaService.connections_group.findFirst({
 					where: {
-						id: parsedGroup.data.groupId,
-						owner_user_id: parsedUser.data.id,
+						id: group.groupId,
+						owner_user_id: user.id,
 					},
 				});
 				break;
@@ -76,37 +58,35 @@ export class ConnectionsCoreService {
 	 * @returns true if validated, throws if otherwise
 	 */
 	async verifyOAuthConnection(request: Request) {
-		const identity = z.safeParse(oAuthIdentitySchema, request.user);
-
-		if (!identity.success) {
-			throw new Error("identity is invalid.");
-		}
+		// parsing
+		const parser = new RequestParser(request);
+		const identity = parser.identity();
 
 		// if not connecting, let it pass
-		if (identity.data.metadata.action !== "connect") {
+		if (identity.metadata.action !== "connect") {
 			return true;
 		}
 
 		// email is required
-		if (!identity.data.email) {
+		if (!identity.email) {
 			throw new Error("identity has no email attached.");
 		}
 
 		// user by email
 		const user = await this.prismaService.users.findFirst({
 			where: {
-				email: identity.data.email,
+				email: identity.email,
 			},
 		});
 
 		if (!user) {
-      return true;
+			return true;
 		}
 
 		// any connected sessions with that user id
 		const isFound = await this.prismaService.connections.count({
 			where: {
-				group_id: identity.data.metadata.groupId,
+				group_id: identity.metadata.groupId,
 				user_id: user.id,
 			},
 		});
@@ -125,32 +105,15 @@ export class ConnectionsCoreService {
 	 * @returns true if validated, throws if otherwise
 	 */
 	async verifyConnection(request: Request, type: "membership" | "ownership") {
-		// parsing (ensuring groupId is there)
-		const parsedConnection = z.safeParse(
-			z.looseObject({
-				connectionId: z.nanoid(),
-			}),
-			{
-				...request.body,
-				...request.query,
-			},
-		);
-
-		if (!parsedConnection.success) {
-			throw new Error("groupId is invalid in the body/query.");
-		}
-
-		// parsing 2 (ensuring the user is even there)
-		const parsedUser = z.safeParse(authenticatedUserSchema, request.user);
-
-		if (!parsedUser.success) {
-			throw new Error("user is not authenticated.");
-		}
+		// parsing
+		const parser = new RequestParser(request);
+		const user = parser.user();
+		const { connectionId } = parser.body({ connectionId: z.nanoid() });
 
 		// getting the group
 		const connection = await this.prismaService.connections.findFirst({
 			where: {
-				id: parsedConnection.data.connectionId,
+				id: connectionId,
 			},
 		});
 
@@ -165,7 +128,7 @@ export class ConnectionsCoreService {
 				validated = await this.prismaService.connections.findFirst({
 					where: {
 						group_id: connection.group_id,
-						user_id: parsedUser.data.id,
+						user_id: user.id,
 					},
 				});
 
@@ -175,7 +138,7 @@ export class ConnectionsCoreService {
 				validated = await this.prismaService.connections_group.findFirst({
 					where: {
 						id: connection.group_id,
-						owner_user_id: parsedUser.data.id,
+						owner_user_id: user.id,
 					},
 				});
 				break;

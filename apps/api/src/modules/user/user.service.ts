@@ -5,6 +5,8 @@ import {
 	randomHex,
 	UserCreateReturn,
 	UserCreateSchema,
+	UserDeleteSchema,
+	UserEditSchema,
 } from "@gravity/shared";
 import { Injectable } from "@nestjs/common";
 import bcrypt from "bcryptjs";
@@ -110,7 +112,7 @@ export class UserService {
 		// creating the user
 		const user = await this.prismaService.users.create({
 			data: {
-				id: generateId(),
+				id: body.userId ?? generateId(),
 				username,
 				email: body.email,
 				password,
@@ -127,9 +129,22 @@ export class UserService {
 	 * @param key key (id or email)
 	 * @returns deleted user
 	 */
-	async delete(key: { id: string } | { email: string }) {
+	async delete(body: UserDeleteSchema) {
 		return this.prismaService.users.delete({
-			where: key,
+			where: {
+				id: body.userId,
+			},
+		});
+	}
+
+	async edit(body: UserEditSchema) {
+		const { userId, ...fields } = body;
+
+		return this.prismaService.users.update({
+			where: {
+				id: userId,
+			},
+			data: fields,
 		});
 	}
 }

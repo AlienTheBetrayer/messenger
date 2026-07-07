@@ -25,7 +25,6 @@ export const ReduxProvider = ({
     if (auth && "user" in auth ) {
       // normalization / init / hydration
 			const normalized = normalizeAuthData(auth);
-
       preloadedState = normalized
 		}
 

@@ -28,6 +28,7 @@ export const ExceptionCodes = [
 	"UNAUTHENTICATED",
 	"EMAIL_NOT_FOUND",
   "INVALID_BODY",
+  "INVALID_REQUEST",
   "AUTHENTICATED",
   "FIELD_NOT_FOUND",
 ] as const;
@@ -40,7 +41,8 @@ export const ExceptionCodeTransformations = {
 	USER_NOT_FOUND: "User not found.",
 	INVALID_CREDENTIALS: "Invalid credentials.",
 	INVALID_VERIFICATION_CODE: "Invalid verification code.",
-	UNAUTHENTICATED: "Unauthenticated.",
+  UNAUTHENTICATED: "Unauthenticated.",
+  INVALID_REQUEST: "Invalid request.",
 	EMAIL_NOT_FOUND: "Email not found.",
   INVALID_BODY: "Invalid body.",
   AUTHENTICATED: "Already authenticated.",

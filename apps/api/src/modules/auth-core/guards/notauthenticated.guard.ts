@@ -1,9 +1,9 @@
 import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
 import { Request } from "express";
-import z from "zod";
 
 import { createException } from "../../../common";
+import { RequestParser } from "../../../common/lib/classes/parser";
 import { oAuthIdentitySchema } from "../../auth-oauth/oauth.types";
 import { AuthCoreService } from "../auth.service";
 
@@ -34,23 +34,15 @@ export class NotAuthenticatedGuard implements CanActivate {
 		// request
 		const request: Request = context.switchToHttp().getRequest();
 
-		// parsing schemas
-		const parsedIdentity = await oAuthIdentitySchema.safeParseAsync(
-			request.user,
-		);
-		const parsedAction = await z.safeParseAsync(
-			z.looseObject({
-				action: oAuthIdentitySchema.shape.metadata.shape.action,
-			}),
-			{ ...request.body, ...request.query },
-		);
+		// parsing
+		const parser = new RequestParser(request);
+		const identity = parser.identity();
+		const { action } = parser.body({
+			action: oAuthIdentitySchema.shape.metadata.shape.action,
+		});
 
 		// passing if connection mode
-		if (
-			(parsedIdentity.success &&
-				parsedIdentity.data.metadata.action === "connect") ||
-			(parsedAction.success && parsedAction.data.action === "connect")
-		) {
+		if (identity.metadata.action === "connect" || action === "connect") {
 			return true;
 		}
 

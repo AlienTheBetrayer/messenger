@@ -1,11 +1,8 @@
 import { createParamDecorator, ExecutionContext } from "@nestjs/common";
 import { Request } from "express";
-import z from "zod";
 
-import {
-	authenticatedUserSchema,
-	AuthenticatedUserType,
-} from "../../auth-core/decorators";
+import { RequestParser } from "../../../common/lib/classes/parser";
+import { AuthenticatedUserType } from "../../auth-core/decorators";
 
 /**
  * gets the current authentication groups you are in (works only if GroupMemberGuard or ConnectionMemberGuard is set)
@@ -15,13 +12,14 @@ export const CurrentGroups = createParamDecorator(
 		const req: Request = ctx.switchToHttp().getRequest();
 
 		// parsing
-		const parsed = z.safeParse(authenticatedUserSchema, req.user);
+		const parser = new RequestParser(req);
 
-		if (!parsed.success) {
+		try {
+			const user = parser.user();
+			return user.session.groups ?? [];
+		} catch {
 			return [];
 		}
-
-		return parsed.data.session.groups ?? [];
 	},
 );
 

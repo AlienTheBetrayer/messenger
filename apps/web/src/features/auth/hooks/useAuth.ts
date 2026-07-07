@@ -20,7 +20,7 @@ export const useAuth = ():
 	useMeQuery();
 
 	// selecting
-	const auth = useAppSelector((state) => state.auth);
+  const auth = useAppSelector((state) => state.auth);
 	const user = useAppSelector(
 		(state) =>
 			auth.status && userSelectors.selectById(state, auth.status?.userId),
