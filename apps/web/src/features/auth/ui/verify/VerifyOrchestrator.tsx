@@ -30,7 +30,6 @@ export const VerifyOrchestrator = () => {
 						initial="initial"
 						animate="animate"
 						exit="exit"
-						className="absolute top-0 left-0 w-full"
 					>
 						<Card className="min-h-0! shadowed">
 							<Verify />
@@ -45,7 +44,6 @@ export const VerifyOrchestrator = () => {
 						initial="initial"
 						animate="animate"
 						exit="exit"
-						className="absolute top-0 left-0 w-full"
 					>
 						<Card className="min-h-0! shadowed">
 							<VerifySuccess />

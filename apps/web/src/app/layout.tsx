@@ -1,10 +1,8 @@
 import "@/shared/styles/globals.css";
 
-import { NotificationSonner } from "@/features/notifications/ui/NotificationSonner";
-import { ThemesProvider } from "@/features/ui";
+import { GlobalProvider } from "@/features/ui/providers/GlobalProvider";
 import { AppMenubar } from "@/features/ui/ui/menubar/AppMenubar";
-import { QueryStateModals } from "@/features/ui/ui/QueryStateModals";
-import { ReduxProvider, sfetch, TooltipProvider } from "@/shared";
+import { sfetch } from "@/shared";
 import { AuthMeReturn__ } from "@/shared/model/serializable.types";
 
 export const metadata = {
@@ -12,11 +10,11 @@ export const metadata = {
 };
 
 export default async function RootLayout({
-  children,
-  modal,
+	children,
+	modal,
 }: Readonly<{
-  children: React.ReactNode;
-  modal: React.ReactNode;
+	children: React.ReactNode;
+	modal: React.ReactNode;
 }>) {
 	// auth
 	let auth: AuthMeReturn__ | null = null;
@@ -29,20 +27,15 @@ export default async function RootLayout({
 	// jsx
 	return (
 		<html suppressHydrationWarning>
-			<body className="min-h-screen flex flex-col dotted p-2">
-				<ReduxProvider auth={auth}>
-					<ThemesProvider>
-						<TooltipProvider delayDuration={250}>
-							<AppMenubar />
+			<body className="flex flex-col h-screen w-screen dotted">
+				<GlobalProvider auth={auth}>
+					<AppMenubar />
 
-							<NotificationSonner />
-							<QueryStateModals />
-
-							{children}
-              {modal}
-						</TooltipProvider>
-					</ThemesProvider>
-				</ReduxProvider>
+					<div className="relative flex w-full h-full p-2">
+						{children}
+						{modal}
+					</div>
+				</GlobalProvider>
 			</body>
 		</html>
 	);

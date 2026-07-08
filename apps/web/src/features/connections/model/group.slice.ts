@@ -37,6 +37,7 @@ export const groupSlice = createSlice({
 	name: "connectionGroups",
 	initialState,
 	reducers: {
+    reset: () => initialState,
     setAll: groupAdapter.setAll.bind(groupAdapter),
 		upsertOne: groupAdapter.upsertOne.bind(groupAdapter),
 		updateOne: groupAdapter.updateOne.bind(groupAdapter),

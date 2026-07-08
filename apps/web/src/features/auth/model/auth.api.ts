@@ -1,5 +1,7 @@
 import { authActions } from "@/features/auth/model/auth.slice";
 import { hydrateAuth } from "@/features/auth/model/auth.thunks";
+import { connectionActions } from "@/features/connections/model/connection.slice";
+import { groupActions } from "@/features/connections/model/group.slice";
 import { uiSlice } from "@/features/ui/model/ui.slice";
 import { baseApi } from "@/shared/model/redux.store";
 import {
@@ -79,6 +81,8 @@ export const authApi = baseApi.injectEndpoints({
 
 			async onQueryStarted(args, { dispatch }) {
 				dispatch(authActions.setAuth(null));
+        dispatch(connectionActions.reset());
+        dispatch(groupActions.reset());
 				dispatch(uiSlice.actions.reset());
 			},
 		}),

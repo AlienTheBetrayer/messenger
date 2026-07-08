@@ -24,6 +24,8 @@ export * from "./popover.js";
 export * from "./radio-group.js";
 export * from "./select.js";
 export * from "./separator.js";
+export * from "./sheet.js";
+export * from "./skeleton.js";
 export * from "./slider.js";
 export * from "./sonner.js";
 export * from "./spinner.js";

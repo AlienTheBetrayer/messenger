@@ -36,14 +36,18 @@ export class NotAuthenticatedGuard implements CanActivate {
 
 		// parsing
 		const parser = new RequestParser(request);
-		const identity = parser.identity();
-		const { action } = parser.body({
-			action: oAuthIdentitySchema.shape.metadata.shape.action,
-		});
 
-		// passing if connection mode
-		if (identity.metadata.action === "connect" || action === "connect") {
-			return true;
+		try {
+			const { action } = parser.body({
+				action: oAuthIdentitySchema.shape.metadata.shape.action,
+			});
+			const identity = parser.identity();
+			// passing if connection mode
+			if (identity.metadata.action === "connect" || action === "connect") {
+				return true;
+			}
+		} catch {
+			/** */
 		}
 
 		try {

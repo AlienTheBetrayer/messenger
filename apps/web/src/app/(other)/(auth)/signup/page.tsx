@@ -1,7 +1,7 @@
-import { AuthPage } from "@/app/(auth)/login/page";
+import { AuthPage } from "@/app/(other)/(auth)/login/page";
 
 export const metadata = {
-  title: "Signing up",
+	title: "Signing up",
 };
 
 export default function SignupPage() {

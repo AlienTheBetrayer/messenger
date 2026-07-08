@@ -1,3 +1,3 @@
-import HomePage from "@/app/home/page";
+import HomePage from "@/app/(other)/home/page";
 
 export default HomePage;

@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 
-import { useAuth } from "@/features/auth/hooks/useAuth";
 import { groupSelectors } from "@/features/connections/model/group.slice";
 import { cn } from "@/features/ui";
 import { InfoCube } from "@/features/users";
@@ -27,16 +26,14 @@ export const MiniProfileCube = ({
 		(state) =>
 			(groupId && groupSelectors.selectById(state, groupId)) || undefined,
 	);
-	const auth = useAuth();
-
-	// ui states
-	const isOwner = user.id === group?.owner_user_id;
 
 	// fallback
-	if (!user) {
+	if (!user || !group) {
 		return null;
 	}
 
+	// ui states
+	const isOwner = user.id === group?.owner_user_id;
 	const { className, ...otherProps } = props ?? {};
 
 	// jsx

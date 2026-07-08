@@ -1,5 +1,6 @@
 import { LogOut } from "lucide-react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 import { useLogoutMutation } from "@/features/auth/model/auth.api";
 import { Icons } from "@/features/ui/lib";
@@ -30,6 +31,7 @@ export const LogoutMessageBox = ({
 					if (error) throw new Error(normalizeError(error));
 					return data;
 				});
+				redirect("/home");
 			}}
 			description={
 				<>

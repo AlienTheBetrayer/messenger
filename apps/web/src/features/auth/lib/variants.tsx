@@ -122,9 +122,7 @@ export const VerifySuccessVariants = {
 			},
 		},
 	},
-} as const satisfies Partial<
-	Record<"login" | "signup" | "forgot_password", VerifySuccessVariant>
->;
+} as const satisfies Partial<Record<AuthFormType, VerifySuccessVariant>>;
 
 /**
  * variants for the redirect popup
@@ -146,12 +144,12 @@ export const RedirectPopupVariants = {
 		title: "Already authenticated.",
 		description: "You are already signed in.",
 		content: "Log out first in order to log in or sign up using OAuth.",
-  },
-  USER_ALREADY_EXISTS: {
-    title: "User already exists.",
-    description: "Session is already present.",
-    content: "Log out first in order to add this session.",
-  }
+	},
+	USER_ALREADY_EXISTS: {
+		title: "User already exists.",
+		description: "Session is already present.",
+		content: "Log out first in order to add this session.",
+	},
 } as const satisfies Partial<Record<ExceptionCode, RedirectPopupVariant>>;
 
 /**
@@ -159,14 +157,16 @@ export const RedirectPopupVariants = {
  */
 export const VerifyOrchestratorVariants: Variants = {
 	initial: {
-		opacity: 0,
+    opacity: 0,
+    height: 0,
 		scale: 0.8,
 		y: -100,
 	},
 	animate: {
 		opacity: 1,
 		scale: 1,
-		y: 0,
+    y: 0,
+    height: "auto",
 
 		transition: {
 			duration: 0.3,
@@ -177,6 +177,8 @@ export const VerifyOrchestratorVariants: Variants = {
 		opacity: 0,
 		scale: 0.8,
 		y: -100,
+    height: 0,
+    
 		transition: {
 			duration: 0.3,
 			ease: [0.25, 0.1, 0.25, 1.0],

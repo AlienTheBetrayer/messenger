@@ -60,7 +60,7 @@ export const InterceptionDialog = ({
 			}}
 		>
 			<DialogContent
-				className={cn("flex flex-col gap-5 w-screen max-w-lg shadowed", className ?? "")}
+				className={cn("flex flex-col gap-5 w-screen max-w-lg shadowed bg-card/30", className ?? "")}
 			>
 				<DialogHeader>
 					<DialogTitle>{title}</DialogTitle>
@@ -68,7 +68,6 @@ export const InterceptionDialog = ({
 				</DialogHeader>
         {children}
         
-        <DialogFooter/>
 			</DialogContent>
 		</Dialog>
 	);

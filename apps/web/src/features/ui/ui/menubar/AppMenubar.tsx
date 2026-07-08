@@ -23,7 +23,7 @@ import {
 
 export const AppMenubar = () => {
 	return (
-		<nav className="flex items-center w-screen fixed top-0 right-0 left-0 p-1 h-10! backdrop-blur-md z-10">
+		<header className="flex items-center sticky top-0 w-full! p-1 h-10! z-10">
 			<Menubar className="w-full rounded-none! border-0 *:text-xs p-0.5! items-stretch h-full [&>button]:p-2">
 				<Logo />
 
@@ -156,6 +156,6 @@ export const AppMenubar = () => {
 				<Themes />
 				<Authentication className="ml-auto [&_button]:rounded-sm [&_a]:rounded-sm" />
 			</Menubar>
-		</nav>
+		</header>
 	);
 };

@@ -4,13 +4,13 @@ import { RootState } from "@/shared/model/redux.types";
 import { connectionsType__ } from "@/shared/model/serializable.types";
 
 export const connectionAdapter = createEntityAdapter<connectionsType__>({
-  sortComparer: (a, b) => {
-    if (a.created_at !== b.created_at) {
-      return b.created_at.localeCompare(a.created_at);
-    }
+	sortComparer: (a, b) => {
+		if (a.created_at !== b.created_at) {
+			return b.created_at.localeCompare(a.created_at);
+		}
 
-    return a.id.localeCompare(b.id);
-  }
+		return a.id.localeCompare(b.id);
+	},
 });
 
 const initialState = connectionAdapter.getInitialState();
@@ -19,6 +19,7 @@ export const connectionSlice = createSlice({
 	name: "connections",
 	initialState,
 	reducers: {
+		reset: () => initialState,
 		setAll: connectionAdapter.setAll.bind(connectionAdapter),
 		upsertOne: connectionAdapter.upsertOne.bind(connectionAdapter),
 		upsertMany: connectionAdapter.upsertMany.bind(connectionAdapter),

@@ -36,7 +36,7 @@ export const AuthButtons = () => {
 						height={14}
 						className="grayscale-100 group-hover:grayscale-0"
 					/>
-					<span className="text-xs max-w-16 truncate">
+					<span className="text-xs max-w-24 truncate">
 						{auth.user.username}
 					</span>
 				</Link>
@@ -52,7 +52,7 @@ export const AuthButtons = () => {
 					asChild
 					variant="ghost"
 					size="sm"
-					className="h-full text-xs font-medium text-muted-foreground hover:text-foreground"
+					className="h-full text-xs font-medium hover:text-foreground"
 				>
 					<Link href="/login">Log in</Link>
 				</Button>
