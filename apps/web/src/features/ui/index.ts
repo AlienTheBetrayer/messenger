@@ -6,8 +6,6 @@ export * from "./lib/themes.js";
 export * from "./providers/HeaderProvider.js";
 export * from "./providers/ThemesProvider.js";
 export * from "./ui/footer/Footer.js";
-export * from "./ui/header/authbutton/AuthButtonProfileContent.js";
-export * from "./ui/header/authbutton/AuthButtonProfileTrigger.js";
 export * from "./ui/header/authbutton/useAuthButtonNotifications.js";
 export * from "./ui/header/AuthButtons.js";
 export * from "./ui/header/Header.js";

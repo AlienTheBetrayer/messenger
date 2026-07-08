@@ -8,7 +8,7 @@ import { connectionsApi } from "@/features/connections/model/connections.api";
 import { CreateGroupPopover } from "@/features/connections/ui/group/CreateGroupFormPopover";
 import { GroupList } from "@/features/connections/ui/group/GroupsList";
 import { MiniProfileCube } from "@/features/connections/ui/other/MiniProfileCube";
-import { cn } from "@/features/ui";
+import { cn, LogoutMessageBox } from "@/features/ui";
 import { selectConnectSessionsCollapsedMenu } from "@/features/ui/model/local.selectors";
 import { toggleConnectSessionsCollapsedMenu } from "@/features/ui/model/local.slice";
 import {
@@ -34,7 +34,7 @@ export const Connections = ({
 	groupClassName?: string;
 }) => {
 	return (
-		<Card className={cn("p-0 gap-0", className ?? "")}>
+		<Card className={cn("w-full h-full p-0 gap-0", className ?? "")}>
 			<ConnectionsDisplay
 				mode={mode ?? "default"}
 				groupClassName={groupClassName}
@@ -80,7 +80,7 @@ const ConnectionsDisplay = ({
 			</CardContent>
 
 			<CardFooter
-				className="flex items-center p-1 min-h-12"
+				className="flex items-center p-1 min-h-12 mt-auto"
 				style={
 					collapsedMenu
 						? {
@@ -93,10 +93,11 @@ const ConnectionsDisplay = ({
 				<AnimatePresence initial={false}>
 					{collapsedMenu && (
 						<motion.div
-							initial={{ width: 0, opacity: 0 }}
-							animate={{ width: "auto", opacity: 1 }}
-							exit={{ width: 0, opacity: 0 }}
-							className="flex items-center justify-center overflow-hidden grow"
+							initial={{ width: 0, opacity: 0, scale: 0.5 }}
+							animate={{ width: "auto", opacity: 1, scale: 1 }}
+							exit={{ width: 0, opacity: 0, scale: 0.5 }}
+							transition={{ duration: 0.2 }}
+							className="flex items-center justify-center overflow-hidden grow origin-left"
 						>
 							<MiniProfileCube
 								userId={auth?.user.id ?? ""}
@@ -136,15 +137,14 @@ const ConnectionsDisplay = ({
 				<AnimatePresence initial={false}>
 					{!collapsedMenu && (
 						<motion.div
-							initial={{ width: 0 }}
-							animate={{ width: "auto" }}
-							exit={{ width: 0 }}
+							initial={{ width: 0, opacity: 0, scale: 0.75 }}
+							animate={{ width: "auto", opacity: 1, scale: 1 }}
+							exit={{ width: 0, opacity: 0, scale: 0.75 }}
+							transition={{ duration: 0.2 }}
+							className="ml-0.5"
 						>
 							<CreateGroupPopover>
-								<Button
-									size="sm"
-									className="ml-1"
-								>
+								<Button size="sm">
 									<Boxes />
 									Create
 								</Button>
@@ -152,6 +152,10 @@ const ConnectionsDisplay = ({
 						</motion.div>
 					)}
 				</AnimatePresence>
+
+				<div className="w-fit ml-0.5">
+					<LogoutMessageBox />
+				</div>
 			</CardFooter>
 		</>
 	);

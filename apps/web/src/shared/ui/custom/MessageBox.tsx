@@ -88,5 +88,3 @@ export const MessageBox = ({
 		</AlertDialog>
 	);
 };
-
-MessageBox.displayName = "MessageBox";

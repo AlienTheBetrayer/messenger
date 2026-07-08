@@ -55,7 +55,7 @@ export const Group = ({ groupId }: { groupId: string }) => {
 	// jsx
 	return (
 		<Item
-			className="p-2 rounded-none bg-linear-to-r from-card to-background/30"
+			className="p-2 rounded-none"
 			variant={awaitingGroup ? "muted" : "default"}
 		>
 			<ItemHeader>
@@ -103,7 +103,7 @@ export const Group = ({ groupId }: { groupId: string }) => {
 							<Tooltip>
 								<TooltipTrigger asChild>
 									<Button
-                    className="ml-auto! aspect-square"
+										className="ml-auto! aspect-square"
 										size="xs"
 										variant={awaitingGroup ? "destructive" : "default"}
 										asChild={!awaitingGroup}

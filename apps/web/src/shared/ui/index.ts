@@ -17,6 +17,7 @@ export * from "./input-group.js";
 export * from "./input.js";
 export * from "./item.js";
 export * from "./label.js";
+export * from "./menubar.js";
 export * from "./popover.js";
 export * from "./radio-group.js";
 export * from "./select.js";

@@ -1,3 +1,3 @@
-import ProfilePage from "@/app/profile/page";
-
-export default ProfilePage;
+export default function ProfilePage() {
+  return null;
+}

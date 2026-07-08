@@ -45,14 +45,11 @@ export const MiniProfileCube = ({
 			variant={"ghost"}
 			size="sm"
 			asChild
-			className={cn(
-				"grow w-full justify-start",
-				className,
-			)}
+			className={cn("grow w-full justify-start", className)}
 			{...otherProps}
 		>
 			<Link
-				href="/profile"
+				href={`/profile/${user.username}`}
 				className="grid! grid-cols-[2.5rem_auto]"
 			>
 				<div className="flex flex-col items-center justify-center">
