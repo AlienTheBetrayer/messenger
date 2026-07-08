@@ -3,6 +3,7 @@
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
+import { DraggableTrigger } from "@/shared/ui/custom/DraggableTrigger";
 import {
 	Dialog,
 	DialogContent,
@@ -45,8 +46,8 @@ export const InterceptionDialog = ({
 			open={open}
 			onOpenChange={(state) => {
 				if (!state) {
-          setOpen(false);
-          
+					setOpen(false);
+
 					if (redirectingBack.current) {
 						setTimeout(() => {
 							router.back();
@@ -55,7 +56,9 @@ export const InterceptionDialog = ({
 				}
 			}}
 		>
-			<DialogContent className="flex flex-col gap-5 w-screen max-w-lg">
+			<DialogContent
+				className="flex flex-col gap-5 w-screen max-w-lg"
+			>
 				<DialogHeader>
 					<DialogTitle>{title}</DialogTitle>
 					<DialogDescription>{description}</DialogDescription>

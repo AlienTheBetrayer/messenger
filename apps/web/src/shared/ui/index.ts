@@ -8,6 +8,8 @@ export * from "./chart.js";
 export * from "./checkbox.js";
 export * from "./combobox.js";
 export * from "./context-menu.js";
+export * from "./custom/DraggableTrigger.js";
+export * from "./custom/InterceptionDialog.js";
 export * from "./custom/MessageBox.js";
 export * from "./dialog.js";
 export * from "./dropdown-menu.js";
