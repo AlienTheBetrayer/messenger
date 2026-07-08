@@ -29,7 +29,7 @@ export default async function RootLayout({
 	// jsx
 	return (
 		<html suppressHydrationWarning>
-			<body className="min-h-[144vh] flex flex-col dotted p-2">
+			<body className="min-h-screen flex flex-col dotted p-2">
 				<ReduxProvider auth={auth}>
 					<ThemesProvider>
 						<TooltipProvider delayDuration={250}>

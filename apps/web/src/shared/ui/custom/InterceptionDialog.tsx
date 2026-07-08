@@ -3,11 +3,12 @@
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-import { DraggableTrigger } from "@/shared/ui/custom/DraggableTrigger";
+import { cn } from "@/features/ui";
 import {
 	Dialog,
 	DialogContent,
 	DialogDescription,
+	DialogFooter,
 	DialogHeader,
 	DialogTitle,
 } from "@/shared/ui/dialog";
@@ -16,10 +17,12 @@ export const InterceptionDialog = ({
 	children,
 	title,
 	description,
+	className,
 }: {
 	children: React.ReactNode;
 	title: string;
 	description: string;
+	className?: string;
 }) => {
 	// routing
 	const router = useRouter();
@@ -57,13 +60,15 @@ export const InterceptionDialog = ({
 			}}
 		>
 			<DialogContent
-				className="flex flex-col gap-5 w-screen max-w-lg"
+				className={cn("flex flex-col gap-5 w-screen max-w-lg shadowed", className ?? "")}
 			>
 				<DialogHeader>
 					<DialogTitle>{title}</DialogTitle>
 					<DialogDescription>{description}</DialogDescription>
 				</DialogHeader>
-				{children}
+        {children}
+        
+        <DialogFooter/>
 			</DialogContent>
 		</Dialog>
 	);

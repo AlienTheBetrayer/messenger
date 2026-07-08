@@ -5,9 +5,10 @@ export default function ConnectionsModal() {
 	return (
 		<InterceptionDialog
 			title="Connections"
-			description="View and modify your authenticated sessions."
+      description="View and modify your authenticated sessions."
+      className="max-w-xl!"
 		>
-			<Connections />
+			<Connections groupClassName="max-h-100"/>
 		</InterceptionDialog>
 	);
 }
