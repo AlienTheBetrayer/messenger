@@ -34,7 +34,7 @@ export const Connections = ({
 	groupClassName?: string;
 }) => {
 	return (
-		<Card className={cn("w-full h-full p-0 gap-0", className ?? "")}>
+		<Card className={cn("w-full h-full p-0 gap-0 shadowed", className ?? "")}>
 			<ConnectionsDisplay
 				mode={mode ?? "default"}
 				groupClassName={groupClassName}

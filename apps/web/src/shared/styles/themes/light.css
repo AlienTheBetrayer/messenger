@@ -30,7 +30,7 @@
   --sidebar-accent-foreground: oklch(0.09 0 0);
   --sidebar-border: oklch(0 0 0 / 6%);
   --sidebar-ring: oklch(0.09 0 0 / 15%);
-  --dotted: var(--input);
+  --dotted-percent: 40%;
 
   --scheme: light;
 }

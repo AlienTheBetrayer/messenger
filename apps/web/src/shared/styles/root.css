@@ -16,6 +16,8 @@
 	--green-muted: rgb(134, 239, 172);
 	--green-dark: rgb(21, 128, 61);
   --green-cold: rgb(102, 156, 117);
+
+  --dotted: color-mix(in oklch, var(--foreground) var(--dotted-percent), transparent);
 }
 
 @import "./themes/light.css";

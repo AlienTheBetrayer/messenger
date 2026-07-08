@@ -31,6 +31,7 @@
 	--d-sidebar-accent-foreground: oklch(0.985 0 0);
 	--d-sidebar-border: oklch(1 0 0 / 10%);
 	--d-sidebar-ring: oklch(0.556 0 0);
+	--dotted-percent: 12%;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -66,7 +67,6 @@
 		--sidebar-accent-foreground: var(--d-sidebar-accent-foreground);
 		--sidebar-border: var(--d-sidebar-border);
 		--sidebar-ring: var(--d-sidebar-ring);
-		--dotted: var(--input);
 
 		--scheme: dark;
 	}
@@ -104,7 +104,6 @@
 	--sidebar-accent-foreground: var(--d-sidebar-accent-foreground);
 	--sidebar-border: var(--d-sidebar-border);
 	--sidebar-ring: var(--d-sidebar-ring);
-	--dotted: var(--input);
 
 	--scheme: dark;
 }
