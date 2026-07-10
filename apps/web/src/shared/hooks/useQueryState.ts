@@ -71,8 +71,10 @@ export function useQueryState<E extends readonly string[]>(
 						}
 					});
 
-					const qs = finalParams.toString();
-					const url = qs ? `${pathname}?${qs}` : pathname;
+          const qs = finalParams.toString();
+          const hash = window.location.hash;
+
+          const url = `${pathname}${qs ? `?${qs}` : ""}${hash}`;
 
 					if (options.replace) {
 						router.replace(url);
