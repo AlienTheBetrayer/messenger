@@ -1,5 +1,4 @@
 import { X } from "lucide-react";
-import Link from "next/link";
 
 import { AuthFormVariants } from "@/features/auth/lib/variants";
 import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
@@ -15,6 +14,7 @@ import {
 	TooltipContent,
 	TooltipTrigger,
 } from "@/shared";
+import { useFragment } from "@/shared/hooks/useFragment";
 import { useAppDispatch, useAppSelector } from "@/shared/model/redux.hooks";
 
 export const AuthHeader = () => {
@@ -29,10 +29,7 @@ export const AuthHeader = () => {
 
 	// ui states
 	const variant = AuthFormVariants[type];
-	const headerLink = {
-		href: type === "login" ? "/signup" : "/login",
-		text: type === "login" ? "Sign up" : "Log in",
-	};
+	const fragment = useFragment();
 
 	// jsx
 	return (
@@ -47,6 +44,7 @@ export const AuthHeader = () => {
 							<Button
 								variant="destructive"
 								onClick={() => {
+									fragment.set("login");
 									dispatch(setConnectSessionsAwaitingGroupId(null));
 								}}
 							>
@@ -62,9 +60,12 @@ export const AuthHeader = () => {
 
 				<Button
 					variant="link"
-					asChild
+					type="button"
+					onClick={() => {
+						fragment.set(type === "login" ? "signup" : "login");
+					}}
 				>
-					<Link href={headerLink.href}>{headerLink.text}</Link>
+					{type === "login" ? "Sign up" : "Log in"}
 				</Button>
 			</CardAction>
 		</CardHeader>

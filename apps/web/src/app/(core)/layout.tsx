@@ -7,9 +7,11 @@ export default function CoreLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<main className="grid h-full transition-all duration-300 grid-cols-[minmax(250px,auto)_1fr_minmax(250px,auto)] relative gap-2">
+		<main className="grid w-full h-full transition-all duration-300 grid-cols-[minmax(300px,auto)_1fr_minmax(250px,auto)] relative gap-2">
 			<AppLeftbar className="static! h-full w-full" />
-			<div className="flex justify-center items-center">{children}</div>
+			<div className="flex w-full h-full justify-center items-center">
+				{children}
+			</div>
 			<AppRightbar className="static! h-full w-full" />
 		</main>
 	);

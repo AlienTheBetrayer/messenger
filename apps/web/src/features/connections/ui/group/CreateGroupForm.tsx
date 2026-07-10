@@ -149,7 +149,7 @@ export const CreateGroupForm = ({
 									<PopoverContent className="w-fit p-0">
 										<EmojiPicker
 											sticky={false}
-											className="h-[200px]"
+											className="h-[300px]"
 											onEmojiSelect={({ emoji }) => {
 												field.onChange(emoji);
 												setOpen(false);

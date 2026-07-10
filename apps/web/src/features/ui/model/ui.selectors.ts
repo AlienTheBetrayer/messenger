@@ -23,3 +23,8 @@ export const selectAwaitingConnectionGroup = createSelector(
 		return groupId ? groups[groupId] : null;
 	},
 );
+
+export const selectIsIntercepting = (state: RootState) =>
+	state.ui.isIntercepting;
+export const selectInterceptionRoutes = (state: RootState) =>
+	state.ui.routesForInterception;

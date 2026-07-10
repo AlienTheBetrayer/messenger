@@ -1,12 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { connectionsApi } from "@/features/connections/model/connections.api";
 import { selectConnectSessionsCollapsedMenu } from "@/features/ui/model/local.selectors";
 import { Button } from "@/shared";
+import { useFragment } from "@/shared/hooks/useFragment";
 import { useAppSelector } from "@/shared/model/redux.hooks";
 
 export const AuthButtons = () => {
@@ -15,31 +15,33 @@ export const AuthButtons = () => {
 	const collapsedMenu = useAppSelector(selectConnectSessionsCollapsedMenu);
 	const prefetch = connectionsApi.usePrefetch("getConnections");
 
+	// hash
+	const fragment = useFragment();
+
 	// if logged in
 	if (auth?.user.id) {
 		return (
 			<Button
 				variant="ghost"
 				className="group h-full"
+				onClick={() => {
+					fragment.set("connections");
+				}}
 				onPointerEnter={() => {
 					if (!collapsedMenu) {
 						prefetch();
 					}
 				}}
-				asChild
+				size="xs"
 			>
-				<Link href="/connections">
-					<Image
-						alt="pfp"
-						src={auth.user.image_url}
-						width={14}
-						height={14}
-						className="grayscale-100 group-hover:grayscale-0"
-					/>
-					<span className="text-xs max-w-24 truncate">
-						{auth.user.username}
-					</span>
-				</Link>
+				<Image
+					alt="pfp"
+					src={auth.user.image_url}
+					width={14}
+					height={14}
+					className="grayscale-100 group-hover:grayscale-0"
+				/>
+				<span className="text-xs max-w-24 truncate">{auth.user.username}</span>
 			</Button>
 		);
 	}
@@ -49,22 +51,26 @@ export const AuthButtons = () => {
 		<ul className="flex items-center gap-0.5 h-full">
 			<li className="h-full">
 				<Button
-					asChild
 					variant="ghost"
-					size="sm"
-					className="h-full text-xs font-medium hover:text-foreground"
+					size="xs"
+					className="h-full text-xs"
+					onClick={() => {
+						fragment.set("login");
+					}}
 				>
-					<Link href="/login">Log in</Link>
+					Log in
 				</Button>
 			</li>
 
 			<li className="h-full">
 				<Button
-					asChild
-					size="sm"
-					className="h-full text-xs font-medium shadow-sm"
+					size="xs"
+					className="h-full text-xs"
+					onClick={() => {
+						fragment.set("signup");
+					}}
 				>
-					<Link href="/signup">Sign up</Link>
+					Sign up
 				</Button>
 			</li>
 		</ul>

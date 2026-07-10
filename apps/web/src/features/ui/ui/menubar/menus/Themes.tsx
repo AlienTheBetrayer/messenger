@@ -3,46 +3,60 @@
 import { useTheme } from "next-themes";
 
 import { AvailableThemesList } from "@/features/ui/lib";
+import { useFragment } from "@/shared/hooks/useFragment";
 import {
-	MenubarContent,
-	MenubarMenu,
-	MenubarRadioGroup,
-	MenubarRadioItem,
+	Button,
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuRadioGroup,
+	DropdownMenuRadioItem,
+	DropdownMenuTrigger,
 	MenubarSeparator,
-	MenubarTrigger,
 } from "@/shared/ui";
 
 export const Themes = () => {
 	// themes
 	const theme = useTheme();
+	const fragment = useFragment();
 
 	// jsx
 	return (
-		<MenubarMenu>
-			<MenubarTrigger>Themes</MenubarTrigger>
-
-			<MenubarContent>
+		<DropdownMenu
+			open={fragment.is("themes")}
+			onOpenChange={(state) => {
+				fragment.toggle("themes");
+			}}
+		>
+			<DropdownMenuTrigger asChild>
+				<Button
+					variant="ghost"
+					size="xs"
+				>
+					Themes
+				</Button>
+			</DropdownMenuTrigger>
+			<DropdownMenuContent>
 				{AvailableThemesList.map(({ value: group, items }, idx, arr) => (
-					<MenubarRadioGroup
+					<DropdownMenuRadioGroup
 						value={theme.theme}
-            key={group}
-            onValueChange={(value) => {
-              theme.setTheme(value);
-            }}
+						key={group}
+						onValueChange={(value) => {
+							theme.setTheme(value);
+						}}
 					>
 						{items.map((item) => (
-							<MenubarRadioItem
+							<DropdownMenuRadioItem
 								value={item}
 								key={item}
 							>
 								<span className="capitalize text-xs">{item}</span>
-							</MenubarRadioItem>
+							</DropdownMenuRadioItem>
 						))}
 
 						{idx !== arr.length - 1 && <MenubarSeparator />}
-					</MenubarRadioGroup>
+					</DropdownMenuRadioGroup>
 				))}
-			</MenubarContent>
-		</MenubarMenu>
+			</DropdownMenuContent>
+		</DropdownMenu>
 	);
 };

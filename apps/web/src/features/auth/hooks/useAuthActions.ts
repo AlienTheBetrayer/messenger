@@ -15,7 +15,8 @@ import {
 import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
 import { useAddConnectionMutation } from "@/features/connections/model/connections.api";
 import { selectAwaitingConnectionGroup } from "@/features/ui/model/ui.selectors";
-import { normalizeError, queryStateHooks } from "@/shared";
+import { normalizeError } from "@/shared";
+import { useFragment } from "@/shared/hooks/useFragment";
 import { useAppSelector } from "@/shared/model/redux.hooks";
 import { usersType__ } from "@/shared/model/serializable.types";
 
@@ -33,13 +34,13 @@ export const useAuthActions = () => {
 
 	// states
 	const { authForm, verifyForm, type } = useAuthFormProvider();
-	const [, setVerify] = queryStateHooks.useVerify();
+	const fragment = useFragment();
 	const notifications = useAuthNotifications();
 
 	// auth
 	const auth = useCallback(
 		async (data: AuthFormSchema) => {
-			setVerify("pending");
+			fragment.set(`${type}/verify`);
 
 			const fn = async () => {
 				try {
@@ -58,7 +59,7 @@ export const useAuthActions = () => {
 
 			notifications.auth(fn);
 		},
-		[authForm, getCode, notifications, setVerify, type, awaitingGroup],
+		[authForm, getCode, notifications, fragment, type, awaitingGroup],
 	);
 
 	// verify
@@ -119,7 +120,7 @@ export const useAuthActions = () => {
 						}
 					}
 
-					setVerify("success");
+					fragment.set(`${type}/success`);
 					return ret.user;
 				} catch (e) {
 					// error handling
@@ -138,7 +139,7 @@ export const useAuthActions = () => {
 			login,
 			addConnection,
 			notifications,
-			setVerify,
+			fragment,
 			signup,
 			type,
 			verifyForm,

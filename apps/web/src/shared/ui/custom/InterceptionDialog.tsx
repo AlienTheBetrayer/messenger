@@ -4,11 +4,13 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 import { cn } from "@/features/ui";
+import { selectInterceptionRoutes } from "@/features/ui/model/ui.selectors";
+import { uiSlice } from "@/features/ui/model/ui.slice";
+import { useAppDispatch, useAppSelector } from "@/shared/model/redux.hooks";
 import {
 	Dialog,
 	DialogContent,
 	DialogDescription,
-	DialogFooter,
 	DialogHeader,
 	DialogTitle,
 } from "@/shared/ui/dialog";
@@ -18,12 +20,18 @@ export const InterceptionDialog = ({
 	title,
 	description,
 	className,
+	href,
 }: {
 	children: React.ReactNode;
 	title: string;
 	description: string;
 	className?: string;
+	href?: string;
 }) => {
+	// redux
+	const dispatch = useAppDispatch();
+	const routes = useAppSelector((state) => selectInterceptionRoutes(state));
+
 	// routing
 	const router = useRouter();
 	const pathname = usePathname();
@@ -43,6 +51,10 @@ export const InterceptionDialog = ({
 		}
 	}, [pathname]);
 
+	useEffect(() => {
+		dispatch(uiSlice.actions.setIsIntercepting(true));
+	}, [dispatch]);
+
 	// jsx
 	return (
 		<Dialog
@@ -53,21 +65,32 @@ export const InterceptionDialog = ({
 
 					if (redirectingBack.current) {
 						setTimeout(() => {
-							router.back();
+							const link = routes.at(-2);
+							dispatch(uiSlice.actions.setIsIntercepting(false));
+
+							if (href) {
+								router.push(href);
+							}
+
+							if (link) {
+								router.push(link);
+							}
 						}, 300);
 					}
 				}
 			}}
 		>
 			<DialogContent
-				className={cn("flex flex-col gap-5 w-screen max-w-lg shadowed bg-card/30", className ?? "")}
+				className={cn(
+					"flex flex-col gap-5 w-screen max-w-lg bg-card/30",
+					className ?? "",
+				)}
 			>
 				<DialogHeader>
 					<DialogTitle>{title}</DialogTitle>
 					<DialogDescription>{description}</DialogDescription>
 				</DialogHeader>
-        {children}
-        
+				{children}
 			</DialogContent>
 		</Dialog>
 	);

@@ -57,6 +57,7 @@ function Button({
 	size = "default",
 	onPointerDown,
 	asChild = false,
+  type = "button",
 	...props
 }: ButtonProps) {
 	const Comp = asChild ? Slot.Root : "button";
@@ -69,7 +70,8 @@ function Button({
 			}}
 			data-slot="button"
 			data-variant={variant}
-			data-size={size}
+      data-size={size}
+      type={type}
 			className={cn(
 				"relative ripple",
 				buttonVariants({ variant, size, className }),

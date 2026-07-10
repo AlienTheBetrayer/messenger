@@ -53,17 +53,17 @@ export const Auth = () => {
 						exit={{ opacity: 0, scale: 0.95 }}
 						transition={{ duration: 0.15 }}
 					>
-							<span className="text-lg">Authentication is prohibited.</span>
-							<span className="text-primary/60">
-								This form will be enabled if you log out or attempt to add a new
-								connection.
-							</span>
+						<span className="text-lg">Already authenticated.</span>
+						<span className="text-primary/60">
+							The form underneath will be enabled if you log out or attempt to add a new
+							connection. Meanwhile:
+						</span>
 
-							<Connections
-								mode="static"
-								className="shadowed w-full"
-                groupClassName="h-max max-h-72"
-							/>
+						<Connections
+							mode="static"
+							className="shadowed w-full"
+							groupClassName="h-max max-h-72"
+						/>
 					</motion.div>
 				)}
 			</AnimatePresence>

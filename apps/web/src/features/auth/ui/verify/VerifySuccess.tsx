@@ -1,6 +1,4 @@
-import Link from "next/link";
-import { redirect } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { VerifySuccessVariants } from "@/features/auth/lib/variants";
 import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
@@ -11,11 +9,17 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/shared";
+import { useFragment } from "@/shared/hooks/useFragment";
 
 export const VerifySuccess = () => {
 	// variant
 	const { type } = useAuthFormProvider();
 	const variant = VerifySuccessVariants[type];
+	const fragment = useFragment();
+
+	const redirectFn = useCallback(() => {
+		fragment.set("login");
+	}, [fragment]);
 
 	// jsx
 	return (
@@ -26,19 +30,15 @@ export const VerifySuccess = () => {
 			</CardHeader>
 
 			<CardContent className="flex flex-col gap-2">
-				<Button asChild>
-					<Link href={variant.elements.redirectButton.href}>
-						{variant.elements.redirectButton.img}
-						{variant.elements.redirectButton.text}
-
-						<VerifySuccessTimer
-							onRedirect={() => {
-								setTimeout(() => {
-									redirect(variant.elements.redirectButton.href);
-								}, 500);
-							}}
-						/>
-					</Link>
+				<Button onClick={redirectFn}>
+					Log in.
+					<VerifySuccessTimer
+						onRedirect={() => {
+							setTimeout(() => {
+								redirectFn();
+							}, 500);
+						}}
+					/>
 				</Button>
 			</CardContent>
 		</div>

@@ -18,7 +18,7 @@ function EmojiPicker({
 	return (
 		<EmojiPickerPrimitive.Root
 			className={cn(
-				"bg-popover text-popover-foreground isolate flex h-full w-fit flex-col overflow-hidden rounded-md *:scrollbar-none",
+				"bg-popover text-popover-foreground isolate flex h-full w-fit flex-col overflow-y-auto rounded-md *:scrollbar-thin",
 				className,
 			)}
 			data-slot="emoji-picker"

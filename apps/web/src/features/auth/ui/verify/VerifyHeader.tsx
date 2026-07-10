@@ -1,16 +1,19 @@
-import { Icons } from "@/features/ui/lib";
+import { X } from "lucide-react";
+
+import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
 import {
 	Button,
 	CardAction,
 	CardDescription,
 	CardHeader,
 	CardTitle,
-	queryStateHooks,
 } from "@/shared";
+import { useFragment } from "@/shared/hooks/useFragment";
 
 export const VerifyHeader = () => {
 	// states
-	const [, setVerify] = queryStateHooks.useVerify();
+	const fragment = useFragment();
+	const { type } = useAuthFormProvider();
 
 	// jsx
 	return (
@@ -22,13 +25,13 @@ export const VerifyHeader = () => {
 			<CardAction>
 				<Button
 					className="w-6! h-6! p-0!"
-					variant="ghost"
+					variant="destructive"
 					type="button"
 					onClick={() => {
-						setVerify(null);
+						fragment.set(type);
 					}}
 				>
-					{Icons.close}
+					<X />
 				</Button>
 			</CardAction>
 		</CardHeader>

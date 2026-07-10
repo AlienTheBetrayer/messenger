@@ -1,5 +1,4 @@
 import { Pencil, Plus, RotateCcw, Trash2 } from "lucide-react";
-import Link from "next/link";
 import { useState } from "react";
 
 import { useAuth } from "@/features/auth/hooks/useAuth";
@@ -12,21 +11,15 @@ import { toggleConnectSessionsAwaitingGroupId } from "@/features/ui/model/ui.sli
 import { DeleteConnectionMessageBox } from "@/features/ui/ui/messageboxes/DeleteConnectionMessageBox";
 import {
 	Button,
-	EmojiPicker,
-	EmojiPickerContent,
-	EmojiPickerFooter,
-	EmojiPickerSearch,
 	Item,
 	ItemContent,
 	ItemHeader,
 	ItemTitle,
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
 	Tooltip,
 	TooltipContent,
 	TooltipTrigger,
 } from "@/shared";
+import { useFragment } from "@/shared/hooks/useFragment";
 import { useAppDispatch, useAppSelector } from "@/shared/model/redux.hooks";
 
 export const Group = ({ groupId }: { groupId: string }) => {
@@ -46,6 +39,7 @@ export const Group = ({ groupId }: { groupId: string }) => {
 
 	// states
 	const [open, setOpen] = useState<boolean>(false);
+	const fragment = useFragment();
 
 	// fallback
 	if (!group) {
@@ -60,40 +54,7 @@ export const Group = ({ groupId }: { groupId: string }) => {
 		>
 			<ItemHeader>
 				<ItemTitle className="flex flex-row items-center gap-0">
-					{group.owner_user_id === auth?.user.id ? (
-						<Popover
-							open={open}
-							onOpenChange={setOpen}
-						>
-							<PopoverTrigger asChild>
-								<Button
-									variant="ghost"
-									size="xs"
-									className="aspect-square"
-								>
-									<span className="text-[11px]">{group.emoji}</span>
-								</Button>
-							</PopoverTrigger>
-
-							<PopoverContent>
-								<EmojiPicker
-									sticky={false}
-									className="h-[300px]"
-									onEmojiSelect={({ emoji }) => {
-										setOpen(false);
-										editGroup({ emoji, groupId: group.id });
-									}}
-								>
-									<EmojiPickerSearch />
-									<EmojiPickerContent />
-									<EmojiPickerFooter />
-								</EmojiPicker>
-							</PopoverContent>
-						</Popover>
-					) : (
-						<span className="text-[11px] pl-0.5 pr-1">{group.emoji}</span>
-					)}
-
+					<span className="text-[11px] pl-0.5 pr-1">{group.emoji}</span>
 					<span className="text-xs">{group.title}</span>
 				</ItemTitle>
 
@@ -106,8 +67,11 @@ export const Group = ({ groupId }: { groupId: string }) => {
 										className="ml-auto! aspect-square"
 										size="xs"
 										variant={awaitingGroup ? "destructive" : "default"}
-										asChild={!awaitingGroup}
 										onClick={() => {
+											if (!awaitingGroup) {
+												fragment.set("login");
+											}
+
 											dispatch(
 												toggleConnectSessionsAwaitingGroupId({
 													groupId: group.id,
@@ -118,9 +82,7 @@ export const Group = ({ groupId }: { groupId: string }) => {
 										{awaitingGroup ? (
 											<RotateCcw />
 										) : (
-											<Link href="/login">
-												<Plus className="size-4" />
-											</Link>
+											<Plus className="size-4" />
 										)}
 									</Button>
 								</TooltipTrigger>

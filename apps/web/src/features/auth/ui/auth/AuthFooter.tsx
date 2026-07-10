@@ -1,10 +1,10 @@
 "use client";
 
-import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useAuthFormProvider } from "@/features/auth/providers/AuthFormProvider";
 import { AuthFooterServiceButtons } from "@/features/auth/ui/auth/AuthFooterServiceButtons";
 import { selectAwaitingConnectionGroup } from "@/features/ui/model/ui.selectors";
-import { Button, CardFooter, queryStateHooks, Spinner } from "@/shared";
+import { Button, CardFooter, Spinner } from "@/shared";
+import { useFragment } from "@/shared/hooks/useFragment";
 import { useAppSelector } from "@/shared/model/redux.hooks";
 import { useIsLoading } from "@/shared/model/redux.selectors";
 
@@ -17,13 +17,19 @@ export const AuthFooter = () => {
 	// states
 	const { type } = useAuthFormProvider();
 	const isLoading = useIsLoading(["getCode"]);
-	const [verify] = queryStateHooks.useVerify();
+	const fragment = useFragment();
 
 	// jsx
 	return (
 		<CardFooter className="flex flex-col gap-0!">
 			<Button
-				disabled={!!verify || isLoading}
+				disabled={
+					fragment.isAny(
+						"login/verify",
+						"signup/verify",
+						"forgot_password/verify",
+					) || isLoading
+				}
 				type="submit"
 				variant={awaitingGroup ? "outline" : "default"}
 				className="w-full"

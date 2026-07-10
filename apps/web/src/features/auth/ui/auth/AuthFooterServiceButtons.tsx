@@ -4,10 +4,11 @@ import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 
 import { selectAwaitingConnectionGroup } from "@/features/ui/model/ui.selectors";
-import { Button, queryStateHooks, Separator } from "@/shared";
+import { Button, Separator } from "@/shared";
 import DiscordIcon from "@/shared/assets/discord.svg";
 import GithubIcon from "@/shared/assets/github.svg";
 import GoogleIcon from "@/shared/assets/google.svg";
+import { useFragment } from "@/shared/hooks/useFragment";
 import { useAppSelector } from "@/shared/model/redux.hooks";
 
 export const AuthFooterServiceButtons = () => {
@@ -17,12 +18,16 @@ export const AuthFooterServiceButtons = () => {
 	);
 
 	// states
-	const [verify] = queryStateHooks.useVerify();
+	const fragment = useFragment();
 
 	// jsx
 	return (
 		<AnimatePresence initial={false}>
-			{!verify && (
+			{!fragment.isAny(
+				"forgot_password/verify",
+				"login/verify",
+				"signup/verify",
+			) && (
 				<motion.div
 					className={"flex flex-col w-full gap-1 mt-2"}
 					initial={{ height: 0, opacity: 0 }}

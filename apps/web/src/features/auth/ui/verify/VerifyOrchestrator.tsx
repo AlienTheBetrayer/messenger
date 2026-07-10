@@ -5,25 +5,22 @@ import { AnimatePresence, motion } from "motion/react";
 import { VerifyOrchestratorVariants } from "@/features/auth/lib/variants";
 import { Verify } from "@/features/auth/ui/Verify";
 import { VerifySuccess } from "@/features/auth/ui/verify/VerifySuccess";
-import { Card, queryStateHooks } from "@/shared";
-import { useMounted } from "@/shared/hooks/useMounted";
+import { Card } from "@/shared";
+import { useFragment } from "@/shared/hooks/useFragment";
 
 export const VerifyOrchestrator = () => {
 	// states
-	const [verify] = queryStateHooks.useVerify();
-
-	// fallback
-	const mounted = useMounted();
-
-	if (!mounted) {
-		return null;
-	}
+	const fragment = useFragment();
 
 	// jsx
 	return (
 		<div className="relative w-full">
 			<AnimatePresence mode="popLayout">
-				{verify === "pending" && (
+				{fragment.isAny(
+					"forgot_password/verify",
+					"signup/verify",
+					"login/verify",
+				) && (
 					<motion.div
 						key="pending-form"
 						variants={VerifyOrchestratorVariants}
@@ -37,7 +34,11 @@ export const VerifyOrchestrator = () => {
 					</motion.div>
 				)}
 
-				{verify === "success" && (
+				{fragment.isAny(
+					"forgot_password/success",
+					"signup/success",
+					"login/success",
+				) && (
 					<motion.div
 						key="success-form"
 						variants={VerifyOrchestratorVariants}

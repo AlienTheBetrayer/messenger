@@ -2,19 +2,10 @@ import { ExceptionCode } from "@gravity/shared";
 import { Variants } from "motion";
 
 import { AuthFormType } from "@/features/auth/providers/AuthFormProvider";
-import { Icons } from "@/features/ui/lib";
 
 type VerifySuccessVariant = {
 	title: string;
 	description: string;
-
-	elements: {
-		redirectButton: {
-			img: React.ReactNode;
-			text: string;
-			href: string;
-		};
-	};
 };
 
 /**
@@ -89,38 +80,17 @@ export const VerifySuccessVariants = {
 	forgot_password: {
 		title: "Password Changed",
 		description: "Your password has been updated successfully.",
-		elements: {
-			redirectButton: {
-				img: Icons.key,
-				text: "Sign In",
-				href: "/login",
-			},
-		},
 	},
 
 	login: {
 		title: "You're Signed In",
 		description: "Your login was verified successfully.",
-		elements: {
-			redirectButton: {
-				img: Icons.profile,
-				text: "Profile",
-				href: "/profile",
-			},
-		},
 	},
 
 	signup: {
 		title: "Account Created",
 		description:
 			"Your account has been created successfully. You can now sign in.",
-		elements: {
-			redirectButton: {
-				img: Icons.key,
-				text: "Sign In",
-				href: "/login",
-			},
-		},
 	},
 } as const satisfies Partial<Record<AuthFormType, VerifySuccessVariant>>;
 
@@ -157,16 +127,16 @@ export const RedirectPopupVariants = {
  */
 export const VerifyOrchestratorVariants: Variants = {
 	initial: {
-    opacity: 0,
-    height: 0,
+		opacity: 0,
+		height: 0,
 		scale: 0.8,
 		y: -100,
 	},
 	animate: {
 		opacity: 1,
 		scale: 1,
-    y: 0,
-    height: "auto",
+		y: 0,
+		height: "auto",
 
 		transition: {
 			duration: 0.3,
@@ -177,8 +147,8 @@ export const VerifyOrchestratorVariants: Variants = {
 		opacity: 0,
 		scale: 0.8,
 		y: -100,
-    height: 0,
-    
+		height: 0,
+
 		transition: {
 			duration: 0.3,
 			ease: [0.25, 0.1, 0.25, 1.0],

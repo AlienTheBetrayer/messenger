@@ -2,7 +2,7 @@
 
 import { Boxes, ChevronsUpDown } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
-import { redirect } from "next/navigation";
+import { useEffect } from "react";
 
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { connectionsApi } from "@/features/connections/model/connections.api";
@@ -13,14 +13,15 @@ import { cn, LogoutMessageBox } from "@/features/ui";
 import { selectConnectSessionsCollapsedMenu } from "@/features/ui/model/local.selectors";
 import { toggleConnectSessionsCollapsedMenu } from "@/features/ui/model/local.slice";
 import {
-  Button,
-  Card,
-  CardContent,
-  CardFooter,
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
+	Button,
+	Card,
+	CardContent,
+	CardFooter,
+	Tooltip,
+	TooltipContent,
+	TooltipTrigger,
 } from "@/shared";
+import { useFragment } from "@/shared/hooks/useFragment";
 import { useAppDispatch, useAppSelector } from "@/shared/model/redux.hooks";
 
 type Mode = "static" | "default";
@@ -51,37 +52,42 @@ const ConnectionsDisplay = ({
 	mode: Mode;
 	groupClassName?: string;
 }) => {
-  // redux
+	// redux
 	const dispatch = useAppDispatch();
 	const prefetchConnections = connectionsApi.usePrefetch("getConnections");
 	const collapsedMenu = useAppSelector((state) =>
 		mode === "static" ? false : selectConnectSessionsCollapsedMenu(state),
 	);
-  const auth = useAuth();
-  
-  if (!auth) {
-    redirect("/login");
-  }
+	const auth = useAuth();
+
+	// states
+	const fragment = useFragment();
+
+	// fallbacks
+	useEffect(() => {
+		if (!auth) {
+			fragment.set("login");
+		}
+	}, [auth, fragment]);
 
 	// jsx
 	return (
 		<>
 			<CardContent className="fade-bottom p-0!">
-        <AnimatePresence initial={false}>
-
-          {!collapsedMenu && (
-            <motion.div
-              initial={{ height: 0 }}
-              animate={{ height: "auto" }}
-              exit={{ height: 0 }}
-              className={cn(
-                "max-h-42 scrollbar-none overflow-y-auto",
-                groupClassName ?? "",
-              )}
-            >
-              <GroupList />
-            </motion.div>
-          )}
+				<AnimatePresence initial={false}>
+					{!collapsedMenu && (
+						<motion.div
+							initial={{ height: 0 }}
+							animate={{ height: "auto" }}
+							exit={{ height: 0 }}
+							className={cn(
+								"max-h-42 scrollbar-none overflow-y-auto",
+								groupClassName ?? "",
+							)}
+						>
+							<GroupList />
+						</motion.div>
+					)}
 				</AnimatePresence>
 			</CardContent>
 

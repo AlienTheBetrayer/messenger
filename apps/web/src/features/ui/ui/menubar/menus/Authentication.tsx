@@ -5,7 +5,7 @@ import { AuthButtons } from "@/features/ui/ui/header/AuthButtons";
 
 export const Authentication = ({ className }: { className?: string }) => {
 	return (
-		<div className={cn("flex", className ?? "")}>
+		<div className={cn("flex w-full h-full", className ?? "")}>
 			<AuthButtons />
 		</div>
 	);

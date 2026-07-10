@@ -38,6 +38,7 @@ export const Logo = () => {
 			<Button
 				asChild
 				className="h-full aspect-square"
+        size="icon-sm"
 				variant="ghost"
 			>
 				<Link

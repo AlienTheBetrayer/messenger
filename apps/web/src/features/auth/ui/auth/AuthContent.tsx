@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { useState } from "react";
 import { Controller } from "react-hook-form";
 
@@ -14,13 +13,13 @@ import {
 	FieldGroup,
 	FieldLabel,
 	Input,
-	queryStateHooks,
 } from "@/shared";
+import { useFragment } from "@/shared/hooks/useFragment";
 
 export const AuthContent = () => {
 	// states
 	const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
-	const [verify] = queryStateHooks.useVerify();
+	const fragment = useFragment();
 	const { type, authForm } = useAuthFormProvider();
 
 	// ui states
@@ -63,19 +62,20 @@ export const AuthContent = () => {
 					name="password"
 					control={authForm.control}
 					render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.invalid}>
+						<Field data-invalid={fieldState.invalid}>
 							<div className="flex items-center justify-between w-full">
-                <FieldLabel htmlFor="password">Password</FieldLabel>
-                {type !== "forgot_password" && (
-
-                  <Button
-                    variant="link"
-                    type="button"
-                    asChild
-                  >
-                    <Link href="/forgot-password">Forgot password?</Link>
-                  </Button>
-                )}
+								<FieldLabel htmlFor="password">Password</FieldLabel>
+								{type !== "forgot_password" && (
+									<Button
+										variant="link"
+										type="button"
+										onClick={() => {
+											fragment.set("forgot_password");
+										}}
+									>
+										Forgot password?
+									</Button>
+								)}
 							</div>
 
 							{variant.elements.password.description && (
