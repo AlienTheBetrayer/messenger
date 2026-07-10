@@ -39,6 +39,7 @@ export const InfoCube = ({
 						width={16}
 						height={16}
 						alt="pfp"
+						className="w-full h-full"
 					/>
 				) : (
 					image

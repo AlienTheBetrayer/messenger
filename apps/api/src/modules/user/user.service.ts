@@ -7,6 +7,8 @@ import {
 	UserCreateSchema,
 	UserDeleteSchema,
 	UserEditSchema,
+	UserGetByUsernameSchema,
+	UserGetSchema,
 } from "@gravity/shared";
 import { Injectable } from "@nestjs/common";
 import bcrypt from "bcryptjs";
@@ -146,5 +148,25 @@ export class UserService {
 			},
 			data: fields,
 		});
+	}
+
+	async get(params: UserGetSchema) {
+		const user = await this.prismaService.users.findFirst({
+			where: {
+				id: params.userId,
+			},
+		});
+
+		return user;
+	}
+
+	async getByUsername(params: UserGetByUsernameSchema) {
+		const user = await this.prismaService.users.findFirst({
+			where: {
+				username: params.username,
+			},
+		});
+
+		return user;
 	}
 }

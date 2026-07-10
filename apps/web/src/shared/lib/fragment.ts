@@ -31,8 +31,8 @@ export class Fragment {
 	 * @param segments segments
 	 * @param options options
 	 */
-	set(newHash: HashRoute) {
-		this.setHash(newHash);
+	set(newHash: HashRoute, meta?: string) {
+		this.setHash(`${newHash}${meta ? `/${meta}` : ""}` as HashRoute);
 	}
 
 	/**

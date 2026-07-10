@@ -4,7 +4,7 @@ import { AuthConfig } from "../../config/auth.js";
 import { usersType } from "../prisma/schemas/models/users.schema.js";
 
 export const userCreateSchema = z.object({
-  userId: z.nanoid().optional(),
+	userId: z.nanoid().optional(),
 	email: z.email("Please enter a valid email address."),
 	username: z.string().optional(),
 	password: z
@@ -26,20 +26,33 @@ export type UserCreateReturn = {
 };
 
 export const userDeleteSchema = z.object({
-  userId: z.nanoid(),
+	userId: z.nanoid(),
 });
 export type UserDeleteSchema = z.infer<typeof userDeleteSchema>;
 export type UserDeleteReturn = {
-  user: usersType
+	user: usersType;
 };
 
 export const userEditSchema = z.object({
-  userId: z.nanoid(),
-  status: z.string().optional(),
-  emoji: z.string().optional(),
-  color: z.hex().optional(),
+	userId: z.nanoid(),
+	status: z.string().optional(),
+	emoji: z.string().optional(),
+	color: z.hex().optional(),
 });
 export type UserEditSchema = z.infer<typeof userEditSchema>;
 export type UserEditReturn = {
-  user: usersType;
-}
+	user: usersType;
+};
+
+export const userGetSchema = z.object({
+	userId: z.nanoid(),
+});
+export type UserGetSchema = z.infer<typeof userGetSchema>;
+export type UserGetReturn = {
+	user: usersType | null;
+};
+
+export const userGetByUsernameSchema = z.object({
+	username: z.string(),
+});
+export type UserGetByUsernameSchema = z.infer<typeof userGetByUsernameSchema>;

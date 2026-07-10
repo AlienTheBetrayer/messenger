@@ -28,6 +28,9 @@ import {
 	notificationsType,
 	NotificationsUpdateReturn,
 	NotificationsUpdateSchema,
+	UserGetByUsernameSchema,
+	UserGetReturn,
+	UserGetSchema,
 	usersType,
 } from "@gravity/shared";
 
@@ -65,3 +68,6 @@ export type ConnectionCodeReturn__ = DateToString<ConnectionCodeReturn>;
 export type GroupCreateReturn__ = DateToString<GroupCreateReturn>;
 export type ConnectionAddSchema__ = DateToString<ConnectionAddSchema>;
 export type ConnectionAddReturn__ = DateToString<ConnectionAddReturn>;
+export type UserGetReturn__ = DateToString<UserGetReturn>;
+export type UserGetSchema__ = DateToString<UserGetSchema>;
+export type UserGetByUsernameSchema__ = DateToString<UserGetByUsernameSchema>;

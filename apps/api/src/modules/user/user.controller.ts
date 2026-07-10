@@ -1,7 +1,10 @@
+import { UserGetReturn } from "@gravity/shared";
 import {
 	Body,
 	Controller,
 	Delete,
+	Get,
+	Param,
 	Patch,
 	Post,
 	UseGuards,
@@ -9,12 +12,32 @@ import {
 
 import { AuthenticatedGuard } from "../auth-core/guards";
 import { UserGuard, UserNotFoundGuard } from "./guards";
-import { UserCreateDto, UserDeleteDto, UserEditDto } from "./user.dto";
+import {
+	UserCreateDto,
+	UserDeleteDto,
+	UserEditDto,
+	UserGetByUsernameDto,
+	UserGetDto,
+} from "./user.dto";
 import { UserService } from "./user.service";
 
 @Controller("users")
 export class UserController {
 	constructor(private readonly userService: UserService) {}
+
+	@Get("id/:userId")
+	async get(@Param() params: UserGetDto): Promise<UserGetReturn> {
+		const user = await this.userService.get(params);
+		return { user };
+	}
+
+	@Get("username/:username")
+	async getByUsername(
+		@Param() params: UserGetByUsernameDto,
+	): Promise<UserGetReturn> {
+		const user = await this.userService.getByUsername(params);
+		return { user };
+	}
 
 	@Post()
 	@UseGuards(AuthenticatedGuard, UserNotFoundGuard)

@@ -18,7 +18,11 @@ export class RequestParser {
 		const result = schema.safeParse(
 			part === "user"
 				? this.request.user
-				: { ...this.request.body, ...this.request.query },
+				: {
+						...this.request.body,
+						...this.request.query,
+						...this.request.params,
+					},
 		);
 
 		if (!result.success) {

@@ -1,12 +1,11 @@
 "use client";
 
-import Link from "next/link";
-
 import { groupSelectors } from "@/features/connections/model/group.slice";
 import { cn } from "@/features/ui";
 import { InfoCube } from "@/features/users";
 import { userSelectors } from "@/features/users/model/users.slice";
 import { Button, ButtonProps } from "@/shared";
+import { useFragment } from "@/shared/hooks/useFragment";
 import { useAppSelector } from "@/shared/model/redux.hooks";
 
 export const MiniProfileCube = ({
@@ -18,6 +17,9 @@ export const MiniProfileCube = ({
 	groupId?: string;
 	props?: ButtonProps;
 }) => {
+	// states
+	const fragment = useFragment();
+
 	// redux
 	const user = useAppSelector((state) =>
 		userSelectors.selectById(state, userId),
@@ -28,52 +30,53 @@ export const MiniProfileCube = ({
 	);
 
 	// fallback
-	if (!user || !group) {
+	if (!user) {
 		return null;
 	}
 
 	// ui states
 	const isOwner = user.id === group?.owner_user_id;
-	const { className, ...otherProps } = props ?? {};
+	const { className, onClick, ...otherProps } = props ?? {};
 
 	// jsx
 	return (
 		<Button
 			variant={"ghost"}
 			size="sm"
-			asChild
-			className={cn("grow w-full justify-start", className)}
+			className={cn(
+				"grid! grid-cols-[2.5rem_auto] grow w-full justify-start",
+				className,
+			)}
+			onClick={(e) => {
+				fragment.set("profile", user.username);
+				onClick?.(e);
+			}}
 			{...otherProps}
 		>
-			<Link
-				href={`/profile/${user.username}`}
-				className="grid! grid-cols-[2.5rem_auto]"
-			>
-				<div className="flex flex-col items-center justify-center">
-					{isOwner && (
-						<div className="flex items-center rounded-sm text-[9px] gap-1">
-							<span className="uppercase">owner</span>
-						</div>
-					)}
+			<div className="flex flex-col items-center justify-center">
+				{isOwner && (
+					<div className="flex items-center rounded-sm text-[9px] gap-1">
+						<span className="uppercase">owner</span>
+					</div>
+				)}
 
-					<InfoCube
-						animation="animate-bounce"
-						className="w-6.5 h-6.5"
-						image={user.image_url}
-						color={user.color}
-					/>
-				</div>
+				<InfoCube
+					animation="animate-bounce"
+					className="w-6.5 h-6.5"
+					image={user.image_url}
+					color={user.color}
+				/>
+			</div>
 
-				<div className="flex flex-col">
-					<span className="flex gap-0.5 items-center truncate text-xs ml-0!">
-						{user.username}
-					</span>
+			<div className="flex flex-col">
+				<span className="flex gap-0.5 items-center truncate text-xs ml-0!">
+					{user.username}
+				</span>
 
-					<span className="truncate text-[10px] text-muted-foreground ml-0!">
-						{user.color}
-					</span>
-				</div>
-			</Link>
+				<span className="truncate text-[10px] text-muted-foreground ml-0!">
+					{user.color}
+				</span>
+			</div>
 		</Button>
 	);
 };
