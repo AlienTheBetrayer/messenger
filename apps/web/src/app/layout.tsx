@@ -31,7 +31,7 @@ export default async function RootLayout({
 				<GlobalProvider auth={auth}>
 					<AppMenubar />
 
-					<div className="relative flex w-full h-full p-2">
+					<div className="relative flex w-full h-full">
 						{children}
 						{modal}
 					</div>
