@@ -35,7 +35,7 @@ export const useAuthActions = () => {
 	// states
 	const { authForm, verifyForm, type } = useAuthFormProvider();
 	const fragment = useFragment();
-	const notifications = useAuthNotifications();
+  const notifications = useAuthNotifications();
 
 	// auth
 	const auth = useCallback(
